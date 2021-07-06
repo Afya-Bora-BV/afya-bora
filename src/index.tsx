@@ -1,13 +1,15 @@
 import React from "react"
-import { Box, NativeBaseProvider } from "native-base"
+import { Box, NativeBaseProvider, VStack } from "native-base"
 import { NavigationContainer } from '@react-navigation/native';
-import Button from "./components/button"
+import Header from "./components/header"
+import Cards from "./components/cards"
 
 const AllComponents: React.FC = () => {
     return (
-        <Box>
-            <Button />
-        </Box>
+        <VStack paddingX={12} paddingY={10}>
+            <Header/>
+            <Cards/>
+        </VStack>
     )
 }
 export default () => {

@@ -13,7 +13,7 @@ export default () => {
             space={4}
         >
             <Button
-                testID="demo"
+              testID="demo"
                 startIcon={<Icon as={MaterialCommunityIcons} name="email" size={5} />}
             >
                 Email
