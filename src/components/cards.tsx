@@ -1,8 +1,10 @@
 import * as React from "react"
-import { AspectRatio, Center, HStack, VStack, Image, Text, Heading } from 'native-base'
+import { AspectRatio, Center, HStack, VStack, Image, Text, Heading, Divider, Circle as NativeBaseCircle, Box, Stack } from 'native-base'
 import { View } from 'react-native'
 import Svg, { SvgProps, Circle, Path } from "react-native-svg"
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { colors } from "../contants/colors"
+import { PrimaryButton } from "./button";
 
 
 const NewPaperLogo = (props: SvgProps) => {
@@ -22,7 +24,7 @@ const NewPaperLogo = (props: SvgProps) => {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M45.284 21.656h.934A4.787 4.787 0 0151 26.437v14.781A4.787 4.787 0 0146.218 46h-26.64a.586.586 0 110-1.172h26.64c1.99 0 3.61-1.62 3.61-3.61v-14.78c0-1.99-1.62-3.61-3.61-3.61H25.04a1.958 1.958 0 01-1.788-1.161l-.458-1.03a2.16 2.16 0 00-1.972-1.28H14.33a2.16 2.16 0 00-2.158 2.158v19.703c0 1.99 1.62 3.61 3.61 3.61h.978a.586.586 0 010 1.172h-.978A4.787 4.787 0 0111 41.218V21.515a3.334 3.334 0 013.33-3.33h2.386V9.619A3.623 3.623 0 0120.336 6h21.329a3.623 3.623 0 013.62 3.62v3.499a.586.586 0 01-1.173 0v-3.5a2.45 2.45 0 00-2.447-2.447h-21.33a2.45 2.45 0 00-2.447 2.447v8.566h2.934c1.314 0 2.508.775 3.042 1.975l.459 1.03a.785.785 0 00.717.466h19.072v-5.73a.586.586 0 111.172 0v5.73zm-11.565 8.17h6.049a.586.586 0 110 1.173h-6.049a.586.586 0 010-1.172zm5.642 4.588a.586.586 0 110-1.172h6.08a.586.586 0 010 1.172h-6.08zm6.08-3.415a.586.586 0 000-1.172h-2.875a.586.586 0 100 1.172h2.874zm-24.388 7.34c0 .839.683 1.522 1.523 1.522h1.757c.84 0 1.523-.683 1.523-1.523V36.23h2.109c.84 0 1.523-.684 1.523-1.523v-1.758c0-.84-.684-1.523-1.523-1.523h-2.109v-2.108c0-.84-.683-1.523-1.523-1.523h-1.757c-.84 0-1.523.683-1.523 1.523v2.108h-2.109c-.84 0-1.523.683-1.523 1.523v1.758c0 .84.684 1.523 1.523 1.523h2.109v2.108zm-2.46-3.632c0 .193.158.35.351.35h2.695c.323 0 .586.263.586.587v2.694c0 .194.157.351.35.351h1.758a.351.351 0 00.351-.35v-2.695c0-.324.263-.586.586-.586h2.695a.351.351 0 00.35-.351v-1.758a.351.351 0 00-.35-.35H25.27a.586.586 0 01-.586-.587v-2.694a.351.351 0 00-.35-.351h-1.758a.351.351 0 00-.351.35v2.695a.586.586 0 01-.586.586h-2.695a.351.351 0 00-.35.351v1.758zm7.868-22.864v-.938a.586.586 0 00-1.171 0v.938a.586.586 0 001.171 0zm6.332.379a2.378 2.378 0 01-3.586 0 .586.586 0 01.884-.77 1.206 1.206 0 001.818 0 .586.586 0 11.884.77zm4.013-.405a.586.586 0 101.172 0c0-.922-.75-1.673-1.672-1.673-.922 0-1.673.75-1.673 1.673a.586.586 0 101.172 0 .501.501 0 011.001 0zm-1.22 7.54h-9.172a.586.586 0 010-1.172h9.172a.586.586 0 110 1.172zM33.72 34.413h2.844a.586.586 0 100-1.172H33.72a.586.586 0 000 1.172zm7.094 3.415h-7.094a.586.586 0 010-1.172h7.094a.586.586 0 010 1.172z"
-                fill="#7065E4"
+                fill={colors.primary}
             />
         </Svg>
     )
@@ -75,12 +77,12 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground }
 }
 const Card2 = () => {
     return (
-        <VStack space={12}>
+        <VStack space={12} p={4} borderRadius={8} w={600} shadow={1}>
             <HStack>
                 <Image
                     size={150}
                     alt="fallback text"
-                    borderRadius={2}
+                    borderRadius={6}
                     source={{
                         uri: 'https://wallpaperaccess.com/full/317501.jpg',
                     }}
@@ -89,24 +91,161 @@ const Card2 = () => {
                     }}
                 />
                 {/* height to be fixed to auto */}
-                <VStack style={{}} paddingX={4} flex={1} height={150}>
-                    <Heading size="md">Dr. Chikanso Chima </Heading>
-                    <Text size="md" style={{ color: "#262C3D" }} >Blood formula: Detecting anemia, blood disorders,.</Text>
+                <VStack style={{}} paddingX={4} flex={1} >
+                    <Heading fontSize="md">Dr. Chikanso Chima </Heading>
+                    <Text fontSize="md" style={{ color: "#262C3D" }} >Blood formula: Detecting anemia, blood disorders,.</Text>
                 </VStack>
 
             </HStack>
             <HStack>
-                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="chevron-left" size={54} color="#7065E4" />} iconBackground="#E7E5FF" />
+                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="chevron-left" size={54} color={colors.primary} />} iconBackground="#E7E5FF" />
                 <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="cake" size={54} color="#FF6F5B" />} iconBackground="#FFE2DE" />
+            </HStack>
+            <Stack overflow="hidden" mx={-4} >
+                <HStack justifyContent="space-between" overflow="hidden" alignItems="center" mx={-4} >
+                    <NativeBaseCircle size={10} style={{ backgroundColor: "#000", opacity: 0.1 }} />
+                    {/* Dotted line here */}
+                    <NativeBaseCircle size={10} style={{ backgroundColor: "#000", opacity: 0.1 }} />
+                </HStack>
+            </Stack>
+
+            <HStack justifyContent="space-between" alignItems="center">
+                <HStack space={3} alignItems="center">
+                    <MaterialIcons name="filter-vintage" size={24} color={colors.primary} />
+                    <Text fontSize="xl" >Price : </Text>
+                </HStack>
+                <Text fontSize="xl" color={colors.primary}>
+                    $ 1200
+                </Text>
+            </HStack>
+            <Box mb={-10}>
+                <PrimaryButton />
+            </Box>
+
+        </VStack>
+    )
+}
+
+const Card3 = () => {
+    return (
+        <VStack p={4} borderRadius={12} style={{
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 2,
+            elevation: 1,
+        }}>
+            <HStack>
+                <Image
+                    size={150}
+                    alt="fallback text"
+                    borderRadius={6}
+                    source={{
+                        uri: 'https://wallpaperaccess.com/full/317501.jpg',
+                    }}
+                    fallbackSource={{
+                        uri: "https://www.w3schools.com/css/img_lights.jpg",
+                    }}
+                />
+                <VStack space={4} pl={4} flex={1} justifyContent="space-between"  >
+                    <VStack>
+                        <Heading fontSize="md">Dr. Chikanso Chima</Heading>
+                        <Text fontSize="md" style={{ color: "#262C3D" }} >Angiolory</Text>
+                    </VStack>
+                    <HStack justifyContent="space-between" alignItems="center">
+                        <HStack>
+                            <MaterialIcons name="star-rate" size={24} color="#FFC107" />
+                            <Text color="#747F9E">4.5 (834)</Text>
+                        </HStack>
+                        <HStack space={2} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#D4FAFF" }}>
+                            <MaterialIcons name="my-location" size={24} color="#2AD3E7" />
+                            <Text color="#2AD3E7">2 Km</Text>
+                        </HStack>
+                    </HStack>
+                </VStack>
+
             </HStack>
         </VStack>
     )
 }
+
+const Card4 = () => {
+    return (
+        <VStack
+            p={4}
+            borderRadius={12} style={{
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 2,
+                elevation: 1,
+            }}>
+            <HStack>
+                <Image
+                    size={150}
+                    alt="fallback text"
+                    borderRadius={6}
+                    source={{
+                        uri: 'https://wallpaperaccess.com/full/317501.jpg',
+                    }}
+                    fallbackSource={{
+                        uri: "https://www.w3schools.com/css/img_lights.jpg",
+                    }}
+                />
+                {/* height to be fixed to auto */}
+                <VStack style={{}} pl={4} flex={1} >
+                    <HStack justifyContent="space-between">
+                        <Heading fontSize="md">Dr. Chikanso Chima </Heading>
+                        <HStack space={2} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#D4FAFF" }}>
+                            <MaterialCommunityIcons name="clock-time-seven-outline" size={24} color="#2AD3E7" />
+                            <Text color="#2AD3E7">12:35</Text>
+                        </HStack>
+                    </HStack>
+
+                    <Text fontSize="md" style={{ color: "#262C3D" }} >Blood formula: Detecting anemia, blood disorders,.</Text>
+                </VStack>
+
+            </HStack>
+        </VStack>
+
+    )
+}
+type ToBeRenamed2Props = {
+    label: string
+    description: string
+    icon: React.ReactNode
+    iconBackground: string
+}
+const ToBeRenamed2: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground, description }) => {
+    return (
+        <VStack alignItems="baseline" borderRadius={10} shadow={1} p={2} mt={-4} space={4} style={{ backgroundColor: "white" }} >
+            <Center borderRadius={10} p={4} mt={-8} style={{ backgroundColor: iconBackground }}>
+                {icon}
+            </Center>
+            <Stack>
+                <Heading fontSize="lg" style={{ color: "#747F9E" }}>{label}</Heading>
+                <Text fontSize="md" style={{ color: "#747F9E" }}>{description}</Text>
+            </Stack>
+        </VStack>
+    )
+}
+
 export default () => {
     return (
-        <VStack space={6} paddingY={12}>
+        <VStack space={12} paddingY={12}>
             <Card1 />
             <Card2 />
+            <Card3 />
+            <Card4 />
+            <ToBeRenamed2 label="General Check-up"
+                description="General Check-up"
+                iconBackground="#E7E5FF" icon={<MaterialCommunityIcons name="clock-time-seven-outline" size={60} color={colors.primary} />} />
         </VStack>
     )
 }
