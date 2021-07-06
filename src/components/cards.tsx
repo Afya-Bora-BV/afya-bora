@@ -2,7 +2,7 @@ import * as React from "react"
 import { AspectRatio, Center, HStack, VStack, Image, Text, Heading } from 'native-base'
 import { View } from 'react-native'
 import Svg, { SvgProps, Circle, Path } from "react-native-svg"
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 
 const NewPaperLogo = (props: SvgProps) => {
@@ -58,19 +58,24 @@ const GenderIcon = (props: SvgProps) => {
     )
 }
 
-const ToBeRenamed = () => {
+type ToBeRenamedProps = {
+    label: string
+    icon: React.ReactNode
+    iconBackground: string
+}
+const ToBeRenamed: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground }) => {
     return (
-        <HStack>
-            <Center w={20} h={20}>
-                <MaterialCommunityIcons name="gender-male-female" size={24} color="black" />
+        <HStack alignItems="baseline" borderRadius={10} shadow={1} p={2} mt={-4} space={4} style={{ backgroundColor: "white" }} >
+            <Center borderRadius={10} mt={-8} style={{ backgroundColor: iconBackground }}>
+                {icon}
             </Center>
-            <Text size="md" style={{ color: "#262C3D" }} >Label</Text>
+            <Text style={{ color: "#747F9E" }}>{label}</Text>
         </HStack>
     )
 }
 const Card2 = () => {
     return (
-        <VStack>
+        <VStack space={12}>
             <HStack>
                 <Image
                     size={150}
@@ -90,7 +95,10 @@ const Card2 = () => {
                 </VStack>
 
             </HStack>
-            <ToBeRenamed />
+            <HStack>
+                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="chevron-left" size={54} color="#7065E4" />} iconBackground="#E7E5FF" />
+                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="cake" size={54} color="#FF6F5B" />} iconBackground="#FFE2DE" />
+            </HStack>
         </VStack>
     )
 }
