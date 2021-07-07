@@ -77,7 +77,7 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground }
 }
 const Card2 = () => {
     return (
-        <VStack space={12} p={4} borderRadius={8} w={600} style={{ backgroundColor: "white" }}>
+        <VStack space={12} p={4} borderRadius={8} w={327} style={{ backgroundColor: "white" }}>
             <HStack>
                 <Image
                     size={100}
@@ -98,14 +98,15 @@ const Card2 = () => {
 
             </HStack>
             <HStack>
-                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="chevron-left" size={54} color={colors.primary} />} iconBackground="#E7E5FF" />
-                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="cake" size={54} color="#FF6F5B" />} iconBackground="#FFE2DE" />
+                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="chevron-left" size={48} color={colors.primary} />} iconBackground="#E7E5FF" />
+                <ToBeRenamed label="Any Gender" icon={<MaterialIcons name="cake" size={48} color="#FF6F5B" />} iconBackground="#FFE2DE" />
             </HStack>
             <Stack overflow="hidden" mx={-4} >
-                <HStack justifyContent="space-between" overflow="hidden" alignItems="center" mx={-4} >
-                    <NativeBaseCircle size={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
+                <HStack justifyContent="space-between" position="relative" overflow="hidden" alignItems="center" mx={-4} >
+                    <NativeBaseCircle size={10} position="absolute" left={0} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
                     {/* Dotted line here */}
-                    <NativeBaseCircle size={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
+                    <Text>- - - - - - - - - - - - - - - - </Text>
+                    <NativeBaseCircle size={10} position="absolute" right={0} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
                 </HStack>
             </Stack>
 
