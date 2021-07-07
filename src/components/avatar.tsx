@@ -1,9 +1,5 @@
 import React from "react";
 import { Stack, Avatar } from "native-base";
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
-import { colors } from "../contants/colors";
-import { Alert } from "react-native";
-import { useState } from "react";
 
 export const PicAvatar = () => {
 	return (
