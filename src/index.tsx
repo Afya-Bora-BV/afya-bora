@@ -14,6 +14,7 @@ import {
   Location,
 } from "./components/textFields";
 import { CheckBox, FBLogo, Number, TimeSet } from "./components/bars";
+import { PicAvatar } from "./components/avatar";
 
 const Profile = () => {
   return (
@@ -26,7 +27,12 @@ const Profile = () => {
 const AllComponents: React.FC = () => {
   return (
     <ScrollView>
-      <VStack space={24} paddingX={12} paddingY={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }}>
+      <VStack
+        space={24}
+        paddingX={12}
+        paddingY={10}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }}
+      >
         <Profile />
         <Header />
         <Button />
@@ -39,6 +45,7 @@ const AllComponents: React.FC = () => {
         <FBLogo />
         <Number number={10} />
         <CheckBox item={"item"} />
+        <PicAvatar />
       </VStack>
     </ScrollView>
   );
