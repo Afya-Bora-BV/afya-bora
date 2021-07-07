@@ -1,5 +1,5 @@
 import * as React from "react"
-import { AspectRatio, Center, HStack, VStack, Image, Text, Heading, Divider, Circle as NativeBaseCircle, Box, Stack } from 'native-base'
+import { AspectRatio, Center, HStack, VStack, Image, Text, Heading, Divider, Circle as NativeBaseCircle, Box, Stack, Avatar } from 'native-base'
 import { View } from 'react-native'
 import Svg, { SvgProps, Circle, Path } from "react-native-svg"
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -33,7 +33,7 @@ const NewPaperLogo = (props: SvgProps) => {
 
 const Card1 = () => {
     return (
-        <VStack borderRadius={5} w={120} justifyContent="center" alignItems="center" shadow={1} p={4}>
+        <VStack borderRadius={5} w={120} justifyContent="center" alignItems="center" p={4} style={{ backgroundColor: "white" }}>
             <NewPaperLogo />
             <Center _text={{ textAlign: "center" }}>General Check-up</Center>
         </VStack>
@@ -77,10 +77,10 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground }
 }
 const Card2 = () => {
     return (
-        <VStack space={12} p={4} borderRadius={8} w={600} shadow={1}>
+        <VStack space={12} p={4} borderRadius={8} w={600} style={{ backgroundColor: "white" }}>
             <HStack>
                 <Image
-                    size={150}
+                    size={100}
                     alt="fallback text"
                     borderRadius={6}
                     source={{
@@ -103,9 +103,9 @@ const Card2 = () => {
             </HStack>
             <Stack overflow="hidden" mx={-4} >
                 <HStack justifyContent="space-between" overflow="hidden" alignItems="center" mx={-4} >
-                    <NativeBaseCircle size={10} style={{ backgroundColor: "#000", opacity: 0.1 }} />
+                    <NativeBaseCircle size={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
                     {/* Dotted line here */}
-                    <NativeBaseCircle size={10} style={{ backgroundColor: "#000", opacity: 0.1 }} />
+                    <NativeBaseCircle size={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }} />
                 </HStack>
             </Stack>
 
@@ -126,21 +126,15 @@ const Card2 = () => {
     )
 }
 
-const Card3 = () => {
+type Card3Props = {
+    selected: boolean
+}
+const Card3: React.FC<Card3Props> = ({ selected = "false" }) => {
     return (
-        <VStack p={4} borderRadius={12} style={{
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 2,
-            elevation: 1,
-        }}>
+        <VStack p={4} borderColor={selected ? colors.primary : null} borderWidth={selected ? 1 : null} borderRadius={12} style={{ backgroundColor: "white" }}>
             <HStack>
                 <Image
-                    size={150}
+                    size={100}
                     alt="fallback text"
                     borderRadius={6}
                     source={{
@@ -160,7 +154,7 @@ const Card3 = () => {
                             <MaterialIcons name="star-rate" size={24} color="#FFC107" />
                             <Text color="#747F9E">4.5 (834)</Text>
                         </HStack>
-                        <HStack space={2} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#D4FAFF" }}>
+                        <HStack space={4} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#D4FAFF" }}>
                             <MaterialIcons name="my-location" size={24} color="#2AD3E7" />
                             <Text color="#2AD3E7">2 Km</Text>
                         </HStack>
@@ -176,19 +170,12 @@ const Card4 = () => {
     return (
         <VStack
             p={4}
-            borderRadius={12} style={{
-                shadowColor: "#000",
-                shadowOffset: {
-                    width: 0,
-                    height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 2,
-                elevation: 1,
-            }}>
+            borderRadius={12}
+            style={{ backgroundColor: "white" }}
+        >
             <HStack>
                 <Image
-                    size={150}
+                    size={100}
                     alt="fallback text"
                     borderRadius={6}
                     source={{
@@ -216,6 +203,8 @@ const Card4 = () => {
 
     )
 }
+
+
 type ToBeRenamed2Props = {
     label: string
     description: string
@@ -224,7 +213,7 @@ type ToBeRenamed2Props = {
 }
 const ToBeRenamed2: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground, description }) => {
     return (
-        <VStack alignItems="baseline" borderRadius={10} shadow={1} p={2} mt={-4} space={4} style={{ backgroundColor: "white" }} >
+        <VStack alignItems="baseline" borderRadius={10} p={2} mt={-4} space={4} style={{ backgroundColor: "white" }} >
             <Center borderRadius={10} p={4} mt={-8} style={{ backgroundColor: iconBackground }}>
                 {icon}
             </Center>
@@ -236,13 +225,96 @@ const ToBeRenamed2: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground,
     )
 }
 
+
+const Card5: React.FC = ({ }) => {
+    return (
+        <VStack p={4} borderRadius={12} style={{ backgroundColor: "white" }}>
+            <HStack>
+                <Image
+                    size={100}
+                    alt="fallback text"
+                    borderRadius={6}
+                    source={{
+                        uri: 'https://wallpaperaccess.com/full/317501.jpg',
+                    }}
+                    fallbackSource={{
+                        uri: "https://www.w3schools.com/css/img_lights.jpg",
+                    }}
+                />
+                <VStack space={4} pl={4} flex={1} justifyContent="space-between"  >
+                    <VStack>
+                        <Heading fontSize="md">COVID-19 affects each</Heading>
+                        <Text fontSize="md" style={{ color: "#262C3D" }} >The most common symptoms...</Text>
+                    </VStack>
+                    <HStack justifyContent="space-between" alignItems="center">
+                        <HStack>
+                            <MaterialIcons name="star-rate" size={24} color={colors.primary} />
+                            <Text color="#747F9E">2020/09/08</Text>
+                        </HStack>
+                        <HStack space={4} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#D4FAFF" }}>
+                            <MaterialIcons name="my-location" size={24} color="#2AD3E7" />
+                            <Text color="#2AD3E7">News</Text>
+                        </HStack>
+                    </HStack>
+                </VStack>
+
+            </HStack>
+        </VStack>
+    )
+}
+
+const Card6 = () => {
+    return (
+        <VStack
+            p={4}
+            borderRadius={12}
+            style={{ backgroundColor: "white" }}
+        >
+            <HStack>
+                <Avatar
+                    size={100}
+
+                    borderRadius={6}
+                    source={{
+                        uri: "https://alpha.nativebase.io/img/native-base-icon.png",
+                    }}
+                >
+                    <Avatar.Badge style={{ backgroundColor: "#24D626" }} borderWidth={2} borderColor="white" w={5} h={5} top={-5} right={-5} />
+                </Avatar>
+                {/* height to be fixed to auto */}
+                <VStack style={{}} pl={4} flex={1} justifyContent="space-between" >
+                    <VStack justifyContent="space-between">
+                        <Heading fontSize="md">Dr. Chikanso Chima </Heading>
+                        <Text fontSize="md" style={{ color: "#747F9E" }}>The consultation has not yet started!</Text>
+                    </VStack>
+                    <HStack justifyContent="space-between" alignItems="center">
+                        <HStack>
+                            <MaterialIcons name="star-rate" size={24} color={colors.primary} />
+                            <Text color="#747F9E">09:30 Am</Text>
+                        </HStack>
+                        <HStack space={4} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#FFE2DE" }}>
+                            <MaterialIcons name="my-location" size={24} color="#FF6F5B" />
+                            <Text color="#FF6F5B">Finished</Text>
+                        </HStack>
+                    </HStack>
+                </VStack>
+
+            </HStack>
+        </VStack>
+
+    )
+}
+
 export default () => {
     return (
         <VStack space={12} paddingY={12}>
             <Card1 />
             <Card2 />
-            <Card3 />
+            <Card3 selected />
+            <Card3 selected={false} />
             <Card4 />
+            <Card5 />
+            <Card6 />
             <ToBeRenamed2 label="General Check-up"
                 description="General Check-up"
                 iconBackground="#E7E5FF" icon={<MaterialCommunityIcons name="clock-time-seven-outline" size={60} color={colors.primary} />} />

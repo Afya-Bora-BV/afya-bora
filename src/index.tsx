@@ -26,7 +26,7 @@ const Profile = () => {
 const AllComponents: React.FC = () => {
   return (
     <ScrollView>
-      <VStack space={24} paddingX={12} paddingY={10}>
+      <VStack space={24} paddingX={12} paddingY={10} style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }}>
         <Profile />
         <Header />
         <Button />
