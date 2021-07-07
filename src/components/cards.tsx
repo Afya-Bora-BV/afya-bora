@@ -267,42 +267,44 @@ const Card5: React.FC = ({ }) => {
 
 const Card6 = () => {
     return (
-        <VStack
-            p={4}
-            borderRadius={12}
-            style={{ backgroundColor: "white" }}
-        >
-            <HStack>
-                <Avatar
-                    size={100}
+        <Box rounded="lg" shadow={2}>
+            <VStack
+                p={4}
+                borderRadius={12}
+                style={{ backgroundColor: "white" }}
+            >
+                <HStack>
+                    <Avatar
+                        size={100}
 
-                    borderRadius={6}
-                    source={{
-                        uri: "https://alpha.nativebase.io/img/native-base-icon.png",
-                    }}
-                >
-                    <Avatar.Badge style={{ backgroundColor: "#24D626" }} borderWidth={2} borderColor="white" w={5} h={5} top={-5} right={-5} />
-                </Avatar>
-                {/* height to be fixed to auto */}
-                <VStack style={{}} pl={4} flex={1} justifyContent="space-between" >
-                    <VStack justifyContent="space-between">
-                        <Heading fontSize="md">Dr. Chikanso Chima </Heading>
-                        <Text fontSize="md" style={{ color: "#747F9E" }}>The consultation has not yet started!</Text>
+                        borderRadius={6}
+                        source={{
+                            uri: "https://alpha.nativebase.io/img/native-base-icon.png",
+                        }}
+                    >
+                        <Avatar.Badge style={{ backgroundColor: "#24D626" }} borderWidth={2} borderColor="white" w={5} h={5} top={-5} right={-5} />
+                    </Avatar>
+                    {/* height to be fixed to auto */}
+                    <VStack style={{}} pl={4} flex={1} justifyContent="space-between" >
+                        <VStack justifyContent="space-between">
+                            <Heading fontSize="md">Dr. Chikanso Chima </Heading>
+                            <Text fontSize="md" style={{ color: "#747F9E" }}>The consultation has not yet started!</Text>
+                        </VStack>
+                        <HStack justifyContent="space-between" alignItems="center">
+                            <HStack>
+                                <MaterialIcons name="star-rate" size={24} color={colors.primary} />
+                                <Text color="#747F9E">09:30 Am</Text>
+                            </HStack>
+                            <HStack space={4} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#FFE2DE" }}>
+                                <MaterialIcons name="my-location" size={24} color="#FF6F5B" />
+                                <Text color="#FF6F5B">Finished</Text>
+                            </HStack>
+                        </HStack>
                     </VStack>
-                    <HStack justifyContent="space-between" alignItems="center">
-                        <HStack>
-                            <MaterialIcons name="star-rate" size={24} color={colors.primary} />
-                            <Text color="#747F9E">09:30 Am</Text>
-                        </HStack>
-                        <HStack space={4} px={6} py={2} borderRadius={4} justifyContent="center" alignItems="center" style={{ backgroundColor: "#FFE2DE" }}>
-                            <MaterialIcons name="my-location" size={24} color="#FF6F5B" />
-                            <Text color="#FF6F5B">Finished</Text>
-                        </HStack>
-                    </HStack>
-                </VStack>
 
-            </HStack>
-        </VStack>
+                </HStack>
+            </VStack>
+        </Box>
 
     )
 }
@@ -347,7 +349,7 @@ const Card7 = () => {
         <VStack position="relative" >
             <ZStack borderRadius={10} overflow="hidden" w={328} height={210}>
                 <CardBackground />
-                <VStack p={4} space={4}  w="100%">
+                <VStack p={4} space={4} w="100%">
                     <HStack justifyContent="space-between" alignItems="center">
                         <Heading fontSize="lg">Name</Heading>
                         <Text>Card Logo Icon</Text>
