@@ -14,5 +14,6 @@ import { Alert } from "react-native";
 import { useState } from "react";
 
 export const Avatar = () => {
-    return();
+  return
+  null;
 }
