@@ -39,7 +39,7 @@ const NewPaperLogo = (props: SvgProps) => {
 
 const Card1 = () => {
     return (
-        <Box bg="white" shadow={2} rounded="lg" maxWidth="50%">
+        <Box bg="white" shadow={2} rounded="lg" w={150} p={4}>
             <VStack justifyContent="center" alignItems="center">
                 <NewPaperLogo />
                 <Center _text={{ textAlign: "center" }}>General Check-up</Center>
@@ -72,7 +72,7 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({
     iconBackground,
 }) => {
     return (
-        <Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+        <Box bg="white" shadow={2} rounded="lg" >
             <HStack
                 alignItems="baseline"
                 borderRadius={10}
@@ -96,13 +96,12 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({
 };
 const Card2 = () => {
     return (
-        <Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+        <Box bg="white" shadow={2} rounded="lg" w={328}>
             <VStack
                 space={12}
                 p={4}
                 borderRadius={8}
-                w={600}
-                style={{ backgroundColor: "white" }}
+                backgroundColor="white"
             >
                 <HStack>
                     <Image
@@ -124,23 +123,27 @@ const Card2 = () => {
                         </Text>
                     </VStack>
                 </HStack>
-                <HStack>
-                    <ToBeRenamed
-                        label="Any Gender"
-                        icon={
-                            <MaterialCommunityIcons
-                                name="gender-male-female"
-                                size={54}
-                                color={colors.primary}
-                            />
-                        }
-                        iconBackground="#E7E5FF"
-                    />
-                    <ToBeRenamed
-                        label="Any Date"
-                        icon={<MaterialIcons name="cake" size={54} color="#FF6F5B" />}
-                        iconBackground="#FFE2DE"
-                    />
+                <HStack space={2}>
+                    <Stack>
+                        <ToBeRenamed
+                            label="Any Gender"
+                            icon={
+                                <MaterialCommunityIcons
+                                    name="gender-male-female"
+                                    size={54}
+                                    color={colors.primary}
+                                />
+                            }
+                            iconBackground="#E7E5FF"
+                        />
+                    </Stack>
+                    <Stack>
+                        <ToBeRenamed
+                            label="Any Date"
+                            icon={<MaterialIcons name="cake" size={54} color="#FF6F5B" />}
+                            iconBackground="#FFE2DE"
+                        />
+                    </Stack>
                 </HStack>
                 <Stack overflow="hidden" mx={-4}>
                     <HStack
