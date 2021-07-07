@@ -1,5 +1,5 @@
 import * as React from "react"
-import { AspectRatio, Center, HStack, VStack, Image, Text, Heading, Divider, Circle as NativeBaseCircle, Box, Stack, Avatar } from 'native-base'
+import { AspectRatio, Center, HStack, VStack, Image, Text, Heading, Divider, Circle as NativeBaseCircle, Box, Stack, Avatar, ZStack } from 'native-base'
 import { View } from 'react-native'
 import Svg, { SvgProps, Circle, Path } from "react-native-svg"
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -213,14 +213,16 @@ type ToBeRenamed2Props = {
 }
 const ToBeRenamed2: React.FC<ToBeRenamedProps> = ({ label, icon, iconBackground, description }) => {
     return (
-        <VStack alignItems="baseline" borderRadius={10} p={2} mt={-4} space={4} style={{ backgroundColor: "white" }} >
-            <Center borderRadius={10} p={4} mt={-8} style={{ backgroundColor: iconBackground }}>
-                {icon}
-            </Center>
-            <Stack>
-                <Heading fontSize="lg" style={{ color: "#747F9E" }}>{label}</Heading>
-                <Text fontSize="md" style={{ color: "#747F9E" }}>{description}</Text>
-            </Stack>
+        <VStack alignItems="baseline" borderRadius={10} p={4} space={4} style={{ backgroundColor: "white" }} >
+            <VStack mt={-6}>
+                <Center borderRadius={10} size={100} p={4} mt={-8} style={{ backgroundColor: iconBackground }}>
+                    {icon}
+                </Center>
+                <Stack>
+                    <Heading fontSize="lg" style={{ color: "#747F9E" }}>{label}</Heading>
+                    <Text fontSize="md" style={{ color: "#747F9E" }}>{description}</Text>
+                </Stack>
+            </VStack>
         </VStack>
     )
 }
@@ -305,6 +307,71 @@ const Card6 = () => {
     )
 }
 
+
+
+const CardBackground = (props: SvgProps) => {
+    return (
+        <Svg
+            width={327}
+            height={208}
+            viewBox="0 0 327 208"
+            fill="none"
+            {...props}
+        >
+            <Path
+                d="M312.42.024H14.225C6.382.024.025 6.39.025 14.243v179.169c0 7.852 6.357 14.218 14.2 14.218H312.42c7.842 0 14.199-6.366 14.199-14.218V14.242c0-7.852-6.357-14.218-14.199-14.218z"
+                fill="#FF6F5B"
+            />
+            <Path
+                d="M-24.967 70.2l233.829.145c25.158.015 41.71 24.842 32.306 48.458l-87.4 219.488c-11.038 27.716-48.401 32.781-64.432 8.734L-57.09 127.396C-73.121 103.35-54.493 70.184-24.967 70.2z"
+                fill="#FFC107"
+            />
+            <Path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M-79.17-4.846l234.013.147c25.178.014 41.744 24.853 32.332 48.48L99.709 263.37c-11.047 27.729-48.438 32.796-64.484 8.734L-111.318 52.372c-16.043-24.054 2.598-57.236 32.149-57.218z"
+                fill="#7065E4"
+            />
+            <Path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M36.741 274.194l-97.84-146.716c-16.03-24.037 2.596-57.191 32.12-57.174l205.609.128-76.884 192.973a38.111 38.111 0 01-14.005 17.529 38.03 38.03 0 01-21.43 6.595c-10.349.001-20.588-4.302-27.57-13.335z"
+                fill="#7065E4"
+            />
+        </Svg>
+    )
+}
+
+const Card7 = () => {
+    return (
+        <VStack position="relative" >
+            <ZStack borderRadius={10} overflow="hidden" w={328} height={210}>
+                <CardBackground />
+                <VStack p={4} space={4}  w="100%">
+                    <HStack justifyContent="space-between" alignItems="center">
+                        <Heading fontSize="lg">Name</Heading>
+                        <Text>Card Logo Icon</Text>
+                    </HStack>
+                    <VStack>
+                        <Text>Amazon Platinium</Text>
+                    </VStack>
+                    <VStack>
+                        <Text>Card Input</Text>
+                    </VStack>
+                    <HStack justifyContent="space-between" alignItems="center">
+                        <Heading fontSize="lg">$3.469.52</Heading>
+                        <HStack>
+                            <NativeBaseCircle size={10} zIndex={2} backgroundColor="#FFFFFF" />
+                            <NativeBaseCircle size={10} zIndex={1} ml={-5} backgroundColor="rgba(255,255,255,0.3)" />
+                        </HStack>
+                    </HStack>
+                </VStack>
+            </ZStack>
+        </VStack>
+
+    )
+}
+
 export default () => {
     return (
         <VStack space={12} paddingY={12}>
@@ -315,9 +382,12 @@ export default () => {
             <Card4 />
             <Card5 />
             <Card6 />
+            <Card7 />
+
             <ToBeRenamed2 label="General Check-up"
                 description="General Check-up"
-                iconBackground="#E7E5FF" icon={<MaterialCommunityIcons name="clock-time-seven-outline" size={60} color={colors.primary} />} />
+                iconBackground="#E7E5FF" icon={<MaterialCommunityIcons name="clock-time-seven-outline" size={40} color={colors.primary} />} />
+
         </VStack>
     )
 }
