@@ -6,7 +6,7 @@ export const Dots = () => {
 		<View
 			style={{
 				flexDirection: "row",
-				backgroundColor: "red",
+				// backgroundColor: "red",
 				flexWrap: "wrap",
 				justifyContent: "center",
 			}}
