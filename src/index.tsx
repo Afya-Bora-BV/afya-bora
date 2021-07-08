@@ -15,6 +15,7 @@ import {
 } from "./components/textFields";
 import { CheckBox, FBLogo, Number, TimeSet } from "./components/bars";
 import { PicAvatar } from "./components/avatar";
+import Home from "./screens/Home"
 
 const Profile = () => {
   return (
@@ -54,7 +55,7 @@ export default () => {
   return (
     <NavigationContainer>
       <NativeBaseProvider>
-        <AllComponents />
+        <Home />
       </NativeBaseProvider>
     </NavigationContainer>
   );
