@@ -65,7 +65,7 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({
     return (
         <Stack>
             <Box borderRadius={4} borderWidth={1} my={3}>
-                <HStack alignItems="center" mt={-4}>
+                <HStack alignItems="center" >
                     {children}
                 </HStack>
             </Box>

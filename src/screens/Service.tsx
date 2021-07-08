@@ -14,11 +14,11 @@ const serviceDemoData = [{
     description: "Blood formula: Detectinganemia, blood disorders",
     specialities: [{
         title: "Any Gender",
-        Icon: <GenderIcon color="#7065E4" size={20} />
+        Icon: <GenderIcon color="#7065E4" size={16} />
     },
     {
         title: "Any Gender",
-        Icon: <CakeIcon color="#FF6F5B" size={20} />
+        Icon: <CakeIcon color="#FF6F5B" size={16} />
     }]
 
 },
@@ -27,11 +27,11 @@ const serviceDemoData = [{
     description: "Blood formula: Detectinganemia, blood disorders",
     specialities: [{
         title: "Any Gender",
-        Icon: <GenderIcon color="#7065E4" size={20} />
+        Icon: <GenderIcon color="#7065E4" size={16} />
     },
     {
         title: "Any Gender",
-        Icon: <CakeIcon color="#FF6F5B" size={20} />
+        Icon: <CakeIcon color="#FF6F5B" size={16} />
     }]
 
 }]
