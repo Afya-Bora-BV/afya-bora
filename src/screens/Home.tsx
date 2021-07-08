@@ -109,7 +109,6 @@ const Home = () => {
                         </HeroIllustrationContainer>
 
 
-
                         <HeroIllustrationContainer>
                             <OnlineConsulationIllustration size={70} />
                             <Text textAlign="center">Online consultation</Text>
