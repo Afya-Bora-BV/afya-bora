@@ -24,12 +24,42 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Spacer } from "../components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const Login = () => {
 	const [visibility, setVisibility] = React.useState("eye-off-outline");
 	const [remember, setRemember] = React.useState(false);
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
+
+	interface LoginFormInputs {
+		email: string;
+		password: string;
+	}
+
+	const schema = yup.object().shape({
+		email: yup.string().email().required(),
+		password: yup.string().nullable().required(),
+	});
+
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginFormInputs>({
+		resolver: yupResolver(schema),
+	});
+
+	const onSubmit = (data: LoginFormInputs) => {
+		console.log(data);
+		nav;
+	};
+
+	const nav = () => {
+		navigation.navigate("Home");
+	};
 
 	return (
 		<Stack height={height - 40}>
@@ -57,44 +87,92 @@ const Login = () => {
 									paddingBottom: 40,
 								}}
 							>
-								<TextInput
-									holderText={"Email or Phone Number"}
-								/>
+								<Stack>
+									<Text>Email or phone number</Text>
+									<Spacer size={10} />
+									<Controller
+										control={control}
+										render={({
+											field: { onChange, onBlur, value },
+										}) => (
+											<Input
+												value={value}
+												onBlur={onBlur}
+												onChangeText={(value) =>
+													onChange(value)
+												}
+												outlineColor={
+													errors.email ? "red" : ""
+												}
+												variant="rounded"
+												placeholder="Enter email or phone number"
+												keyboardType="email-address"
+												autoCapitalize={"none"}
+											/>
+										)}
+										name="email"
+										rules={{ required: true }}
+										defaultValue=""
+									/>
+								</Stack>
 
 								<Spacer size={20} />
 
 								<Stack>
 									<Text>Password</Text>
 									<Spacer size={10} />
-									<Input
-										variant="rounded"
-										placeholder="Enter Password"
-										type={
-											visibility === "eye-outline"
-												? "text"
-												: "password"
-										}
-										autoCapitalize={"none"}
-										InputRightElement={
-											<Pressable
-												onPress={() =>
-													visibility === "eye-outline"
-														? setVisibility(
-																"eye-off-outline"
-														  )
-														: setVisibility(
-																"eye-outline"
-														  )
+									<Controller
+										control={control}
+										render={({
+											field: { onChange, onBlur, value },
+										}) => (
+											<Input
+												value={value}
+												onBlur={onBlur}
+												onChangeText={(value) =>
+													onChange(value)
 												}
-											>
-												<MaterialCommunityIcons
-													name={visibility}
-													size={24}
-													color={colors.primary}
-													style={{ paddingEnd: 10 }}
-												/>
-											</Pressable>
-										}
+												outlineColor={
+													errors.password ? "red" : ""
+												}
+												variant="rounded"
+												placeholder="Enter Password"
+												type={
+													visibility === "eye-outline"
+														? "text"
+														: "password"
+												}
+												autoCapitalize={"none"}
+												InputRightElement={
+													<Pressable
+														onPress={() =>
+															visibility ===
+															"eye-outline"
+																? setVisibility(
+																		"eye-off-outline"
+																  )
+																: setVisibility(
+																		"eye-outline"
+																  )
+														}
+													>
+														<MaterialCommunityIcons
+															name={visibility}
+															size={24}
+															color={
+																colors.primary
+															}
+															style={{
+																paddingEnd: 10,
+															}}
+														/>
+													</Pressable>
+												}
+											/>
+										)}
+										name="password"
+										rules={{ required: true }}
+										defaultValue=""
 									/>
 								</Stack>
 
@@ -114,7 +192,9 @@ const Login = () => {
 								<PrimaryButton
 									text={"Login"}
 									press={() => {
-										navigation.navigate("Home");
+										{
+											handleSubmit(onSubmit);
+										}
 									}}
 								/>
 							</Box>
