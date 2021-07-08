@@ -26,9 +26,13 @@ import GenderIcon from "../assets/icons/Gender";
 import PriceTagIcon from "../assets/icons/PriceTag";
 import MessageIcon from "../assets/icons/Message"
 import CakeIcon from "../assets/icons/Cake";
+
+import RatingIcon from "../assets/icons/Rating"
+
 import ReportIcon from "../assets/icons/Report"
 
 import BackgroundOne from "../assets/illustrations/BackgroundOne";
+
 import { color } from "styled-system";
 
 const NewPaperLogo = (props: SvgProps) => {
@@ -280,9 +284,23 @@ const Card3: React.FC<Card3Props> = ({ selected = "false" }) => {
     );
 };
 
-const Card4 = () => {
+type AdvisoryListItemProps = {
+    consultant: {
+        name: string,
+        hospital: string,
+        region: string,
+        expertise: string,
+        rating: number,
+        ratedBy: number,
+        time: string
+    }
+}
+
+export const AdvisoryListItem: React.FC<AdvisoryListItemProps> = ({ consultant: {
+    name, hospital, region, expertise, rating, ratedBy, time
+} }) => {
     return (
-        <Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+        <Box bg="white" shadow={2} rounded="lg">
             <VStack
                 p={4}
                 borderRadius={12}
@@ -301,13 +319,13 @@ const Card4 = () => {
                         }}
                     />
                     {/* height to be fixed to auto */}
-                    <VStack style={{}} pl={4} flex={1}>
-                        <HStack justifyContent="space-between">
-                            <Heading fontSize="md">Dr. Chikanso Chima </Heading>
+                    <VStack style={{}} pl={3} flex={1}>
+                        <HStack justifyContent="space-between" alignItems="center">
+                            <Heading fontSize="lg">{name} </Heading>
                             <HStack
-                                space={2}
-                                px={6}
-                                py={2}
+                                space={1}
+                                px={2}
+                                py={1}
                                 borderRadius={4}
                                 justifyContent="center"
                                 alignItems="center"
@@ -315,16 +333,26 @@ const Card4 = () => {
                             >
                                 <MaterialCommunityIcons
                                     name="clock-time-seven-outline"
-                                    size={24}
+                                    size={18}
                                     color="#2AD3E7"
                                 />
-                                <Text color="#2AD3E7">12:35</Text>
+                                <Text color="#2AD3E7" >{time}</Text>
                             </HStack>
                         </HStack>
+                        <VStack>
+                            <Text fontSize="md" color="#747F9E" >
+                                {hospital}
+                            </Text>
+                            <Text fontSize="md" color="#747F9E" >
+                                {region}
+                            </Text>
+                        </VStack>
 
-                        <Text fontSize="md" style={{ color: "#262C3D" }}>
-                            Blood formula: Detecting anemia, blood disorders,.
-                        </Text>
+                        <Text fontSize="md" fontWeight="bold">Dr. Chikanso Chima </Text>
+                        <HStack space={2} alignItems="center">
+                            <RatingIcon size={6} color="#FFC107" />
+                            <Text fontSize="md" color="#B0B3C7">{rating} ({ratedBy})</Text>
+                        </HStack>
                     </VStack>
                 </HStack>
             </VStack>
@@ -636,7 +664,7 @@ export default () => {
             {/* <ServiceCard /> */}
             <Card3 selected />
             <Card3 selected={false} />
-            <Card4 />
+            <AdvisoryListItem />
             <Card5 />
             <Card6 />
             <Card7 />
