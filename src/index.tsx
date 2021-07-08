@@ -15,13 +15,14 @@ import {
 } from "./components/textFields";
 import { CheckBox, FBLogo, Number, TimeSet } from "./components/bars";
 import { PicAvatar } from "./components/avatar";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "./screens/Home"
-import ServiceScreen from "./screens/Service"
+import HomeScreen from "./screens/Home";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import Verify from "./screens/Verify";
+import Service from "./screens/Service";
 
 const Profile = () => {
 	return (
@@ -31,6 +32,9 @@ const Profile = () => {
 		</HStack>
 	);
 };
+
+const Stack = createStackNavigator();
+
 const AllComponents: React.FC = () => {
 	return (
 		<ScrollView>
@@ -58,11 +62,21 @@ const AllComponents: React.FC = () => {
 	);
 };
 export default () => {
-  return (
-    <NavigationContainer>
-      <NativeBaseProvider>
-        <ServiceScreen />
-      </NativeBaseProvider>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<NativeBaseProvider>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+					<Stack.Screen name="Login" component={Login} />
+					<Stack.Screen name="SignUp" component={SignUp} />
+					<Stack.Screen name="Verify" component={Verify} />
+					<Stack.Screen name="Service" component={Service} />
+					<Stack.Screen name="Home" component={Home} />
+				</Stack.Navigator>
+			</NativeBaseProvider>
+		</NavigationContainer>
+	);
 };

@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Box, ScrollView, Stack } from "native-base";
 import React from "react";
 import { PrimaryButton } from "../components/button";
@@ -6,6 +7,7 @@ import { TextInput } from "../components/textFields";
 import { colors } from "../contants/colors";
 
 const SignUp = () => {
+	const navigation = useNavigation();
 	return (
 		<Stack>
 			<ScrollView>
@@ -23,7 +25,13 @@ const SignUp = () => {
 						alignItems="center"
 						style={{ paddingVertical: 80, paddingLeft: 25 }}
 					>
-						<HeaderwithBack head="Sign up" nav={() => {}} />
+						<HeaderwithBack
+							head="Sign up"
+							nav={() => {
+								navigation.navigate("Login");
+							}}
+							color="white"
+						/>
 					</Stack>
 
 					<Stack alignItems="center">
@@ -42,7 +50,9 @@ const SignUp = () => {
 							<Box mb={-10}>
 								<PrimaryButton
 									text={"Confirm"}
-									press={() => {}}
+									press={() => {
+										navigation.navigate("Verify");
+									}}
 								/>
 							</Box>
 						</Box>
