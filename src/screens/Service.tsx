@@ -19,7 +19,7 @@ const serviceDemoData = [
         age: "Any age",
         tests: 12,
         checkups: 4,
-        price:100,
+        price: 100,
     },
     {
         name: "Dr. Chikanso Chima",
@@ -28,8 +28,8 @@ const serviceDemoData = [
         age: "Any age",
         tests: 12,
         checkups: 4,
-        price:200
-        
+        price: 200
+
     },
 ];
 const Service = () => {
