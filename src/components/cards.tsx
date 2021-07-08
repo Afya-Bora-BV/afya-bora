@@ -664,7 +664,7 @@ export default () => {
             {/* <ServiceCard /> */}
             <Card3 selected />
             <Card3 selected={false} />
-            <AdvisoryListItem />
+            {/* <AdvisoryListItem /> */}
             <Card5 />
             <Card6 />
             <Card7 />

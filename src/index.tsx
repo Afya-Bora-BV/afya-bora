@@ -70,7 +70,7 @@ export default () => {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="Advisory"
+          // initialRouteName="Advisory"
         >
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
