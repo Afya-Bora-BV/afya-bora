@@ -54,13 +54,14 @@ const Login = () => {
 
 	const onSubmit = (data: LoginFormInputs) => {
 		console.log(data);
-		nav;
+		nav();
 	};
 
 	const nav = () => {
 		navigation.navigate("Home");
 	};
 
+	console.log("Errrs",errors)
 	return (
 		<Stack height={height - 40}>
 			<ScrollView>
@@ -147,13 +148,13 @@ const Login = () => {
 													<Pressable
 														onPress={() =>
 															visibility ===
-															"eye-outline"
+																"eye-outline"
 																? setVisibility(
-																		"eye-off-outline"
-																  )
+																	"eye-off-outline"
+																)
 																: setVisibility(
-																		"eye-outline"
-																  )
+																	"eye-outline"
+																)
 														}
 													>
 														<MaterialCommunityIcons
@@ -191,11 +192,7 @@ const Login = () => {
 							<Box mb={-10}>
 								<PrimaryButton
 									text={"Login"}
-									press={() => {
-										{
-											handleSubmit(onSubmit);
-										}
-									}}
+									press={handleSubmit(onSubmit)}
 								/>
 							</Box>
 						</Box>
