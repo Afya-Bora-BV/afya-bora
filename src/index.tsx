@@ -13,7 +13,7 @@ import {
 	DropDown,
 	Location,
 } from "./components/textFields";
-import { CheckBox, FBLogo, Number, TimeSet } from "./components/bars";
+import { CheckBox, FBLogo, TimeSet } from "./components/bars";
 import { PicAvatar } from "./components/avatar";
 import { createStackNavigator } from "@react-navigation/stack";
 

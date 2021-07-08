@@ -8,6 +8,7 @@ import {
 	Heading,
 	ZStack,
 	Pressable,
+	ScrollView,
 } from "native-base";
 import UserIcon from "../assets/icons/User";
 import BellIcon from "../assets/icons/Bell";
@@ -20,6 +21,7 @@ import NewspaperIllustration from "../assets/illustrations/NewspaperIllustration
 
 import BackgroundOne from "../assets/illustrations/BackgroundOne";
 import { useNavigation } from "@react-navigation/native";
+import { TopRatedSpecialists } from "../components/cards";
 
 const IconContainer: React.FC = ({ children }) => {
 	return (
@@ -46,13 +48,6 @@ const HeroIllustrationContainer: React.FC = ({ children }) => {
 	);
 };
 
-const TopSpecialistsContainer: React.FC = ({ children }) => {
-	return (
-		<VStack m={2} w={176}>
-			{children}
-		</VStack>
-	);
-};
 const Home = () => {
 	const navigation = useNavigation();
 
@@ -130,42 +125,26 @@ const Home = () => {
 			<VStack>
 				<Heading fontSize="md">Top Rated Specialists</Heading>
 
-				{/* Horizontal scrollview */}
-				{/* TODO: extends to custom components and add horizontal scroll view */}
-				<HStack justifyContent="space-between">
-					<TopSpecialistsContainer>
-						<ZStack p={5}>
-							<BackgroundOne size={220} bgColor="#258FBE" />
-							<VStack padding={4}>
-								<Heading fontSize="md" color="#FFFFFF">
-									Dr. Wyckliffe Sango
-								</Heading>
-							</VStack>
-						</ZStack>
-					</TopSpecialistsContainer>
-
-					<TopSpecialistsContainer>
-						<ZStack>
-							<BackgroundOne size={220} bgColor="#561BB3" />
-							<VStack padding={4}>
-								<Heading fontSize="md" color="#FFFFFF">
-									Dr. Maryam Mohamedali
-								</Heading>
-							</VStack>
-						</ZStack>
-					</TopSpecialistsContainer>
-
-					<TopSpecialistsContainer>
-						<ZStack>
-							<BackgroundOne size={220} />
-							<VStack padding={4}>
-								<Heading fontSize="md" color="#FFFFFF">
-									Dr. Ally Salim
-								</Heading>
-							</VStack>
-						</ZStack>
-					</TopSpecialistsContainer>
-				</HStack>
+				<ScrollView horizontal={true} m={2} height={300}>
+					<HStack
+						justifyContent="space-between"
+						paddingBottom={10}
+						minWidth={"90%"}
+					>
+						<TopRatedSpecialists
+							name={"Dr. Maryam Mohamedali"}
+							gender={"female"}
+						/>
+						<TopRatedSpecialists
+							name={"Dr. Wyckliffe Sango"}
+							gender={"male"}
+						/>
+						<TopRatedSpecialists
+							name={"Dr. Ally Salim"}
+							gender={"male"}
+						/>
+					</HStack>
+				</ScrollView>
 			</VStack>
 		</VStack>
 	);
