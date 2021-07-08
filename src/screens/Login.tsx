@@ -135,7 +135,7 @@ const Login = () => {
 					<Text> Don't have an account? </Text>
 					<Pressable
 						onPress={() => {
-							navigation.navigate("Home");
+							navigation.navigate("SignUp");
 						}}
 					>
 						<Text color={colors.primary}>Sign up now!</Text>

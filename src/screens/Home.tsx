@@ -52,101 +52,103 @@ const Home = () => {
 	const navigation = useNavigation();
 
 	return (
-		<VStack p={2} space={6} paddingTop={10}>
-			<HStack justifyContent="space-between" alignItems="center">
-				<IconContainer>
-					<UserIcon color="#561BB3" />
-				</IconContainer>
-				<HStack space={4}>
+		<ScrollView>
+			<VStack p={2} space={6} paddingTop={10}>
+				<HStack justifyContent="space-between" alignItems="center">
 					<IconContainer>
-						<BellIcon color="#561BB3" />
+						<UserIcon color="#561BB3" />
 					</IconContainer>
-					<IconContainer>
-						<SearchIcon color="#561BB3" />
-					</IconContainer>
+					<HStack space={4}>
+						<IconContainer>
+							<BellIcon color="#561BB3" />
+						</IconContainer>
+						<IconContainer>
+							<SearchIcon color="#561BB3" />
+						</IconContainer>
+					</HStack>
 				</HStack>
-			</HStack>
 
-			<VStack>
-				<Text color="#B0B3C7" fontSize="md">
-					4 July 2021
-				</Text>
-				<Heading fontSize="xl">Hi, Ally Salim</Heading>
-			</VStack>
+				<VStack>
+					<Text color="#B0B3C7" fontSize="md">
+						4 July 2021
+					</Text>
+					<Heading fontSize="xl">Hi, Ally Salim</Heading>
+				</VStack>
 
-			<VStack space={4}>
-				<Heading fontSize="md">Upcoming Appointments</Heading>
-				<HStack
-					justifyContent="space-between"
-					alignItems="center"
-					borderRadius={6}
-					borderColor="#B0B3C7"
-					borderWidth={1}
-					p={6}
-				>
+				<VStack space={4}>
+					<Heading fontSize="md">Upcoming Appointments</Heading>
 					<HStack
 						justifyContent="space-between"
 						alignItems="center"
-						space={4}
+						borderRadius={6}
+						borderColor="#B0B3C7"
+						borderWidth={1}
+						p={6}
 					>
-						<MedicalHistoryIcon />
-						<Text>Meet Dr. Mohamedali</Text>
+						<HStack
+							justifyContent="space-between"
+							alignItems="center"
+							space={4}
+						>
+							<MedicalHistoryIcon />
+							<Text>Meet Dr. Mohamedali</Text>
+						</HStack>
+						<Text color="#258FBE">14:30 PM</Text>
 					</HStack>
-					<Text color="#258FBE">14:30 PM</Text>
-				</HStack>
-			</VStack>
+				</VStack>
 
-			<VStack>
-				<Heading fontSize="md">How can we help?</Heading>
-				<HStack justifyContent="space-between">
-					<HeroIllustrationContainer>
-						<AppointmentIllustration size={70} />
-						<Text textAlign="center">Book an appointment</Text>
-					</HeroIllustrationContainer>
-
-					<HeroIllustrationContainer>
-						<OnlineConsulationIllustration size={70} />
-						<Text textAlign="center">Online consultation</Text>
-					</HeroIllustrationContainer>
-
-					<Pressable
-						onPress={() => {
-							navigation.navigate("Service");
-						}}
-					>
+				<VStack>
+					<Heading fontSize="md">How can we help?</Heading>
+					<HStack justifyContent="space-between">
 						<HeroIllustrationContainer>
-							<NewspaperIllustration size={70} />
-							<Text textAlign="center">Find a Facility</Text>
+							<AppointmentIllustration size={70} />
+							<Text textAlign="center">Book an appointment</Text>
 						</HeroIllustrationContainer>
-					</Pressable>
-				</HStack>
-			</VStack>
 
-			<VStack>
-				<Heading fontSize="md">Top Rated Specialists</Heading>
+						<HeroIllustrationContainer>
+							<OnlineConsulationIllustration size={70} />
+							<Text textAlign="center">Online consultation</Text>
+						</HeroIllustrationContainer>
 
-				<ScrollView horizontal={true} m={2} height={300}>
-					<HStack
-						justifyContent="space-between"
-						paddingBottom={10}
-						minWidth={"90%"}
-					>
-						<TopRatedSpecialists
-							name={"Dr. Maryam Mohamedali"}
-							gender={"female"}
-						/>
-						<TopRatedSpecialists
-							name={"Dr. Wyckliffe Sango"}
-							gender={"male"}
-						/>
-						<TopRatedSpecialists
-							name={"Dr. Ally Salim"}
-							gender={"male"}
-						/>
+						<Pressable
+							onPress={() => {
+								navigation.navigate("Service");
+							}}
+						>
+							<HeroIllustrationContainer>
+								<NewspaperIllustration size={70} />
+								<Text textAlign="center">Find a Facility</Text>
+							</HeroIllustrationContainer>
+						</Pressable>
 					</HStack>
-				</ScrollView>
+				</VStack>
+
+				<VStack>
+					<Heading fontSize="md">Top Rated Specialists</Heading>
+
+					<ScrollView horizontal={true} m={2} height={250}>
+						<HStack
+							justifyContent="space-between"
+							paddingBottom={10}
+							minWidth={"90%"}
+						>
+							<TopRatedSpecialists
+								name={"Dr. Maryam Mohamedali"}
+								gender={"female"}
+							/>
+							<TopRatedSpecialists
+								name={"Dr. Wyckliffe Sango"}
+								gender={"male"}
+							/>
+							<TopRatedSpecialists
+								name={"Dr. Ally Salim"}
+								gender={"male"}
+							/>
+						</HStack>
+					</ScrollView>
+				</VStack>
 			</VStack>
-		</VStack>
+		</ScrollView>
 	);
 };
 
