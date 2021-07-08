@@ -5,7 +5,7 @@ import { colors } from "../contants/colors";
 
 type buttonProps = {
 	text: string;
-	press: any;
+	press: () => {};
 };
 
 export const PrimaryButton: React.FC<buttonProps> = ({ text, press }) => {
