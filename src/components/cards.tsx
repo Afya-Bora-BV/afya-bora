@@ -169,8 +169,18 @@ const Card2 = () => {
 								flex: 1,
 							}}
 						/>
-						<Stack style={{ flex: 8 }}>
-							<Dots />
+						<Stack style={{ flex: 8, alignContent: "center" }}>
+							<View
+								style={{
+									paddingLeft: 10,
+									height: 1,
+									marginBottom: 10,
+									borderTopWidth: 1,
+									borderStyle: "dashed",
+									borderTopColor: "grey",
+									borderRadius: 1,
+								}}
+							/>
 						</Stack>
 
 						<NativeBaseCircle
