@@ -54,7 +54,7 @@ const AllComponents: React.FC = () => {
 				<Location holderText={"London"} />
 				<TimeSet time={"6:00 AM"} />
 				<FBLogo />
-				<Number number={10} />
+				{/* <Number number={10} /> */}
 				<CheckBox item={"item"} />
 				<PicAvatar />
 			</VStack>
@@ -69,6 +69,7 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
+          initialRouteName="Service"
 				>
 					<Stack.Screen name="Login" component={Login} />
 					<Stack.Screen name="SignUp" component={SignUp} />
