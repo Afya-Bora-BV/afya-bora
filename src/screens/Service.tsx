@@ -1,61 +1,62 @@
-import React from 'react'
-import { Heading, HStack, VStack, Text } from 'native-base'
-import IconContainer from '../components/icon-container'
-import BackIcon from "../assets/icons/BackIcon"
+import React from "react";
+import { Heading, HStack, VStack, Text } from "native-base";
+import IconContainer from "../components/icon-container";
+import BackIcon from "../assets/icons/BackIcon";
 
-import GenderIcon from "../assets/icons/Gender"
-import CakeIcon from "../assets/icons/Cake"
 
-import { ServiceCard } from "../components/cards"
-import { ScrollView } from 'react-native-gesture-handler'
+import { ServiceCard } from "../components/cards";
+import { ScrollView } from "react-native-gesture-handler";
+import { HeaderwithBack } from "../components/header";
+import { color } from "styled-system";
+import { colors } from "../contants/colors";
+import { useNavigation } from "@react-navigation/native";
 
-const serviceDemoData = [{
-    name: "Dr. Chikanso Chima",
-    description: "Blood formula: Detectinganemia, blood disorders",
-    specialities: [{
-        title: "Any Gender",
-        Icon: <GenderIcon color="#7065E4" size={16} />
+const serviceDemoData = [
+    {
+        name: "Dr. Chikanso Chima",
+        description: "Blood formula: Detectinganemia, blood disorders",
+        gender: "Any gender",
+        age: "Any age",
+        tests: 12,
+        checkups: 4,
+        price:100,
     },
     {
-        title: "Any Gender",
-        Icon: <CakeIcon color="#FF6F5B" size={16} />
-    }]
-
-},
-{
-    name: "Dr. Chikanso Chima",
-    description: "Blood formula: Detectinganemia, blood disorders",
-    specialities: [{
-        title: "Any Gender",
-        Icon: <GenderIcon color="#7065E4" size={16} />
+        name: "Dr. Chikanso Chima",
+        description: "Blood formula: Detectinganemia, blood disorders",
+        gender: "Any gender",
+        age: "Any age",
+        tests: 12,
+        checkups: 4,
+        price:200
+        
     },
-    {
-        title: "Any Gender",
-        Icon: <CakeIcon color="#FF6F5B" size={16} />
-    }]
-
-}]
-export default () => {
+];
+const Service = () => {
+    const navigation = useNavigation();
     return (
-        <ScrollView>
+        <ScrollView style={{ padding: 20 }}>
             <VStack p={2} space={6} pb={32}>
                 <HStack alignItems="center">
-                    <IconContainer>
-                        <BackIcon color="#7065E4" />
-                    </IconContainer>
-
-                    <HStack flex={1} justifyContent="center">
-                        <Heading fontSize="md" >Service</Heading>
+                    <HStack flex={1}>
+                        <HeaderwithBack
+                            head="Service"
+                            nav={() => {
+                                navigation.navigate("Home");
+                            }}
+                            color={"black"}
+                        />
                     </HStack>
                 </HStack>
 
                 <VStack space={12}>
-                    {serviceDemoData.map(service => (
+                    {serviceDemoData.map((service) => (
                         <ServiceCard service={service} />
                     ))}
-
                 </VStack>
             </VStack>
         </ScrollView>
-    )
-}
+    );
+};
+
+export default Service;

@@ -58,6 +58,7 @@ export const IconContainer: React.FC<IconContainer> = ({ children }) => {
 type headerProps = {
 	head: string;
 	nav: any;
+	color: any;
 };
 
 export const Header: React.FC<headerProps> = ({ head }) => {
@@ -72,12 +73,12 @@ export const Header: React.FC<headerProps> = ({ head }) => {
 	);
 };
 
-export const HeaderwithBack: React.FC<headerProps> = ({ head, nav }) => {
+export const HeaderwithBack: React.FC<headerProps> = ({ head, nav, color }) => {
 	return (
 		<HStack justifyContent="space-evenly">
 			<Stack
 				style={{
-					flex: 1,
+					flex: 0.5,
 					alignSelf: "flex-start",
 				}}
 			>
@@ -95,9 +96,11 @@ export const HeaderwithBack: React.FC<headerProps> = ({ head, nav }) => {
 				style={{
 					flex: 3,
 					justifyContent: "center",
+					alignItems: "center",
+					paddingRight: 30,
 				}}
 			>
-				<Text color="white" fontSize="2xl">
+				<Text color={color} fontSize="2xl">
 					{head}
 				</Text>
 			</Stack>

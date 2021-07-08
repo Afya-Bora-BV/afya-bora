@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, ScrollView, Stack, Text } from "native-base";
 import React from "react";
 import { PrimaryButton } from "../components/button";
@@ -7,6 +8,7 @@ import { Number } from "../components/textFields";
 import { colors } from "../contants/colors";
 
 const Verify = () => {
+	const navigation = useNavigation();
 	return (
 		<ScrollView>
 			<Stack
@@ -49,7 +51,12 @@ const Verify = () => {
 							</HStack>
 						</Stack>
 						<Box mb={-10}>
-							<PrimaryButton text={"Confirm"} press={() => {}} />
+							<PrimaryButton
+								text={"Confirm"}
+								press={() => {
+									navigation.navigate("Login");
+								}}
+							/>
 						</Box>
 					</Box>
 				</Stack>

@@ -21,8 +21,15 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
 import { PrimaryButton } from "./button";
 import { Dots } from "./dotttedLines";
-import GenderIcon from "../assets/icons/Gender"
-import PriceTagIcon from "../assets/icons/PriceTag"
+
+import GenderIcon from "../assets/icons/Gender";
+import PriceTagIcon from "../assets/icons/PriceTag";
+import MessageIcon from "../assets/icons/Message"
+import CakeIcon from "../assets/icons/Cake";
+import ReportIcon from "../assets/icons/Report"
+
+import BackgroundOne from "../assets/illustrations/BackgroundOne";
+import { color } from "styled-system";
 
 const NewPaperLogo = (props: SvgProps) => {
     return (
@@ -54,18 +61,12 @@ const Card1 = () => {
     );
 };
 
-
-
-type ToBeRenamedProps = {
-
-};
-const ToBeRenamed: React.FC<ToBeRenamedProps> = ({
-    children
-}) => {
+type ToBeRenamedProps = {};
+const ToBeRenamed: React.FC<ToBeRenamedProps> = ({ children }) => {
     return (
         <Stack>
             <Box borderRadius={4} borderWidth={1} my={3}>
-                <HStack alignItems="center" >
+                <HStack alignItems="center" mt={-4}>
                     {children}
                 </HStack>
             </Box>
@@ -75,19 +76,26 @@ const ToBeRenamed: React.FC<ToBeRenamedProps> = ({
 
 type ServiceCardProps = {
     service: {
-        name: string,
-        description: string,
-        specialities: {
-            title: string,
-            Icon: React.ReactNode
-        }[]
-    }
-
-}
-export const ServiceCard: React.FC<ServiceCardProps> = ({ service: { name, description, specialities } }) => {
+        name: string;
+        description: string;
+        gender: string
+        age: string,
+        tests: number,
+        checkups: number,
+        price: number
+    };
+};
+export const ServiceCard: React.FC<ServiceCardProps> = ({
+    service: { name, description,
+        gender,
+        age,
+        tests,
+        checkups,
+        price },
+}) => {
     return (
         <Box bg="white" shadow={2} rounded="lg">
-            <VStack space={12} p={4} borderRadius={8} backgroundColor="white">
+            <VStack space={4} p={4} borderRadius={8} backgroundColor="white">
                 <HStack>
                     <Image
                         size={100}
@@ -109,20 +117,45 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service: { name, descr
                     </VStack>
                 </HStack>
                 <HStack space={2} flexWrap="wrap">
-                    {specialities.map(({ Icon: InnerIcon, title }) => (
-                        <ToBeRenamed>
-                            <Box
-                                borderRadius={5}
-                                backgroundColor="#E7E5FF"
-                            >
-                                {InnerIcon}
-                            </Box>
+                    <ToBeRenamed>
+                        <Box borderRadius={5} backgroundColor="#E7E5FF">
+                            <GenderIcon color="#7065E4" size={16} />
+                        </Box>
 
-                            <Box px={2}>
-                                <Text color="#747F9E"  >{title}</Text>
-                            </Box>
-                        </ToBeRenamed>
-                    ))}
+                        <Box px={2}>
+                            <Text color="#747F9E">{gender}</Text>
+                        </Box>
+                    </ToBeRenamed>
+
+                    <ToBeRenamed>
+                        <Box borderRadius={5} backgroundColor="#FFE2DE">
+                            <CakeIcon color="#FF6F5B" size={16} />
+                        </Box>
+
+                        <Box px={2}>
+                            <Text color="#747F9E">{tests} Test</Text>
+                        </Box>
+                    </ToBeRenamed>
+
+                    <ToBeRenamed>
+                        <Box borderRadius={5} backgroundColor="#D4FAFF">
+                            <MessageIcon color="#2AD3E7" size={16} />
+                        </Box>
+
+                        <Box px={2}>
+                            <Text color="#747F9E">{age}</Text>
+                        </Box>
+                    </ToBeRenamed>
+
+                    <ToBeRenamed>
+                        <Box borderRadius={5} backgroundColor="#E7E5FF">
+                            <ReportIcon color="#7065E4" size={16} />
+                        </Box>
+
+                        <Box px={2}>
+                            <Text color="#747F9E">{checkups} Categories check-up</Text>
+                        </Box>
+                    </ToBeRenamed>
 
                 </HStack>
                 <Stack overflow="hidden" mx={-4}>
@@ -139,9 +172,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service: { name, descr
                                 flex: 1,
                             }}
                         />
-                        <Stack style={{ flex: 8 }}>
-                            {/* <Dots /> */}
-                        </Stack>
+                        <Stack style={{ flex: 8 }}>{/* <Dots /> */}</Stack>
 
                         <NativeBaseCircle
                             size={10}
@@ -159,7 +190,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service: { name, descr
                         <Heading fontSize="md">Price : </Heading>
                     </HStack>
                     <Heading fontSize="md" color={colors.primary}>
-                        $ 1200
+                        {price}
                     </Heading>
                 </HStack>
                 <Box mb={-10}>
@@ -178,7 +209,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service: { name, descr
                     </Button>
                 </Box>
             </VStack>
-        </Box >
+        </Box>
     );
 };
 
@@ -188,9 +219,7 @@ type Card3Props = {
 const Card3: React.FC<Card3Props> = ({ selected = "false" }) => {
     return (
         <Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
-            <VStack
-                p={4}
-            >
+            <VStack p={4}>
                 <HStack>
                     <Image
                         size={100}
@@ -577,11 +606,34 @@ const Card7 = () => {
     );
 };
 
+type specialistProps = { name: string; gender: "male" | "female" };
+
+export const TopRatedSpecialists: React.FC<specialistProps> = ({
+    name,
+    gender,
+}) => {
+    return (
+        <VStack m={2} w={176}>
+            <ZStack p={5}>
+                <BackgroundOne
+                    size={220}
+                    bgColor={gender === "male" ? "#258FBE" : colors.primary}
+                />
+                <VStack padding={4}>
+                    <Heading fontSize="md" color="#FFFFFF">
+                        {name}
+                    </Heading>
+                </VStack>
+            </ZStack>
+        </VStack>
+    );
+};
+
 export default () => {
     return (
         <VStack space={12} paddingY={12}>
             <Card1 />
-            <ServiceCard />
+            {/* <ServiceCard /> */}
             <Card3 selected />
             <Card3 selected={false} />
             <Card4 />

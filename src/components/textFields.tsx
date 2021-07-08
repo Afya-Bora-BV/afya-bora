@@ -12,6 +12,7 @@ import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
 import { Alert } from "react-native";
 import { useState } from "react";
+import { Spacer } from "./Spacer";
 
 type inputProp = {
 	holderText: string;
@@ -21,6 +22,7 @@ export const TextInput: React.FC<inputProp> = ({ holderText }) => {
 	return (
 		<Stack>
 			<Text>{holderText}</Text>
+			<Spacer size={10} />
 			<Input variant="rounded" placeholder={holderText} />
 		</Stack>
 	);
