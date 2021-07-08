@@ -593,7 +593,9 @@ export default () => {
 	return (
 		<VStack space={12} paddingY={12}>
 			<Card1 />
-			<ServiceCard />
+			<ServiceCard
+				service={{ description: "", name: "", specialities: [] }}
+			/>
 			<Card3 selected />
 			<Card3 selected={false} />
 			<Card4 />
