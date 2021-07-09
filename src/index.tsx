@@ -29,6 +29,10 @@ import SignUpScreen from "./screens/SignUp";
 import VerifyScreen from "./screens/Verify";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
+import FindFacility from "./screens/FindFacility";
+import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
+import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
+
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
@@ -144,6 +148,19 @@ export default () => {
 					<Stack.Screen name="Verify" component={VerifyScreen} />
 					<Stack.Screen name="Service" component={ServiceScreen} />
 					<Stack.Screen
+						name="FindFacility"
+						component={FindFacility}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectTime"
+						component={OnlineConsultantSelectTime}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectConsultant"
+						component={OnlineConsultantSelectConsultant}
+					/>
+
+					<Stack.Screen
 						name="CreateProfile"
 						component={CreateProfile}
 					/>
@@ -159,10 +176,6 @@ export default () => {
 					<Stack.Screen
 						name="PatientComplaint"
 						component={PatientComplaint}
-					/>
-					<Stack.Screen
-						name="FacilitiesList"
-						component={FacilitiesList}
 					/>
 				</Stack.Navigator>
 			</NativeBaseProvider>
