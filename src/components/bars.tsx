@@ -94,3 +94,37 @@ export const CheckBox: React.FC<checkBoxProp> = ({ item }) => {
 		</Stack>
 	);
 };
+
+type symptomProp = {
+	symptom: string;
+};
+
+export const Symptom: React.FC<symptomProp> = ({ symptom }) => {
+	const [state, setState] = useState("unchecked");
+
+	return (
+		<Pressable
+			onPress={() => {
+				state === "checked"
+					? setState("unhecked")
+					: setState("checked");
+			}}
+		>
+			<Stack
+				borderColor={state === "checked" ? "transparent" : "grey"}
+				borderWidth={1}
+				borderRadius={10}
+				height={8}
+				alignItems="center"
+				justifyContent="center"
+				backgroundColor={
+					state === "checked" ? "#2AD3E7" : "transparent"
+				}
+			>
+				<Text color={state === "checked" ? "white" : "grey"}>
+					{symptom}
+				</Text>
+			</Stack>
+		</Pressable>
+	);
+};
