@@ -119,7 +119,9 @@ const Home = () => {
 						</HeroIllustrationContainer>
 
 						<HeroIllustrationContainer
-							onPress={() => navigate("OnlineConsultantSelectTime")}
+							onPress={() =>
+								navigate("OnlineConsultantSelectTime")
+							}
 						>
 							<OnlineConsulationIllustration size={70} />
 							<Text textAlign="center" flexWrap="wrap">

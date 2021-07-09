@@ -1,13 +1,32 @@
-import React from 'react'
-import { Box, VStack } from 'native-base'
+import * as React from "react";
+import MapView from "react-native-maps";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 
-
-const FindFacility: React.FC = () => {
+export function FindFacility() {
     return (
-        <VStack>
-            <Box>Find Facility</Box>
-        </VStack>
-    )
+        <View style={styles.container}>
+            <MapView
+                style={styles.map}
+                initialRegion={{
+                    latitude: -3.386319234144578,
+                    longitude: 36.6806454883112,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+            />
+        </View>
+    );
 }
 
-export default FindFacility
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    map: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
+    },
+});

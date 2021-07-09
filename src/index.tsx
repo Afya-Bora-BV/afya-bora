@@ -29,14 +29,14 @@ import SignUpScreen from "./screens/SignUp";
 import VerifyScreen from "./screens/Verify";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
-import FindFacility from "./screens/FindFacility"
-import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime"
-import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant"
-
+import FindFacility from "./screens/FindFacility";
+import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
+import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
 
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
+import { FacilitiesList } from "./screens/FacilitiesList";
 
 const Profile = () => {
 	return (
