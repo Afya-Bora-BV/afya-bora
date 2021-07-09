@@ -31,6 +31,7 @@ import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
+import { CreateProfile } from "./screens/CreateProfile";
 
 const Profile = () => {
 	return (
@@ -141,6 +142,10 @@ export default () => {
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
 					<Stack.Screen name="Service" component={ServiceScreen} />
+					<Stack.Screen
+						name="CreateProfile"
+						component={CreateProfile}
+					/>
 					<Stack.Screen name="Home" component={HomeScreen} />
 					<Stack.Screen
 						name="ConsultantsList"

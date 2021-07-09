@@ -27,7 +27,7 @@ const Verify = () => {
 				>
 					<HeaderwithBack
 						text="Verify Your Number"
-						onBackPress={() => { }}
+						onBackPress={() => {}}
 					/>
 				</Stack>
 
@@ -57,7 +57,7 @@ const Verify = () => {
 							<PrimaryButton
 								text={"Confirm"}
 								press={() => {
-									navigation.navigate("Login");
+									navigation.navigate("CreateProfile");
 								}}
 							/>
 						</Box>
