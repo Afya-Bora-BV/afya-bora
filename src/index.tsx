@@ -29,7 +29,7 @@ import SignUpScreen from "./screens/SignUp";
 import VerifyScreen from "./screens/Verify";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
-import FindFacility from "./screens/FindFacility";
+import { FindFacility } from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
 
@@ -37,6 +37,7 @@ import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
 import { FacilitiesList } from "./screens/FacilitiesList";
+import { FindFacilityList } from "./screens/FindFacilityList";
 
 const Profile = () => {
 	return (
@@ -141,15 +142,28 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-				// initialRouteName="CreateProfile"
+					// initialRouteName="FindFacilityList"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
 					<Stack.Screen name="Service" component={ServiceScreen} />
-					<Stack.Screen name="FindFacility" component={FindFacility} />
-					<Stack.Screen name="OnlineConsultantSelectTime" component={OnlineConsultantSelectTime} />
-					<Stack.Screen name="OnlineConsultantSelectConsultant" component={OnlineConsultantSelectConsultant} />
+					<Stack.Screen
+						name="FindFacility"
+						component={FindFacility}
+					/>
+					<Stack.Screen
+						name="FindFacilityList"
+						component={FindFacilityList}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectTime"
+						component={OnlineConsultantSelectTime}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectConsultant"
+						component={OnlineConsultantSelectConsultant}
+					/>
 
 					<Stack.Screen
 						name="CreateProfile"
