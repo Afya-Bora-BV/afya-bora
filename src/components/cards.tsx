@@ -1,13 +1,11 @@
 import * as React from "react";
 import {
-    AspectRatio,
     Center,
     HStack,
     VStack,
     Image,
     Text,
     Heading,
-    Divider,
     Circle as NativeBaseCircle,
     Box,
     Stack,
@@ -15,25 +13,18 @@ import {
     ZStack,
     Button,
 } from "native-base";
-import { View } from "react-native";
 import Svg, { SvgProps, Circle, Path } from "react-native-svg";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
-import { PrimaryButton } from "./button";
-import { Dots } from "./dotttedLines";
 
 import GenderIcon from "../assets/icons/Gender";
 import PriceTagIcon from "../assets/icons/PriceTag";
 import MessageIcon from "../assets/icons/Message"
 import CakeIcon from "../assets/icons/Cake";
 
-import RatingIcon from "../assets/icons/Rating"
-
 import ReportIcon from "../assets/icons/Report"
 
 import BackgroundOne from "../assets/illustrations/BackgroundOne";
-
-import { color } from "styled-system";
 
 const NewPaperLogo = (props: SvgProps) => {
     return (
@@ -276,82 +267,6 @@ const Card3: React.FC<Card3Props> = ({ selected = "false" }) => {
                                 />
                                 <Text color="#2AD3E7">2 Km</Text>
                             </HStack>
-                        </HStack>
-                    </VStack>
-                </HStack>
-            </VStack>
-        </Box>
-    );
-};
-
-type AdvisoryListItemProps = {
-    consultant: {
-        name: string,
-        hospital: string,
-        region: string,
-        expertise: string,
-        rating: number,
-        ratedBy: number,
-        time: string
-    }
-}
-
-export const AdvisoryListItem: React.FC<AdvisoryListItemProps> = ({ consultant: {
-    name, hospital, region, expertise, rating, ratedBy, time
-} }) => {
-    return (
-        <Box bg="white" shadow={2} rounded="lg">
-            <VStack
-                p={4}
-                borderRadius={12}
-                style={{ backgroundColor: "white" }}
-            >
-                <HStack>
-                    <Image
-                        size={100}
-                        alt="fallback text"
-                        borderRadius={6}
-                        source={{
-                            uri: "https://wallpaperaccess.com/full/317501.jpg",
-                        }}
-                        fallbackSource={{
-                            uri: "https://www.w3schools.com/css/img_lights.jpg",
-                        }}
-                    />
-                    {/* height to be fixed to auto */}
-                    <VStack style={{}} pl={3} flex={1}>
-                        <HStack justifyContent="space-between" alignItems="center">
-                            <Heading fontSize="lg">{name} </Heading>
-                            <HStack
-                                space={1}
-                                px={2}
-                                py={1}
-                                borderRadius={4}
-                                justifyContent="center"
-                                alignItems="center"
-                                style={{ backgroundColor: "#D4FAFF" }}
-                            >
-                                <MaterialCommunityIcons
-                                    name="clock-time-seven-outline"
-                                    size={18}
-                                    color="#2AD3E7"
-                                />
-                                <Text color="#2AD3E7" >{time}</Text>
-                            </HStack>
-                        </HStack>
-                        <VStack>
-                            <Text fontSize="md" color="#747F9E" >
-                                {hospital}
-                            </Text>
-                            <Text fontSize="md" color="#747F9E" >
-                                {region}
-                            </Text>
-                        </VStack>
-
-                        <Text fontSize="md" fontWeight="bold">Dr. Chikanso Chima </Text>
-                        <HStack space={2} alignItems="center">
-                            <RatingIcon size={6} color="#FFC107" />
-                            <Text fontSize="md" color="#B0B3C7">{rating} ({ratedBy})</Text>
                         </HStack>
                     </VStack>
                 </HStack>

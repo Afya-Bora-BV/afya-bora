@@ -8,7 +8,11 @@ type buttonProps = {
 	press: () => void;
 };
 
-export const PrimaryButton: React.FC<buttonProps> = ({ text, press }) => {
+export const PrimaryButton: React.FC<buttonProps> = ({
+	text,
+	press,
+	...rest
+}) => {
 	return (
 		<Button
 			onPress={press}
@@ -20,6 +24,7 @@ export const PrimaryButton: React.FC<buttonProps> = ({ text, press }) => {
 			}}
 			style={{ backgroundColor: colors.primary }}
 			_text={{ color: "white" }}
+			{...rest}
 		>
 			{text}
 		</Button>

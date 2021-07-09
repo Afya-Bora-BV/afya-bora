@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	Stack,
 	Text,
+	View,
 	VStack,
 } from "native-base";
 import * as React from "react";
@@ -23,7 +24,7 @@ import { PrimaryButton } from "../components/button";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Spacer } from "../components/Spacer";
 import { useNavigation } from "@react-navigation/native";
-import { Dimensions } from "react-native";
+import { Dimensions, StatusBar } from "react-native";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -61,23 +62,28 @@ const Login = () => {
 		navigation.navigate("Home");
 	};
 
-	console.log("Errrs",errors)
+	console.log("Errrs", errors);
 	return (
-		<Stack height={height - 40}>
+		<Box flex={1} marginTop={4}>
+			<StatusBar translucent backgroundColor={colors.primary} />
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}
-					borderBottomRadius={40}
-					height={"80%"}
+					borderBottomRadius={36}
+					height={height / 2.2}
 					position="absolute"
 					top={0}
 					left={0}
 					right={0}
 				></Stack>
 				<Stack paddingBottom={10}>
-					<Stack alignItems="center" style={{ paddingVertical: 80 }}>
-						<Header head="Login" />
-					</Stack>
+					{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
+					<View alignItems="center" paddingY={20}>
+						<Text color="white" fontSize={44}>
+							Afya Bora
+						</Text>
+					</View>
+					{/* </Stack> */}
 
 					<Stack alignItems="center">
 						<Box bg="white" shadow={2} rounded="lg" width="90%">
@@ -148,13 +154,13 @@ const Login = () => {
 													<Pressable
 														onPress={() =>
 															visibility ===
-																"eye-outline"
+															"eye-outline"
 																? setVisibility(
-																	"eye-off-outline"
-																)
+																		"eye-off-outline"
+																  )
 																: setVisibility(
-																	"eye-outline"
-																)
+																		"eye-outline"
+																  )
 														}
 													>
 														<MaterialCommunityIcons
@@ -189,10 +195,14 @@ const Login = () => {
 									</Stack>
 								</HStack>
 							</Stack>
-							<Box mb={-10}>
+							<Box mb={-6} paddingX={"5%"}>
 								<PrimaryButton
 									text={"Login"}
-									press={handleSubmit(onSubmit)}
+									shadow={5}
+									press={() =>
+										// (console.warn("here"), handleSubmit(onSubmit))
+										navigation.navigate("Home")
+									}
 								/>
 							</Box>
 						</Box>
@@ -200,26 +210,21 @@ const Login = () => {
 				</Stack>
 			</ScrollView>
 
-			<Stack justifyContent="center">
-				<HStack
-					style={{
-						position: "absolute",
-						bottom: 0,
-						left: 0,
-						right: 0,
-					}}
-				>
+			<Stack alignItems="center" marginBottom={5}>
+				<HStack>
 					<Text> Don't have an account? </Text>
 					<Pressable
 						onPress={() => {
 							navigation.navigate("SignUp");
 						}}
 					>
-						<Text color={colors.primary}>Sign up now!</Text>
+						<Text bold color={colors.primary}>
+							Sign up now!
+						</Text>
 					</Pressable>
 				</HStack>
 			</Stack>
-		</Stack>
+		</Box>
 	);
 };
 
