@@ -25,7 +25,10 @@ const Verify = () => {
 					alignItems="center"
 					style={{ paddingVertical: 80, paddingLeft: 25 }}
 				>
-					<HeaderwithBack head="Verify Your Number" nav={() => { }} />
+					<HeaderwithBack
+						text="Verify Your Number"
+						onBackPress={() => { }}
+					/>
 				</Stack>
 
 				<Stack alignItems="center">

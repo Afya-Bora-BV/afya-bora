@@ -56,24 +56,29 @@ export const IconContainer: React.FC<IconContainer> = ({ children }) => {
 };
 
 type headerProps = {
-	head: string;
-	nav: any;
-	color: any;
+	text: string;
+	onBackPress: any;
+	color?: string;
 };
 
-export const Header: React.FC<headerProps> = ({ head }) => {
+export const Header: React.FC<headerProps> = ({ text }) => {
 	return (
 		<Stack space={6}>
 			<HStack justifyContent="space-between" alignItems="center">
 				<Text color="white" fontSize="2xl">
-					{head}
+					{text}
 				</Text>
 			</HStack>
 		</Stack>
 	);
 };
 
-export const HeaderwithBack: React.FC<headerProps> = ({ head, nav, color }) => {
+// TODO: Support accepting a custom right side icon
+const HeaderwithBack: React.FC<headerProps> = ({
+	text,
+	onBackPress,
+	color = "black",
+}) => {
 	return (
 		<HStack justifyContent="space-evenly">
 			<Stack
@@ -82,7 +87,7 @@ export const HeaderwithBack: React.FC<headerProps> = ({ head, nav, color }) => {
 					alignSelf: "flex-start",
 				}}
 			>
-				<Pressable onPress={nav}>
+				<Pressable onPress={onBackPress}>
 					<IconContainer>
 						<MaterialIcons
 							name="chevron-left"
@@ -101,14 +106,21 @@ export const HeaderwithBack: React.FC<headerProps> = ({ head, nav, color }) => {
 				}}
 			>
 				<Text color={color} fontSize="2xl">
-					{head}
+					{text}
 				</Text>
 			</Stack>
+
+			<Stack
+				style={{
+					flex: 0.5,
+					alignSelf: "flex-end",
+				}}
+			></Stack>
 		</HStack>
 	);
 };
 
-export default () => {
+const HeaderWithSearch = () => {
 	return (
 		<Stack space={6}>
 			<HStack justifyContent="space-between" alignItems="center">
@@ -141,3 +153,5 @@ export default () => {
 		</Stack>
 	);
 };
+
+export { HeaderWithSearch, HeaderwithBack };
