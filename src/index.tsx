@@ -33,6 +33,7 @@ import ConsultantsList from "./screens/ConsultantsList";
 import FindFacility from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
+import FindFacilityList from "./screens/FindFacilityList"
 
 import ProfileScreen from "./screens/Profile"
 import ScheduleScreen from "./screens/Schedule"
@@ -41,7 +42,6 @@ import ChatScreen from "./screens/Chat"
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
-import { FacilitiesList } from "./screens/FacilitiesList";
 import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import TabHomeIcon from "./assets/icons/TabHomeIcon"
@@ -221,16 +221,29 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-				// initialRouteName="CreateProfile"
+				// initialRouteName="FindFacilityList"
 				>
 
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
 					<Stack.Screen name="Service" component={ServiceScreen} />
-					<Stack.Screen name="FindFacility" component={FindFacility} />
-					<Stack.Screen name="OnlineConsultantSelectTime" component={OnlineConsultantSelectTime} />
-					<Stack.Screen name="OnlineConsultantSelectConsultant" component={OnlineConsultantSelectConsultant} />
+					<Stack.Screen
+						name="FindFacility"
+						component={FindFacility}
+					/>
+					<Stack.Screen
+						name="FindFacilityList"
+						component={FindFacilityList}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectTime"
+						component={OnlineConsultantSelectTime}
+					/>
+					<Stack.Screen
+						name="OnlineConsultantSelectConsultant"
+						component={OnlineConsultantSelectConsultant}
+					/>
 
 					<Stack.Screen name="Home" component={MainTab} />
 
