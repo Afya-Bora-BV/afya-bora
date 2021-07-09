@@ -12,9 +12,16 @@ import BackIcon from "../assets/icons/BackIcon";
 import { ConsultantListItem } from "../components/consultant-list-item";
 import { useNavigation } from "@react-navigation/native";
 import { consultants } from "../data/consultants";
+import { HeaderWith2Icons } from "../components/header";
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
+
+	const nav = () => {
+		navigation.navigate("Home");
+	};
+
+	const nearest = () => {};
 
 	const selectConsultant = (consultant) =>
 		navigation.navigate("SetAppointmentTime", { consultant });
@@ -23,15 +30,12 @@ const ConsultantsList = () => {
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<VStack p={2} space={6}>
 				{/* TODO: to be moved to components folder */}
-				<HStack justifyContent="space-between" alignItems="center">
-					<IconContainer>
-						<BackIcon size={22} color="#7065E4" />
-					</IconContainer>
-					<Heading fontSize="lg">Choose a Consultant</Heading>
-					<HStack>
-						<Text fontSize="sm">Nearest</Text>
-					</HStack>
-				</HStack>
+				<HeaderWith2Icons
+					text={"Choose a Consultant"}
+					rText={"Nearest"}
+					iconPress={nav}
+					rPress={nearest}
+				/>
 
 				<VStack space={2}>
 					{consultants.map((consultant) => (

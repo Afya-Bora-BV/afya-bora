@@ -1,23 +1,32 @@
-import { Center, HStack, Pressable, Stack, Text, VStack } from "native-base";
+import {
+	Center,
+	Heading,
+	HStack,
+	Pressable,
+	Stack,
+	Text,
+	VStack,
+} from "native-base";
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
+import BackIcon from "../assets/icons/BackIcon";
 
 // Custom BackIcon
-type BackIconProps = SvgProps & {};
-const BackIcon = (props: BackIconProps) => {
-	return (
-		<Svg width={40} height={40} viewBox="0 0 20 20" fill="none" {...props}>
-			<Path
-				fillRule="evenodd"
-				clipRule="evenodd"
-				d="M6 10.488l5.14 5.863c.225.257.75.48 1.128.15.378-.33.226-.824 0-1.08l-4.73-5.399 4.73-5.399c.226-.256.382-.777 0-1.128-.38-.35-.903-.06-1.129.198L6 9.556a.733.733 0 00.001.932z"
-				fill={colors.primary}
-			/>
-		</Svg>
-	);
-};
+// type BackIconProps = SvgProps & {};
+// const BackIcon = (props: BackIconProps) => {
+// 	return (
+// 		<Svg width={40} height={40} viewBox="0 0 20 20" fill="none" {...props}>
+// 			<Path
+// 				fillRule="evenodd"
+// 				clipRule="evenodd"
+// 				d="M6 10.488l5.14 5.863c.225.257.75.48 1.128.15.378-.33.226-.824 0-1.08l-4.73-5.399 4.73-5.399c.226-.256.382-.777 0-1.128-.38-.35-.903-.06-1.129.198L6 9.556a.733.733 0 00.001.932z"
+// 				fill={colors.primary}
+// 			/>
+// 		</Svg>
+// 	);
+// };
 
 // Custom BackIcon
 type SearchIconProps = SvgProps & {};
@@ -154,4 +163,37 @@ const HeaderWithSearch = () => {
 	);
 };
 
-export { HeaderWithSearch, HeaderwithBack };
+type headerIconsProps = {
+	text: string;
+	rText: string;
+	iconPress: () => {};
+	rPress: () => {};
+};
+
+const HeaderWith2Icons: React.FC<headerIconsProps> = ({
+	text,
+	rText,
+	iconPress,
+	rPress,
+}) => {
+	return (
+		<Stack>
+			<HStack justifyContent="space-between" alignItems="center">
+				<Pressable onPress={iconPress}>
+					<IconContainer>
+						<BackIcon size={22} color="#7065E4" />
+					</IconContainer>
+				</Pressable>
+
+				<Heading fontSize="lg">{text}</Heading>
+				<HStack>
+					<Pressable onPress={rPress}>
+						<Text fontSize="sm">{rText}</Text>
+					</Pressable>
+				</HStack>
+			</HStack>
+		</Stack>
+	);
+};
+
+export { HeaderWithSearch, HeaderwithBack, HeaderWith2Icons };
