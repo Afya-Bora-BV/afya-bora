@@ -8,6 +8,7 @@ import {
 	Text,
 	Heading,
 	Pressable,
+	Avatar,
 } from "native-base";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
@@ -20,12 +21,13 @@ type ConsultantListItemProps = {
 		rating: number;
 		ratedBy: number;
 		time: string;
+		status?: "online" | "offline"
 	};
 	onPress: () => void;
 };
 
 export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
-	consultant: { name, hospital, region, expertise, rating, ratedBy, time },
+	consultant: { name, hospital, region, expertise, rating, ratedBy, time, status },
 	onPress,
 }) => {
 	return (
@@ -37,20 +39,17 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 					style={{ backgroundColor: "white" }}
 				>
 					<HStack alignItems="center">
-						<Image
-							// size={100}
-							width={"35%"}
-							height={"100%"}
-							alt="fallback text"
+						<Avatar
+							alignSelf="flex-start"
+							size={120}
 							borderRadius={6}
 							source={{
 								uri: "https://wallpaperaccess.com/full/317501.jpg",
 							}}
-							fallbackSource={{
-								uri: "https://www.w3schools.com/css/img_lights.jpg",
-							}}
-						/>
-						{/* height to be fixed to auto */}
+						>
+							SS
+							{(Boolean(status)) ? <Avatar.Badge backgroundColor={status === "online" ? "#24D626" : "#B0B3C7"} w={4} h={4} top={1} right={1} /> : <Avatar.Badge backgroundColor="transparent" borderColor="transparent" w={4} h={4} top={1} right={1} />}
+						</Avatar>
 						<VStack style={{}} pl={3} flex={1}>
 							<HStack
 								justifyContent="space-between"

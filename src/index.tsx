@@ -150,7 +150,7 @@ export default () => {
 					<Stack.Screen name="FindFacility" component={FindFacility} />
 					<Stack.Screen name="OnlineConsultantSelectTime" component={OnlineConsultantSelectTime} />
 					<Stack.Screen name="OnlineConsultantSelectConsultant" component={OnlineConsultantSelectConsultant} />
-					
+
 					<Stack.Screen
 						name="CreateProfile"
 						component={CreateProfile}
