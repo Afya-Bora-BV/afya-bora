@@ -20,7 +20,7 @@ import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
 import AppointmentIllustration from "../assets/illustrations/AppointmentIllustration";
 import OnlineConsulationIllustration from "../assets/illustrations/OnlineConsulationIllustration";
-import NewspaperIllustration from "../assets/illustrations/NewspaperIllustration";
+import FacilityIllustration from "../assets/illustrations/FacilityIllustration";
 
 import BackgroundOne from "../assets/illustrations/BackgroundOne";
 import { useNavigation } from "@react-navigation/native";
@@ -135,7 +135,7 @@ const Home = () => {
 						<HeroIllustrationContainer
 							onPress={() => navigate("ConsultantsList")}
 						>
-							<NewspaperIllustration size={70} />
+							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
 						</HeroIllustrationContainer>
 						{/* </Pressable> */}
