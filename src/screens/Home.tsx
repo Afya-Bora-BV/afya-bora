@@ -62,7 +62,7 @@ const HeroIllustrationContainer: React.FC<{ onPress: () => void }> = ({
 	);
 };
 
-const Home = () => {
+const Home:React.FC = () => {
 	const { navigate } = useNavigation();
 	const hasUpcomingAppointment = true;
 

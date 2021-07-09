@@ -2,7 +2,7 @@ import * as React from "react";
 import MapView from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 
-export function FindFacility() {
+const FindFacility: React.FC = () => {
     return (
         <View style={styles.container}>
             <MapView
@@ -30,3 +30,5 @@ const styles = StyleSheet.create({
         height: Dimensions.get("window").height,
     },
 });
+
+export default FindFacility

@@ -5,6 +5,7 @@ import {
 	VStack,
 	Text,
 	extendTheme,
+	View,
 } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import Button from "./components/button";
@@ -33,10 +34,21 @@ import FindFacility from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
 
+import ProfileScreen from "./screens/Profile"
+import ScheduleScreen from "./screens/Schedule"
+import ChatScreen from "./screens/Chat"
+
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
 import { FacilitiesList } from "./screens/FacilitiesList";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import TabHomeIcon from "./assets/icons/TabHomeIcon"
+import TabScheduleIcon from "./assets/icons/TabScheduleIcon"
+import TabChatIcon from "./assets/icons/TabChatIcon"
+import TabProfileIcon from "./assets/icons/TabProfileIcon"
+import { backgroundColor } from "styled-system";
 
 const Profile = () => {
 	return (
@@ -133,6 +145,74 @@ const AllComponents: React.FC = () => {
 		</ScrollView>
 	);
 };
+
+const Tab = createBottomTabNavigator();
+
+// TODO: customize tab look, icons and behaviour
+const MainTab: React.FC = () => {
+	return (
+
+
+		<Tab.Navigator
+			initialRouteName="Home"
+			tabBar={(props) => <BottomTabBar {...props} />}
+			tabBarOptions={{
+				activeTintColor: "#561BB3",
+				inactiveTintColor: "#B0B3C7"
+
+			}}
+
+		>
+			<Tab.Screen
+				name="Home"
+				component={HomeScreen}
+				options={{
+					tabBarLabel: 'Home',
+					tabBarIcon: ({ color, size }) => (
+						<TabHomeIcon size={8} color={color} />
+					),
+				}}
+			/>
+
+			<Tab.Screen
+				name="Schedule"
+				component={ScheduleScreen}
+				options={{
+					tabBarLabel: 'Schedule',
+					tabBarIcon: ({ color, size }) => (
+						<TabScheduleIcon size={8} color={color} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="Chat"
+				component={ChatScreen}
+				options={{
+					tabBarLabel: 'Chat',
+					tabBarIcon: ({ color, size }) => (
+						<TabChatIcon size={8} color={color} />
+					),
+				}}
+			/>
+
+			<Tab.Screen
+				name="Profile"
+				component={ProfileScreen}
+				options={{
+					tabBarLabel: 'Profile',
+					tabBarIcon: ({ color, size }) => (
+						<TabProfileIcon size={8} color={color} />
+					),
+				}}
+			/>
+
+
+		</Tab.Navigator >
+
+	);
+}
+
+
 export default () => {
 	return (
 		<NavigationContainer theme={AppTheme}>
@@ -143,6 +223,7 @@ export default () => {
 					}}
 				// initialRouteName="CreateProfile"
 				>
+
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
@@ -151,11 +232,13 @@ export default () => {
 					<Stack.Screen name="OnlineConsultantSelectTime" component={OnlineConsultantSelectTime} />
 					<Stack.Screen name="OnlineConsultantSelectConsultant" component={OnlineConsultantSelectConsultant} />
 
+					<Stack.Screen name="Home" component={MainTab} />
+
 					<Stack.Screen
 						name="CreateProfile"
 						component={CreateProfile}
 					/>
-					<Stack.Screen name="Home" component={HomeScreen} />
+
 					<Stack.Screen
 						name="ConsultantsList"
 						component={ConsultantsList}
