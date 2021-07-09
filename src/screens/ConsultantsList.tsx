@@ -12,7 +12,7 @@ import BackIcon from "../assets/icons/BackIcon";
 import { ConsultantListItem } from "../components/consultant-list-item";
 import { useNavigation } from "@react-navigation/native";
 import { consultants } from "../data/consultants";
-import { HeaderWith2Icons } from "../components/header";
+import { HeaderWithRText } from "../components/header";
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
@@ -30,7 +30,7 @@ const ConsultantsList = () => {
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<VStack p={2} space={6}>
 				{/* TODO: to be moved to components folder */}
-				<HeaderWith2Icons
+				<HeaderWithRText
 					text={"Choose a Consultant"}
 					rText={"Nearest"}
 					iconPress={nav}

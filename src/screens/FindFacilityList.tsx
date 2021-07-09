@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/core";
 import { Box, ScrollView, Stack, StatusBar, VStack } from "native-base";
 import React from "react";
 import { FacilityListItem } from "../components/facilities-list-item";
-import { HeaderWith2Icons } from "../components/header";
+import { HeaderWithRText } from "../components/header";
 import { facilities } from "../data/facilities";
 
 export const FindFacilityList = () => {
@@ -12,7 +12,7 @@ export const FindFacilityList = () => {
 		navigation.navigate("Home");
 	};
 
-	const nearest = () => { };
+	const nearest = () => {};
 
 	const selectFacility = (facility) =>
 		navigation.navigate("SetAppointmentTime", { facility });
@@ -22,7 +22,7 @@ export const FindFacilityList = () => {
 				<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 				<VStack p={2} space={6}>
 					{/* TODO: to be moved to components folder */}
-					<HeaderWith2Icons
+					<HeaderWithRText
 						text={"Select Hospital"}
 						rText={"Nearest"}
 						iconPress={nav}
@@ -44,4 +44,4 @@ export const FindFacilityList = () => {
 	);
 };
 
-export default FindFacilityList
+export default FindFacilityList;

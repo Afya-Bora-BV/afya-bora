@@ -24,7 +24,10 @@ import FacilityIllustration from "../assets/illustrations/FacilityIllustration";
 
 import BackgroundOne from "../assets/illustrations/BackgroundOne";
 import { useNavigation } from "@react-navigation/native";
-import { TopRatedSpecialists } from "../components/cards";
+import {
+	HeroIllustrationContainer,
+	TopRatedSpecialists,
+} from "../components/cards";
 import moment from "moment";
 import { TouchableOpacity } from "react-native";
 
@@ -36,33 +39,7 @@ const IconContainer: React.FC = ({ children }) => {
 	);
 };
 
-const HeroIllustrationContainer: React.FC<{ onPress: () => void }> = ({
-	onPress,
-	children,
-}) => {
-	return (
-		<VStack
-			// justifyContent="center"
-			flex={1}
-			// m={2}
-			// alignItems="center"
-			p={2}
-			borderRadius={6}
-			bg="white"
-			shadow={2}
-		>
-			<TouchableOpacity
-				activeOpacity={0.3}
-				onPress={onPress}
-				style={{ alignItems: "center" }}
-			>
-				{children}
-			</TouchableOpacity>
-		</VStack>
-	);
-};
-
-const Home:React.FC = () => {
+const Home: React.FC = () => {
 	const { navigate } = useNavigation();
 	const hasUpcomingAppointment = true;
 
