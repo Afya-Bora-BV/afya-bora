@@ -12,7 +12,7 @@ export const FindFacilityList = () => {
 		navigation.navigate("Home");
 	};
 
-	const nearest = () => {};
+	const nearest = () => { };
 
 	const selectFacility = (facility) =>
 		navigation.navigate("SetAppointmentTime", { facility });
@@ -43,3 +43,5 @@ export const FindFacilityList = () => {
 		</ScrollView>
 	);
 };
+
+export default FindFacilityList
