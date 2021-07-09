@@ -99,14 +99,14 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 									borderRadius={4}
 									justifyContent="center"
 									alignItems="center"
-									style={{ backgroundColor: "#D4FAFF" }}
+									style={{ backgroundColor: "rgba(37,143,190,0.2)" }}
 								>
 									<MaterialCommunityIcons
 										name="clock-time-seven-outline"
 										size={18}
-										color="#2AD3E7"
+										color="#258FBE"
 									/>
-									<Text color="#2AD3E7">{time}</Text>
+									<Text color="#258FBE">{time}</Text>
 								</HStack>
 							</HStack>
 						</VStack>
