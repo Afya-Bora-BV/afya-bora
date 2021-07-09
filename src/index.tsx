@@ -32,6 +32,7 @@ import ConsultantsList from "./screens/ConsultantsList";
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
+import { FacilitiesList } from "./screens/FacilitiesList";
 
 const Profile = () => {
 	return (
@@ -158,6 +159,10 @@ export default () => {
 					<Stack.Screen
 						name="PatientComplaint"
 						component={PatientComplaint}
+					/>
+					<Stack.Screen
+						name="FacilitiesList"
+						component={FacilitiesList}
 					/>
 				</Stack.Navigator>
 			</NativeBaseProvider>

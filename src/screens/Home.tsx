@@ -133,7 +133,7 @@ const Home = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigate("ConsultantsList")}
+							onPress={() => navigate("FacilitiesList")}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
