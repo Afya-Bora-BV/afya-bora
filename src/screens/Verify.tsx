@@ -25,7 +25,7 @@ const Verify = () => {
 					alignItems="center"
 					style={{ paddingVertical: 80, paddingLeft: 25 }}
 				>
-					<HeaderwithBack head="Verify Your Number" nav={() => {}} />
+					<HeaderwithBack head="Verify Your Number" nav={() => { }} />
 				</Stack>
 
 				<Stack alignItems="center">
