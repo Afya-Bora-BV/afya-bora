@@ -119,7 +119,7 @@ const Home = () => {
 						</HeroIllustrationContainer>
 
 						<HeroIllustrationContainer
-							onPress={() => navigate("ConsultantsList")}
+							onPress={() => navigate("OnlineConsultantSelectTime")}
 						>
 							<OnlineConsulationIllustration size={70} />
 							<Text textAlign="center" flexWrap="wrap">
@@ -133,7 +133,7 @@ const Home = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigate("ConsultantsList")}
+							onPress={() => navigate("FindFacility")}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
