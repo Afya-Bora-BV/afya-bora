@@ -136,7 +136,7 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-					// initialRouteName="ConsultantsList"
+					initialRouteName="CreateProfile"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />

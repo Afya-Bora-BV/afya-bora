@@ -1,6 +1,6 @@
 import React from "react";
-import { Stack, Avatar } from "native-base";
-
+import { Stack, Avatar, Center } from "native-base";
+import CameraIcon from "../assets/icons/Camera"
 export const PicAvatar = () => {
 	return (
 		<Stack
@@ -21,6 +21,9 @@ export const PicAvatar = () => {
 				}}
 			>
 				SS
+				<Avatar.Badge bg="white" h={10} w={10} justifyContent="center" alignItems="center">
+					<CameraIcon size={5} color="#7065E4" />
+				</Avatar.Badge>
 			</Avatar>
 		</Stack>
 	);

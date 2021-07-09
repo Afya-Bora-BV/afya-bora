@@ -96,8 +96,8 @@ export const CreateProfile = () => {
 				></Stack>
 				<Stack paddingBottom={10}>
 					{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
-					<View alignItems="center" paddingY={20}>
-						<Text color="white" fontSize={44}>
+					<View justifyContent="center" alignItems="center" paddingY={20}>
+						<Text color="white" fontSize={24}>
 							Create A Health Profile
 						</Text>
 					</View>
