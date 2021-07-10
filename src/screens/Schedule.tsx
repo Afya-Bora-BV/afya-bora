@@ -21,6 +21,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import Card_RedIcon from "../assets/icons/Card_RedIcon";
 import SquareCheckIcon from "../assets/icons/SquareCheckIcon";
 import { Spacer } from "../components/Spacer";
+import { PrimaryButton } from "../components/button";
 
 const Schedule: React.FC = () => {
 	const navigation = useNavigation();
@@ -142,6 +143,13 @@ const Schedule: React.FC = () => {
 						</Box>
 					</Stack>
 				</Stack>
+				<Box padding={"5%"}>
+					<PrimaryButton
+						text={"Make an appointment"}
+						shadow={5}
+						press={() => navigation.navigate("FindFacilityList")}
+					/>
+				</Box>
 			</ScrollView>
 		</Box>
 	);
