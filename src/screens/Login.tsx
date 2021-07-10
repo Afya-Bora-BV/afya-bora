@@ -85,7 +85,7 @@ const Login = () => {
 					</View>
 					{/* </Stack> */}
 
-					<Stack alignItems="center">
+					<Stack alignItems="center" >
 						<Box bg="white" shadow={2} rounded="lg" width="90%">
 							<Stack
 								style={{
