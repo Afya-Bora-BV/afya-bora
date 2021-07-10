@@ -263,7 +263,7 @@ export default () => {
 						name="HealthRecords"
 						component={HealthRecords}
 					/>
-					<Stack.Screen name="Profile" component={Profile} />
+					{/* <Stack.Screen name="Profile" component={Profile} /> */}
 				</Stack.Navigator>
 			</NativeBaseProvider>
 		</NavigationContainer>
