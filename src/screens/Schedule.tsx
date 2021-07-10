@@ -20,6 +20,7 @@ import Card_PurpleIcon from "../assets/icons/Card_PurpleIcon";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Card_RedIcon from "../assets/icons/Card_RedIcon";
 import SquareCheckIcon from "../assets/icons/SquareCheckIcon";
+import { Spacer } from "../components/Spacer";
 
 const Schedule: React.FC = () => {
 	const navigation = useNavigation();
@@ -52,8 +53,8 @@ const Schedule: React.FC = () => {
 								flex={1}
 							>
 								<Pressable>
-									<Icon>
-										<UpdateClock />
+									<Icon size={50}>
+										<UpdateClock size={10} />
 									</Icon>
 								</Pressable>
 							</Stack>
@@ -83,7 +84,7 @@ const Schedule: React.FC = () => {
 
 									<VStack flex={1} alignItems="center">
 										<Pressable>
-											<Stack>
+											<Stack alignSelf="center">
 												<Icon
 													alignSelf="center"
 													size={90}
@@ -116,6 +117,27 @@ const Schedule: React.FC = () => {
 										</Pressable>
 									</VStack>
 								</HStack>
+							</Stack>
+						</Box>
+
+						<Spacer size={30} />
+
+						<Box alignItems="center" paddingX={10}>
+							<Stack justifyContent="center">
+								<Text fontSize="xl" bold>
+									You do not have an appointment!
+								</Text>
+							</Stack>
+							<Spacer size={10} />
+							<Stack alignContent="center">
+								<Text
+									textAlign="center"
+									fontSize="lg"
+									color="grey"
+								>
+									Book a health care service right away for
+									you and your family!
+								</Text>
 							</Stack>
 						</Box>
 					</Stack>
