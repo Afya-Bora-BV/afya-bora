@@ -12,6 +12,7 @@ import Svg, { SvgProps, Path } from "react-native-svg";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
 import BackIcon from "../assets/icons/BackIcon";
+import AddPersonIcon from "../assets/icons/AddPersonIcon";
 
 // Custom BackIcon
 // type BackIconProps = SvgProps & {};
@@ -170,7 +171,7 @@ type headerIconsProps = {
 	rPress: () => {};
 };
 
-const HeaderWith2Icons: React.FC<headerIconsProps> = ({
+const HeaderWithRText: React.FC<headerIconsProps> = ({
 	text,
 	rText,
 	iconPress,
@@ -196,4 +197,40 @@ const HeaderWith2Icons: React.FC<headerIconsProps> = ({
 	);
 };
 
-export { HeaderWithSearch, HeaderwithBack, HeaderWith2Icons };
+type headerIcons2Props = {
+	text: string;
+	rText: string;
+	iconPress: () => {};
+	rPress: () => {};
+};
+
+const HeaderWith2Icons: React.FC<headerIcons2Props> = ({
+	text,
+	iconPress,
+	rPress,
+}) => {
+	return (
+		<Stack>
+			<HStack justifyContent="space-between" alignItems="center">
+				<Pressable onPress={iconPress}>
+					<IconContainer>
+						<BackIcon size={22} color="#7065E4" />
+					</IconContainer>
+				</Pressable>
+
+				<Heading fontSize="lg" color="white">
+					{text}
+				</Heading>
+				<HStack>
+					<Pressable onPress={rPress}>
+						<IconContainer>
+							<AddPersonIcon size={31} color="white" />
+						</IconContainer>
+					</Pressable>
+				</HStack>
+			</HStack>
+		</Stack>
+	);
+};
+
+export { HeaderWithSearch, HeaderwithBack, HeaderWith2Icons, HeaderWithRText };

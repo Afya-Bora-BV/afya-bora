@@ -33,22 +33,26 @@ import ConsultantsList from "./screens/ConsultantsList";
 import FindFacility from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
-import FindFacilityList from "./screens/FindFacilityList"
+import FindFacilityList from "./screens/FindFacilityList";
 
-import ProfileScreen from "./screens/Profile"
-import ScheduleScreen from "./screens/Schedule"
-import ChatScreen from "./screens/Chat"
+import ProfileScreen from "./screens/Profile";
+import ScheduleScreen from "./screens/Schedule";
+import ChatScreen from "./screens/Chat";
 
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
-import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+	BottomTabBar,
+	createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 
-import TabHomeIcon from "./assets/icons/TabHomeIcon"
-import TabScheduleIcon from "./assets/icons/TabScheduleIcon"
-import TabChatIcon from "./assets/icons/TabChatIcon"
-import TabProfileIcon from "./assets/icons/TabProfileIcon"
+import TabHomeIcon from "./assets/icons/TabHomeIcon";
+import TabScheduleIcon from "./assets/icons/TabScheduleIcon";
+import TabChatIcon from "./assets/icons/TabChatIcon";
+import TabProfileIcon from "./assets/icons/TabProfileIcon";
 import { backgroundColor } from "styled-system";
+import { HealthRecords } from "./screens/HealthRecords";
 
 const Profile = () => {
 	return (
@@ -151,23 +155,19 @@ const Tab = createBottomTabNavigator();
 // TODO: customize tab look, icons and behaviour
 const MainTab: React.FC = () => {
 	return (
-
-
 		<Tab.Navigator
 			initialRouteName="Home"
 			tabBar={(props) => <BottomTabBar {...props} />}
 			tabBarOptions={{
 				activeTintColor: "#561BB3",
-				inactiveTintColor: "#B0B3C7"
-
+				inactiveTintColor: "#B0B3C7",
 			}}
-
 		>
 			<Tab.Screen
 				name="Home"
 				component={HomeScreen}
 				options={{
-					tabBarLabel: 'Home',
+					tabBarLabel: "Home",
 					tabBarIcon: ({ color, size }) => (
 						<TabHomeIcon size={8} color={color} />
 					),
@@ -178,7 +178,7 @@ const MainTab: React.FC = () => {
 				name="Schedule"
 				component={ScheduleScreen}
 				options={{
-					tabBarLabel: 'Schedule',
+					tabBarLabel: "Schedule",
 					tabBarIcon: ({ color, size }) => (
 						<TabScheduleIcon size={8} color={color} />
 					),
@@ -188,7 +188,7 @@ const MainTab: React.FC = () => {
 				name="Chat"
 				component={ChatScreen}
 				options={{
-					tabBarLabel: 'Chat',
+					tabBarLabel: "Chat",
 					tabBarIcon: ({ color, size }) => (
 						<TabChatIcon size={8} color={color} />
 					),
@@ -199,19 +199,15 @@ const MainTab: React.FC = () => {
 				name="Profile"
 				component={ProfileScreen}
 				options={{
-					tabBarLabel: 'Profile',
+					tabBarLabel: "Profile",
 					tabBarIcon: ({ color, size }) => (
 						<TabProfileIcon size={8} color={color} />
 					),
 				}}
 			/>
-
-
-		</Tab.Navigator >
-
+		</Tab.Navigator>
 	);
-}
-
+};
 
 export default () => {
 	return (
@@ -221,9 +217,8 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-				// initialRouteName="FindFacilityList"
+					//initialRouteName="HealthRecords"
 				>
-
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
@@ -264,6 +259,11 @@ export default () => {
 						name="PatientComplaint"
 						component={PatientComplaint}
 					/>
+					<Stack.Screen
+						name="HealthRecords"
+						component={HealthRecords}
+					/>
+					<Stack.Screen name="Profile" component={Profile} />
 				</Stack.Navigator>
 			</NativeBaseProvider>
 		</NavigationContainer>
