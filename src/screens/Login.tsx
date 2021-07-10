@@ -29,21 +29,21 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+interface LoginFormInputs {
+	email: string;
+	password: string;
+}
+
+const schema = yup.object().shape({
+	email: yup.string().email().required(),
+	password: yup.string().nullable().required(),
+});
+
 const Login = () => {
 	const [visibility, setVisibility] = React.useState("eye-off-outline");
 	const [remember, setRemember] = React.useState(false);
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
-
-	interface LoginFormInputs {
-		email: string;
-		password: string;
-	}
-
-	const schema = yup.object().shape({
-		email: yup.string().email().required(),
-		password: yup.string().nullable().required(),
-	});
 
 	const {
 		control,
@@ -85,7 +85,7 @@ const Login = () => {
 					</View>
 					{/* </Stack> */}
 
-					<Stack alignItems="center" >
+					<Stack alignItems="center">
 						<Box bg="white" shadow={2} rounded="lg" width="90%">
 							<Stack
 								style={{
@@ -199,9 +199,7 @@ const Login = () => {
 								<PrimaryButton
 									text={"Login"}
 									shadow={5}
-									press={() =>
-										navigation.navigate("Home")
-									}
+									press={() => navigation.navigate("Home")}
 								/>
 							</Box>
 						</Box>
