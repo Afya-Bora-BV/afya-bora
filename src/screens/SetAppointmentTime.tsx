@@ -62,6 +62,7 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 				)}
 			</Box>
 
+			{/* TODO : to create a separate component for this */}
 			<Box bg="white" p={2} shadow={2} rounded="lg" mb={1}>
 				<VStack p={1} space={10}>
 					<View>

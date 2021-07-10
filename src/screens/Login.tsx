@@ -200,7 +200,6 @@ const Login = () => {
 									text={"Login"}
 									shadow={5}
 									press={() =>
-										// (console.warn("here"), handleSubmit(onSubmit))
 										navigation.navigate("Home")
 									}
 								/>

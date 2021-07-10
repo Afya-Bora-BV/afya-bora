@@ -2,7 +2,7 @@ import { Icon, IIconProps } from "native-base"
 import * as React from "react"
 import Svg, { SvgProps, Path } from "react-native-svg"
 
-function SvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
+function TabChatIconSvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
     return (
         <Icon viewBox="0 0 24 24" size={size}>
             <Svg
