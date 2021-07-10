@@ -23,5 +23,5 @@ function TabChatIconSvgComponent({ size, color, ...rest }: SvgProps & IIconProps
     )
 }
 
-export default SvgComponent
+export default TabChatIconSvgComponent
 

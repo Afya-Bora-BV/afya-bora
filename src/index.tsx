@@ -9,7 +9,7 @@ import {
 } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import Button from "./components/button";
-import Header from "./components/header";
+import { Header } from "./components/header";
 import Cards from "./components/cards";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -133,7 +133,7 @@ const AllComponents: React.FC = () => {
 				style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }}
 			>
 				<Profile />
-				<Header />
+				{/* <Header /> */}
 				<Button />
 				<Cards />
 				<TextInput holderText={"First Name and Last Name"} />
@@ -217,7 +217,7 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-					//initialRouteName="HealthRecords"
+				//initialRouteName="HealthRecords"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
