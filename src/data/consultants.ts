@@ -1,4 +1,4 @@
-export const demoDataconsultants = [
+export const consultants = [
 	{
 		id: "uindlxAa",
 		name: "Ally Salim",
