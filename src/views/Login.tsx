@@ -115,7 +115,6 @@ export default function Login () {
                         <Box mb={-6} paddingX={"5%"}>
                             <PrimaryButton
                                 text={"Login"}
-                                shadow={5}
                                 press={() => console.log("Login")}
                             />
                         </Box>
