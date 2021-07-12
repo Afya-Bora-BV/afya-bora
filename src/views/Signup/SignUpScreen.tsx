@@ -4,11 +4,12 @@ import { View, Text, HStack, VStack, Stack, Pressable, Spacer, Input, Box, Squar
 import ControllerFormInput from '../../components/forms/Input'
 import { useForm } from 'react-hook-form'
 import { PrimaryButton } from '../../components/button'
-import { CheckBox } from '../../components/bars'
 import { colors } from '../../contants/colors'
 import { Dimensions } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function SignUpScreen () {
+    const navigation = useNavigation()
     const { handleSubmit, control } = useForm()
     const { height } = Dimensions.get('screen')
 
@@ -28,7 +29,7 @@ export default function SignUpScreen () {
                     <Box position="absolute" paddingX={"5%"} bottom={-10}>
                         <PrimaryButton
                             text="Confirm"
-                            press={() => console.log("Login")}
+                            press={() => navigation.navigate('verifyScreen')}
                         />
                     </Box>
                 </Box>

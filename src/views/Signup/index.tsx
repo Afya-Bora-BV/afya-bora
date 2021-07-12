@@ -9,7 +9,9 @@ const Stack = createStackNavigator()
 
 export default function SignUp () {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            headerMode="none"
+        >
             <Stack.Screen name="signUp" component={SignUpScreen} />
             <Stack.Screen name="verifyScreen" component={VerifyScreen} />
         </Stack.Navigator>
