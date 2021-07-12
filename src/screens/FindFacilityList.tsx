@@ -19,7 +19,7 @@ export const FindFacilityList = () => {
 	return (
 		<ScrollView>
 			<Stack>
-				<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+				{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
 				<VStack p={2} space={6}>
 					{/* TODO: to be moved to components folder */}
 					<HeaderWithRText

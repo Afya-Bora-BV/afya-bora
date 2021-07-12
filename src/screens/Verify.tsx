@@ -20,14 +20,15 @@ const Verify = () => {
 				left={0}
 				right={0}
 			></Stack>
-			<Stack paddingBottom={10}>
+			<Stack paddingBottom={10} paddingTop={10}>
 				<Stack
 					alignItems="center"
-					style={{ paddingVertical: 80, paddingLeft: 25 }}
+					style={{ paddingBottom: 80, paddingLeft: 25 }}
 				>
 					<HeaderwithBack
 						text="Verify Your Number"
-						onBackPress={() => { }}
+						onBackPress={() => {}}
+						color="white"
 					/>
 				</Stack>
 
@@ -64,7 +65,7 @@ const Verify = () => {
 					</Box>
 				</Stack>
 			</Stack>
-			<Stack alignItems="center">
+			<Stack alignItems="center" marginBottom={5}>
 				<Text color="#2AD3E7">Resend (00:39)</Text>
 			</Stack>
 		</ScrollView>

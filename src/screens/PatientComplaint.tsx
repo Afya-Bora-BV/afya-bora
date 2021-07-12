@@ -63,7 +63,7 @@ const PatientComplaint: React.FC = () => {
 	};
 
 	return (
-		<ScrollView p={2} paddingTop={2}>
+		<ScrollView p={2} paddingTop={8}>
 			<HeaderwithBack text="About Your Visit" onBackPress={handleBack} />
 
 			<Spacer size={30} />

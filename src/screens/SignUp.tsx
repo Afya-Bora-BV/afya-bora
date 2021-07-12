@@ -20,13 +20,13 @@ const SignUp = () => {
 					left={0}
 					right={0}
 				></Stack>
-				<Stack paddingBottom={10}>
+				<Stack paddingY={10}>
 					<Stack
 						alignItems="center"
-						style={{ paddingVertical: 80, paddingLeft: 25 }}
+						style={{ paddingBottom: 80, paddingLeft: 25 }}
 					>
 						<HeaderwithBack
-							head="Sign up"
+							text="Sign up"
 							nav={() => {
 								navigation.navigate("Login");
 							}}

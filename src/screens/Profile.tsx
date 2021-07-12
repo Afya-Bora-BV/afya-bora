@@ -27,8 +27,8 @@ const Profile: React.FC = () => {
 
 	const nav = () => {};
 	return (
-		<Box flex={1} marginTop={4}>
-			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+		<Box flex={1}>
+			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}

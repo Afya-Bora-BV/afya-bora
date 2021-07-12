@@ -21,12 +21,12 @@ const ConsultantsList = () => {
 		navigation.navigate("Home");
 	};
 
-	const nearest = () => { };
+	const nearest = () => {};
 
 	const selectConsultant = (consultant) =>
 		navigation.navigate("SetAppointmentTime", { consultant });
 	return (
-		<ScrollView paddingTop={2}>
+		<ScrollView paddingTop={8}>
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<VStack p={2} space={6}>
 				{/* TODO: to be moved to components folder */}

@@ -6,6 +6,7 @@ import {
 	Text,
 	extendTheme,
 	View,
+	StatusBar,
 } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import Button from "./components/button";
@@ -212,12 +213,13 @@ const MainTab: React.FC = () => {
 export default () => {
 	return (
 		<NavigationContainer theme={AppTheme}>
+			<StatusBar translucent backgroundColor={colors.primary} />
 			<NativeBaseProvider theme={theme}>
 				<Stack.Navigator
 					screenOptions={{
 						headerShown: false,
 					}}
-				//initialRouteName="HealthRecords"
+					//initialRouteName="HealthRecords"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />

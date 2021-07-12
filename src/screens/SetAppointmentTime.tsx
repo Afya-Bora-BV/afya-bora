@@ -70,8 +70,8 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 
 	const handleNext = () => navigation.navigate("PatientComplaint");
 	return (
-		<ScrollView p={2} marginTop={1}>
-			<StatusBar backgroundColor="#fff" />
+		<ScrollView p={2} marginTop={8}>
+			{/* <StatusBar backgroundColor="#fff" /> */}
 			<HeaderwithBack onBackPress={handleBackPress} text="Day and Time" />
 
 			<Box marginY={3}>

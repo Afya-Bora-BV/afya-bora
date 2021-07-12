@@ -24,7 +24,7 @@ export const HealthRecords = () => {
 	const { width, height } = Dimensions.get("screen");
 	return (
 		<Box flex={1} marginTop={4}>
-			<StatusBar translucent backgroundColor={colors.primary} />
+			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}

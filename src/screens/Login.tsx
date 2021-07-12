@@ -64,8 +64,8 @@ const Login = () => {
 
 	console.log("Errrs", errors);
 	return (
-		<Box flex={1} marginTop={4}>
-			<StatusBar translucent backgroundColor={colors.primary} />
+		<Box flex={1}>
+			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}
