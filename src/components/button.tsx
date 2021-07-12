@@ -2,8 +2,9 @@ import React from "react";
 import { Button, Stack, Icon } from "native-base";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
+import { IButtonComponentType } from "native-base/lib/typescript/components/primitives/Button/types";
 
-type buttonProps = {
+type buttonProps = IButtonComponentType & {
 	text: string;
 	press: () => void;
 };

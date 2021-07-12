@@ -21,7 +21,7 @@ const ConsultantsList = () => {
 		navigation.navigate("Home");
 	};
 
-	const nearest = () => {};
+	const nearest = () => { };
 
 	const selectConsultant = (consultant) =>
 		navigation.navigate("SetAppointmentTime", { consultant });
@@ -34,7 +34,7 @@ const ConsultantsList = () => {
 					text={"Choose a Consultant"}
 					rText={"Nearest"}
 					iconPress={nav}
-					rPress={nearest}
+					onPress={nearest}
 				/>
 
 				<VStack space={2}>

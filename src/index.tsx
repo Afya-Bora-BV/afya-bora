@@ -5,10 +5,11 @@ import {
 	VStack,
 	Text,
 	extendTheme,
+	View,
 } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import Button from "./components/button";
-import Header from "./components/header";
+import { Header } from "./components/header";
 import Cards from "./components/cards";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -32,11 +33,26 @@ import ConsultantsList from "./screens/ConsultantsList";
 import { FindFacility } from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
+import FindFacilityList from "./screens/FindFacilityList";
+
+import ProfileScreen from "./screens/Profile";
+import ScheduleScreen from "./screens/Schedule";
+import ChatScreen from "./screens/Chat";
 
 import { SetAppointmentTime } from "./screens/SetAppointmentTime";
 import { PatientComplaint } from "./screens/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
-import { FacilitiesList } from "./screens/FacilitiesList";
+import {
+	BottomTabBar,
+	createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
+
+import TabHomeIcon from "./assets/icons/TabHomeIcon";
+import TabScheduleIcon from "./assets/icons/TabScheduleIcon";
+import TabChatIcon from "./assets/icons/TabChatIcon";
+import TabProfileIcon from "./assets/icons/TabProfileIcon";
+import { backgroundColor } from "styled-system";
+import { HealthRecords } from "./screens/HealthRecords";
 
 const Profile = () => {
 	return (
@@ -117,7 +133,7 @@ const AllComponents: React.FC = () => {
 				style={{ backgroundColor: "rgba(0, 0, 0, 0.08)" }}
 			>
 				<Profile />
-				<Header />
+				{/* <Header /> */}
 				<Button />
 				<Cards />
 				<TextInput holderText={"First Name and Last Name"} />
@@ -133,6 +149,66 @@ const AllComponents: React.FC = () => {
 		</ScrollView>
 	);
 };
+
+const Tab = createBottomTabNavigator();
+
+// TODO: customize tab look, icons and behaviour
+const MainTab: React.FC = () => {
+	return (
+		<Tab.Navigator
+			initialRouteName="Home"
+			tabBar={(props) => <BottomTabBar {...props} />}
+			tabBarOptions={{
+				activeTintColor: "#561BB3",
+				inactiveTintColor: "#B0B3C7",
+			}}
+		>
+			<Tab.Screen
+				name="Home"
+				component={HomeScreen}
+				options={{
+					tabBarLabel: "Home",
+					tabBarIcon: ({ color, size }) => (
+						<TabHomeIcon size={8} color={color} />
+					),
+				}}
+			/>
+
+			<Tab.Screen
+				name="Schedule"
+				component={ScheduleScreen}
+				options={{
+					tabBarLabel: "Schedule",
+					tabBarIcon: ({ color, size }) => (
+						<TabScheduleIcon size={8} color={color} />
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="Chat"
+				component={ChatScreen}
+				options={{
+					tabBarLabel: "Chat",
+					tabBarIcon: ({ color, size }) => (
+						<TabChatIcon size={8} color={color} />
+					),
+				}}
+			/>
+
+			<Tab.Screen
+				name="Profile"
+				component={ProfileScreen}
+				options={{
+					tabBarLabel: "Profile",
+					tabBarIcon: ({ color, size }) => (
+						<TabProfileIcon size={8} color={color} />
+					),
+				}}
+			/>
+		</Tab.Navigator>
+	);
+};
+
 export default () => {
 	return (
 		<NavigationContainer theme={AppTheme}>
@@ -141,7 +217,7 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-					initialRouteName="Home"
+				//initialRouteName="HealthRecords"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -153,6 +229,10 @@ export default () => {
 						component={FindFacility}
 					/>
 					<Stack.Screen
+						name="FindFacilityList"
+						component={FindFacilityList}
+					/>
+					<Stack.Screen
 						name="OnlineConsultantSelectTime"
 						component={OnlineConsultantSelectTime}
 					/>
@@ -161,11 +241,13 @@ export default () => {
 						component={OnlineConsultantSelectConsultant}
 					/>
 
+					<Stack.Screen name="Home" component={MainTab} />
+
 					<Stack.Screen
 						name="CreateProfile"
 						component={CreateProfile}
 					/>
-					<Stack.Screen name="Home" component={HomeScreen} />
+
 					<Stack.Screen
 						name="ConsultantsList"
 						component={ConsultantsList}
@@ -178,6 +260,11 @@ export default () => {
 						name="PatientComplaint"
 						component={PatientComplaint}
 					/>
+					<Stack.Screen
+						name="HealthRecords"
+						component={HealthRecords}
+					/>
+					{/* <Stack.Screen name="Profile" component={Profile} /> */}
 				</Stack.Navigator>
 			</NativeBaseProvider>
 		</NavigationContainer>

@@ -27,7 +27,7 @@ const Verify = () => {
 				>
 					<HeaderwithBack
 						text="Verify Your Number"
-						onBackPress={() => {}}
+						onBackPress={() => { }}
 					/>
 				</Stack>
 

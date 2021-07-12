@@ -12,22 +12,20 @@ import {
 } from "native-base";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
-type ConsultantListItemProps = {
-	consultant: {
+type FacilityListItemProps = {
+	facility: {
 		name: string;
-		hospital: string;
+		street: string;
 		region: string;
-		expertise: string;
 		rating: number;
 		ratedBy: number;
-		time: string;
-		status?: "online" | "offline"
+		distance: string;
 	};
 	onPress: () => void;
 };
 
-export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
-	consultant: { name, hospital, region, expertise, rating, ratedBy, time, status },
+export const FacilityListItem: React.FC<FacilityListItemProps> = ({
+	facility: { name, street, region, rating, ratedBy, distance },
 	onPress,
 }) => {
 	return (
@@ -48,7 +46,6 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							}}
 						>
 							SS
-							{(Boolean(status)) ? <Avatar.Badge backgroundColor={status === "online" ? "#24D626" : "#B0B3C7"} w={4} h={4} top={1} right={1} /> : <Avatar.Badge backgroundColor="transparent" borderColor="transparent" w={4} h={4} top={1} right={1} />}
 						</Avatar>
 						<VStack style={{}} pl={3} flex={1}>
 							<HStack
@@ -59,21 +56,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							</HStack>
 							<VStack>
 								<Text fontSize="md" bold color="#747F9E">
-									{hospital}
-								</Text>
-								<Text fontSize="md" color="#747F9E">
-									<MaterialCommunityIcons
-										name="google-maps"
-										size={16}
-									/>
-									{region}
-								</Text>
-								<Text fontSize="md" color="#747F9E">
-									<MaterialCommunityIcons
-										name="clipboard-pulse-outline"
-										size={16}
-									/>
-									{expertise}
+									{street + ", " + region}
 								</Text>
 							</VStack>
 
@@ -99,14 +82,16 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 									borderRadius={4}
 									justifyContent="center"
 									alignItems="center"
-									style={{ backgroundColor: "rgba(37,143,190,0.2)" }}
+									style={{
+										backgroundColor: "rgba(37,143,190,0.2)",
+									}}
 								>
 									<MaterialCommunityIcons
-										name="clock-time-seven-outline"
+										name="google-maps"
 										size={18}
 										color="#258FBE"
 									/>
-									<Text color="#258FBE">{time}</Text>
+									<Text color="#258FBE">{distance}</Text>
 								</HStack>
 							</HStack>
 						</VStack>
