@@ -44,9 +44,9 @@ const Home: React.FC = () => {
 	const hasUpcomingAppointment = true;
 
 	return (
-		<ScrollView marginTop={10}>
+		<ScrollView>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
-			<VStack paddingX={3} space={6}>
+			<VStack paddingX={3} space={6} marginTop={10}>
 				<HStack justifyContent="space-between" alignItems="center">
 					<IconContainer>
 						{/* <UserIcon color="#561BB3" /> */}

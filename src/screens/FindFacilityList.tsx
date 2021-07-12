@@ -20,7 +20,7 @@ export const FindFacilityList = () => {
 		<ScrollView>
 			<Stack>
 				{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
-				<VStack p={2} space={6}>
+				<VStack p={2} space={6} paddingTop={8}>
 					{/* TODO: to be moved to components folder */}
 					<HeaderWithRText
 						text={"Select Hospital"}

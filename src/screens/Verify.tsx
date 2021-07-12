@@ -27,7 +27,9 @@ const Verify = () => {
 				>
 					<HeaderwithBack
 						text="Verify Your Number"
-						onBackPress={() => {}}
+						onBackPress={() => {
+							navigation.navigate("SignUp");
+						}}
 						color="white"
 					/>
 				</Stack>
@@ -54,7 +56,7 @@ const Verify = () => {
 								<Number />
 							</HStack>
 						</Stack>
-						<Box mb={-10}>
+						<Box mb={-6} paddingX={"5%"}>
 							<PrimaryButton
 								text={"Confirm"}
 								press={() => {

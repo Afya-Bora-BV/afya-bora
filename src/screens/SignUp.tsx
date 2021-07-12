@@ -27,7 +27,7 @@ const SignUp = () => {
 					>
 						<HeaderwithBack
 							text="Sign up"
-							nav={() => {
+							onBackPress={() => {
 								navigation.navigate("Login");
 							}}
 							color="white"
@@ -47,7 +47,7 @@ const SignUp = () => {
 									holderText={"Email or Phone Number"}
 								/>
 							</Stack>
-							<Box mb={-10}>
+							<Box mb={-6} paddingX={"5%"}>
 								<PrimaryButton
 									text={"Confirm"}
 									press={() => {

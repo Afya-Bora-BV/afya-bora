@@ -16,7 +16,9 @@ import { HeaderWith2Icons } from "../components/header";
 import { colors } from "../contants/colors";
 
 export const HealthRecords = () => {
-	const nav = () => {};
+	const nav = () => {
+		navigation.navigate("CreateProfile");
+	};
 	const back = () => {
 		navigation.navigate("Profile");
 	};
@@ -107,10 +109,7 @@ export const HealthRecords = () => {
 								<PrimaryButton
 									text={"New profile"}
 									shadow={5}
-									press={() =>
-										// (console.warn("here"), handleSubmit(onSubmit))
-										navigation.navigate("Home")
-									}
+									press={nav}
 								/>
 							</Box>
 						</Box>
