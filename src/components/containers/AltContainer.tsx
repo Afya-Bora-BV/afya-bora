@@ -35,7 +35,7 @@ export default function AltContainer ({ children, title, backdropHeight }: any) 
                     <Text color="white">{title}</Text>
                 </Box>
             </View>
-            <View flex={1} padding={4}>
+            <View flex={1} padding={4} width="100%">
                 {children}
             </View>
         </Container>

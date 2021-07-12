@@ -15,7 +15,7 @@ export default function Login () {
     const { height } = Dimensions.get('screen')
 
     return (
-        <AltContainer title="Login" backdropHeight={height / 2.5}>
+        <AltContainer title="Login" backdropHeight={height / 3.5}>
             {/* Login area */}
             <View flexGrow={1} width="100%">
                 {/* Actual form */}
@@ -30,7 +30,7 @@ export default function Login () {
                             name="password"
                             control={control}
                             label="Password"
-                            keyboardType="password" 
+                            keyboardType="password"
                         />
                         {/* Remeber me + Forgot Password */}
                         <HStack justifyContent="space-between">

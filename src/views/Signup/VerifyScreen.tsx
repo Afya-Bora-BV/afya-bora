@@ -7,13 +7,17 @@ import { PrimaryButton } from '../../components/button'
 import { CheckBox } from '../../components/bars'
 import { colors } from '../../contants/colors'
 import { Dimensions } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function VerifyScreen () {
+    const navigation = useNavigation()
     const { handleSubmit, control } = useForm()
     const { height } = Dimensions.get('screen')
 
+    
+
     return (
-        <AltContainer title="Verify your Number" backdropHeight={height / 6}>
+        <AltContainer title={`Verify for ${"04542"}`} backdropHeight={height / 6}>
             {/* SignUp area */}
             <View flexGrow={1} width="100%">
                 {/* Actual form */}

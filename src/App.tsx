@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NativeBaseProvider, extendTheme } from 'native-base'
 import React from 'react'
 import { colors } from "./contants/colors";
+// import {colors} from "./contants";
 
 import LoginView from './views/Login'
 import SignUpView from './views/Signup'

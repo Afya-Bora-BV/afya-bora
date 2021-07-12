@@ -23,7 +23,7 @@ const ConsultantsList = () => {
 
 	const nearest = () => {};
 
-	const selectConsultant = (consultant) =>
+	const selectConsultant = (consultant: any) =>
 		navigation.navigate("SetAppointmentTime", { consultant });
 	return (
 		<ScrollView paddingTop={8}>

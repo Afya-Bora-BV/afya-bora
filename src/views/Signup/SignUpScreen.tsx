@@ -24,7 +24,7 @@ export default function SignUpScreen () {
                             name="phone"
                             control={control}
                             label="Enter Phone Number"
-                            keyboardType="phoneNumber" />
+                            keyboardType="phone-pad" />
                     </VStack>
                     <Box position="absolute" paddingX={"5%"} bottom={-10}>
                         <PrimaryButton
