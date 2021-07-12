@@ -84,7 +84,7 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 			</Box>
 
 			{/* TODO : to create a separate component for this */}
-			<Box bg="white" p={2} shadow={2} rounded="lg" mb={1}>
+			<Box bg="white" p={2} shadow={2} rounded={10} mb={1}>
 				<VStack p={1} space={10}>
 					<View>
 						<HStack justifyContent="space-between" mb={3}>
@@ -162,7 +162,7 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 											<Box
 												borderWidth={1}
 												borderColor="#ccc"
-												rounded="lg"
+												rounded={10}
 												alignItems="center"
 												bg={
 													state.timeSlots.includes(
@@ -193,7 +193,7 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 											<Box
 												borderWidth={1}
 												borderColor="#ccc"
-												rounded="lg"
+												rounded={10}
 												alignItems="center"
 												bg={
 													state.timeSlots.includes(

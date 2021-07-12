@@ -9,11 +9,11 @@ describe("<Button/>", () => {
 		const { getByTestId } = render(
 			<NavigationContainer>
 				<NativeBaseProvider>
-					<Button />
+					<PrimaryButton text={"button"} />
 				</NativeBaseProvider>
 			</NavigationContainer>
 		);
 
-		expect(getByTestId("button")).toBeDefined();
+		expect(getByTestId("button1")).toBeDefined();
 	});
 });

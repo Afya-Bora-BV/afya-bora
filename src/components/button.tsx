@@ -16,8 +16,8 @@ export const PrimaryButton: React.FC<buttonProps> = ({
 }) => {
 	return (
 		<Button
-			onPress={press}
 			testID="button1"
+			onPress={press}
 			borderRadius={20}
 			_disabled={{
 				backgroundColor: "#B0B3C7",

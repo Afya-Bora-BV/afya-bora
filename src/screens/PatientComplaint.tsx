@@ -69,7 +69,7 @@ const PatientComplaint: React.FC = () => {
 			<Spacer size={30} />
 
 			<Stack alignItems="center">
-				<Box bg="white" shadow={2} rounded="lg" width="90%">
+				<Box bg="white" shadow={2} rounded={10} width="90%">
 					<Stack
 						style={{
 							paddingHorizontal: 20,
@@ -164,7 +164,7 @@ const PatientComplaint: React.FC = () => {
 
 				<Spacer size={30} />
 
-				<Box bg="white" shadow={2} rounded="lg" width="90%">
+				<Box bg="white" shadow={2} rounded={10} width="90%">
 					<Stack
 						style={{
 							paddingHorizontal: 20,

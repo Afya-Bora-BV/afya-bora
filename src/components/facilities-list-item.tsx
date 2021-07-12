@@ -29,7 +29,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 	onPress,
 }) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg">
+		<Box bg="white" shadow={2} rounded={10}>
 			<TouchableOpacity onPress={onPress}>
 				<VStack
 					p={4}

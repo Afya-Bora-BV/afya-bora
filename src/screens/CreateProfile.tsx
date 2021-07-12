@@ -108,7 +108,7 @@ export const CreateProfile = () => {
 					</View>
 					{/* </Stack> */}
 					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded="lg" width="90%">
+						<Box bg="white" shadow={2} rounded={10} width="90%">
 							<Stack mt={-10}>
 								<PicAvatar />
 							</Stack>
@@ -431,7 +431,7 @@ export const CreateProfile = () => {
 									</Stack>
 								</Stack>
 							</Stack>
-							<Stack>
+							<Box mb={-6} paddingX={"5%"}>
 								<Button
 									onPress={nav}
 									testID="button1"
@@ -445,7 +445,7 @@ export const CreateProfile = () => {
 								>
 									Create profile
 								</Button>
-							</Stack>
+							</Box>
 						</Box>
 					</Stack>
 				</Stack>

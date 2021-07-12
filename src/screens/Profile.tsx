@@ -25,7 +25,34 @@ const Profile: React.FC = () => {
 
 	const { width, height } = Dimensions.get("screen");
 
-	const nav = () => {};
+	const nav = () => {
+		return (
+			<View>
+				<View alignItems="center" paddingY={20}>
+					<Text color="white" fontSize={35}>
+						Profile
+					</Text>
+				</View>
+
+				<Stack alignItems="center">
+					<Box bg="white" shadow={2} rounded={10} width="90%">
+						<Stack
+							style={{
+								paddingHorizontal: 5,
+								paddingVertical: 10,
+							}}
+						>
+							<ProfileCard
+								name={"Ally Salim"}
+								number={"077777777"}
+								press={nav}
+							/>
+						</Stack>
+					</Box>
+				</Stack>
+			</View>
+		);
+	};
 	return (
 		<Box flex={1}>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
@@ -47,7 +74,7 @@ const Profile: React.FC = () => {
 					</View>
 
 					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded="lg" width="90%">
+						<Box bg="white" shadow={2} rounded={10} width="90%">
 							<Stack
 								style={{
 									paddingHorizontal: 5,
@@ -75,12 +102,8 @@ const Profile: React.FC = () => {
 							marginTop={3}
 							justifyContent="space-between"
 						>
-							<Box bg="white" shadow={2} rounded="lg" width="45%">
-								<Pressable
-									onPress={() =>
-										navigation.navigate("HealthRecords")
-									}
-								>
+							<Box bg="white" shadow={2} rounded={10} width="45%">
+								<Pressable onPress={() => nav}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}
@@ -102,7 +125,7 @@ const Profile: React.FC = () => {
 								</Pressable>
 							</Box>
 
-							<Box bg="white" shadow={2} rounded="lg" width="45%">
+							<Box bg="white" shadow={2} rounded={10} width="45%">
 								<Pressable onPress={() => {}}>
 									<HStack
 										justifyContent={"center"}
@@ -132,7 +155,7 @@ const Profile: React.FC = () => {
 							marginTop={3}
 							justifyContent="space-between"
 						>
-							<Box bg="white" shadow={2} rounded="lg" width="45%">
+							<Box bg="white" shadow={2} rounded={10} width="45%">
 								<Pressable onPress={() => {}}>
 									<HStack
 										justifyContent={"center"}
@@ -153,7 +176,7 @@ const Profile: React.FC = () => {
 								</Pressable>
 							</Box>
 
-							<Box bg="white" shadow={2} rounded="lg" width="45%">
+							<Box bg="white" shadow={2} rounded={10} width="45%">
 								<Pressable onPress={() => {}}>
 									<HStack
 										justifyContent={"center"}

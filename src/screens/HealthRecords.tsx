@@ -46,7 +46,7 @@ export const HealthRecords = () => {
 						/>
 					</Stack>
 					<Stack alignItems="center" paddingTop={20}>
-						<Box bg="white" shadow={2} rounded="lg" width="90%">
+						<Box bg="white" shadow={2} rounded={10} width="90%">
 							<Stack
 								style={{
 									paddingHorizontal: 5,
@@ -64,7 +64,7 @@ export const HealthRecords = () => {
 
 					{/* TO DO - MOVE TO COMPONENTS FOLDER */}
 					<Stack paddingX={5} paddingY={10}>
-						<Box bg="white" shadow={2} rounded="lg" width="100%">
+						<Box bg="white" shadow={2} rounded={10} width="100%">
 							<HStack
 								justifyContent="space-between"
 								paddingTop={5}

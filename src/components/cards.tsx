@@ -50,7 +50,7 @@ const NewPaperLogo = (props: SvgProps) => {
 
 const Card1 = () => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg" w={150} p={4}>
+		<Box bg="white" shadow={2} rounded={10} w={150} p={4}>
 			<VStack justifyContent="center" alignItems="center">
 				<NewPaperLogo />
 				<Center _text={{ textAlign: "center" }}>
@@ -89,7 +89,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 	service: { name, description, gender, age, tests, checkups, price },
 }) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg">
+		<Box bg="white" shadow={2} rounded={10}>
 			<VStack space={4} p={4} borderRadius={8} backgroundColor="white">
 				<HStack>
 					<Image
@@ -214,7 +214,7 @@ type Card3Props = {
 };
 const Card3: React.FC<Card3Props> = ({ selected = "false" }) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+		<Box bg="white" shadow={2} rounded={10} maxWidth="90%">
 			<VStack p={4}>
 				<HStack>
 					<Image
@@ -289,7 +289,7 @@ const ToBeRenamed2: React.FC<ToBeRenamed2Props> = ({
 	description,
 }) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg" maxWidth="50%">
+		<Box bg="white" shadow={2} rounded={10} maxWidth="50%">
 			<VStack
 				alignItems="baseline"
 				borderRadius={10}
@@ -323,7 +323,7 @@ const ToBeRenamed2: React.FC<ToBeRenamed2Props> = ({
 
 const Card5: React.FC = ({}) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+		<Box bg="white" shadow={2} rounded={10} maxWidth="90%">
 			<VStack
 				p={4}
 				borderRadius={12}
@@ -393,7 +393,7 @@ const Card5: React.FC = ({}) => {
 
 const Card6 = () => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg" maxWidth="90%">
+		<Box bg="white" shadow={2} rounded={10} maxWidth="90%">
 			<VStack
 				p={4}
 				borderRadius={12}
@@ -501,7 +501,7 @@ const CardBackground = (props: SvgProps) => {
 
 const Card7 = () => {
 	return (
-		<Box shadow={2} rounded="lg" maxWidth={328} maxHeight={210}>
+		<Box shadow={2} rounded={10} maxWidth={328} maxHeight={210}>
 			<VStack position="relative">
 				<ZStack
 					borderRadius={10}

@@ -54,6 +54,7 @@ import TabChatIcon from "./assets/icons/TabChatIcon";
 import TabProfileIcon from "./assets/icons/TabProfileIcon";
 import { backgroundColor } from "styled-system";
 import { HealthRecords } from "./screens/HealthRecords";
+import ProfileMain from "./screens/ProfileMain";
 
 const Profile = () => {
 	return (
@@ -72,7 +73,7 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator();
 
-const AppTheme = {
+export const AppTheme = {
 	...DefaultTheme,
 	dark: false,
 	colors: {
@@ -81,7 +82,7 @@ const AppTheme = {
 	},
 };
 
-const theme = extendTheme({
+export const theme = extendTheme({
 	colors: {
 		// Add new color
 		//   primary: {
@@ -197,8 +198,8 @@ const MainTab: React.FC = () => {
 			/>
 
 			<Tab.Screen
-				name="Profile"
-				component={ProfileScreen}
+				name="ProfileMain"
+				component={ProfileMain}
 				options={{
 					tabBarLabel: "Profile",
 					tabBarIcon: ({ color, size }) => (
@@ -225,6 +226,7 @@ export default () => {
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
 					<Stack.Screen name="Verify" component={VerifyScreen} />
 					<Stack.Screen name="Service" component={ServiceScreen} />
+					<Stack.Screen name="Profile" component={ProfileScreen} />
 					<Stack.Screen
 						name="FindFacility"
 						initialParams={{ selected: 1, amount: 1 }}

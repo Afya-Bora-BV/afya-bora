@@ -32,7 +32,7 @@ const FindFacility: React.FC = () => {
 					onBackPress={() => goBack()}
 				/>
 				<VStack>
-					<Box bg="white" p={2} shadow={2} rounded="lg" mb={1}>
+					<Box bg="white" p={2} shadow={2} rounded={10} mb={1}>
 						<VStack p={1} space={10}>
 							<HStack justifyContent="space-between">
 								<Text fontSize="2xl" bold>
@@ -87,7 +87,7 @@ const FindFacility: React.FC = () => {
 												<Box
 													borderWidth={1}
 													borderColor="#ccc"
-													rounded="lg"
+													rounded={10}
 													alignItems="center"
 													p={2}
 												>
@@ -108,7 +108,7 @@ const FindFacility: React.FC = () => {
 												<Box
 													borderWidth={1}
 													borderColor="#ccc"
-													rounded="lg"
+													rounded={10}
 													alignItems="center"
 													p={2}
 												>

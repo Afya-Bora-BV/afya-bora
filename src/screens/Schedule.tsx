@@ -54,16 +54,23 @@ const Schedule: React.FC = () => {
 								flex={1}
 							>
 								<Pressable>
-									<Icon size={50}>
-										<UpdateClock size={10} />
-									</Icon>
+									<Stack
+										backgroundColor="white"
+										borderRadius={10}
+										padding={1}
+										alignSelf="center"
+									>
+										<Icon>
+											<UpdateClock />
+										</Icon>
+									</Stack>
 								</Pressable>
 							</Stack>
 						</HStack>
 					</View>
 
 					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded="lg" width="90%">
+						<Box bg="white" shadow={2} rounded={10} width="90%">
 							<Stack
 								style={{
 									paddingHorizontal: 5,

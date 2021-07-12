@@ -35,7 +35,7 @@ const SignUp = () => {
 					</Stack>
 
 					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded="lg" width="90%">
+						<Box bg="white" shadow={2} rounded={10} width="90%">
 							<Stack
 								style={{
 									paddingHorizontal: 20,

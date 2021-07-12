@@ -21,17 +21,26 @@ type ConsultantListItemProps = {
 		rating: number;
 		ratedBy: number;
 		time: string;
-		status?: "online" | "offline"
+		status?: "online" | "offline";
 	};
 	onPress: () => void;
 };
 
 export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
-	consultant: { name, hospital, region, expertise, rating, ratedBy, time, status },
+	consultant: {
+		name,
+		hospital,
+		region,
+		expertise,
+		rating,
+		ratedBy,
+		time,
+		status,
+	},
 	onPress,
 }) => {
 	return (
-		<Box bg="white" shadow={2} rounded="lg">
+		<Box bg="white" shadow={2} rounded={10}>
 			<TouchableOpacity onPress={onPress}>
 				<VStack
 					p={4}
@@ -48,7 +57,28 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							}}
 						>
 							SS
-							{(Boolean(status)) ? <Avatar.Badge backgroundColor={status === "online" ? "#24D626" : "#B0B3C7"} w={4} h={4} top={1} right={1} /> : <Avatar.Badge backgroundColor="transparent" borderColor="transparent" w={4} h={4} top={1} right={1} />}
+							{Boolean(status) ? (
+								<Avatar.Badge
+									backgroundColor={
+										status === "online"
+											? "#24D626"
+											: "#B0B3C7"
+									}
+									w={4}
+									h={4}
+									top={1}
+									right={1}
+								/>
+							) : (
+								<Avatar.Badge
+									backgroundColor="transparent"
+									borderColor="transparent"
+									w={4}
+									h={4}
+									top={1}
+									right={1}
+								/>
+							)}
 						</Avatar>
 						<VStack style={{}} pl={3} flex={1}>
 							<HStack
@@ -99,7 +129,9 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 									borderRadius={4}
 									justifyContent="center"
 									alignItems="center"
-									style={{ backgroundColor: "rgba(37,143,190,0.2)" }}
+									style={{
+										backgroundColor: "rgba(37,143,190,0.2)",
+									}}
 								>
 									<MaterialCommunityIcons
 										name="clock-time-seven-outline"
