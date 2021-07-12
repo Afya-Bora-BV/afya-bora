@@ -67,7 +67,7 @@ const Home = () => {
 	const hasUpcomingAppointment = true;
 
 	return (
-		<ScrollView paddingTop={16}>
+		<ScrollView paddingTop={4}>
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<VStack paddingX={3} space={6}>
 				<HStack justifyContent="space-between" alignItems="center">

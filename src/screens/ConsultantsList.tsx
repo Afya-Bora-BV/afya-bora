@@ -26,7 +26,7 @@ const ConsultantsList = () => {
 	const selectConsultant = (consultant) =>
 		navigation.navigate("SetAppointmentTime", { consultant });
 	return (
-		<ScrollView paddingTop={12}>
+		<ScrollView paddingTop={2}>
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<VStack p={2} space={6}>
 				{/* TODO: to be moved to components folder */}

@@ -23,6 +23,7 @@ import { Dimensions, StatusBar } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PrimaryButton } from "../components/button";
+import moment from "moment";
 
 export const CreateProfile = () => {
 	const navigation = useNavigation();
@@ -96,7 +97,11 @@ export const CreateProfile = () => {
 				></Stack>
 				<Stack paddingBottom={10}>
 					{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
-					<View justifyContent="center" alignItems="center" paddingY={20}>
+					<View
+						justifyContent="center"
+						alignItems="center"
+						paddingY={20}
+					>
 						<Text color="white" fontSize={24}>
 							Create A Health Profile
 						</Text>
@@ -194,8 +199,10 @@ export const CreateProfile = () => {
 												<>
 													<Input
 														// keyboardType={""}
-														value={friendlyFormatDate(
+														value={moment(
 															value
+														).format(
+															"DD MMMM YYYY"
 														)}
 														variant="rounded"
 														placeholder="28-10-2021"
@@ -252,7 +259,7 @@ export const CreateProfile = () => {
 															}}
 															value={value}
 															mode="date"
-															display="default"
+															display="spinner"
 															maximumDate={
 																new Date()
 															}

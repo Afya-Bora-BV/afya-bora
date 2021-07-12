@@ -29,7 +29,7 @@ import SignUpScreen from "./screens/SignUp";
 import VerifyScreen from "./screens/Verify";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
-import FindFacility from "./screens/FindFacility";
+import { FindFacility } from "./screens/FindFacility";
 import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
 import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
 
@@ -141,7 +141,7 @@ export default () => {
 					screenOptions={{
 						headerShown: false,
 					}}
-					// initialRouteName="CreateProfile"
+					initialRouteName="Home"
 				>
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -149,6 +149,7 @@ export default () => {
 					<Stack.Screen name="Service" component={ServiceScreen} />
 					<Stack.Screen
 						name="FindFacility"
+						initialParams={{ selected: 1, amount: 1 }}
 						component={FindFacility}
 					/>
 					<Stack.Screen

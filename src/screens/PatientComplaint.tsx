@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
 	Box,
 	Button,
@@ -8,22 +8,62 @@ import {
 	ScrollView,
 	Stack,
 	Text,
+	TextArea,
 } from "native-base";
 import { HeaderwithBack } from "../components/header";
 import { useNavigation } from "@react-navigation/native";
 import { Symptom } from "../components/bars";
 import { Spacer } from "../components/Spacer";
 import { colors } from "../contants/colors";
+import _ from "lodash";
+import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
+import { toggleStringFromList } from "../utils";
+
+const keySymptoms = [
+	"Fever",
+	"Vomitting",
+	"Chest Pain",
+	"Cough",
+	"Ear Pain",
+	"Skin Rash",
+];
 
 const PatientComplaint: React.FC = () => {
 	const navigation = useNavigation();
 
+	const [symptoms, setSymptoms] = useState<Array<string>>([]);
+
+	const toggleKeySymptom = (symptom: string) => {
+		const sy = toggleStringFromList(symptom, symptoms);
+		setSymptoms(sy);
+	};
+
 	const handleBack = () => navigation.goBack();
 
-	const handleNext = () => navigation.navigate("Home");
+	const handleSubmission = () => {
+		Alert.alert(
+			"Submit Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => {} },
+				{
+					text: "Confirm",
+					onPress: () => {
+						navigation.navigate("Home");
+						setTimeout(() =>
+							ToastAndroid.show(
+								"Appoinmtent request submitted!",
+								3000
+							)
+						);
+					},
+				},
+			]
+		);
+	};
 
 	return (
-		<ScrollView p={2} paddingTop={12}>
+		<ScrollView p={2} paddingTop={2}>
 			<HeaderwithBack text="About Your Visit" onBackPress={handleBack} />
 
 			<Spacer size={30} />
@@ -43,55 +83,81 @@ const PatientComplaint: React.FC = () => {
 
 						<Spacer size={30} />
 
-						<Stack>
-							<HStack
-								justifyContent={"space-between"}
-								flexWrap={"wrap"}
-							>
-								<Stack flex={1}>
-									<Symptom symptom="Fever" />
-								</Stack>
-
-								<Spacer size={10} horizontal />
-
-								<Stack flex={1}>
-									<Symptom symptom="Vomitting" />
-								</Stack>
-							</HStack>
-
-							<Spacer size={20} />
-
-							<HStack
-								justifyContent={"space-between"}
-								flexWrap={"wrap"}
-							>
-								<Stack flex={1}>
-									<Symptom symptom="Fever" />
-								</Stack>
-
-								<Spacer size={10} horizontal />
-
-								<Stack flex={1}>
-									<Symptom symptom="Vomitting" />
-								</Stack>
-							</HStack>
-
-							<Spacer size={20} />
-
-							<HStack
-								justifyContent={"space-between"}
-								flexWrap={"wrap"}
-							>
-								<Stack flex={1}>
-									<Symptom symptom="Fever" />
-								</Stack>
-
-								<Spacer size={10} horizontal />
-
-								<Stack flex={1}>
-									<Symptom symptom="Vomitting" />
-								</Stack>
-							</HStack>
+						<Stack space={2}>
+							{_.chunk(keySymptoms, 2).map(
+								([symptomA, symptomB], index) => (
+									<HStack space={3}>
+										<Box
+											rounded="xl"
+											borderColor="#ccc"
+											bg={
+												symptoms.includes(symptomA)
+													? "#258FBE"
+													: "#fff"
+											}
+											borderWidth={1}
+											flex={1}
+										>
+											<TouchableOpacity
+												style={{
+													padding: 10,
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+												onPress={() =>
+													toggleKeySymptom(symptomA)
+												}
+											>
+												<Text
+													color={
+														symptoms.includes(
+															symptomA
+														)
+															? "#fff"
+															: "#000"
+													}
+												>
+													{symptomA}
+												</Text>
+											</TouchableOpacity>
+										</Box>
+										<Box
+											rounded="xl"
+											borderColor="#ccc"
+											bg={
+												symptoms.includes(symptomB)
+													? "#258FBE"
+													: "#fff"
+											}
+											borderWidth={1}
+											flex={1}
+										>
+											<TouchableOpacity
+												style={{
+													padding: 10,
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+												onPress={() =>
+													toggleKeySymptom(symptomB)
+												}
+											>
+												<Text
+													color={
+														symptoms.includes(
+															symptomB
+														)
+															? "#fff"
+															: "#000"
+													}
+												>
+													{symptomB}
+												</Text>
+											</TouchableOpacity>
+										</Box>
+									</HStack>
+								)
+							)}
 						</Stack>
 					</Stack>
 				</Box>
@@ -106,24 +172,23 @@ const PatientComplaint: React.FC = () => {
 							paddingBottom: 40,
 						}}
 					>
-						<Text fontSize={"2xl"}>
+						<Text fontSize={"xl"}>
 							What is your primary reason for seeing the doctor?
 						</Text>
 
-						<Input
-							variant={"outline"}
-							placeholder="Type something"
-							// isFullWidth
-							multiline
-							numberOfLines={4}
-						/>
+						<Box mt={2}>
+							<TextArea
+								autoCorrect={false}
+								placeholder="Describe how you are feeling ..."
+							/>
+						</Box>
 					</Stack>
 				</Box>
 			</Stack>
 			<Button
 				my={6}
 				bg={colors.primary}
-				onPress={handleNext}
+				onPress={handleSubmission}
 				rounded={20}
 			>
 				Book Appointment
