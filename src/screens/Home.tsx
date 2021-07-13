@@ -45,8 +45,8 @@ const Home: React.FC = () => {
 	const { navigate } = useNavigation();
 	const hasUpcomingAppointment = true;
 
-	const user=auth().currentUser
-	console.log("user : ",user)
+	const user = auth().currentUser
+	console.log("user : ", user)
 	return (
 		<ScrollView>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}

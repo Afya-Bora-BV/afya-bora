@@ -86,7 +86,6 @@ export const CreateProfile = () => {
 	};
 
 
-
 	return (
 		<Box flex={1}>
 			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}

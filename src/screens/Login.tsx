@@ -64,8 +64,8 @@ const Login = () => {
 
 	console.log("Errrs", errors);
 	return (
-		<Box flex={1} data-testID="Login">
-			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}
+		<Box flex={1} marginTop={4}>
+			<StatusBar translucent backgroundColor={colors.primary} />
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}
@@ -86,7 +86,7 @@ const Login = () => {
 					{/* </Stack> */}
 
 					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded={10} width="90%">
+						<Box bg="white" shadow={2} rounded="lg" width="90%">
 							<Stack
 								style={{
 									paddingHorizontal: 20,
@@ -154,13 +154,13 @@ const Login = () => {
 													<Pressable
 														onPress={() =>
 															visibility ===
-															"eye-outline"
+																"eye-outline"
 																? setVisibility(
-																		"eye-off-outline"
-																  )
+																	"eye-off-outline"
+																)
 																: setVisibility(
-																		"eye-outline"
-																  )
+																	"eye-outline"
+																)
 														}
 													>
 														<MaterialCommunityIcons
