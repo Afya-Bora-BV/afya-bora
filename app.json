@@ -33,14 +33,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "with-rn-firebase",
-        {
-          "androidGoogleServicesPath": "./firebase/google-services.json"
-        }
-      ]
-    ]
+    }
   }
 }

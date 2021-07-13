@@ -32,10 +32,11 @@ import InfoIcon from "../assets/icons/InfoIcon";
 import LogoutIcon from "../assets/icons/LogoutIcon";
 
 
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 
 const signOut = async () => {
-	await auth().signOut()
+	// await auth().signOut()
+	console.log("Sign Out")
 
 }
 

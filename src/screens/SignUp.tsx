@@ -7,7 +7,7 @@ import { TextInput } from "../components/textFields";
 import { colors } from "../contants/colors";
 import { Number } from "../components/textFields";
 
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 import { useMutation } from 'react-query'
 import { ToastAndroid } from "react-native";
 
@@ -23,13 +23,13 @@ const SignUp = () => {
 	// Handle the button press
 	async function signInWithPhoneNumber() {
 		console.log("Signing in with : ", phoneNumber)
-		const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-		setConfirm(confirmation);
+		// const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+		// setConfirm(confirmation);
 	}
 
 	async function confirmCode() {
 		try {
-			await confirm.confirm(code);
+			// await confirm.confirm(code);
 
 		// TODO: when completed check the user phone number and check if is a new user or not
 		} catch (error) {

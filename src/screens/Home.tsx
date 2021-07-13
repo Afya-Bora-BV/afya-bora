@@ -31,7 +31,7 @@ import {
 import moment from "moment";
 import { TouchableOpacity } from "react-native";
 
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
 	return (
@@ -45,8 +45,11 @@ const Home: React.FC = () => {
 	const { navigate } = useNavigation();
 	const hasUpcomingAppointment = true;
 
-	const user=auth().currentUser
-	console.log("user : ",user)
+	// const user = {
+	// 	name: "Something"
+	// }
+	// const user=auth().currentUser
+	// console.log("user : ",user)
 	return (
 		<ScrollView>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}

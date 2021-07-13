@@ -61,7 +61,7 @@ import {
 	QueryClientProvider,
 } from 'react-query'
 
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 
 const Profile = () => {
 	return (
@@ -296,8 +296,8 @@ const AuthGate = () => {
 	}
 
 	useEffect(() => {
-		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		return subscriber; // unsubscribe on unmount
+		// const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		// return subscriber; // unsubscribe on unmount
 	}, []);
 
 	if (initializing) return null;
