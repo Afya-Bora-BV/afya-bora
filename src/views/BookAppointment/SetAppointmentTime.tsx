@@ -29,6 +29,8 @@ import { colors } from "../../contants/colors";
 import moment from "moment";
 import { toggleStringFromList } from "../../utils";
 
+import { NavKey } from "."
+
 const { width } = Dimensions.get("window");
 
 type SetAppointmentTimeScreenRouteProp = RouteProp<RootStackParamList, "SetAppointmentTime">;
@@ -59,7 +61,7 @@ export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) 
 
 	const consultant = route.params.consultant;
 	
-	const handleNext = () => navigation.navigate("PatientComplaint");
+	const handleNext = () => navigation.navigate(NavKey.PatientComplaintScreen);
 	return (
 		<ScrollView>
 			{/* <StatusBar backgroundColor="#fff" /> */}

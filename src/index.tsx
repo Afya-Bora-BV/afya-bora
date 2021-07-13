@@ -56,10 +56,7 @@ import { backgroundColor } from "styled-system";
 import { HealthRecords } from "./screens/HealthRecords";
 import ProfileMain from "./screens/ProfileMain";
 
-import {
-	QueryClient,
-	QueryClientProvider,
-} from 'react-query'
+import { QueryClient, QueryClientProvider } from "react-query";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -76,9 +73,11 @@ export type RootStackParamList = {
 	SetAppointmentTime: {
 		consultant: any;
 	};
+	PatientComplaint: {
+		consultant: any;
+		appointment: any;
+	};
 };
-
-
 
 export const AppTheme = {
 	...DefaultTheme,
@@ -229,11 +228,10 @@ const AuthStak: React.FC = () => {
 			<Stack.Screen name="Login" component={LoginScreen} />
 			<Stack.Screen name="SignUp" component={SignUpScreen} />
 			<Stack.Screen name="Verify" component={VerifyScreen} />
-			<Stack.Screen name="CreateProfile" component={CreateProfile}
-			/>
+			<Stack.Screen name="CreateProfile" component={CreateProfile} />
 		</Stack.Navigator>
-	)
-}
+	);
+};
 
 const MainStack: React.FC = () => {
 	return (
@@ -264,10 +262,7 @@ const MainStack: React.FC = () => {
 				component={OnlineConsultantSelectConsultant}
 			/>
 
-			<Stack.Screen
-				name="ConsultantsList"
-				component={ConsultantsList}
-			/>
+			<Stack.Screen name="ConsultantsList" component={ConsultantsList} />
 			<Stack.Screen
 				name="SetAppointmentTime"
 				component={SetAppointmentTime}
@@ -276,13 +271,10 @@ const MainStack: React.FC = () => {
 				name="PatientComplaint"
 				component={PatientComplaint}
 			/>
-			<Stack.Screen
-				name="HealthRecords"
-				component={HealthRecords}
-			/>
+			<Stack.Screen name="HealthRecords" component={HealthRecords} />
 		</Stack.Navigator>
-	)
-}
+	);
+};
 
 const AuthGate = () => {
 	// Set an initializing state whilst Firebase connects
@@ -305,20 +297,15 @@ const AuthGate = () => {
 	// TODO: show main screen if only the user is signed in and registred
 	// considering using global store to track that info
 	if (!user) {
-		return (
-			<AuthStak />
-		);
+		return <AuthStak />;
 	}
 
-	return (
-		<MainStack />
-	);
-}
-const queryClient = new QueryClient()
+	return <MainStack />;
+};
+const queryClient = new QueryClient();
 
 export default () => {
 	return (
-
 		<NavigationContainer theme={AppTheme}>
 			<StatusBar translucent backgroundColor={colors.primary} />
 			<QueryClientProvider client={queryClient}>
