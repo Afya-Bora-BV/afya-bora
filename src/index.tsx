@@ -32,8 +32,8 @@ import VerifyScreen from "./views/SignUp/VerifyScreen";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./views/BookAppointment/ConsultantsList";
 import { FindFacility } from "./screens/FindFacility";
-import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
-import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
+import OnlineConsultantSelectTime from "./views/OnlineConsult/OnlineConsultantSelectDateTime";
+import OnlineConsultantSelectConsultant from "./views/OnlineConsult/OnlineConsultChooseConsultant";
 import FindFacilityList from "./screens/FindFacilityList";
 
 import ProfileScreen from "./screens/Profile";

@@ -105,7 +105,7 @@ const Home: React.FC = () => {
 
 						<HeroIllustrationContainer
 							onPress={() =>
-								navigation.navigate("OnlineConsultantSelectTime")
+								navigation.navigate(MainNavKey.OnlineConsultViewScreen)
 							}
 						>
 							<OnlineConsulationIllustration size={70} />
