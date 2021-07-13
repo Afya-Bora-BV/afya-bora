@@ -68,7 +68,19 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 
 	// console.log(consultant);
 
-	const handleNext = () => navigation.navigate("PatientComplaint");
+	// {
+	// 	consultant: string
+	// 	timeSlot: string
+	// 	date: Date
+	// 	symptoms: "" | ""
+	// 	reason: string
+	// }
+
+	const handleNext = () =>
+		navigation.navigate("PatientComplaint", {
+			consultant,
+			appointement: state,
+		});
 	return (
 		<ScrollView p={2} marginTop={8}>
 			{/* <StatusBar backgroundColor="#fff" /> */}

@@ -11,13 +11,15 @@ import {
 	TextArea,
 } from "native-base";
 import { HeaderwithBack } from "../components/header";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { Symptom } from "../components/bars";
 import { Spacer } from "../components/Spacer";
 import { colors } from "../contants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
 import { toggleStringFromList } from "../utils";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "..";
 
 const keySymptoms = [
 	"Fever",
@@ -28,7 +30,22 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
-const PatientComplaint: React.FC = () => {
+type PatientComplaintScreenRouteProp = RouteProp<
+	RootStackParamList,
+	"PatientComplaint"
+>;
+
+type PatientComplaintNavigationProp = StackNavigationProp<
+	RootStackParamList,
+	"PatientComplaint"
+>;
+
+type PatientComplaintProps = {
+	route: PatientComplaintScreenRouteProp;
+	navigation: PatientComplaintNavigationProp;
+};
+
+const PatientComplaint: React.FC<PatientComplaintProps> = ({ route }) => {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
@@ -37,6 +54,10 @@ const PatientComplaint: React.FC = () => {
 		const sy = toggleStringFromList(symptom, symptoms);
 		setSymptoms(sy);
 	};
+
+	const consultant = route.params.consultant;
+
+	const appointment = route.params.appointment;
 
 	const handleBack = () => navigation.goBack();
 
@@ -50,6 +71,7 @@ const PatientComplaint: React.FC = () => {
 					text: "Confirm",
 					onPress: () => {
 						navigation.navigate("Home");
+						// console.log(symptoms);
 						setTimeout(() =>
 							ToastAndroid.show(
 								"Appoinmtent request submitted!",
