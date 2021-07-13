@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import SignUpScreen from '../../screens/SignUp'
-import VerifyScreen from '../../screens/Verify'
+import SignUpScreen from './SignUpScreen'
+import VerifyScreen from './VerifyScreen'
 
 const Stack = createStackNavigator()
 
@@ -14,6 +14,7 @@ export default function SignUpView () {
     return (
         <Stack.Navigator
             headerMode="none"
+            initialRouteName={NavKey.SignUpScreen}
         >
             <Stack.Screen name={NavKey.SignUpScreen} component={SignUpScreen}/>
             <Stack.Screen name={NavKey.VerifyScreen} component={VerifyScreen}/>

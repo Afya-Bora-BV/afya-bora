@@ -20,6 +20,13 @@ interface AuthStore {
         | User      // user exist and logged in
         | null      // user logged out
     login: () => Promise<void>
+
+    /**
+     * @Returns something
+     * Error: something
+     */
+    signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
+    confirmPhoneCode: (code: string) => Promise<void>
 }
 
 const { Provider, useStore } = createContext<AuthStore>()
@@ -35,8 +42,28 @@ const createAuthStore = () => create<AuthStore>((set, get) => ({
             user: {
                 uid: "h9172",
                 name: "George",
-            }
+            } as User
         })
+    },
+
+    // Signing in for user
+    signInWithPhoneNumber: async function (phoneNumber) {
+
+    },
+
+    // confirming code
+    confirmPhoneCode: async function (code) {
+        // create fake person after 2 seconds
+        setInterval(() => {
+            // NOTE: if user is set, it forces the state of `user` in the 
+            //  `App.tsx -> <Main />` to change, thus forcing a login
+            set({
+                user: {
+                    uid: "r31e4",
+                    name: "Raghav",
+                } as User
+            })
+        }, 2000)
     }
 }))
 

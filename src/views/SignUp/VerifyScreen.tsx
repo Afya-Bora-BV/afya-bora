@@ -1,14 +1,34 @@
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, ScrollView, Stack, Text } from "native-base";
-import React from "react";
-import { PrimaryButton } from "../components/button";
-import { HeaderwithBack } from "../components/header";
-import { Spacer } from "../components/Spacer";
-import { Number } from "../components/textFields";
-import { colors } from "../contants/colors";
+import { PrimaryButton } from "../../components/button";
+import { HeaderwithBack } from "../../components/header";
+import { Spacer } from "../../components/Spacer";
+import { Number } from "../../components/textFields";
+import { colors } from "../../contants/colors";
+import { useState } from "react";
+import { useAuthStore } from "../../internals/auth/context";
 
-const Verify = () => {
-	const navigation = useNavigation();
+export default function VerifyScreen ({ route }: any) {
+	const phoneNumber: string = route.params.phoneNumber
+	const [code, set] = useState<string | undefined>("3") 
+
+	const confirmCode = useAuthStore(state => state.confirmPhoneCode)
+	// do some action when the code is confirmed
+	const onConfirmCode = () => {
+
+		// stop if code is undefined
+		if (code === undefined) {
+			console.warn("Code is UNDEFINED")
+			return;
+		}
+
+		// if there is code, confirm it
+		confirmCode(code)
+			.then(() => console.log("Code confirmed. User object updated, moving to new page"))
+			.catch(err => console.log("There is a problem"))
+	}
+
 	return (
 		<ScrollView>
 			<Stack
@@ -28,7 +48,7 @@ const Verify = () => {
 					<HeaderwithBack
 						text="Verify Your Number"
 						onBackPress={() => {
-							navigation.navigate("SignUp");
+							navigation.goBack();
 						}}
 						color="white"
 					/>
@@ -42,7 +62,7 @@ const Verify = () => {
 							<Stack style={{ paddingHorizontal: 25 }}>
 								<Text style={{ justifyContent: "center" }}>
 									Enter the verification number that was sent
-									to your phone recently
+									to {phoneNumber}
 								</Text>
 							</Stack>
 							<Spacer size={30} />
@@ -50,18 +70,13 @@ const Verify = () => {
 								justifyContent={"space-between"}
 								style={{ paddingHorizontal: 30 }}
 							>
-								<Number />
-								<Number />
-								<Number />
-								<Number />
+								{/* <Number number={} /> */}
 							</HStack>
 						</Stack>
 						<Box mb={-6} paddingX={"5%"}>
 							<PrimaryButton
 								text={"Confirm"}
-								press={() => {
-									navigation.navigate("CreateProfile");
-								}}
+								press={onConfirmCode}
 							/>
 						</Box>
 					</Box>
@@ -73,5 +88,3 @@ const Verify = () => {
 		</ScrollView>
 	);
 };
-
-export default Verify;

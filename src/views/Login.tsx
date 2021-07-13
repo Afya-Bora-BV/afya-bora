@@ -26,7 +26,8 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { NavKey as PlainAppNavKey } from '../views/_PlainAppView'
+import { NavKey as PlainAppNavKey } from './_PlainAppView'
+import { useAuthStore } from "../internals/auth/context";
 
 interface LoginFormInputs {
 	email: string;
@@ -38,11 +39,15 @@ const schema = yup.object().shape({
 	password: yup.string().nullable().required(),
 });
 
+let render = 0
+
 const Login = () => {
+	// const [remember, setRemember] = React.useState(false);
 	const [visibility, setVisibility] = React.useState("eye-off-outline");
-	const [remember, setRemember] = React.useState(false);
 	const navigation = useNavigation();
-	const { width, height } = Dimensions.get("screen");
+	const login = useAuthStore(state => state.login)
+	
+	const { height } = Dimensions.get("screen");
 
 	const {
 		control,
@@ -52,16 +57,14 @@ const Login = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmit = (data: LoginFormInputs) => {
+	const onLogin = (data: LoginFormInputs) => {
 		console.log(data);
-		nav();
+		login()
+			.then(() => console.log("Loggin success"))
+			.catch(err => console.error("Something!"))
 	};
 
-	const nav = () => {
-		navigation.navigate("Home");
-	};
-
-	console.log("Errrs", errors);
+	console.log('Rendering loginpage:', render++)
 	return (
 		<Box flex={1} data-testID="Login">
 			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}
@@ -198,7 +201,7 @@ const Login = () => {
 								<PrimaryButton
 									text={"Login"}
 									shadow={5}
-									press={() => navigation.navigate("Home")}
+									press={onLogin}
 								/>
 							</Box>
 						</Box>

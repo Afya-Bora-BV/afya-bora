@@ -64,20 +64,18 @@ export const AppTheme = {
 };
 
 function Main () {
-    const [login, user] = useAuthStore(({login, user}) => [login, user, closeSplash])
-    const [closeSplash, setSplashScreenVisible] = useState(false)
+    const user = useAuthStore(state => state.user)
+    const [isSplashToClose, setSplashToHide] = useState(false)
 
     // eecuted when screen is viewed
     useEffect(() => {
-        setSplashScreenVisible(true)
-        // login()
-        // .finally(() => {
-        //     // This
-        // })
+        // checks from storage, if there is internal state of the user
+        //  if there is or missing, remoce
+        setSplashToHide(true)
     }, [])
 
     // Show splash screen if not ready
-    if (!closeSplash) return <Splash />
+    if (!isSplashToClose) return <Splash />
 
 
     if (user !== null && user !== undefined) {

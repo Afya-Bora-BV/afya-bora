@@ -26,9 +26,9 @@ import { PicAvatar } from "./components/avatar";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/Home";
-import LoginScreen from "./screens/Login";
+import LoginScreen from "./views/Login";
 import SignUpScreen from "./screens/SignUp";
-import VerifyScreen from "./screens/Verify";
+import VerifyScreen from "./views/SignUp/VerifyScreen";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
 import { FindFacility } from "./screens/FindFacility";
