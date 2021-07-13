@@ -29,8 +29,9 @@ import {
 	TopRatedSpecialists,
 } from "../components/cards";
 import moment from "moment";
-import { TouchableOpacity } from "react-native";
 
+
+import { NavKey as MainNavKey } from './_Authenticated'
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
@@ -42,7 +43,7 @@ const IconContainer: React.FC = ({ children }) => {
 };
 
 const Home: React.FC = () => {
-	const { navigate } = useNavigation();
+	const navigation = useNavigation();
 	const hasUpcomingAppointment = true;
 
 	// const user = {
@@ -96,7 +97,7 @@ const Home: React.FC = () => {
 						justifyContent="space-between"
 					>
 						<HeroIllustrationContainer
-							onPress={() => navigate("ConsultantsList")}
+							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
 						>
 							<AppointmentIllustration size={70} />
 							<Text textAlign="center">Appointment Booking</Text>
@@ -104,7 +105,7 @@ const Home: React.FC = () => {
 
 						<HeroIllustrationContainer
 							onPress={() =>
-								navigate("OnlineConsultantSelectTime")
+								navigation.navigate("OnlineConsultantSelectTime")
 							}
 						>
 							<OnlineConsulationIllustration size={70} />
@@ -119,7 +120,7 @@ const Home: React.FC = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigate("FindFacility")}
+							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>

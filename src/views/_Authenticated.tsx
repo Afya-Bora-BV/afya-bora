@@ -3,14 +3,13 @@ import React from 'react'
 import { createStackNavigator } from "@react-navigation/stack"
 import { Container, Text, View } from "native-base"
 import HomeScreen from './Home'
-import SignUpView from './SignUp'
-import OnlineConsultantSelectConsultantScreen from '../screens/OnlineConsultantSelectConsultant'
+import BookAppointmentView from './BookAppointment'
 
 const NavStack = createStackNavigator()
 
 export const NavKey = {
     HomeScreen: "HomeScreen",
-    BookAppointmentScreen: "BookAppointmentScreen"
+    BookAppointmentViewScreen: "BookAppointmentView",
 }
 
 export default function AuthenticatedAppView() {
@@ -19,7 +18,7 @@ export default function AuthenticatedAppView() {
             headerMode="none"
         >
             <NavStack.Screen name={NavKey.HomeScreen} component={HomeScreen} />
-            <NavStack.Screen name={NavKey.BookAppointmentScreen} component={OnlineConsultantSelectConsultantScreen} />
+            <NavStack.Screen name={NavKey.BookAppointmentViewScreen} component={BookAppointmentView} />
         </NavStack.Navigator>
     )
 }

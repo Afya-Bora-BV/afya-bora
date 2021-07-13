@@ -10,14 +10,16 @@ import {
 	Text,
 	TextArea,
 } from "native-base";
-import { HeaderwithBack } from "../components/header";
-import { useNavigation } from "@react-navigation/native";
-import { Symptom } from "../components/bars";
-import { Spacer } from "../components/Spacer";
-import { colors } from "../contants/colors";
+import { HeaderwithBack } from "../../components/header";
+import { CommonActions, StackActions, useNavigation } from "@react-navigation/native";
+import { Symptom } from "../../components/bars";
+import { Spacer } from "../../components/Spacer";
+import { colors } from "../../contants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
-import { toggleStringFromList } from "../utils";
+import { toggleStringFromList } from "../../utils";
+
+import { NavKey as AuthNavKey } from "../_Authenticated";
 
 const keySymptoms = [
 	"Fever",
@@ -28,7 +30,7 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
-const PatientComplaint: React.FC = () => {
+export function PatientComplaint () {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
@@ -38,33 +40,40 @@ const PatientComplaint: React.FC = () => {
 		setSymptoms(sy);
 	};
 
-	const handleBack = () => navigation.goBack();
+	const onSubmit = () => {
+		navigation.navigate(AuthNavKey.HomeScreen)
 
-	const handleSubmission = () => {
-		Alert.alert(
-			"Submit Request",
-			"Please confirm that you have entered correct information.",
-			[
-				{ text: "Cancel", onPress: () => {} },
-				{
-					text: "Confirm",
-					onPress: () => {
-						navigation.navigate("Home");
-						setTimeout(() =>
-							ToastAndroid.show(
-								"Appoinmtent request submitted!",
-								3000
-							)
-						);
-					},
-				},
-			]
-		);
+		// console.log(navigation.dangerouslyGetParent())
+
+		// FIXME (ghmecc): This is platform-centric code, right? to mean
+		//  that this code won't render on the web sio? any way to help with that?
+		// ---------------------------------------- 
+		// Alert.alert(
+		// 	"Submit Request",
+		// 	"Please confirm that you have entered correct information.",
+		// 	[
+		// 		{ text: "Cancel", onPress: () => {} },
+		// 		{
+		// 			text: "Confirm",
+		// 			onPress: () => {
+		// 				navigation.dispatch(
+		// 					StackActions.popToTop()
+		// 				);
+		// 				setTimeout(() =>
+		// 					ToastAndroid.show(
+		// 						"Appoinmtent request submitted!",
+		// 						3000
+		// 					)
+		// 				);
+		// 			},
+		// 		},
+		// 	]
+		// );
 	};
 
 	return (
-		<ScrollView p={2} paddingTop={8}>
-			<HeaderwithBack text="About Your Visit" onBackPress={handleBack} />
+		<ScrollView>
+			<HeaderwithBack text="About Your Visit" onBackPress={navigation.goBack} />
 
 			<Spacer size={30} />
 
@@ -188,7 +197,7 @@ const PatientComplaint: React.FC = () => {
 			<Button
 				my={6}
 				bg={colors.primary}
-				onPress={handleSubmission}
+				onPress={onSubmit}
 				rounded={20}
 			>
 				Book Appointment
@@ -197,5 +206,3 @@ const PatientComplaint: React.FC = () => {
 		</ScrollView>
 	);
 };
-
-export { PatientComplaint };

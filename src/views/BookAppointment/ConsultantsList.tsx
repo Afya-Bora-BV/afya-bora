@@ -7,24 +7,22 @@ import {
 	ScrollView,
 	StatusBar,
 } from "native-base";
-import IconContainer from "../components/icon-container";
-import BackIcon from "../assets/icons/BackIcon";
-import { ConsultantListItem } from "../components/consultant-list-item";
+import { ConsultantListItem } from "../../components/consultant-list-item";
 import { useNavigation } from "@react-navigation/native";
-import { consultants } from "../data/consultants";
-import { HeaderWith2Icons } from "../components/header";
+import { consultants } from "../../data/consultants";
+import { HeaderWith2Icons } from "../../components/header";
+
+import { NavKey } from '.'
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
 
-	const nav = () => {
-		navigation.navigate("Home");
+	const navigateBack = () => {
+		navigation.goBack();
 	};
 
-	const nearest = () => {};
-
-	const selectConsultant = (consultant) =>
-		navigation.navigate("SetAppointmentTime", { consultant });
+	const selectConsultant = (consultant: any) =>
+		navigation.navigate(NavKey.SetAppointmentTimeScreen, { consultant });
 	return (
 		<ScrollView paddingTop={8}>
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
@@ -33,8 +31,8 @@ const ConsultantsList = () => {
 				<HeaderWith2Icons
 					text={"Choose a Consultant"}
 					rText={"Nearest"}
-					iconPress={nav}
-					onPress={nearest}
+					iconPress={navigateBack}
+					// onPress={nearest}
 				/>
 
 				<VStack space={2}>
