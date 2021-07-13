@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import CalendarIllustration from "../assets/illustrations/CalendarIllustration";
 import NewspaperIllustration from "../assets/illustrations/NewspaperIllustration";
 
+
 const Profile: React.FC = () => {
 	const navigation = useNavigation();
 
@@ -126,7 +127,7 @@ const Profile: React.FC = () => {
 							</Box>
 
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}
@@ -156,7 +157,7 @@ const Profile: React.FC = () => {
 							justifyContent="space-between"
 						>
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}
@@ -177,7 +178,7 @@ const Profile: React.FC = () => {
 							</Box>
 
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}

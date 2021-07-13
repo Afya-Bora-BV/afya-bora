@@ -31,6 +31,14 @@ import PhoneIcon from "../assets/icons/PhoneIcon";
 import InfoIcon from "../assets/icons/InfoIcon";
 import LogoutIcon from "../assets/icons/LogoutIcon";
 
+
+import auth from '@react-native-firebase/auth';
+
+const signOut = async () => {
+	await auth().signOut()
+
+}
+
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
 
@@ -249,9 +257,7 @@ const ProfileMain: React.FC = () => {
 								<Spacer size={5} />
 
 								<Pressable
-									onPress={() =>
-										navigation.navigate("Profile")
-									}
+									onPress={signOut}
 								>
 									<HStack alignItems="center">
 										<Stack flex={0.5}>

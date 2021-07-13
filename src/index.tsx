@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HStack,
 	NativeBaseProvider,
@@ -56,6 +56,13 @@ import { backgroundColor } from "styled-system";
 import { HealthRecords } from "./screens/HealthRecords";
 import ProfileMain from "./screens/ProfileMain";
 
+import {
+	QueryClient,
+	QueryClientProvider,
+} from 'react-query'
+
+import auth from '@react-native-firebase/auth';
+
 const Profile = () => {
 	return (
 		<HStack space={4} alignItems="center">
@@ -71,7 +78,7 @@ export type RootStackParamList = {
 	};
 };
 
-const Stack = createStackNavigator();
+
 
 export const AppTheme = {
 	...DefaultTheme,
@@ -153,6 +160,7 @@ const AllComponents: React.FC = () => {
 };
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 // TODO: customize tab look, icons and behaviour
 const MainTab: React.FC = () => {
@@ -211,66 +219,113 @@ const MainTab: React.FC = () => {
 	);
 };
 
+const AuthStak: React.FC = () => {
+	return (
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false,
+			}}
+		>
+			<Stack.Screen name="Login" component={LoginScreen} />
+			<Stack.Screen name="SignUp" component={SignUpScreen} />
+			<Stack.Screen name="Verify" component={VerifyScreen} />
+			<Stack.Screen name="CreateProfile" component={CreateProfile}
+			/>
+		</Stack.Navigator>
+	)
+}
+
+const MainStack: React.FC = () => {
+	return (
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false,
+			}}
+			initialRouteName="Home"
+		>
+			<Stack.Screen name="Home" component={MainTab} />
+			<Stack.Screen name="Service" component={ServiceScreen} />
+			<Stack.Screen name="Profile" component={ProfileScreen} />
+			<Stack.Screen
+				name="FindFacility"
+				initialParams={{ selected: 1, amount: 1 }}
+				component={FindFacility}
+			/>
+			<Stack.Screen
+				name="FindFacilityList"
+				component={FindFacilityList}
+			/>
+			<Stack.Screen
+				name="OnlineConsultantSelectTime"
+				component={OnlineConsultantSelectTime}
+			/>
+			<Stack.Screen
+				name="OnlineConsultantSelectConsultant"
+				component={OnlineConsultantSelectConsultant}
+			/>
+
+			<Stack.Screen
+				name="ConsultantsList"
+				component={ConsultantsList}
+			/>
+			<Stack.Screen
+				name="SetAppointmentTime"
+				component={SetAppointmentTime}
+			/>
+			<Stack.Screen
+				name="PatientComplaint"
+				component={PatientComplaint}
+			/>
+			<Stack.Screen
+				name="HealthRecords"
+				component={HealthRecords}
+			/>
+		</Stack.Navigator>
+	)
+}
+
+const AuthGate = () => {
+	// Set an initializing state whilst Firebase connects
+	const [initializing, setInitializing] = useState(true);
+	const [user, setUser] = useState();
+
+	// Handle user state changes
+	function onAuthStateChanged(user) {
+		setUser(user);
+		if (initializing) setInitializing(false);
+	}
+
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber; // unsubscribe on unmount
+	}, []);
+
+	if (initializing) return null;
+
+	// TODO: show main screen if only the user is signed in and registred
+	// considering using global store to track that info
+	if (!user) {
+		return (
+			<AuthStak />
+		);
+	}
+
+	return (
+		<MainStack />
+	);
+}
+const queryClient = new QueryClient()
+
 export default () => {
 	return (
+
 		<NavigationContainer theme={AppTheme}>
 			<StatusBar translucent backgroundColor={colors.primary} />
-			<NativeBaseProvider theme={theme}>
-				<Stack.Navigator
-					screenOptions={{
-						headerShown: false,
-					}}
-					//initialRouteName="HealthRecords"
-				>
-					<Stack.Screen name="Login" component={LoginScreen} />
-					<Stack.Screen name="SignUp" component={SignUpScreen} />
-					<Stack.Screen name="Verify" component={VerifyScreen} />
-					<Stack.Screen name="Service" component={ServiceScreen} />
-					<Stack.Screen name="Profile" component={ProfileScreen} />
-					<Stack.Screen
-						name="FindFacility"
-						initialParams={{ selected: 1, amount: 1 }}
-						component={FindFacility}
-					/>
-					<Stack.Screen
-						name="FindFacilityList"
-						component={FindFacilityList}
-					/>
-					<Stack.Screen
-						name="OnlineConsultantSelectTime"
-						component={OnlineConsultantSelectTime}
-					/>
-					<Stack.Screen
-						name="OnlineConsultantSelectConsultant"
-						component={OnlineConsultantSelectConsultant}
-					/>
-
-					<Stack.Screen name="Home" component={MainTab} />
-
-					<Stack.Screen
-						name="CreateProfile"
-						component={CreateProfile}
-					/>
-
-					<Stack.Screen
-						name="ConsultantsList"
-						component={ConsultantsList}
-					/>
-					<Stack.Screen
-						name="SetAppointmentTime"
-						component={SetAppointmentTime}
-					/>
-					<Stack.Screen
-						name="PatientComplaint"
-						component={PatientComplaint}
-					/>
-					<Stack.Screen
-						name="HealthRecords"
-						component={HealthRecords}
-					/>
-					{/* <Stack.Screen name="Profile" component={Profile} /> */}
-				</Stack.Navigator>
-			</NativeBaseProvider>
+			<QueryClientProvider client={queryClient}>
+				<NativeBaseProvider theme={theme}>
+					<AuthGate />
+				</NativeBaseProvider>
+			</QueryClientProvider>
 		</NavigationContainer>
 	);
 };

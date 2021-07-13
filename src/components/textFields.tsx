@@ -7,6 +7,7 @@ import {
 	Text,
 	Pressable,
 	HStack,
+	IInputProps,
 } from "native-base";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
@@ -16,14 +17,14 @@ import { Spacer } from "./Spacer";
 
 type inputProp = {
 	holderText: string;
-};
+} & IInputProps;
 
-export const TextInput: React.FC<inputProp> = ({ holderText }) => {
+export const TextInput: React.FC<inputProp> = ({ holderText, ...rest }) => {
 	return (
 		<Stack>
 			<Text>{holderText}</Text>
 			<Spacer size={10} />
-			<Input variant="rounded" placeholder={holderText} />
+			<Input variant="rounded" placeholder={holderText} {...rest} />
 		</Stack>
 	);
 };

@@ -25,6 +25,28 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PrimaryButton } from "../components/button";
 import moment from "moment";
 
+
+function friendlyFormatDate(timeStamp: Date | string | number) {
+	const dateObj = new Date(timeStamp);
+
+	const date = dateObj.getDate();
+	const month = dateObj.getMonth();
+	const year = dateObj.getFullYear();
+
+	return `${date}-${month + 1}-${year}`;
+}
+
+//yup form control attrib
+interface LoginFormInputs {
+	name: string;
+	gender: "male" | "female" | "other";
+	dateOfBirth: Date;
+}
+
+const schema = yup.object().shape({
+	email: yup.string().required(),
+});
+
 export const CreateProfile = () => {
 	const navigation = useNavigation();
 	const [gender, setGender] = React.useState();
@@ -33,18 +55,6 @@ export const CreateProfile = () => {
 	const [bloodGroup, setBloodGroup] = React.useState();
 	const [location, setLocation] = React.useState();
 
-	//yup form control attrib
-	interface LoginFormInputs {
-		name: string;
-		gender: "male" | "female" | "other";
-		dateOfBirth: Date;
-	}
-
-	const schema = yup.object().shape({
-		email: yup.string().required(),
-		// gender: required(),
-		// dateOfBirth: yup.date().required(),
-	});
 
 	const {
 		control,
@@ -60,6 +70,9 @@ export const CreateProfile = () => {
 	};
 
 	//navigation attrib
+
+	// TODO: on registering instead of navigating just update the global store which in turn will update the stack
+	// to render
 	const nav = () => {
 		navigation.navigate("Home");
 	};
@@ -72,15 +85,7 @@ export const CreateProfile = () => {
 		setShow(true);
 	};
 
-	function friendlyFormatDate(timeStamp: Date | string | number) {
-		const dateObj = new Date(timeStamp);
 
-		const date = dateObj.getDate();
-		const month = dateObj.getMonth();
-		const year = dateObj.getFullYear();
-
-		return `${date}-${month + 1}-${year}`;
-	}
 
 	return (
 		<Box flex={1}>
@@ -147,9 +152,9 @@ export const CreateProfile = () => {
 													autoCapitalize={"words"}
 												/>
 											)}
-											// name="names"
-											// rules={{ required: true }}
-											// defaultValue=""
+										// name="names"
+										// rules={{ required: true }}
+										// defaultValue=""
 										/>
 									</Stack>
 
@@ -212,7 +217,7 @@ export const CreateProfile = () => {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => {}}
+														) => { }}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -251,7 +256,7 @@ export const CreateProfile = () => {
 																	date;
 																setShow(
 																	Platform.OS ===
-																		"ios"
+																	"ios"
 																);
 																onChange(
 																	currentDate
@@ -316,9 +321,9 @@ export const CreateProfile = () => {
 															}
 														/>
 													)}
-													// name="names"
-													// rules={{ required: true }}
-													// defaultValue=""
+												// name="names"
+												// rules={{ required: true }}
+												// defaultValue=""
 												/>
 											</Stack>
 
@@ -365,9 +370,9 @@ export const CreateProfile = () => {
 															}
 														/>
 													)}
-													// name="names"
-													// rules={{ required: true }}
-													// defaultValue=""
+												// name="names"
+												// rules={{ required: true }}
+												// defaultValue=""
 												/>
 											</Stack>
 										</HStack>
