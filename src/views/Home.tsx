@@ -51,7 +51,7 @@ const Home: React.FC = () => {
 	// const user=auth().currentUser
 	// console.log("user : ",user)
 	return (
-		<ScrollView>
+		<ScrollView width="100%">
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
 			<VStack paddingX={3} space={6} marginTop={10}>
 				<HStack justifyContent="space-between" alignItems="center">
@@ -131,24 +131,34 @@ const Home: React.FC = () => {
 				<VStack>
 					<Heading fontSize="md">Top Rated Specialists</Heading>
 
-					<ScrollView horizontal={true} m={2} height={250}>
+					<ScrollView horizontal={true} height={250}>
 						<HStack
 							justifyContent="space-between"
 							paddingBottom={10}
 							minWidth={"90%"}
 						>
-							<TopRatedSpecialists
-								name={"Dr. Maryam Mohamedali"}
-								gender={"female"}
-							/>
-							<TopRatedSpecialists
-								name={"Dr. Wyckliffe Sango"}
-								gender={"male"}
-							/>
-							<TopRatedSpecialists
-								name={"Dr. Ally Salim"}
-								gender={"male"}
-							/>
+							{
+								[
+									{
+										name: "Dr. Maryam Mohamedali",
+										gender: "female"
+									},
+									{
+										name: "Dr. Wyckliffe Sango",
+										gender: "male"
+									},
+									{
+										name: "Dr. Ally Salim",
+										gender: "male"
+									},
+								].map((specialist, ix) => (
+									<TopRatedSpecialists
+										key={`trspec-${ix}`}
+										name={specialist.name}
+										gender={specialist.gender}
+									/>
+								))
+							}
 						</HStack>
 					</ScrollView>
 				</VStack>

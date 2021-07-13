@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createStackNavigator } from "@react-navigation/stack"
 import { Container, Text, View } from "native-base"
-import HomeScreen from '../screens/Home'
+import HomeScreen from './Home'
 import SignUpView from './SignUp'
 import OnlineConsultantSelectConsultantScreen from '../screens/OnlineConsultantSelectConsultant'
 

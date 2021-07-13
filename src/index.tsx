@@ -25,7 +25,7 @@ import { CheckBox, FBLogo, TimeSet } from "./components/bars";
 import { PicAvatar } from "./components/avatar";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "./screens/Home";
+import HomeScreen from "./views/Home";
 import LoginScreen from "./views/Login";
 import SignUpScreen from "./screens/SignUp";
 import VerifyScreen from "./views/SignUp/VerifyScreen";
