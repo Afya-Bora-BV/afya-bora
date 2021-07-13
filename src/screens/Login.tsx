@@ -17,17 +17,16 @@ import {
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
-import { Header, IconContainer } from "../components/header";
-import { TextInput } from "../components/textFields";
 import { CheckBox } from "../components/bars";
 import { PrimaryButton } from "../components/button";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Spacer } from "../components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, StatusBar } from "react-native";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import { NavKey as PlainAppNavKey } from '../views/_PlainAppView'
 
 interface LoginFormInputs {
 	email: string;
@@ -212,7 +211,7 @@ const Login = () => {
 					<Text> Don't have an account? </Text>
 					<Pressable
 						onPress={() => {
-							navigation.navigate("SignUp");
+							navigation.navigate(PlainAppNavKey.SignUpViewScreen);
 						}}
 					>
 						<Text bold color={colors.primary}>

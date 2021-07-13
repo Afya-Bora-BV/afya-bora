@@ -5,9 +5,11 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { colors } from "./contants/colors";
 
 import PlainAppView from "./views/_PlainAppView";
-import { AuthProvider, useAuthStore } from './internals/firebase/context';
+import { AuthProvider, useAuthStore } from './internals/auth/context';
 import { useEffect } from 'react';
 import AuthenticatedAppView from './views/_AuthenticatedAppView';
+import { useState } from 'react';
+import Splash from './screens/Splash';
 
 export const theme = extendTheme({
 	colors: {
@@ -62,16 +64,27 @@ export const AppTheme = {
 };
 
 function Main () {
-    const [login, user] = useAuthStore(({login, user}) => [login, user])
+    const [login, user] = useAuthStore(({login, user}) => [login, user, closeSplash])
+    const [closeSplash, setSplashScreenVisible] = useState(false)
 
     // eecuted when screen is viewed
     useEffect(() => {
-        login()
+        setSplashScreenVisible(true)
+        // login()
+        // .finally(() => {
+        //     // This
+        // })
     }, [])
 
-    if (user !== null)
-        return <AuthenticatedAppView />
+    // Show splash screen if not ready
+    if (!closeSplash) return <Splash />
 
+
+    if (user !== null && user !== undefined) {
+        return <AuthenticatedAppView />
+    }
+
+    // Not authenticated
     return <PlainAppView />    
 }
 

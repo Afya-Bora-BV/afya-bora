@@ -2,17 +2,15 @@ import React from 'react'
 
 import { createStackNavigator } from "@react-navigation/stack"
 import { Container, Text, View } from "native-base"
+import HomeScreen from '../screens/Home'
+import SignUpView from './SignUp'
+import OnlineConsultantSelectConsultantScreen from '../screens/OnlineConsultantSelectConsultant'
 
 const NavStack = createStackNavigator()
 
-function AppView() {
-    return (
-        <Container flex={1} width="100%">
-            <View flex={1} justifyContent="center" alignItems="center" width="100%">
-                <Text alignSelf="center">Logged In!</Text>
-            </View>
-        </Container>
-    )
+export const NavKey = {
+    HomeScreen: "HomeScreen",
+    BookAppointmentScreen: "BookAppointmentScreen"
 }
 
 export default function AuthenticatedAppView() {
@@ -20,7 +18,8 @@ export default function AuthenticatedAppView() {
         <NavStack.Navigator
             headerMode="none"
         >
-            <NavStack.Screen name="LoginScreen" component={AppView} />
+            <NavStack.Screen name={NavKey.HomeScreen} component={HomeScreen} />
+            <NavStack.Screen name={NavKey.BookAppointmentScreen} component={OnlineConsultantSelectConsultantScreen} />
         </NavStack.Navigator>
     )
 }
