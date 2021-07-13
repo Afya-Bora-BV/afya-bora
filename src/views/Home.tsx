@@ -120,7 +120,7 @@ const Home: React.FC = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
+							onPress={() => navigation.navigate(MainNavKey.MapFaciltyViewScreen)}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
