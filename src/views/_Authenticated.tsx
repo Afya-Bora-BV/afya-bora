@@ -9,9 +9,9 @@ const Tab = createBottomTabNavigator()
 
 export const TabNavKey = {
     HomeView: "Home",
-    ScheduleView: "ScheduleView",
-    ChatView: "ChatView",
-    Profile: "ProfileView"
+    ScheduleView: "Schedule",
+    ChatView: "Chats",
+    Profile: "Profile"
 }
 
 export default function AuthenticatedAppView() {
