@@ -46,9 +46,7 @@ const Home: React.FC = () => {
 	const navigation = useNavigation();
 	const hasUpcomingAppointment = true;
 
-	const user = useAuthStore(state => state.user)
-
-	console.log("user : ", user)
+	// console.log("user : ", user)
 
 	return (
 		<ScrollView width="100%">
@@ -83,7 +81,7 @@ const Home: React.FC = () => {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, {user?.name}</Heading>
+					<Heading fontSize="3xl">Hi, Ally Salim</Heading>
 				</VStack>
 
 				{hasUpcomingAppointment && <UpcomingAppointmentsAlert />}
