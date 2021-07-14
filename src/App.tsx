@@ -1,20 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SplashScreen from 'react-native-splash-screen'
 
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+
+import { useFonts } from 'expo-font'
+
 import { colors } from "./contants/colors";
 
 import { AuthProvider, useAuthStore } from './internals/auth/context';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import Splash from './screens/Splash';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import PlainAppView from "./views/_Plain";
 import AuthenticatedAppView from './views/_Authenticated';
 
 export const theme = extendTheme({
+	fontConfig: {
+		"Ubuntu": {
+			100: {
+				normal: 'Ubuntu-Light',
+				italic: 'Ubuntu-LightItalic',
+			},
+			200: {
+				normal: 'Ubuntu-Light',
+				italic: 'Ubuntu-LightItalic',
+			},
+			300: {
+				normal: 'Ubuntu-Light',
+				italic: 'Ubuntu-LightItalic',
+			},
+			400: {
+				normal: 'Ubuntu-Regular',
+				italic: 'Ubuntu-Italic',
+			},
+			500: {
+				normal: 'Ubuntu-Medium',
+				italic: 'Ubuntu-MediumItalic',
+			},
+			600: {
+				normal: 'Ubuntu-Medium',
+				italic: 'Ubuntu-MediumItalic',
+			},
+			700: {
+				normal: 'Ubuntu-Bold',
+				italic: 'Ubuntu-BoldItalic',
+			},
+			800: {
+				normal: 'Ubuntu-Bold',
+				italic: 'Ubuntu-BoldItalic',
+			},
+			900: {
+				normal: 'Ubuntu-Bold',
+				italic: 'Ubuntu-BoldItalic',
+			},
+		}
+	},
+	fonts: {
+		heading: 'Ubuntu',
+		body: 'Ubuntu',
+		mono: 'Ubuntu',
+	},
 	colors: {
 		// Add new color
 		//   primary: {
@@ -90,6 +135,20 @@ function Main() {
 }
 
 export default function App () {
+	let [fontsLoaded] = useFonts({
+		"Ubuntu-Bold": require('./assets/fonts/Ubuntu-Bold.ttf'),
+		"Ubuntu-BoldItalic": require('./assets/fonts/Ubuntu-BoldItalic.ttf'),
+		
+		"Ubuntu-Light": require('./assets/fonts/Ubuntu-Light.ttf'),
+		"Ubuntu-LightItalic": require('./assets/fonts/Ubuntu-LightItalic.ttf'),
+
+		"Ubuntu-Medium": require('./assets/fonts/Ubuntu-Medium.ttf'),
+		"Ubuntu-MediumItalic": require('./assets/fonts/Ubuntu-MediumItalic.ttf'),
+
+		"Ubuntu-Regular": require('./assets/fonts/Ubuntu-Regular.ttf'),
+		"Ubuntu-Italic": require('./assets/fonts/Ubuntu-Italic.ttf'),
+	})
+	
     return (
 		<SafeAreaProvider>
 			<NativeBaseProvider theme={theme}>
