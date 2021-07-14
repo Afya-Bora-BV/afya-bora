@@ -68,7 +68,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 	const appointment = route.params.appointment;
 
 	const onSubmit = () => {
-		// console.log(navigation.dangerouslyGetParent())
+		// adding this here to fake the flow on the patient appointments
+		navigation.navigate(MainNavKey.HomeScreen);
 
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
