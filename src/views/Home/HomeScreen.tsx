@@ -83,7 +83,7 @@ export default function Home() {
 		>
 			<ScrollView width="100%">
 				{/* Welcome section */}
-				<VStack space={2} paddingTop={5} marginX={5}>
+				<VStack space={2} paddingTop={2} marginX={5}>
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>

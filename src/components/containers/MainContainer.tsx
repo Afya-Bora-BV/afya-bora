@@ -17,7 +17,8 @@ export default function MainContainer({
 					flexDirection="row"
 					justifyContent="space-between"
 					paddingX={5}
-					paddingY={8}
+					paddingTop={8}
+					paddingBottom={2}
 				>
 					{/* Left section */}
 					{LeftSection !== undefined ? (
