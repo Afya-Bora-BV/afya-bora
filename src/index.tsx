@@ -26,9 +26,9 @@ import { PicAvatar } from "./components/avatar";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/Home";
-import LoginScreen from "./views/Login";
-import SignUpScreen from "./screens/SignUp";
-import VerifyScreen from "./views/SignUp/VerifyScreen";
+// import LoginScreen from "./screens/Login";
+// import SignUpScreen from "./screens/SignUp";
+// import VerifyScreen from "./screens/Verify";
 import ServiceScreen from "./screens/Service";
 import ConsultantsList from "./screens/ConsultantsList";
 import { FindFacility } from "./screens/FindFacility";
@@ -56,7 +56,10 @@ import { backgroundColor } from "styled-system";
 import { HealthRecords } from "./screens/HealthRecords";
 import ProfileMain from "./screens/ProfileMain";
 
-import { QueryClient, QueryClientProvider } from "react-query";
+import {
+	QueryClient,
+	QueryClientProvider,
+} from 'react-query'
 
 // import auth from '@react-native-firebase/auth';
 
@@ -73,11 +76,9 @@ export type RootStackParamList = {
 	SetAppointmentTime: {
 		consultant: any;
 	};
-	PatientComplaint: {
-		consultant: any;
-		appointment: any;
-	};
 };
+
+
 
 export const AppTheme = {
 	...DefaultTheme,
@@ -225,13 +226,14 @@ const AuthStak: React.FC = () => {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name="Login" component={LoginScreen} />
+			{/* <Stack.Screen name="Login" component={LoginScreen} />
 			<Stack.Screen name="SignUp" component={SignUpScreen} />
-			<Stack.Screen name="Verify" component={VerifyScreen} />
-			<Stack.Screen name="CreateProfile" component={CreateProfile} />
+			<Stack.Screen name="Verify" component={VerifyScreen} /> */}
+			<Stack.Screen name="CreateProfile" component={CreateProfile}
+			/>
 		</Stack.Navigator>
-	);
-};
+	)
+}
 
 const MainStack: React.FC = () => {
 	return (
@@ -262,7 +264,10 @@ const MainStack: React.FC = () => {
 				component={OnlineConsultantSelectConsultant}
 			/>
 
-			<Stack.Screen name="ConsultantsList" component={ConsultantsList} />
+			<Stack.Screen
+				name="ConsultantsList"
+				component={ConsultantsList}
+			/>
 			<Stack.Screen
 				name="SetAppointmentTime"
 				component={SetAppointmentTime}
@@ -271,10 +276,13 @@ const MainStack: React.FC = () => {
 				name="PatientComplaint"
 				component={PatientComplaint}
 			/>
-			<Stack.Screen name="HealthRecords" component={HealthRecords} />
+			<Stack.Screen
+				name="HealthRecords"
+				component={HealthRecords}
+			/>
 		</Stack.Navigator>
-	);
-};
+	)
+}
 
 const AuthGate = () => {
 	// Set an initializing state whilst Firebase connects
@@ -288,8 +296,8 @@ const AuthGate = () => {
 	}
 
 	useEffect(() => {
-		// const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		// return subscriber; // unsubscribe on unmount
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber; // unsubscribe on unmount
 	}, []);
 
 	if (initializing) return null;
@@ -297,15 +305,20 @@ const AuthGate = () => {
 	// TODO: show main screen if only the user is signed in and registred
 	// considering using global store to track that info
 	if (!user) {
-		return <AuthStak />;
+		return (
+			<AuthStak />
+		);
 	}
 
-	return <MainStack />;
-};
-const queryClient = new QueryClient();
+	return (
+		<MainStack />
+	);
+}
+const queryClient = new QueryClient()
 
 export default () => {
 	return (
+
 		<NavigationContainer theme={AppTheme}>
 			<StatusBar translucent backgroundColor={colors.primary} />
 			<QueryClientProvider client={queryClient}>

@@ -41,7 +41,7 @@ const createAuthStore = () => create<AuthStore>((set, get) => ({
         set({
             user: {
                 uid: "h9172",
-                name: "George",
+                name: "George Millanzi",
             } as User
         })
     },

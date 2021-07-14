@@ -30,6 +30,7 @@ import {
 } from "../components/cards";
 import moment from "moment";
 import { TouchableOpacity } from "react-native";
+import { useAuthStore } from "../internals/auth/context";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -43,13 +44,13 @@ const IconContainer: React.FC = ({ children }) => {
 
 const Home: React.FC = () => {
 	const { navigate } = useNavigation();
+
 	const hasUpcomingAppointment = true;
 
-	// const user = {
-	// 	name: "Something"
-	// }
-	// const user=auth().currentUser
-	// console.log("user : ",user)
+	const user = useAuthStore(state => state.user)
+
+	console.log("user : ",user)
+	
 	return (
 		<ScrollView>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
@@ -83,7 +84,7 @@ const Home: React.FC = () => {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, Ally Salim</Heading>
+					<Heading fontSize="3xl">Hi, {user?.name}</Heading>
 				</VStack>
 
 				{hasUpcomingAppointment && <UpcomingAppointmentsAlert />}
