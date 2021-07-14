@@ -45,7 +45,7 @@ type SetAppointmentTimeProps = {
 // 	route: any;
 // };
 
-export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) {
+export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const navigation = useNavigation();
 	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
 		date: new Date(),
@@ -60,7 +60,7 @@ export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) 
 	const handleBackPress = () => navigation.goBack();
 
 	const consultant = route.params.consultant;
-	
+
 	const handleNext = () => navigation.navigate(NavKey.PatientComplaintScreen);
 	return (
 		<ScrollView>
@@ -140,12 +140,10 @@ export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) 
 						<VStack space="sm" mt={4}>
 							{_.times(14, (n) => {
 								const t = n + 6;
-								const time1 = `${
-									_.padStart(t + "", 2, "0") + ":00"
-								} ${t > 11 ? "PM" : "AM"}`;
-								const time2 = `${
-									_.padStart(t + "", 2, "0") + ":30"
-								} ${t > 11 ? "PM" : "AM"}`;
+								const time1 = `${_.padStart(t + "", 2, "0") + ":00"
+									} ${t > 11 ? "PM" : "AM"}`;
+								const time2 = `${_.padStart(t + "", 2, "0") + ":30"
+									} ${t > 11 ? "PM" : "AM"}`;
 								return (
 									<HStack flexWrap="wrap" space="md">
 										<TouchableOpacity
