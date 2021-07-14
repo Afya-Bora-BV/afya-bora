@@ -4,12 +4,14 @@ import { extendTheme, NativeBaseProvider } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { colors } from "./contants/colors";
 
-import PlainAppView from "./views/_Plain";
 import { AuthProvider, useAuthStore } from './internals/auth/context';
 import { useEffect } from 'react';
-import AuthenticatedAppView from './views/_Authenticated';
 import { useState } from 'react';
 import Splash from './screens/Splash';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import PlainAppView from "./views/_Plain";
+import AuthenticatedAppView from './views/_Authenticated';
 import { AppointmentTempoStoreProvider } from './internals/appointment/context';
 
 import {

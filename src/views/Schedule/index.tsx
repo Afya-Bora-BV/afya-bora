@@ -12,16 +12,16 @@ import {
 	Icon,
 	VStack,
 } from "native-base";
-import { colors } from "../contants/colors";
+import { colors } from "../../contants/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Pressable } from "react-native";
-import UpdateClock from "../assets/icons/UpdateClock";
-import Card_PurpleIcon from "../assets/icons/Card_PurpleIcon";
+import UpdateClock from "../../assets/icons/UpdateClock";
+import Card_PurpleIcon from "../../assets/icons/Card_PurpleIcon";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import Card_RedIcon from "../assets/icons/Card_RedIcon";
-import SquareCheckIcon from "../assets/icons/SquareCheckIcon";
-import { Spacer } from "../components/Spacer";
-import { PrimaryButton } from "../components/button";
+import Card_RedIcon from "../../assets/icons/Card_RedIcon";
+import SquareCheckIcon from "../../assets/icons/SquareCheckIcon";
+import { Spacer } from "../../components/Spacer";
+import { PrimaryButton } from "../../components/button";
 
 const Schedule: React.FC = () => {
 	const navigation = useNavigation();

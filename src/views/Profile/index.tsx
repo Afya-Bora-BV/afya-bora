@@ -11,14 +11,14 @@ import {
 	HStack,
 	Pressable,
 } from "native-base";
-import { colors } from "../contants/colors";
+import { colors } from "../../contants/colors";
 import { Dimensions } from "react-native";
-import { HeroIllustrationContainer, ProfileCard } from "../components/cards";
-import AppointmentIllustration from "../assets/illustrations/AppointmentIllustration";
-import OnlineConsulationIllustration from "../assets/illustrations/OnlineConsulationIllustration";
+import { HeroIllustrationContainer, ProfileCard } from "../../components/cards";
+import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
+import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
 import { useNavigation } from "@react-navigation/native";
-import CalendarIllustration from "../assets/illustrations/CalendarIllustration";
-import NewspaperIllustration from "../assets/illustrations/NewspaperIllustration";
+import CalendarIllustration from "../../assets/illustrations/CalendarIllustration";
+import NewspaperIllustration from "../../assets/illustrations/NewspaperIllustration";
 
 
 const Profile: React.FC = () => {

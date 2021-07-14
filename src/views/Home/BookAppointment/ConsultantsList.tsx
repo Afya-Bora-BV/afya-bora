@@ -7,10 +7,10 @@ import {
 	ScrollView,
 	StatusBar,
 } from "native-base";
-import { ConsultantListItem } from "../../components/consultant-list-item";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { useNavigation } from "@react-navigation/native";
-import { consultants } from "../../data/consultants";
-import { HeaderWith2Icons } from "../../components/header";
+import { consultants } from "../../../data/consultants";
+import { HeaderWith2Icons } from "../../../components/header";
 
 import { NavKey } from ".";
 

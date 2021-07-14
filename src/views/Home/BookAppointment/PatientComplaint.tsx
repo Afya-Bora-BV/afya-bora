@@ -10,26 +10,27 @@ import {
 	Text,
 	TextArea,
 } from "native-base";
-import { HeaderwithBack } from "../../components/header";
+import { HeaderwithBack } from "../../../components/header";
 import {
 	CommonActions,
 	RouteProp,
 	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
-import { Symptom } from "../../components/bars";
-import { Spacer } from "../../components/Spacer";
-import { colors } from "../../contants/colors";
+// import { Symptom } from "../../../components/bars";
+import { Spacer } from "../../../components/Spacer";
+import { colors } from "../../../contants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
-import { toggleStringFromList } from "../../utils";
+import { toggleStringFromList } from "../../../utils";
 
-import { NavKey as AuthNavKey } from "../_Authenticated";
+import { HomeNavKey as MainNavKey } from "../";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { BookAppointmentStackParamList } from ".";
-import { useAppointmentTempoStore } from "../../internals/appointment/context";
+import { useAppointmentTempoStore } from "../../../internals/appointment/context";
 
 import { useMutation } from 'react-query'
+import { TabNavKey } from "../../_Authenticated";
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -65,7 +66,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		},
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ")
-			navigation.navigate(AuthNavKey.HomeScreen);
+			navigation.navigate(TabNavKey.HomeView);
 			// Boom baby!
 		},
 
@@ -86,7 +87,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 	const appointment = route.params.appointment;
 
 	const onSubmit = () => {
-		// console.log(navigation.dangerouslyGetParent())
+		// adding this here to fake the flow on the patient appointments
+		navigation.navigate(MainNavKey.HomeScreen);
 
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?

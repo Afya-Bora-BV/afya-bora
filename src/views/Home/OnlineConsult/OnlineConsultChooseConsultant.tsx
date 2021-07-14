@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, VStack } from "native-base";
-import { HeaderwithBack } from "../../components/header";
+import { HeaderwithBack } from "../../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../components/consultant-list-item";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
 import _ from "lodash";
 
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment";
-import { NavKey as MainNavKey } from "../_Authenticated";
+import { HomeNavKey as MainNavKey } from "../";
 import { OnlineConsultStackParamList } from ".";
 import { StackNavigationProp } from "@react-navigation/stack";
 
