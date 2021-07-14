@@ -1,15 +1,15 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import Profile from "./Profile";
-import ProfileMain from "./MainScreen";
+import ProfileScreen from "./Profile";
+import MainProfileScreen from "./MainScreen";
 
 const Stack = createStackNavigator();
 
 export type ProfileStackParamList = {};
 
 export const ProfileNavKey = {
-	MainScreen: "ProfileMain",
-	ProfileScreen: "Profile",
+	MainScreen: "Profile.MainScreen",
+	ProfileScreen: "Profile.ProfileScreen",
 };
 
 export default function ProfileView() {
@@ -17,11 +17,11 @@ export default function ProfileView() {
 		<Stack.Navigator headerMode="none">
 			<Stack.Screen
 				name={ProfileNavKey.MainScreen}
-				component={ProfileMain}
+				component={MainProfileScreen}
 			/>
 			<Stack.Screen
 				name={ProfileNavKey.ProfileScreen}
-				component={Profile}
+				component={ProfileScreen}
 			/>
 		</Stack.Navigator>
 	);

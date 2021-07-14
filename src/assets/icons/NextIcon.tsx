@@ -2,7 +2,7 @@ import { Icon, IIconProps } from "native-base";
 import * as React from "react";
 import Svg, { SvgProps, Rect, Path } from "react-native-svg";
 
-function SvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
+function NextIcon({ size, color, ...rest }: SvgProps & IIconProps) {
 	return (
 		<Icon viewBox="0 0 33 32" size={size}>
 			<Svg
@@ -24,4 +24,4 @@ function SvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
 	);
 }
 
-export default SvgComponent;
+export default NextIcon;
