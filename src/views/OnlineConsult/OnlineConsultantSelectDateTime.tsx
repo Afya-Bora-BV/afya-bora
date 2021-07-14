@@ -23,17 +23,15 @@ import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { toggleStringFromList } from "../../utils";
 
+import { NavKey } from ".";
 
-import { NavKey } from '.'
-
-export default function OnlineConsultantSelectDateTime () {
+export default function OnlineConsultantSelectDateTime() {
 	const { goBack, navigate } = useNavigation();
 
 	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
 		date: new Date(),
 		timeSlots: [],
 	});
-
 
 	const daysListRef = useRef(null);
 
@@ -42,7 +40,6 @@ export default function OnlineConsultantSelectDateTime () {
 		setState((prev) => ({ ...prev, timeSlots: list }));
 	};
 
-
 	React.useEffect(() => {
 		console.log("Mounted");
 	}, []);
@@ -50,161 +47,195 @@ export default function OnlineConsultantSelectDateTime () {
 	const goNext = () => navigate(NavKey.ChooseConsultantScreen);
 
 	return (
-		<VStack flex={1} py={8} px={4} position="relative">
-			<VStack space={4}>
-				<HeaderwithBack
-					text="Day and Time"
-					onBackPress={() => goBack()}
-				/>
-				<VStack>
-					<Box bg="white" p={2} shadow={2} rounded={10} mb={1}>
-						<VStack p={1} space={10}>
-							<View>
-								<HStack justifyContent="space-between" mb={3}>
-									<Text fontSize="2xl" bold>
-										Pick a Date
-									</Text>
+		<ScrollView>
+			<VStack flex={1} py={8} px={4} position="relative">
+				<VStack space={4}>
+					<HeaderwithBack
+						text="Day and Time"
+						onBackPress={() => goBack()}
+					/>
+					<VStack>
+						<Box bg="white" p={2} shadow={2} rounded={10} mb={1}>
+							<VStack p={1} space={10}>
+								<View>
+									<HStack
+										justifyContent="space-between"
+										mb={3}
+									>
+										<Text fontSize="2xl" bold>
+											Pick a Date
+										</Text>
 
-									<MonthDropDown
-										onChangeDate={(date) =>
-											setState((prev) => ({ ...prev, date }))
-										}
-										date={state.date}
-									/>
-								</HStack>
-								<ScrollView
-									snapToInterval={2}
-									horizontal
-									paddingBottom={3}
-									ref={daysListRef}
-									onLayout={() =>
-										daysListRef.current?.scrollTo({
-											x: 50 * state.date.getDate(),
-											y: 0,
-										})
-									}
-								>
-									<HStack alignItems="center" space={1}>
-										{_.times(getDaysInMonth(state.date), (n) => {
-											const date = new Date(state.date);
-											date.setDate(n + 1);
-											return (
-												<CalendarDay
-													onPress={() =>
-														setState((p) => ({
-															...p,
-															date,
-														}))
-													}
-													key={n}
-													status={
-														isSameDay(date, state.date)
-															? "active"
-															: "inactive"
-													}
-													date={date}
-												/>
-											);
-										})}
+										<MonthDropDown
+											onChangeDate={(date) =>
+												setState((prev) => ({
+													...prev,
+													date,
+												}))
+											}
+											date={state.date}
+										/>
 									</HStack>
-								</ScrollView>
-							</View>
+									<ScrollView
+										snapToInterval={2}
+										horizontal
+										paddingBottom={3}
+										ref={daysListRef}
+										onLayout={() =>
+											daysListRef.current?.scrollTo({
+												x: 50 * state.date.getDate(),
+												y: 0,
+											})
+										}
+									>
+										<HStack alignItems="center" space={1}>
+											{_.times(
+												getDaysInMonth(state.date),
+												(n) => {
+													const date = new Date(
+														state.date
+													);
+													date.setDate(n + 1);
+													return (
+														<CalendarDay
+															onPress={() =>
+																setState(
+																	(p) => ({
+																		...p,
+																		date,
+																	})
+																)
+															}
+															key={n}
+															status={
+																isSameDay(
+																	date,
+																	state.date
+																)
+																	? "active"
+																	: "inactive"
+															}
+															date={date}
+														/>
+													);
+												}
+											)}
+										</HStack>
+									</ScrollView>
+								</View>
 
-							<View>
-								<HStack justifyContent="space-between">
-									<Text fontSize="2xl" bold>
-										Pick a Time
-									</Text>
-								</HStack>
+								<View>
+									<HStack justifyContent="space-between">
+										<Text fontSize="2xl" bold>
+											Pick a Time
+										</Text>
+									</HStack>
 
-								<VStack space="sm" mt={4}>
-									{_.times(14, (n) => {
-										const t = n + 6;
-										const time1 = `${_.padStart(t + "", 2, "0") + ":00"
+									<VStack space="sm" mt={4}>
+										{_.times(14, (n) => {
+											const t = n + 6;
+											const time1 = `${
+												_.padStart(t + "", 2, "0") +
+												":00"
 											} ${t > 11 ? "PM" : "AM"}`;
-										const time2 = `${_.padStart(t + "", 2, "0") + ":30"
+											const time2 = `${
+												_.padStart(t + "", 2, "0") +
+												":30"
 											} ${t > 11 ? "PM" : "AM"}`;
-										return (
-											<HStack flexWrap="wrap" space="md">
-												<TouchableOpacity
-													onPress={() => selectTime(time1)}
-													style={{ flex: 1 }}
+											return (
+												<HStack
+													flexWrap="wrap"
+													space="md"
 												>
-													<Box
-														borderWidth={1}
-														borderColor="#ccc"
-														rounded={10}
-														alignItems="center"
-														bg={
-															state.timeSlots.includes(
-																time1
-															)
-																? "#258FBE"
-																: "white"
+													<TouchableOpacity
+														onPress={() =>
+															selectTime(time1)
 														}
-														p={2}
+														style={{ flex: 1 }}
 													>
-														<Text
-															color={
-																!state.timeSlots.includes(
+														<Box
+															borderWidth={1}
+															borderColor="#ccc"
+															rounded={10}
+															alignItems="center"
+															bg={
+																state.timeSlots.includes(
 																	time1
 																)
-																	? "black"
+																	? "#258FBE"
 																	: "white"
 															}
+															p={2}
 														>
-															{time1}
-														</Text>
-													</Box>
-												</TouchableOpacity>
-												<TouchableOpacity
-													onPress={() => selectTime(time2)}
-													style={{ flex: 1 }}
-												>
-													<Box
-														borderWidth={1}
-														borderColor="#ccc"
-														rounded={10}
-														alignItems="center"
-														bg={
-															state.timeSlots.includes(
-																time2
-															)
-																? "#258FBE"
-																: "white"
+															<Text
+																color={
+																	!state.timeSlots.includes(
+																		time1
+																	)
+																		? "black"
+																		: "white"
+																}
+															>
+																{time1}
+															</Text>
+														</Box>
+													</TouchableOpacity>
+													<TouchableOpacity
+														onPress={() =>
+															selectTime(time2)
 														}
-														p={2}
+														style={{ flex: 1 }}
 													>
-														<Text
-															color={
-																!state.timeSlots.includes(
+														<Box
+															borderWidth={1}
+															borderColor="#ccc"
+															rounded={10}
+															alignItems="center"
+															bg={
+																state.timeSlots.includes(
 																	time2
 																)
-																	? "black"
+																	? "#258FBE"
 																	: "white"
 															}
+															p={2}
 														>
-															{time2}
-														</Text>
-													</Box>
-												</TouchableOpacity>
-											</HStack>
-										);
-									})}
-								</VStack>
-							</View>
-						</VStack>
-					</Box>
+															<Text
+																color={
+																	!state.timeSlots.includes(
+																		time2
+																	)
+																		? "black"
+																		: "white"
+																}
+															>
+																{time2}
+															</Text>
+														</Box>
+													</TouchableOpacity>
+												</HStack>
+											);
+										})}
+									</VStack>
+								</View>
+							</VStack>
+						</Box>
+					</VStack>
+				</VStack>
+				<VStack
+					// position="absolute"
+					// bottom={4}
+					w={295}
+					alignSelf="center"
+				>
+					<Button bgColor={colors.primary} onPress={goNext}>
+						Next
+					</Button>
 				</VStack>
 			</VStack>
-			<VStack position="absolute" bottom={4} w={295} alignSelf="center">
-				<Button bgColor={colors.primary} onPress={goNext}>
-					Next
-				</Button>
-			</VStack>
-		</VStack>
+		</ScrollView>
 	);
-};
+}
 
 type MonthDropDownProps = {
 	date: Date;

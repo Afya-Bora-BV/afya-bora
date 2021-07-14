@@ -11,7 +11,11 @@ import {
 	TextArea,
 } from "native-base";
 import { HeaderwithBack } from "../../components/header";
-import { CommonActions, StackActions, useNavigation } from "@react-navigation/native";
+import {
+	CommonActions,
+	StackActions,
+	useNavigation,
+} from "@react-navigation/native";
 import { Symptom } from "../../components/bars";
 import { Spacer } from "../../components/Spacer";
 import { colors } from "../../contants/colors";
@@ -30,7 +34,7 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
-export function PatientComplaint () {
+export function PatientComplaint() {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
@@ -41,39 +45,38 @@ export function PatientComplaint () {
 	};
 
 	const onSubmit = () => {
-		navigation.navigate(AuthNavKey.HomeScreen)
-
 		// console.log(navigation.dangerouslyGetParent())
 
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
-		// ---------------------------------------- 
-		// Alert.alert(
-		// 	"Submit Request",
-		// 	"Please confirm that you have entered correct information.",
-		// 	[
-		// 		{ text: "Cancel", onPress: () => {} },
-		// 		{
-		// 			text: "Confirm",
-		// 			onPress: () => {
-		// 				navigation.dispatch(
-		// 					StackActions.popToTop()
-		// 				);
-		// 				setTimeout(() =>
-		// 					ToastAndroid.show(
-		// 						"Appoinmtent request submitted!",
-		// 						3000
-		// 					)
-		// 				);
-		// 			},
-		// 		},
-		// 	]
-		// );
+		// ----------------------------------------
+		Alert.alert(
+			"Submit Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => {} },
+				{
+					text: "Confirm",
+					onPress: () => {
+						navigation.navigate(AuthNavKey.HomeScreen);
+						setTimeout(() =>
+							ToastAndroid.show(
+								"Appoinmtent request submitted!",
+								3000
+							)
+						);
+					},
+				},
+			]
+		);
 	};
 
 	return (
 		<ScrollView>
-			<HeaderwithBack text="About Your Visit" onBackPress={navigation.goBack} />
+			<HeaderwithBack
+				text="About Your Visit"
+				onBackPress={navigation.goBack}
+			/>
 
 			<Spacer size={30} />
 
@@ -194,15 +197,10 @@ export function PatientComplaint () {
 					</Stack>
 				</Box>
 			</Stack>
-			<Button
-				my={6}
-				bg={colors.primary}
-				onPress={onSubmit}
-				rounded={20}
-			>
+			<Button my={6} bg={colors.primary} onPress={onSubmit} rounded={20}>
 				Book Appointment
 			</Button>
 			<Spacer size={10} />
 		</ScrollView>
 	);
-};
+}

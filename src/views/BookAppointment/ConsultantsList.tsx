@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { consultants } from "../../data/consultants";
 import { HeaderWith2Icons } from "../../components/header";
 
-import { NavKey } from '.'
+import { NavKey } from ".";
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
