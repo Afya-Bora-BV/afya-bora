@@ -25,7 +25,7 @@ export default function MainContainer ({ children, title, leftSection: LeftSecti
 					) : null }
 				</View>
 				{/* Body */}
-				<ScrollView flexGrow={1}>
+				<ScrollView flexGrow={1} showsVerticalScrollIndicator={false}>
 					{ children }
 				</ScrollView>
 			</Box>
