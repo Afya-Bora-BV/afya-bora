@@ -14,6 +14,6 @@ describe("<Button/>", () => {
 			</NativeBaseProvider>
 		);
 
-		expect(getByTestId("raghavbtn")).toBeDefined();
+		expect(getByTestId("button1")).toBeDefined();
 	});
 });

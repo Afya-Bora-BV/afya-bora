@@ -11,20 +11,20 @@ export type OnlineConsultStackParamList = {
 	};
 };
 
-export const NavKey = {
+export const OnlineNavKey = {
 	SelectDateTimeScreen: "OnlineConsultantSelectDateTime",
 	ChooseConsultantScreen: "OnlineConsultChooseConsultant",
 };
 
-export default function BookAppointment() {
+export default function OnlineConsultView() {
 	return (
 		<Stack.Navigator headerMode="none">
 			<Stack.Screen
-				name={NavKey.SelectDateTimeScreen}
+				name={OnlineNavKey.SelectDateTimeScreen}
 				component={OnlineConsultantSelectDateTime}
 			/>
 			<Stack.Screen
-				name={NavKey.ChooseConsultantScreen}
+				name={OnlineNavKey.ChooseConsultantScreen}
 				component={OnlineConsultChooseConsultant}
 			/>
 		</Stack.Navigator>

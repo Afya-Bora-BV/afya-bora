@@ -12,10 +12,8 @@ import TabChatIcon from "../assets/icons/TabChatIcon";
 import TabProfileIcon from "../assets/icons/TabProfileIcon";
 import createABSyleTabNavigator from "../components/Tab/createNavigator";
 
-
-
-// const Tab = createBottomTabNavigator();
-const Tab = createABSyleTabNavigator();
+const Tab = createBottomTabNavigator();
+// const Tab = createABSyleTabNavigator();
 
 export const TabNavKey = {
 	HomeView: "Home",
@@ -24,12 +22,11 @@ export const TabNavKey = {
 	Profile: "ProfileMain",
 };
 
-
 export default function AuthenticatedAppView() {
 	return (
 		<Tab.Navigator
 			lazy
-			initialRouteName={TabNavKey.Profile}
+			initialRouteName={TabNavKey.HomeView}
 			tabBarOptions={{
 				activeTintColor: "#561BB3",
 				inactiveTintColor: "#B0B3C7",

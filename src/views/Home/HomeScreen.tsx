@@ -22,31 +22,32 @@ import FacilityIllustration from "../../assets/illustrations/FacilityIllustratio
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
-
-import { HomeNavKey as MainNavKey } from '.'
+import { HomeNavKey } from ".";
 import _BaseContainer from "../../components/containers/_BaseContainer";
 import { colors } from "../../contants/colors";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 
-
 const helpOptions = [
 	{
 		illustration: AppointmentIllustration,
 		title: "Book an Appointment",
-		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
+		onNavigate: (navigation: any) =>
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen),
 	},
 	{
 		illustration: OnlineConsulationIllustration,
 		title: "Online Consultation",
-		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.OnlineConsultViewScreen)
+		onNavigate: (navigation: any) =>
+			navigation.navigate(HomeNavKey.OnlineConsultViewScreen),
 	},
 	{
 		illustration: FacilityIllustration,
 		title: "Find a Facility",
-		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.MapFaciltyViewScreen)
+		onNavigate: (navigation: any) =>
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen),
 	},
-]
+];
 import {
 	DemoAppointmentType,
 	useAppointmentTempoStore,
@@ -58,29 +59,31 @@ export default function Home() {
 
 	return (
 		<MainContainer
-			leftSection={
-				() => (
-					<IconContainer>
-						<UserIcon size={6} color="#561BB3" />
-					</IconContainer>
-				)
-			}
-			rightSection={
-				() => (
-					<HStack space={4}>
+			leftSection={() => (
+				<IconContainer>
+					<UserIcon size={6} color="#561BB3" />
+				</IconContainer>
+			)}
+			rightSection={() => (
+				<HStack space={4}>
+					<Pressable
+						onPress={() =>
+							navigation.navigate(HomeNavKey.NotificationScreen)
+						}
+					>
 						<IconContainer>
 							<BellIcon size={6} color="#561BB3" />
 						</IconContainer>
-						<IconContainer>
-							<SearchIcon size={6} color="#561BB3" />
-						</IconContainer>
-					</HStack>
-				)
-			}
+					</Pressable>
+					<IconContainer>
+						<SearchIcon size={6} color="#561BB3" />
+					</IconContainer>
+				</HStack>
+			)}
 		>
 			<ScrollView width="100%">
 				{/* Welcome section */}
-				<VStack space={2} padding={5}>
+				<VStack space={2} paddingTop={5} marginX={5}>
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
@@ -96,34 +99,55 @@ export default function Home() {
 
 				<VStack padding={5}>
 					<Heading fontSize="xl">How can we help?</Heading>
-					<HStack
-						space={4}
-						marginTop={3}
-						justifyContent="space-between"
+					<ScrollView
+						horizontal={true}
+						showsHorizontalScrollIndicator={false}
+						alwaysBounceHorizontal
+						height={215}
 					>
-						{
-							helpOptions.map(({ illustration: Illustration, onNavigate, title }, ix) => (
-								<Pressable onPress={() => onNavigate(navigation)}>
-									{/* Find mean to set relative width: 160 -> 33%?? */}
-									<Center
-										width={140}
-										height={200}
-										paddingY={3}
-										bgColor="#FFF"
-										rounded="xl"
-										shadow={4}>
-										<Illustration size={100} />
-										<Text fontWeight="800" marginTop={5} textAlign="center"
-										// wordBreak="break-word" 
-										// overflowWrap="break-word"
+						<HStack
+							space={4}
+							marginTop={3}
+							justifyContent="space-between"
+							paddingX={1}
+						>
+							{helpOptions.map(
+								(
+									{
+										illustration: Illustration,
+										onNavigate,
+										title,
+									},
+									ix
+								) => (
+									<Pressable
+										onPress={() => onNavigate(navigation)}
+									>
+										{/* Find mean to set relative width: 160 -> 33%?? */}
+										<Center
+											width={140}
+											height={200}
+											paddingY={3}
+											bgColor="#FFF"
+											rounded="xl"
+											shadow={4}
 										>
-											{title}
-										</Text>
-									</Center>
-								</Pressable>
-							))
-						}
-					</HStack>
+											<Illustration size={100} />
+											<Text
+												fontWeight="800"
+												marginTop={5}
+												textAlign="center"
+												// wordBreak="break-word"
+												// overflowWrap="break-word"
+											>
+												{title}
+											</Text>
+										</Center>
+									</Pressable>
+								)
+							)}
+						</HStack>
+					</ScrollView>
 				</VStack>
 
 				<VStack>
@@ -134,29 +158,37 @@ export default function Home() {
 					<ScrollView
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
-						alwaysBounceHorizontal>
-						<HStack
-							justifyContent="space-between"
-							marginX={3}
-						>
-							{
-								[
+						alwaysBounceHorizontal
+					>
+						<HStack justifyContent="space-between" marginX={3}>
+							{[
+								{
+									name: "Dr. Maryam Mohamedali",
+									location: "Arusha, Tanzania",
+									specialization:
+										"Immunology, Gynecology, Internal Medicine",
+									color: "#EEE",
+									textColor: colors.primary,
+								},
+								{
+									name: "Dr. Wyckliffe Sango",
+									color: "#258FBE",
+								},
+								{
+									name: "Dr. Ally Salim",
+									color: "#258FBE",
+								},
+							].map(
+								(
 									{
-										name: "Dr. Maryam Mohamedali",
-										location: "Arusha, Tanzania",
-										specialization: "Immunology, Gynecology, Internal Medicine",
-										color: "#EEE",
-										textColor: colors.primary
+										color,
+										name,
+										location,
+										specialization,
+										textColor,
 									},
-									{
-										name: "Dr. Wyckliffe Sango",
-										color: "#258FBE"
-									},
-									{
-										name: "Dr. Ally Salim",
-										color: "#258FBE"
-									},
-								].map(({ color, name, location, specialization, textColor }, ix) => (
+									ix
+								) => (
 									<Box
 										key={`trspec-${ix}`}
 										paddingX={6}
@@ -164,31 +196,39 @@ export default function Home() {
 										bgColor={color}
 										rounded="xl"
 										marginX={2}
-										maxWidth={200}
-										minHeight={250}>
+										width={200}
+										minHeight={250}
+									>
 										<VStack>
-											<Heading fontSize="md" color={textColor || "#FFFFFF"}>
+											<Heading
+												fontSize="md"
+												color={textColor || "#FFFFFF"}
+											>
 												{name}
 											</Heading>
 											<VStack space={1} marginTop={3}>
 												<View>
-													<Text fontSize="sm">{location}</Text>
+													<Text fontSize="sm">
+														{location}
+													</Text>
 												</View>
 												<View>
-													<Text fontSize="sm">{specialization}</Text>
+													<Text fontSize="sm">
+														{specialization}
+													</Text>
 												</View>
 											</VStack>
 										</VStack>
 									</Box>
-								))
-							}
+								)
+							)}
 						</HStack>
 					</ScrollView>
 				</VStack>
 			</ScrollView>
 		</MainContainer>
 	);
-};
+}
 
 // TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
@@ -206,8 +246,7 @@ const UpcomingAppointmentsSection = () => {
 	);
 	if (isLoading) return <Text>Fetching appointement... </Text>;
 	if (error) return <Text>Something went wrong</Text>;
-	if (data?.length === 0)
-		return null
+	if (data?.length === 0) return null;
 
 	// console.log("appointment");
 	// console.log(data);

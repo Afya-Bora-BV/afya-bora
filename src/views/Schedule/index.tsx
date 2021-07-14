@@ -32,25 +32,23 @@ import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
 import AlternateContainer from "../../components/containers/AlternateContainer";
 import { IconContainer } from "../../components/misc";
 
-export default function Schedule () {
+export default function Schedule() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const hasUpcomingAppointment = true;
 	return (
-		<AlternateContainer 
-			rightSection={
-				() => (
-					<Pressable>
-							<IconContainer>
-								<UpdateClock />
-							</IconContainer>
-						</Pressable>
-					)
-				}
-			title="Schedule" 
+		<AlternateContainer
+			rightSection={() => (
+				<Pressable>
+					<IconContainer>
+						<UpdateClock />
+					</IconContainer>
+				</Pressable>
+			)}
+			title="Schedule"
 			titleColor="#FFF"
 			barStyle="dark-content"
-			backdropHeight={height / 5.6} 
+			backdropHeight={height / 5.6}
 			bgColor="#7065E4"
 		>
 			<VStack alignItems="center" marginX={10} space={10}>
@@ -77,10 +75,7 @@ export default function Schedule () {
 							<VStack flex={1} alignItems="center">
 								<Pressable>
 									<Stack alignSelf="center">
-										<Icon
-											alignSelf="center"
-											size={90}
-										>
+										<Icon alignSelf="center" size={90}>
 											<Card_RedIcon size={20} />
 										</Icon>
 									</Stack>
@@ -115,7 +110,7 @@ export default function Schedule () {
 			</VStack>
 		</AlternateContainer>
 	);
-};
+}
 
 const UpcommingAppointments: React.FC = () => {
 	const navigation = useNavigation();
@@ -138,7 +133,7 @@ const UpcommingAppointments: React.FC = () => {
 			<Stack>
 				<Box alignItems="center" paddingX={10}>
 					<Stack justifyContent="center">
-						<Text fontSize="xl" bold>
+						<Text textAlign="center" fontSize="xl" bold>
 							You do not have an appointment!
 						</Text>
 					</Stack>

@@ -22,25 +22,31 @@ import { useCallback } from "react";
 const ConsultantsList = () => {
 	const navigation = useNavigation();
 
-	const selectConsultant = useCallback((consultant: any) => {
-		navigation.navigate(NavKey.SetAppointmentTimeScreen, { consultant })
-	}, [navigation])
+	const selectConsultant = useCallback(
+		(consultant: any) => {
+			navigation.navigate(NavKey.SetAppointmentTimeScreen, {
+				consultant,
+			});
+		},
+		[navigation]
+	);
 
 	return (
 		<MainContainer
 			title="Choose a consultant"
 			leftSection={
 				// Go back if can go back
-				navigation.canGoBack() ? (
-					() => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
-				) : undefined
-			}>
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
 			<ScrollView padding={5}>
 				<VStack space={2}>
 					{consultants.map((consultant) => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Stack, Icon } from "native-base";
+import { Button, Stack, Icon, View } from "native-base";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
 import { IButtonComponentType } from "native-base/lib/typescript/components/primitives/Button/types";
@@ -15,20 +15,21 @@ export const PrimaryButton: React.FC<buttonProps> = ({
 	...rest
 }) => {
 	return (
-		<Button
-			testID="button1"
-			onPress={press}
-			borderRadius={20}
-			_disabled={{
-				backgroundColor: "#B0B3C7",
-				color: "white",
-			}}
-			style={{ backgroundColor: colors.primary }}
-			_text={{ color: "white" }}
-			{...rest}
-		>
-			{text}
-		</Button>
+		<View testID="button1">
+			<Button
+				onPress={press}
+				borderRadius={20}
+				_disabled={{
+					backgroundColor: "#B0B3C7",
+					color: "white",
+				}}
+				style={{ backgroundColor: colors.primary }}
+				_text={{ color: "white" }}
+				{...rest}
+			>
+				{text}
+			</Button>
+		</View>
 	);
 };
 export const OutLineButton = () => (

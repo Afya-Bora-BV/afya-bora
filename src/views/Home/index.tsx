@@ -7,12 +7,14 @@ import HomeScreen from "./HomeScreen";
 import BookAppointmentView from "./BookAppointment";
 import OnlineConsultView from "./OnlineConsult";
 import MapFaciltyView from "./MapFacility";
+import NotificationScreen from "./Notification";
 
 const NavStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const HomeNavKey = {
 	HomeScreen: "HomeScreen",
+	NotificationScreen: "NotificationScreen",
 	BookAppointmentViewScreen: "BookAppointmentView",
 	OnlineConsultViewScreen: "OnlineConsultView",
 	MapFaciltyViewScreen: "MapFaciltyView",
@@ -24,6 +26,10 @@ export default function HomeView() {
 			<NavStack.Screen
 				name={HomeNavKey.HomeScreen}
 				component={HomeScreen}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.NotificationScreen}
+				component={NotificationScreen}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.BookAppointmentViewScreen}

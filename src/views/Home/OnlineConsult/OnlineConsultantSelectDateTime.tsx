@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
 	Box,
 	VStack,
@@ -12,10 +12,11 @@ import {
 	Menu,
 	Pressable,
 	ChevronDownIcon,
+	ArrowBackIcon,
 } from "native-base";
 import { SafeAreaView, TouchableOpacity } from "react-native";
 import { colors } from "../../../contants/colors";
-import { HeaderwithBack } from "../../../components/header";
+import { HeaderwithBack, IconContainer } from "../../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import _ from "lodash";
@@ -23,219 +24,208 @@ import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { toggleStringFromList } from "../../../utils";
 
-import { NavKey, OnlineConsultStackParamList } from ".";
+import { OnlineNavKey, OnlineConsultStackParamList } from ".";
+import { HomeNavKey, HomeNavKey as MainNavKey } from "../";
 import { StackNavigationProp } from "@react-navigation/stack";
+import MainContainer from "../../../components/containers/MainContainer";
 
-export default function OnlineConsultantSelectDateTime() {
-	const { goBack, navigate } = useNavigation();
-
-	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
-		date: new Date(),
-		timeSlots: [],
-	});
-
+function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
 
+	return (
+		<View>
+			<HStack justifyContent="space-between" mb={3}>
+				<Text fontSize="2xl" bold>
+					Pick a Date
+				</Text>
+
+				<MonthDropDown
+					onChangeDate={(date) => onSelectDate(date)}
+					date={chosenDate}
+				/>
+			</HStack>
+			<ScrollView
+				snapToInterval={2}
+				horizontal
+				paddingBottom={3}
+				ref={daysListRef}
+				onLayout={() =>
+					daysListRef.current?.scrollTo({
+						x: 50 * chosenDate.getDate(),
+						y: 0,
+					})
+				}
+			>
+				<HStack alignItems="center" space={1}>
+					{_.times(getDaysInMonth(chosenDate), (n) => {
+						const date = new Date(chosenDate);
+						date.setDate(n + 1);
+						return (
+							<CalendarDay
+								onPress={() => onSelectDate(date)}
+								key={n}
+								status={
+									isSameDay(date, chosenDate)
+										? "active"
+										: "inactive"
+								}
+								date={date}
+							/>
+						);
+					})}
+				</HStack>
+			</ScrollView>
+		</View>
+	);
+}
+
+function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 	const selectTime = (timeBlock: string) => {
-		const list = toggleStringFromList(timeBlock, state.timeSlots);
-		setState((prev) => ({ ...prev, timeSlots: list }));
+		const list = toggleStringFromList(timeBlock, chosenTimeSlots);
+		onSelectTimeSlot(list);
 	};
 
-	React.useEffect(() => {
-		console.log("Mounted");
-	}, []);
-
-	const goNext = () =>
-		navigate(NavKey.ChooseConsultantScreen, { appointment: state });
-
 	return (
-		<ScrollView>
-			<VStack flex={1} py={8} px={4} position="relative">
-				<VStack space={4}>
-					<HeaderwithBack
-						text="Day and Time"
-						onBackPress={() => goBack()}
-					/>
-					<VStack>
-						<Box bg="white" p={2} shadow={2} rounded={10} mb={1}>
-							<VStack p={1} space={10}>
-								<View>
-									<HStack
-										justifyContent="space-between"
-										mb={3}
-									>
-										<Text fontSize="2xl" bold>
-											Pick a Date
-										</Text>
+		<View>
+			<HStack justifyContent="space-between">
+				<Text fontSize="2xl" bold>
+					Pick a Time
+				</Text>
+			</HStack>
 
-										<MonthDropDown
-											onChangeDate={(date) =>
-												setState((prev) => ({
-													...prev,
-													date,
-												}))
-											}
-											date={state.date}
-										/>
-									</HStack>
-									<ScrollView
-										snapToInterval={2}
-										horizontal
-										paddingBottom={3}
-										ref={daysListRef}
-										onLayout={() =>
-											daysListRef.current?.scrollTo({
-												x: 50 * state.date.getDate(),
-												y: 0,
-											})
+			<VStack space="sm" mt={4}>
+				{_.times(14, (n) => {
+					const t = n + 6;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
+					return (
+						<HStack flexWrap="wrap" space="md">
+							<TouchableOpacity
+								onPress={() => selectTime(time1)}
+								style={{ flex: 1 }}
+							>
+								<Box
+									borderWidth={1}
+									borderColor="#ccc"
+									rounded={10}
+									alignItems="center"
+									bg={
+										chosenTimeSlots.includes(time1)
+											? "#258FBE"
+											: "white"
+									}
+									p={2}
+								>
+									<Text
+										color={
+											!chosenTimeSlots.includes(time1)
+												? "black"
+												: "white"
 										}
 									>
-										<HStack alignItems="center" space={1}>
-											{_.times(
-												getDaysInMonth(state.date),
-												(n) => {
-													const date = new Date(
-														state.date
-													);
-													date.setDate(n + 1);
-													return (
-														<CalendarDay
-															onPress={() =>
-																setState(
-																	(p) => ({
-																		...p,
-																		date,
-																	})
-																)
-															}
-															key={n}
-															status={
-																isSameDay(
-																	date,
-																	state.date
-																)
-																	? "active"
-																	: "inactive"
-															}
-															date={date}
-														/>
-													);
-												}
-											)}
-										</HStack>
-									</ScrollView>
-								</View>
-
-								<View>
-									<HStack justifyContent="space-between">
-										<Text fontSize="2xl" bold>
-											Pick a Time
-										</Text>
-									</HStack>
-
-									<VStack space="sm" mt={4}>
-										{_.times(14, (n) => {
-											const t = n + 6;
-											const time1 = `${
-												_.padStart(t + "", 2, "0") +
-												":00"
-											} ${t > 11 ? "PM" : "AM"}`;
-											const time2 = `${
-												_.padStart(t + "", 2, "0") +
-												":30"
-											} ${t > 11 ? "PM" : "AM"}`;
-											return (
-												<HStack
-													flexWrap="wrap"
-													space="md"
-												>
-													<TouchableOpacity
-														onPress={() =>
-															selectTime(time1)
-														}
-														style={{ flex: 1 }}
-													>
-														<Box
-															borderWidth={1}
-															borderColor="#ccc"
-															rounded={10}
-															alignItems="center"
-															bg={
-																state.timeSlots.includes(
-																	time1
-																)
-																	? "#258FBE"
-																	: "white"
-															}
-															p={2}
-														>
-															<Text
-																color={
-																	!state.timeSlots.includes(
-																		time1
-																	)
-																		? "black"
-																		: "white"
-																}
-															>
-																{time1}
-															</Text>
-														</Box>
-													</TouchableOpacity>
-													<TouchableOpacity
-														onPress={() =>
-															selectTime(time2)
-														}
-														style={{ flex: 1 }}
-													>
-														<Box
-															borderWidth={1}
-															borderColor="#ccc"
-															rounded={10}
-															alignItems="center"
-															bg={
-																state.timeSlots.includes(
-																	time2
-																)
-																	? "#258FBE"
-																	: "white"
-															}
-															p={2}
-														>
-															<Text
-																color={
-																	!state.timeSlots.includes(
-																		time2
-																	)
-																		? "black"
-																		: "white"
-																}
-															>
-																{time2}
-															</Text>
-														</Box>
-													</TouchableOpacity>
-												</HStack>
-											);
-										})}
-									</VStack>
-								</View>
-							</VStack>
-						</Box>
-					</VStack>
-				</VStack>
-				<VStack
-					// position="absolute"
-					// bottom={4}
-					w={295}
-					alignSelf="center"
-				>
-					<Button bgColor={colors.primary} onPress={goNext}>
-						Next
-					</Button>
-				</VStack>
+										{time1}
+									</Text>
+								</Box>
+							</TouchableOpacity>
+							<TouchableOpacity
+								onPress={() => selectTime(time2)}
+								style={{ flex: 1 }}
+							>
+								<Box
+									borderWidth={1}
+									borderColor="#ccc"
+									rounded={10}
+									alignItems="center"
+									bg={
+										chosenTimeSlots.includes(time2)
+											? "#258FBE"
+											: "white"
+									}
+									p={2}
+								>
+									<Text
+										color={
+											!chosenTimeSlots.includes(time2)
+												? "black"
+												: "white"
+										}
+									>
+										{time2}
+									</Text>
+								</Box>
+							</TouchableOpacity>
+						</HStack>
+					);
+				})}
 			</VStack>
-		</ScrollView>
+		</View>
+	);
+}
+
+export default function OnlineConsultantSelectDateTime() {
+	// const { goBack, navigate } = useNavigation();
+	const navigation = useNavigation();
+
+	// const daysListRef = useRef(null);
+
+	const [chosenDate, selectDate] = useState<Date>(new Date());
+	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
+
+	// React.useEffect(() => {
+	// 	console.log("Mounted");
+	// }, []);
+
+	const goNext = useCallback(() => {
+		navigation.navigate(OnlineNavKey.ChooseConsultantScreen, {
+			appointment: {
+				date: chosenDate,
+				timeSlots: chosenTimeSlots,
+			},
+		});
+	}, [chosenDate, chosenTimeSlots, navigation]);
+
+	const goHome = () => {
+		navigation.navigate(MainNavKey.HomeScreen);
+	};
+
+	return (
+		<MainContainer
+			title="Day and Time"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
+			<VStack paddingX={10} space={10}>
+				{/* Picking appointment times */}
+				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
+					<PickADateSection
+						chosenDate={chosenDate}
+						onSelectDate={selectDate}
+					/>
+					<PickATimeSection
+						chosenTimeSlots={chosenTimeSlots}
+						onSelectTimeSlot={setTimeSlots}
+					/>
+				</VStack>
+
+				<Button bg={colors.primary} onPress={goNext} rounded={20}>
+					Next
+				</Button>
+			</VStack>
+		</MainContainer>
 	);
 }
 
