@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+	ArrowBackIcon,
 	Box,
 	Button,
 	Heading,
@@ -9,6 +10,8 @@ import {
 	Stack,
 	Text,
 	TextArea,
+	View,
+	VStack,
 } from "native-base";
 import { HeaderwithBack } from "../../../components/header";
 import {
@@ -21,12 +24,14 @@ import {
 import { Spacer } from "../../../components/Spacer";
 import { colors } from "../../../contants/colors";
 import _ from "lodash";
-import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
+import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
 import { toggleStringFromList } from "../../../utils";
 
 import { HomeNavKey as MainNavKey } from "../";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { BookAppointmentStackParamList } from ".";
+import MainContainer from "../../../components/containers/MainContainer";
+import { IconContainer } from "../../../components/misc";
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -55,17 +60,16 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
-
-	const [complaint, setComplaint] = useState("n/a");
+	const [complaint, setComplaint] = useState("");
 
 	const toggleKeySymptom = (symptom: string) => {
 		const sy = toggleStringFromList(symptom, symptoms);
 		setSymptoms(sy);
 	};
 
-	const consultant = route.params.consultant;
+	// const consultant = route.params.consultant;
 
-	const appointment = route.params.appointment;
+	// const appointment = route.params.appointment;
 
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
@@ -74,50 +78,60 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
 		// ----------------------------------------
-		Alert.alert(
-			"Submit Request",
-			"Please confirm that you have entered correct information.",
-			[
-				{ text: "Cancel", onPress: () => {} },
-				{
-					text: "Confirm",
-					onPress: () => {
-						navigation.navigate(MainNavKey.HomeScreen);
-						setTimeout(() =>
-							ToastAndroid.show(
-								"Appoinmtent request submitted!",
-								3000
-							)
-						);
-					},
-				},
-			]
-		);
+		// Alert.alert(
+		// 	"Submit Request",
+		// 	"Please confirm that you have entered correct information.",
+		// 	[
+		// 		{ text: "Cancel", onPress: () => {} },
+		// 		{
+		// 			text: "Confirm",
+		// 			onPress: () => {
+		// 				navigation.navigate(MainNavKey.HomeScreen);
+		// 				setTimeout(() =>
+		// 					ToastAndroid.show(
+		// 						"Appoinmtent request submitted!",
+		// 						3000
+		// 					)
+		// 				);
+		// 			},
+		// 		},
+		// 	]
+		// );
 	};
 
 	return (
-		<ScrollView>
-			<HeaderwithBack
-				text="About Your Visit"
-				onBackPress={navigation.goBack}
-			/>
+		<MainContainer
+			title="About your Visit"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack() ? (
+					() => (
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
+				) : undefined
+			}
+		>
 
-			<Spacer size={30} />
-
-			<Stack alignItems="center">
-				<Box bg="white" shadow={2} rounded={10} width="90%">
+			<VStack alignItems="center" paddingX={10} space={10}>
+				{/* Symptomps section */}
+				<Box bg="white" shadow={2} rounded={10} width="100%">
 					<Stack
 						style={{
 							paddingHorizontal: 20,
 							paddingTop: 20,
 							paddingBottom: 40,
 						}}
+						space={10}
 					>
-						<Text fontSize={"3xl"}>Symptoms</Text>
+						<View>
+							<Text fontSize={"3xl"}>Symptoms</Text>
 
-						<Text>Check any symptoms you have.</Text>
-
-						<Spacer size={30} />
+							<Text>Check any symptoms you have.</Text>
+						</View>
 
 						<Stack space={2}>
 							{_.chunk(keySymptoms, 2).map(
@@ -198,37 +212,34 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 					</Stack>
 				</Box>
 
-				<Spacer size={30} />
-
-				<Box bg="white" shadow={2} rounded={10} width="90%">
-					<Stack
+				<Box bg="white" shadow={2} rounded={10} width="100%">
+					<VStack
 						style={{
 							paddingHorizontal: 20,
 							paddingTop: 20,
 							paddingBottom: 40,
 						}}
+						space={3}
 					>
 						<Text fontSize={"xl"}>
 							What is your primary reason for seeing the doctor?
 						</Text>
 
-						<Box mt={2}>
-							<TextArea
-								value={complaint}
-								autoCorrect={false}
-								placeholder="Describe how you are feeling ..."
-								onChangeText={(complaint) => {
-									setComplaint(complaint);
-								}}
-							/>
-						</Box>
-					</Stack>
+						<TextArea
+							value={complaint}
+							autoCorrect={false}
+							borderColor="#FFF"
+							placeholder="Describe how you are feeling ..."
+							onChangeText={(complaint) => {
+								setComplaint(complaint);
+							}}
+						/>
+					</VStack>
 				</Box>
-			</Stack>
-			<Button my={6} bg={colors.primary} onPress={onSubmit} rounded={20}>
-				Book Appointment
-			</Button>
-			<Spacer size={10} />
-		</ScrollView>
+				<Button width="100%" bg={colors.primary} onPress={onSubmit} rounded={20}>
+					Book Appointment
+				</Button>
+			</VStack>
+		</MainContainer>
 	);
 }
