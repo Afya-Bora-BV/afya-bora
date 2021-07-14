@@ -32,6 +32,7 @@ import { toggleStringFromList } from "../../../utils";
 import { BookAppointmentStackParamList, NavKey } from "../BookAppointment";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
+import { useCallback } from "react";
 
 const { width } = Dimensions.get("window");
 
@@ -203,16 +204,18 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const [chosenDate, selectDate] = useState<Date>(new Date());
 	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
 
-	const consultant = route.params.consultant;
+	const { consultant } = route.params;
 
-	const handleNext = (date: Date, timeSlots: string[]) =>
+	const onPressNext = useCallback(() => {
 		navigation.navigate(NavKey.PatientComplaintScreen, {
 			consultant,
 			appointment: {
-				date,
-				timeSlots
+				date: chosenDate,
+				timeSlots: chosenTimeSlots
 			},
-		});
+		})
+	}, [chosenDate, chosenTimeSlots, navigation])
+
 	return (
 		<MainContainer
 			title="Day and Time"
@@ -228,9 +231,9 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 					)
 				) : undefined
 			}>
-			<ScrollView width="100%">
+			<VStack paddingX={10} space={10}>
 				{/* Consultant Preview */}
-				<Box marginX={5}>
+				<Box>
 					<ConsultantListItem
 						onPress={console.log}
 						consultant={consultant}
@@ -248,14 +251,13 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 				</VStack>
 
 				<Button
-					my={6}
 					bg={colors.primary}
-					onPress={handleNext}
+					onPress={onPressNext}
 					rounded={20}
 				>
 					Next
 				</Button>
-			</ScrollView>
+			</VStack>
 		</MainContainer>
 	);
 }
