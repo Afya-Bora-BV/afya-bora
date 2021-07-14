@@ -2,6 +2,7 @@ import React from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
 import { persist } from "zustand/middleware"
+import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DemoAppointment = {
@@ -57,7 +58,7 @@ const createAppointmentTempoStore = () => create<AppointmentTempoStore>(persist(
     }
 }), {
     name: "appointments",
-    getStorage: () => AsyncStorage
+    getStorage: () => Platform.OS !== "web" ? AsyncStorage : sessionStorage
 }))
 
 interface AppointmentTempoStoreProps { children?: React.ReactElement }

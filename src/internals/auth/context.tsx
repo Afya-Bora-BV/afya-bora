@@ -4,6 +4,7 @@ import createContext from 'zustand/context'
 import { persist } from "zustand/middleware"
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 /**
  * User object
  */
@@ -69,7 +70,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     }
 }), {
     name: "authState",
-    getStorage: () => AsyncStorage
+    getStorage: () => Platform.OS !== "web" ? AsyncStorage : sessionStorage
 }))
 
 interface AuthProviderProps { children?: React.ReactElement }
