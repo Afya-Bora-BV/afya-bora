@@ -1,4 +1,5 @@
 import React from "react";
+import SplashScreen from 'react-native-splash-screen'
 
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
@@ -67,17 +68,18 @@ export const AppTheme = {
 
 function Main() {
 	const user = useAuthStore((state) => state.user);
-	const [isSplashToClose, setSplashToHide] = useState(false);
+	// const [isSplashToClose, setSplashToHide] = useState(false);
 
 	// eecuted when screen is viewed
 	useEffect(() => {
 		// checks from storage, if there is internal state of the user
 		//  if there is or missing, remoce
-		setSplashToHide(true);
+		// setSplashToHide(true);
+		SplashScreen.hide()
 	}, []);
 
 	// Show splash screen if not ready
-	if (!isSplashToClose) return <Splash />;
+	// if (!isSplashToClose) return <Splash />;
 
 	if (user !== null && user !== undefined) {
 		return <AuthenticatedAppView />;
