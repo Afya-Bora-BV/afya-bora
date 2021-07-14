@@ -31,10 +31,12 @@ import {
 } from "../../components/cards";
 import moment from "moment";
 
-
-import { DemoAppointmentType, useAppointmentTempoStore } from "../../internals/appointment/context";
-import { useQuery } from "react-query"
-import { HomeNavKey as MainNavKey } from '.'
+import {
+	DemoAppointmentType,
+	useAppointmentTempoStore,
+} from "../../internals/appointment/context";
+import { useQuery } from "react-query";
+import { HomeNavKey } from ".";
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
@@ -48,7 +50,6 @@ const IconContainer: React.FC = ({ children }) => {
 const Home: React.FC = () => {
 	const navigation = useNavigation();
 	const hasUpcomingAppointment = true;
-
 
 	// console.log("user : ", user)
 
@@ -98,7 +99,11 @@ const Home: React.FC = () => {
 						justifyContent="space-between"
 					>
 						<HeroIllustrationContainer
-							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
+							onPress={() =>
+								navigation.navigate(
+									HomeNavKey.BookAppointmentViewScreen
+								)
+							}
 						>
 							<AppointmentIllustration size={70} />
 							<Text textAlign="center">Appointment Booking</Text>
@@ -106,7 +111,9 @@ const Home: React.FC = () => {
 
 						<HeroIllustrationContainer
 							onPress={() =>
-								navigation.navigate(MainNavKey.OnlineConsultViewScreen)
+								navigation.navigate(
+									HomeNavKey.OnlineConsultViewScreen
+								)
 							}
 						>
 							<OnlineConsulationIllustration size={70} />
@@ -121,7 +128,11 @@ const Home: React.FC = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigation.navigate(MainNavKey.MapFaciltyViewScreen)}
+							onPress={() =>
+								navigation.navigate(
+									HomeNavKey.MapFaciltyViewScreen
+								)
+							}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
@@ -139,28 +150,26 @@ const Home: React.FC = () => {
 							paddingBottom={10}
 							minWidth={"90%"}
 						>
-							{
-								[
-									{
-										name: "Dr. Maryam Mohamedali",
-										gender: "female"
-									},
-									{
-										name: "Dr. Wyckliffe Sango",
-										gender: "male"
-									},
-									{
-										name: "Dr. Ally Salim",
-										gender: "male"
-									},
-								].map((specialist, ix) => (
-									<TopRatedSpecialists
-										key={`trspec-${ix}`}
-										name={specialist.name}
-										gender={specialist.gender}
-									/>
-								))
-							}
+							{[
+								{
+									name: "Dr. Maryam Mohamedali",
+									gender: "female",
+								},
+								{
+									name: "Dr. Wyckliffe Sango",
+									gender: "male",
+								},
+								{
+									name: "Dr. Ally Salim",
+									gender: "male",
+								},
+							].map((specialist, ix) => (
+								<TopRatedSpecialists
+									key={`trspec-${ix}`}
+									name={specialist.name}
+									gender={specialist.gender}
+								/>
+							))}
 						</HStack>
 					</ScrollView>
 				</VStack>
@@ -171,36 +180,52 @@ const Home: React.FC = () => {
 
 // TODO: find a better place to fetch all the data
 const UpcommingAppointments: React.FC = () => {
-	const getAppointments = useAppointmentTempoStore(state => state.getAppointments)
-	const { isLoading, isError, data, error } = useQuery('appointments', getAppointments, {
-		// TODO: to remove this behaviour
-		// and instead just fetch either from offline or online state
-		refetchInterval: 5000
-	})
-	if (isLoading) return <Text>Fetching appointement... </Text>
-	if (error) return <Text>Something went wrong</Text>
-	if (data?.length === 0) return <Box
-		justifyContent="space-between"
-		borderRadius={6}
-		p={3}
-		borderColor="#B0B3C7"
-		borderWidth={1}>No upcomming appointment</Box>
+	const getAppointments = useAppointmentTempoStore(
+		(state) => state.getAppointments
+	);
+	const { isLoading, isError, data, error } = useQuery(
+		"appointments",
+		getAppointments,
+		{
+			// TODO: to remove this behaviour
+			// and instead just fetch either from offline or online state
+			refetchInterval: 5000,
+		}
+	);
+	if (isLoading) return <Text>Fetching appointement... </Text>;
+	if (error) return <Text>Something went wrong</Text>;
+	if (data?.length === 0)
+		return (
+			<Box
+				justifyContent="space-between"
+				borderRadius={6}
+				p={3}
+				borderColor="#B0B3C7"
+				borderWidth={1}
+			>
+				No upcomming appointment
+			</Box>
+		);
 
-	console.log("appointment")
-	console.log(data)
+	console.log("appointment");
+	console.log(data);
 	return (
 		<VStack space={4}>
 			<Heading fontSize="md">Upcoming Appointments</Heading>
-			{data?.map((appointment) => <UpcomingAppointmentsAlert appointment={appointment} />
-			)}
+			{data?.map((appointment) => (
+				<UpcomingAppointmentsAlert appointment={appointment} />
+			))}
 		</VStack>
-	)
-}
+	);
+};
 
-
-
-const UpcomingAppointmentsAlert: React.FC<{ appointment: DemoAppointmentType }> = ({ appointment }) => {
-	const { dateTime: { timeSlots }, consultant: { name } } = appointment
+const UpcomingAppointmentsAlert: React.FC<{
+	appointment: DemoAppointmentType;
+}> = ({ appointment }) => {
+	const {
+		dateTime: { timeSlots },
+		consultant: { name },
+	} = appointment;
 	return (
 		<VStack>
 			<HStack
