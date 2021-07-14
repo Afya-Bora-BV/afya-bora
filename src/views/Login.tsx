@@ -12,9 +12,7 @@ import {
 	VStack,
 } from "native-base";
 import * as React from "react";
-import {
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../contants/colors";
 import { CheckBox } from "../components/bars";
 import { PrimaryButton } from "../components/button";
@@ -78,7 +76,7 @@ export default function Login () {
 	return (
 		<AltContainer backdropHeight={height / 3.5}>
 			{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
-			<View flexGrow={1} >
+			<View flexGrow={1}>
 				<View alignItems="center" paddingY={20}>
 					<Text color="white" fontSize={44}>
 						Afya Bora

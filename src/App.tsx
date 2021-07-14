@@ -11,6 +11,7 @@ import AuthenticatedAppView from './views/_Authenticated';
 import { useState } from 'react';
 import Splash from './screens/Splash';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SignUpView from './views/SignUp';
 
 export const theme = extendTheme({
 	colors: {
@@ -93,7 +94,8 @@ export default function App () {
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
 					<AuthProvider>
-						<Main />
+						{/* <Main /> */}
+						<SignUpView />
 					</AuthProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>

@@ -18,7 +18,7 @@ import _BaseContainer from './_BaseContainer';
 
 
 interface AltContainerProps {
-	children: JSX.Element[]
+	children: JSX.Element[] | JSX.Element
 	title?: string
 	backdropHeight?: number
 	headerMode?: 'with-back' | 'none',
@@ -48,7 +48,7 @@ export default function AltContainer ({ children, title, backdropHeight, headerM
                 {
                     _headerMode === 'none' ? null : (
                         _headerMode === 'with-back' ? (
-                            <HStack justifyContent="space-evenly">
+                            <HStack justifyContent="space-evenly" padding={10}>
                                 <Stack
                                     style={{
                                         flex: 0.5,
@@ -73,7 +73,7 @@ export default function AltContainer ({ children, title, backdropHeight, headerM
                                         paddingRight: 30,
                                     }}
                                 >
-                                    <Text fontSize="2xl">
+                                    <Text fontSize="lg" color="white">
                                         {title}
                                     </Text>
                                 </Stack>
