@@ -44,7 +44,7 @@ const helpOptions = [
 	{
 		illustration: FacilityIllustration,
 		title: "Find a Facility",
-		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
+		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.MapFaciltyViewScreen)
 	},
 ]
 import {
@@ -53,7 +53,7 @@ import {
 } from "../../internals/appointment/context";
 import { useQuery } from "react-query";
 
-export default function Home () {
+export default function Home() {
 	const navigation = useNavigation();
 
 	return (
@@ -105,15 +105,18 @@ export default function Home () {
 							helpOptions.map(({ illustration: Illustration, onNavigate, title }, ix) => (
 								<Pressable onPress={() => onNavigate(navigation)}>
 									{/* Find mean to set relative width: 160 -> 33%?? */}
-									<Center 
-										width={140} 
-										height={200} 
-										paddingY={3} 
-										bgColor="#FFF" 
+									<Center
+										width={140}
+										height={200}
+										paddingY={3}
+										bgColor="#FFF"
 										rounded="xl"
 										shadow={4}>
 										<Illustration size={100} />
-										<Text fontWeight="800" marginTop={5} textAlign="center" wordBreak="break-word" overflowWrap="break-word">
+										<Text fontWeight="800" marginTop={5} textAlign="center"
+										// wordBreak="break-word" 
+										// overflowWrap="break-word"
+										>
 											{title}
 										</Text>
 									</Center>
@@ -129,8 +132,8 @@ export default function Home () {
 					</View>
 
 					<ScrollView
-						horizontal={true} 
-						showsHorizontalScrollIndicator={false} 
+						horizontal={true}
+						showsHorizontalScrollIndicator={false}
 						alwaysBounceHorizontal>
 						<HStack
 							justifyContent="space-between"
@@ -154,14 +157,14 @@ export default function Home () {
 										color: "#258FBE"
 									},
 								].map(({ color, name, location, specialization, textColor }, ix) => (
-									<Box 
+									<Box
 										key={`trspec-${ix}`}
 										paddingX={6}
-										paddingY={8} 
-										bgColor={color}  
-										rounded="xl" 
+										paddingY={8}
+										bgColor={color}
+										rounded="xl"
 										marginX={2}
-										maxWidth={200} 
+										maxWidth={200}
 										minHeight={250}>
 										<VStack>
 											<Heading fontSize="md" color={textColor || "#FFFFFF"}>

@@ -1,9 +1,13 @@
 import { useNavigation } from "@react-navigation/core";
-import { Box, ScrollView, Stack, StatusBar, VStack } from "native-base";
-import React from "react";
+import { Box, Heading, ScrollView, Stack, StatusBar, VStack } from "native-base";
+import React, { useCallback } from "react";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { FacilityListItem } from "../../../components/facilities-list-item";
 import { HeaderWithRText } from "../../../components/header";
+import { consultants } from "../../../data/consultants";
 import { facilities } from "../../../data/facilities";
+import { NavKey as BookAppointmentNavKey } from "../BookAppointment";
+import { HomeNavKey as MainNavKey } from "../";
 
 export const FindFacilityList = () => {
 	const navigation = useNavigation();
@@ -12,10 +16,20 @@ export const FindFacilityList = () => {
 		navigation.navigate("Home");
 	};
 
-	const nearest = () => {};
+	const nearest = () => { };
 
-	const selectFacility = (facility) =>
-		navigation.navigate("SetAppointmentTime", { facility });
+	const selectFacility = (facility: any) => navigation.navigate("SetAppointmentTime", { facility });
+
+	// TODO: facility should come from map screen
+	const facility = facilities[0]
+
+	const selectConsultant = useCallback((consultant: any) => {
+		navigation.navigate(MainNavKey.BookAppointmentViewScreen, {
+			screen: BookAppointmentNavKey.SetAppointmentTimeScreen,
+			params: { consultant },
+		})
+	}, [navigation])
+
 	return (
 		<ScrollView>
 			<Stack>
@@ -30,13 +44,23 @@ export const FindFacilityList = () => {
 					/>
 
 					<VStack space={2}>
-						{facilities.map((facility) => (
-							<FacilityListItem
-								onPress={() => selectFacility(facility)}
-								key={facility.id}
-								facility={facility}
-							/>
-						))}
+						<FacilityListItem
+							onPress={() => { }}
+							key={facility.id}
+							facility={facility}
+						/>
+					</VStack>
+					<VStack space={3}>
+						<Heading fontSize="md">Consultants at This Facility</Heading>
+						<VStack space={2}>
+							{consultants.map((consultant) => (
+								<ConsultantListItem
+									onPress={() => selectConsultant(consultant)}
+									key={consultant.id}
+									consultant={consultant}
+								/>
+							))}
+						</VStack>
 					</VStack>
 				</VStack>
 			</Stack>
