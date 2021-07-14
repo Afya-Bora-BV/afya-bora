@@ -19,12 +19,8 @@ interface AuthStore {
         | undefined // User doesn't exist yet
         | User      // user exist and logged in
         | null      // user logged out
-    login: () => Promise<void>
 
-    /**
-     * @Returns something
-     * Error: something
-     */
+    signInWithEmailAndPassword: (email: string, password: string) => Promise<void>
     signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
     confirmPhoneCode: (code: string) => Promise<void>
 }
@@ -35,7 +31,7 @@ const createAuthStore = () => create<AuthStore>((set, get) => ({
     user: null,
 
     // THINK: appropriate might be `setUser`
-    login: async () => {
+    signInWithEmailAndPassword: async function (email, password) {
 
         // create the fake user 
         set({

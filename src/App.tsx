@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import AuthenticatedAppView from './views/_Authenticated';
 import { useState } from 'react';
 import Splash from './screens/Splash';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export const theme = extendTheme({
 	colors: {
@@ -88,12 +89,14 @@ function Main () {
 
 export default function App () {
     return (
-        <NativeBaseProvider theme={theme}>
-            <NavigationContainer theme={AppTheme}>
-                <AuthProvider>
-                    <Main />
-                </AuthProvider>
-            </NavigationContainer>
-        </NativeBaseProvider>
+		<SafeAreaProvider>
+			<NativeBaseProvider theme={theme}>
+				<NavigationContainer theme={AppTheme}>
+					<AuthProvider>
+						<Main />
+					</AuthProvider>
+				</NavigationContainer>
+			</NativeBaseProvider>
+		</SafeAreaProvider>
     )
 }
