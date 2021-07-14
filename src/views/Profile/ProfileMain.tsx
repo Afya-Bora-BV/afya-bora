@@ -13,23 +13,23 @@ import {
 	Spacer,
 	Icon,
 } from "native-base";
-import { colors } from "../contants/colors";
+import { colors } from "../../contants/colors";
 import { Dimensions } from "react-native";
-import { HeroIllustrationContainer, ProfileCard } from "../components/cards";
-import AppointmentIllustration from "../assets/illustrations/AppointmentIllustration";
-import OnlineConsulationIllustration from "../assets/illustrations/OnlineConsulationIllustration";
+import { HeroIllustrationContainer, ProfileCard } from "../../components/cards";
+import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
+import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
 import { useNavigation } from "@react-navigation/native";
-import CalendarIllustration from "../assets/illustrations/CalendarIllustration";
-import NewspaperIllustration from "../assets/illustrations/NewspaperIllustration";
+import CalendarIllustration from "../../assets/illustrations/CalendarIllustration";
+import NewspaperIllustration from "../../assets/illustrations/NewspaperIllustration";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import AccountIcon from "../assets/icons/AccountIcon";
-import UpdateClock from "../assets/icons/UpdateClock";
-import MapPinIcon from "../assets/icons/MapPinIcon";
-import CardIcon from "../assets/icons/CardIcon";
-import HeadphoneIcon from "../assets/icons/HeadphoneIcon";
-import PhoneIcon from "../assets/icons/PhoneIcon";
-import InfoIcon from "../assets/icons/InfoIcon";
-import LogoutIcon from "../assets/icons/LogoutIcon";
+import AccountIcon from "../../assets/icons/AccountIcon";
+import UpdateClock from "../../assets/icons/UpdateClock";
+import MapPinIcon from "../../assets/icons/MapPinIcon";
+import CardIcon from "../../assets/icons/CardIcon";
+import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
+import PhoneIcon from "../../assets/icons/PhoneIcon";
+import InfoIcon from "../../assets/icons/InfoIcon";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
 
 
 // import auth from '@react-native-firebase/auth';
