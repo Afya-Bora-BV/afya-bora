@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 
-import {FindFacility as FindFacilityView} from '../../screens/FindFacility' 
-import {FindFacilityList as FindFacilityListView} from '../../screens/FindFacilityList' 
+import {FindFacility as FindFacilityView} from './FindFacility' 
+import {FindFacilityList as FindFacilityListView} from './FindFacilityList' 
 
 const Stack = createStackNavigator()
 

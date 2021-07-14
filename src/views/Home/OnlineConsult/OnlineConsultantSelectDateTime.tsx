@@ -14,14 +14,14 @@ import {
 	ChevronDownIcon,
 } from "native-base";
 import { SafeAreaView, TouchableOpacity } from "react-native";
-import { colors } from "../../contants/colors";
-import { HeaderwithBack } from "../../components/header";
+import { colors } from "../../../contants/colors";
+import { HeaderwithBack } from "../../../components/header";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import _ from "lodash";
 import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
-import { toggleStringFromList } from "../../utils";
+import { toggleStringFromList } from "../../../utils";
 
 
 import { NavKey } from '.'

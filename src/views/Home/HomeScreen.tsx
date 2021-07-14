@@ -11,27 +11,27 @@ import {
 	ScrollView,
 	StatusBar,
 } from "native-base";
-import UserIcon from "../assets/icons/User";
-import BellIcon from "../assets/icons/Bell";
-import SearchIcon from "../assets/icons/Search";
-import MedicalHistoryIcon from "../assets/icons/MedicalHistory";
+import UserIcon from "../../assets/icons/User";
+import BellIcon from "../../assets/icons/Bell";
+import SearchIcon from "../../assets/icons/Search";
+import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
 
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
-import AppointmentIllustration from "../assets/illustrations/AppointmentIllustration";
-import OnlineConsulationIllustration from "../assets/illustrations/OnlineConsulationIllustration";
-import FacilityIllustration from "../assets/illustrations/FacilityIllustration";
+import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
+import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
+import FacilityIllustration from "../../assets/illustrations/FacilityIllustration";
 
-import BackgroundOne from "../assets/illustrations/BackgroundOne";
+import BackgroundOne from "../../assets/illustrations/BackgroundOne";
 import { useNavigation } from "@react-navigation/native";
 import {
 	HeroIllustrationContainer,
 	TopRatedSpecialists,
-} from "../components/cards";
+} from "../../components/cards";
 import moment from "moment";
 
 
-import { NavKey as MainNavKey } from './_Authenticated'
+import { HomeNavKey as MainNavKey } from '.'
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {

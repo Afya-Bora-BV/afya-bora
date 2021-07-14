@@ -4,14 +4,14 @@ import { extendTheme, NativeBaseProvider } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { colors } from "./contants/colors";
 
-import PlainAppView from "./views/_Plain";
 import { AuthProvider, useAuthStore } from './internals/auth/context';
 import { useEffect } from 'react';
-import AuthenticatedAppView from './views/_Authenticated';
 import { useState } from 'react';
 import Splash from './screens/Splash';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SignUpView from './views/SignUp';
+
+import PlainAppView from "./views/_Plain";
+import AuthenticatedAppView from './views/_Authenticated';
 
 export const theme = extendTheme({
 	colors: {
@@ -94,8 +94,8 @@ export default function App () {
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
 					<AuthProvider>
-						<Main />
-						{/* <SignUpView /> */}
+						{/* <Main /> */}
+						<AuthenticatedAppView />
 					</AuthProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>

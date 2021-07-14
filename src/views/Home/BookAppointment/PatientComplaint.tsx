@@ -10,16 +10,16 @@ import {
 	Text,
 	TextArea,
 } from "native-base";
-import { HeaderwithBack } from "../../components/header";
+import { HeaderwithBack } from "../../../components/header";
 import { CommonActions, StackActions, useNavigation } from "@react-navigation/native";
-import { Symptom } from "../../components/bars";
-import { Spacer } from "../../components/Spacer";
-import { colors } from "../../contants/colors";
+import { Symptom } from "../../../components/bars";
+import { Spacer } from "../../../components/Spacer";
+import { colors } from "../../../contants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
-import { toggleStringFromList } from "../../utils";
+import { toggleStringFromList } from "../../../utils";
 
-import { NavKey as AuthNavKey } from "../_Authenticated";
+import { HomeNavKey as AuthNavKey } from "../";
 
 const keySymptoms = [
 	"Fever",

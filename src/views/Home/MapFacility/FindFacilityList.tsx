@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/core";
 import { Box, ScrollView, Stack, StatusBar, VStack } from "native-base";
 import React from "react";
-import { FacilityListItem } from "../components/facilities-list-item";
-import { HeaderWithRText } from "../components/header";
-import { facilities } from "../data/facilities";
+import { FacilityListItem } from "../../../components/facilities-list-item";
+import { HeaderWithRText } from "../../../components/header";
+import { facilities } from "../../../data/facilities";
 
 export const FindFacilityList = () => {
 	const navigation = useNavigation();

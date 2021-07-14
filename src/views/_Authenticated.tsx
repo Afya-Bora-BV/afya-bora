@@ -1,30 +1,26 @@
 import React from 'react'
 
 import { createStackNavigator } from "@react-navigation/stack"
-import { Container, Text, View } from "native-base"
-import HomeScreen from './Home'
-import BookAppointmentView from './BookAppointment'
-import OnlineConsultView from './OnlineConsult'
-import MapFaciltyView from './MapFacility'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-const NavStack = createStackNavigator()
+import HomeView from './Home'
 
-export const NavKey = {
-    HomeScreen: "HomeScreen",
-    BookAppointmentViewScreen: "BookAppointmentView",
-    OnlineConsultViewScreen: "OnlineConsultView",
-    MapFaciltyViewScreen: "MapFaciltyView",
+const Tab = createBottomTabNavigator()
+
+export const TabNavKey = {
+    HomeView: "Home",
+    ScheduleView: "ScheduleView",
+    ChatView: "ChatView",
+    Profile: "ProfileView"
 }
 
 export default function AuthenticatedAppView() {
     return (
-        <NavStack.Navigator
-            headerMode="none"
-        >
-            <NavStack.Screen name={NavKey.HomeScreen} component={HomeScreen} />
-            <NavStack.Screen name={NavKey.BookAppointmentViewScreen} component={BookAppointmentView} />
-            <NavStack.Screen name={NavKey.OnlineConsultViewScreen} component={OnlineConsultView} />
-            <NavStack.Screen name={NavKey.MapFaciltyViewScreen} component={MapFaciltyView} />
-        </NavStack.Navigator>
+        <Tab.Navigator>
+            <Tab.Screen name={TabNavKey.HomeView} component={HomeView} />
+            <Tab.Screen name={TabNavKey.ScheduleView} component={HomeView} />
+            <Tab.Screen name={TabNavKey.ChatView} component={HomeView} />
+            <Tab.Screen name={TabNavKey.Profile} component={HomeView} />
+        </Tab.Navigator>
     )
 }
