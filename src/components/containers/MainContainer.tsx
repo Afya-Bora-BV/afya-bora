@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, StatusBar, View } from 'native-base';
+import { Box, StatusBar, View, Text } from 'native-base';
 import _BaseContainer from "./_BaseContainer";
 
 
@@ -9,10 +9,14 @@ export default function MainContainer ({ children, title, leftSection: LeftSecti
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<Box width={"100%"} flex={1}>
 				{/* Header */}
-				<View flexDirection="row" paddingX={5} paddingY={3}>
-					{ LeftSection !== undefined ?  <LeftSection /> : null }
-					<View flexGrow={1} flexDirection="row">
-						{title}
+				<View flexDirection="row" justifyContent="space-between" paddingX={5} paddingY={8}>
+					{ LeftSection !== undefined ?  (
+						<View>
+							<LeftSection />
+						</View>
+					) : null }
+					<View flexGrow={1} width="100%" flexDirection="row" alignItems="center" justifyContent="center">
+						<Text fontSize="xl">{title}</Text>
 					</View>
 					{ RightSection !== undefined ?  <RightSection /> : null }
 				</View>

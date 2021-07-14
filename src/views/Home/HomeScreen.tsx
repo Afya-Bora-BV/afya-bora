@@ -28,14 +28,7 @@ import { HomeNavKey as MainNavKey } from '.'
 import _BaseContainer from "../../components/containers/_BaseContainer";
 import { colors } from "../../contants/colors";
 import MainContainer from "../../components/containers/MainContainer";
-
-const IconContainer: React.FC = ({ children }) => {
-	return (
-		<Square p={2} backgroundColor="#E7E5FF" borderRadius={8}>
-			{children}
-		</Square>
-	);
-};
+import { IconContainer } from "../../components/misc";
 
 
 const helpOptions = [

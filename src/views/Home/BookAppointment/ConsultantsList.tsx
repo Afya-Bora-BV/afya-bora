@@ -6,6 +6,7 @@ import {
 	Text,
 	ScrollView,
 	StatusBar,
+	ArrowBackIcon,
 } from "native-base";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { useNavigation } from "@react-navigation/native";
@@ -13,28 +14,34 @@ import { consultants } from "../../../data/consultants";
 import { HeaderWith2Icons } from "../../../components/header";
 
 import { NavKey } from ".";
+import MainContainer from "../../../components/containers/MainContainer";
+import { IconContainer } from "../../../components/misc";
+import { Pressable } from "react-native";
+import { useCallback } from "react";
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
 
-	const navigateBack = () => {
-		navigation.goBack();
-	};
+	const selectConsultant = useCallback((consultant: any) => {
+		navigation.navigate(NavKey.SetAppointmentTimeScreen, { consultant })
+	}, [navigation])
 
-	const selectConsultant = (consultant: any) =>
-		navigation.navigate(NavKey.SetAppointmentTimeScreen, { consultant });
 	return (
-		<ScrollView paddingTop={8}>
-			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-			<VStack p={2} space={6}>
-				{/* TODO: to be moved to components folder */}
-				<HeaderWith2Icons
-					text={"Choose a Consultant"}
-					rText={"Nearest"}
-					iconPress={navigateBack}
-					// onPress={nearest}
-				/>
-
+		<MainContainer
+			title="Choose a consultant"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack() ? (
+					() => (
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
+				) : undefined
+			}>
+			<ScrollView padding={5}>
 				<VStack space={2}>
 					{consultants.map((consultant) => (
 						<ConsultantListItem
@@ -44,8 +51,8 @@ const ConsultantsList = () => {
 						/>
 					))}
 				</VStack>
-			</VStack>
-		</ScrollView>
+			</ScrollView>
+		</MainContainer>
 	);
 };
 
