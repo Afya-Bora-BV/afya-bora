@@ -175,7 +175,7 @@ const UpcommingAppointments: React.FC = () => {
 	const { isLoading, isError, data, error } = useQuery('appointments', getAppointments, {
 		// TODO: to remove this behaviour
 		// and instead just fetch either from offline or online state
-		refetchInterval: 1000
+		refetchInterval: 5000
 	})
 	if (isLoading) return <Text>Fetching appointement... </Text>
 	if (error) return <Text>Something went wrong</Text>

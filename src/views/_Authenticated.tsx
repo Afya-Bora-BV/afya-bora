@@ -16,13 +16,53 @@ export const TabNavKey = {
     Profile: "Profile"
 }
 
+import TabHomeIcon from "../assets/icons/TabHomeIcon";
+import TabScheduleIcon from "../assets/icons/TabScheduleIcon";
+import TabChatIcon from "../assets/icons/TabChatIcon";
+import TabProfileIcon from "../assets/icons/TabProfileIcon";
+
+
 export default function AuthenticatedAppView() {
     return (
-        <Tab.Navigator lazy>
-            <Tab.Screen name={TabNavKey.HomeView} component={HomeView} />
-            <Tab.Screen name={TabNavKey.ScheduleView} component={ScheduleView} />
-            <Tab.Screen name={TabNavKey.ChatView} component={ChatView} />
-            <Tab.Screen name={TabNavKey.Profile} component={ProfileView} />
+        <Tab.Navigator lazy
+
+            tabBarOptions={{
+                activeTintColor: "#561BB3",
+                inactiveTintColor: "#B0B3C7",
+            }}>
+            <Tab.Screen name={TabNavKey.HomeView} component={HomeView}
+
+                options={{
+                    tabBarLabel: "Home",
+                    tabBarIcon: ({ color, size }) => (
+                        <TabHomeIcon size={8} color={color} />
+                    ),
+                }}
+            />
+            <Tab.Screen name={TabNavKey.ScheduleView} component={ScheduleView}
+
+                options={{
+                    tabBarLabel: "Schedule",
+                    tabBarIcon: ({ color, size }) => (
+                        <TabScheduleIcon size={8} color={color} />
+                    ),
+                }}
+            />
+            <Tab.Screen name={TabNavKey.ChatView} component={ChatView}
+
+                options={{
+                    tabBarLabel: "Chat",
+                    tabBarIcon: ({ color, size }) => (
+                        <TabChatIcon size={8} color={color} />
+                    ),
+                }} />
+            <Tab.Screen name={TabNavKey.Profile} component={ProfileView}
+                options={{
+                    tabBarLabel: "Profile",
+                    tabBarIcon: ({ color, size }) => (
+                        <TabProfileIcon size={8} color={color} />
+                    ),
+                }} />
         </Tab.Navigator>
     )
 }
