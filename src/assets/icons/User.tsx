@@ -4,13 +4,12 @@ import Svg, { SvgProps, Path } from "react-native-svg"
 
 function SvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
     return (
-        <Icon viewBox="0 0 20 20" size={size}>
+        <Icon viewBox="0 0 20 20" size={size} {...rest}>
             <Svg
                 width={20}
                 height={20}
                 viewBox="0 0 20 20"
                 fill="none"
-                {...rest}
             >
                 <Path
                     fillRule="evenodd"

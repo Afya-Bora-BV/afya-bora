@@ -5,11 +5,13 @@ import {
 	HStack,
 	VStack,
 	Text,
+	View,
 	Heading,
 	ZStack,
 	Pressable,
 	ScrollView,
 	StatusBar,
+	Square,
 } from "native-base";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
@@ -22,153 +24,206 @@ import AppointmentIllustration from "../../assets/illustrations/AppointmentIllus
 import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
 import FacilityIllustration from "../../assets/illustrations/FacilityIllustration";
 
-import BackgroundOne from "../../assets/illustrations/BackgroundOne";
 import { useNavigation } from "@react-navigation/native";
-import {
-	HeroIllustrationContainer,
-	TopRatedSpecialists,
-} from "../../components/cards";
 import moment from "moment";
 
 
 import { HomeNavKey as MainNavKey } from '.'
+import _BaseContainer from "../../components/containers/_BaseContainer";
+import { colors } from "../../contants/colors";
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
 	return (
-		<Center p={2} backgroundColor="#E7E5FF" borderRadius={8}>
+		<Square p={2} backgroundColor="#E7E5FF" borderRadius={8}>
 			{children}
-		</Center>
+		</Square>
 	);
 };
 
-const Home: React.FC = () => {
-	const navigation = useNavigation();
-	const hasUpcomingAppointment = true;
 
-	// console.log("user : ", user)
+const helpOptions = [
+	{
+		illustration: AppointmentIllustration,
+		title: "Book an Appointment",
+		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
+	},
+	{
+		illustration: OnlineConsulationIllustration,
+		title: "Online Consultation",
+		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.OnlineConsultViewScreen)
+	},
+	{
+		illustration: FacilityIllustration,
+		title: "Find a Facility",
+		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
+	},
+]
+
+function MainContainer ({ children, title, leftSection: LeftSection, rightSection: RightSection }: any) {
+	return (
+		<_BaseContainer>
+			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+			<Box width={"100%"} flex={1}>
+				{/* Header */}
+				<View flexDirection="row" bgColor="#003F5E" paddingX={5} paddingY={3}>
+					{ LeftSection !== undefined ?  <LeftSection /> : null }
+					<View flexGrow={1} flexDirection="row">
+						{title}
+					</View>
+					{ RightSection !== undefined ?  <RightSection /> : null }
+				</View>
+				{/* Body */}
+				<View>
+					{ children }
+				</View>
+			</Box>
+		</_BaseContainer>
+	)
+}
+
+export default function Home () {
+	const navigation = useNavigation();
 
 	return (
-		<ScrollView width="100%">
-			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
-			<VStack paddingX={3} space={6} marginTop={10}>
-				<HStack justifyContent="space-between" alignItems="center">
+		<MainContainer
+			leftSection={
+				() => (
 					<IconContainer>
-						{/* <UserIcon color="#561BB3" /> */}
-						<Icon
-							name="account-outline"
-							color="#561BB3"
-							size={24}
-						/>
+						<UserIcon size={6} color="#561BB3" />
 					</IconContainer>
+				)
+			}
+			rightSection={
+				() => (
 					<HStack space={4}>
 						<IconContainer>
-							{/* <BellIcon color="#561BB3" /> */}
-							<Icon
-								name="bell-outline"
-								color="#561BB3"
-								size={24}
-							/>
+							<BellIcon size={6} color="#561BB3" />
 						</IconContainer>
 						<IconContainer>
-							{/* <SearchIcon color="#561BB3" /> */}
-							<Icon name="magnify" color="#561BB3" size={24} />
+							<SearchIcon size={6} color="#561BB3" />
 						</IconContainer>
 					</HStack>
-				</HStack>
-
-				<VStack space={2}>
+				)
+			}
+		>
+			<ScrollView width="100%">
+				{/* Welcome section */}
+				<VStack space={2} padding={5}>
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
 					<Heading fontSize="3xl">Hi, Ally Salim</Heading>
 				</VStack>
 
-				{hasUpcomingAppointment && <UpcomingAppointmentsAlert />}
+				{/* Section to render upcoming appointments if any.
+					NOTE: To prevent re-rendering, dont use inline if statements
+					*/}
+				<UpcomingAppointmentsSection />
 
-				<VStack>
-					<Heading fontSize="lg">How can we help?</Heading>
+				<VStack padding={5}>
+					<Heading fontSize="xl">How can we help?</Heading>
 					<HStack
 						space={4}
 						marginTop={3}
 						justifyContent="space-between"
 					>
-						<HeroIllustrationContainer
-							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
-						>
-							<AppointmentIllustration size={70} />
-							<Text textAlign="center">Appointment Booking</Text>
-						</HeroIllustrationContainer>
-
-						<HeroIllustrationContainer
-							onPress={() =>
-								navigation.navigate(MainNavKey.OnlineConsultViewScreen)
-							}
-						>
-							<OnlineConsulationIllustration size={70} />
-							<Text textAlign="center" flexWrap="wrap">
-								Online Consult
-							</Text>
-						</HeroIllustrationContainer>
-
-						{/* <Pressable
-							onPress={() => {
-								navigate("Service");
-							}}
-						> */}
-						<HeroIllustrationContainer
-							onPress={() => navigation.navigate(MainNavKey.MapFaciltyViewScreen)}
-						>
-							<FacilityIllustration size={70} />
-							<Text textAlign="center">Find a Facility</Text>
-						</HeroIllustrationContainer>
-						{/* </Pressable> */}
+						{
+							helpOptions.map(({ illustration: Illustration, onNavigate, title }, ix) => (
+								<Pressable onPress={() => onNavigate(navigation)}>
+									{/* Find mean to set relative width: 160 -> 33%?? */}
+									<Center 
+										width={140} 
+										height={200} 
+										paddingY={3} 
+										bgColor="#FFF" 
+										rounded="xl"
+										shadow={4}>
+										<Illustration size={100} />
+										<Text fontWeight="800" marginTop={5} textAlign="center" wordBreak="break-word" overflowWrap="break-word">
+											{title}
+										</Text>
+									</Center>
+								</Pressable>
+							))
+						}
 					</HStack>
 				</VStack>
 
 				<VStack>
-					<Heading fontSize="md">Top Rated Specialists</Heading>
+					<View padding={5}>
+						<Heading fontSize="xl">Top Rated Specialists</Heading>
+					</View>
 
-					<ScrollView horizontal={true} height={250}>
+					<ScrollView
+						horizontal={true} 
+						showsHorizontalScrollIndicator={false} 
+						alwaysBounceHorizontal>
 						<HStack
 							justifyContent="space-between"
-							paddingBottom={10}
-							minWidth={"90%"}
+							marginX={3}
 						>
 							{
 								[
 									{
 										name: "Dr. Maryam Mohamedali",
-										gender: "female"
+										location: "Arusha, Tanzania",
+										specialization: "Immunology, Gynecology, Internal Medicine",
+										color: "#EEE",
+										textColor: colors.primary
 									},
 									{
 										name: "Dr. Wyckliffe Sango",
-										gender: "male"
+										color: "#258FBE"
 									},
 									{
 										name: "Dr. Ally Salim",
-										gender: "male"
+										color: "#258FBE"
 									},
-								].map((specialist, ix) => (
-									<TopRatedSpecialists
-										key={`trspec-${ix}`}
-										name={specialist.name}
-										gender={specialist.gender}
-									/>
+								].map(({ color, name, location, specialization, textColor }, ix) => (
+									<Box 
+										paddingX={6}
+										paddingY={8} 
+										bgColor={color}  
+										rounded="xl" 
+										marginX={2}
+										maxWidth={200} 
+										minHeight={250}>
+										<VStack>
+											<Heading fontSize="md" color={textColor || "#FFFFFF"}>
+												{name}
+											</Heading>
+											<VStack space={1} marginTop={3}>
+												<View>
+													<Text fontSize="sm">{location}</Text>
+												</View>
+												<View>
+													<Text fontSize="sm">{specialization}</Text>
+												</View>
+											</VStack>
+										</VStack>
+									</Box>
 								))
 							}
 						</HStack>
 					</ScrollView>
 				</VStack>
-			</VStack>
-		</ScrollView>
+			</ScrollView>
+		</MainContainer>
 	);
 };
 
-const UpcomingAppointmentsAlert = () => {
+const UpcomingAppointmentsSection = () => {
+
+	const hasUpcomingAppointment = true;
+
+	if (!hasUpcomingAppointment) {
+		return null
+	}
+
 	return (
-		<VStack space={4}>
-			<Heading fontSize="md">Upcoming Appointments</Heading>
+		<VStack space={4} marginX={5} marginTop={8}>
+			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<HStack
 				justifyContent="space-between"
 				alignItems="center"
@@ -190,5 +245,3 @@ const UpcomingAppointmentsAlert = () => {
 		</VStack>
 	);
 };
-
-export default Home;

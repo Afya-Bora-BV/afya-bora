@@ -12,7 +12,7 @@ import Svg, {
     Use,
 } from "react-native-svg"
 
-function SvgComponent({ size, color, bgColor, ...rest }: SvgProps & IIconProps) {
+function BackgroundOneIllustration({ size, color, bgColor, ...rest }: SvgProps & IIconProps) {
     return (
         <Svg
             width={176}
@@ -60,4 +60,4 @@ function SvgComponent({ size, color, bgColor, ...rest }: SvgProps & IIconProps) 
     )
 }
 
-export default SvgComponent
+export default BackgroundOneIllustration
