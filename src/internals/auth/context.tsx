@@ -1,11 +1,13 @@
 import React from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
+import { persist } from "zustand/middleware"
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * User object
  */
- interface User {
+interface User {
     uid: string
     name: string
     image?: string
@@ -15,10 +17,10 @@ import createContext from 'zustand/context'
  * Authentication store
  */
 interface AuthStore {
-    user: 
-        | undefined // User doesn't exist yet
-        | User      // user exist and logged in
-        | null      // user logged out
+    user:
+    | undefined // User doesn't exist yet
+    | User      // user exist and logged in
+    | null      // user logged out
 
     signInWithEmailAndPassword: (email: string, password: string) => Promise<void>
     signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
@@ -27,16 +29,20 @@ interface AuthStore {
 
 const { Provider, useStore } = createContext<AuthStore>()
 
-const createAuthStore = () => create<AuthStore>((set, get) => ({
+const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
+
+
+const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     user: null,
 
     // THINK: appropriate might be `setUser`
     signInWithEmailAndPassword: async function (email, password) {
-
+        await sleep(3000)
+        // TODO: fetch name and other related information
         // create the fake user 
         set({
             user: {
-                uid: "h9172",
+                uid: "asda",
                 name: "George Millanzi",
             } as User
         })
@@ -61,13 +67,16 @@ const createAuthStore = () => create<AuthStore>((set, get) => ({
             })
         }, 2000)
     }
+}), {
+    name: "authState",
+    getStorage: () => AsyncStorage
 }))
 
 interface AuthProviderProps { children?: React.ReactElement }
-function AuthProvider ({ children }: AuthProviderProps) {
+function AuthProvider({ children }: AuthProviderProps) {
     return (
         <Provider createStore={createAuthStore}>
-            { children }
+            {children}
         </Provider>
     )
 }
