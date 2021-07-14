@@ -10,6 +10,7 @@ import {
 	Pressable,
 	ScrollView,
 	StatusBar,
+	Stack,
 } from "native-base";
 import UserIcon from "../assets/icons/User";
 import BellIcon from "../assets/icons/Bell";
@@ -32,6 +33,8 @@ import moment from "moment";
 
 
 import { NavKey as MainNavKey } from './_Authenticated'
+import { DemoAppointmentType, useAppointmentTempoStore } from "../internals/appointment/context";
+import { useQuery } from "react-query";
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
@@ -45,6 +48,7 @@ const IconContainer: React.FC = ({ children }) => {
 const Home: React.FC = () => {
 	const navigation = useNavigation();
 	const hasUpcomingAppointment = true;
+
 
 	// console.log("user : ", user)
 
@@ -84,7 +88,7 @@ const Home: React.FC = () => {
 					<Heading fontSize="3xl">Hi, Ally Salim</Heading>
 				</VStack>
 
-				{hasUpcomingAppointment && <UpcomingAppointmentsAlert />}
+				<UpcommingAppointments />
 
 				<VStack>
 					<Heading fontSize="lg">How can we help?</Heading>
@@ -165,10 +169,40 @@ const Home: React.FC = () => {
 	);
 };
 
-const UpcomingAppointmentsAlert = () => {
+// TODO: find a better place to fetch all the data
+const UpcommingAppointments: React.FC = () => {
+	const getAppointments = useAppointmentTempoStore(state => state.getAppointments)
+	const { isLoading, isError, data, error } = useQuery('appointments', getAppointments, {
+		// TODO: to remove this behaviour
+		// and instead just fetch either from offline or online state
+		refetchInterval: 1000
+	})
+	if (isLoading) return <Text>Fetching appointement... </Text>
+	if (error) return <Text>Something went wrong</Text>
+	if (data?.length === 0) return <Box
+		justifyContent="space-between"
+		borderRadius={6}
+		p={3}
+		borderColor="#B0B3C7"
+		borderWidth={1}>No upcomming appointment</Box>
+
+	console.log("appointment")
+	console.log(data)
 	return (
 		<VStack space={4}>
 			<Heading fontSize="md">Upcoming Appointments</Heading>
+			{data?.map((appointment) => <UpcomingAppointmentsAlert appointment={appointment} />
+			)}
+		</VStack>
+	)
+}
+
+
+
+const UpcomingAppointmentsAlert: React.FC<{ appointment: DemoAppointmentType }> = ({ appointment }) => {
+	const { dateTime: { timeSlots }, consultant: { name } } = appointment
+	return (
+		<VStack>
 			<HStack
 				justifyContent="space-between"
 				alignItems="center"
@@ -183,9 +217,10 @@ const UpcomingAppointmentsAlert = () => {
 					space={4}
 				>
 					<MedicalHistoryIcon />
-					<Text>Meet Dr. Mohamedali</Text>
+					<Text>Meet Dr {name}</Text>
 				</HStack>
-				<Text color="#258FBE">14:30 PM</Text>
+				{/* TODO: specify the correct time for appointment */}
+				<Text color="#258FBE">{timeSlots[0]}</Text>
 			</HStack>
 		</VStack>
 	);

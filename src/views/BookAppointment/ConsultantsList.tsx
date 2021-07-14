@@ -32,7 +32,7 @@ const ConsultantsList = () => {
 					text={"Choose a Consultant"}
 					rText={"Nearest"}
 					iconPress={navigateBack}
-					// onPress={nearest}
+				// onPress={nearest}
 				/>
 
 				<VStack space={2}>

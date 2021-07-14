@@ -27,6 +27,9 @@ import { toggleStringFromList } from "../../utils";
 import { NavKey as AuthNavKey } from "../_Authenticated";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { BookAppointmentStackParamList } from ".";
+import { useAppointmentTempoStore } from "../../internals/appointment/context";
+
+import { useMutation } from 'react-query'
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -52,6 +55,21 @@ const keySymptoms = [
 ];
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
+	const setAppointment = useAppointmentTempoStore(state => state.setAppointment)
+
+	const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
+		onMutate: variables => {
+		},
+		onError: (error, variables, context) => {
+			console.log("Something went wrong")
+		},
+		onSuccess: (data, variables, context) => {
+			console.log("Data already saved ")
+			navigation.navigate(AuthNavKey.HomeScreen);
+			// Boom baby!
+		},
+
+	})
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
@@ -77,17 +95,17 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
 					onPress: () => {
-						navigation.navigate(AuthNavKey.HomeScreen);
-						setTimeout(() =>
-							ToastAndroid.show(
-								"Appoinmtent request submitted!",
-								3000
-							)
-						);
+						// TODO: arguments to the add appointment function
+						addAppointment({
+							symptoms,
+							consultant,
+							complaint,
+							dateTime: appointment,
+						})
 					},
 				},
 			]
@@ -224,7 +242,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 					</Stack>
 				</Box>
 			</Stack>
-			<Button my={6} bg={colors.primary} onPress={onSubmit} rounded={20}>
+			<Button my={6} bg={colors.primary} onPress={onSubmit} isLoading={isLoading} disabled={isLoading} rounded={20}>
 				Book Appointment
 			</Button>
 			<Spacer size={10} />
