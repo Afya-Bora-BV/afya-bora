@@ -19,7 +19,6 @@ import { Dimensions } from "react-native";
 import { HeaderwithBack } from "../../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
-import { RootStackParamList } from "../../..";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getDaysInMonth, isSameDay } from "date-fns";
@@ -29,12 +28,18 @@ import { colors } from "../../../contants/colors";
 import moment from "moment";
 import { toggleStringFromList } from "../../../utils";
 
-import { NavKey } from "."
+import { BookAppointmentStackParamList, NavKey } from "../BookAppointment";
 
 const { width } = Dimensions.get("window");
 
-type SetAppointmentTimeScreenRouteProp = RouteProp<RootStackParamList, "SetAppointmentTime">;
-type SetAppointmentTimeNavigationProp = StackNavigationProp<RootStackParamList, "SetAppointmentTime">;
+type SetAppointmentTimeScreenRouteProp = RouteProp<
+	BookAppointmentStackParamList,
+	"SetAppointmentTime"
+>;
+type SetAppointmentTimeNavigationProp = StackNavigationProp<
+	BookAppointmentStackParamList,
+	"SetAppointmentTime"
+>;
 
 type SetAppointmentTimeProps = {
 	route: SetAppointmentTimeScreenRouteProp;
@@ -45,7 +50,7 @@ type SetAppointmentTimeProps = {
 // 	route: any;
 // };
 
-export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) {
+export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const navigation = useNavigation();
 	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
 		date: new Date(),
@@ -60,8 +65,12 @@ export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) 
 	const handleBackPress = () => navigation.goBack();
 
 	const consultant = route.params.consultant;
-	
-	const handleNext = () => navigation.navigate(NavKey.PatientComplaintScreen);
+
+	const handleNext = () =>
+		navigation.navigate(NavKey.PatientComplaintScreen, {
+			consultant,
+			appointment: state,
+		});
 	return (
 		<ScrollView>
 			{/* <StatusBar backgroundColor="#fff" /> */}
@@ -228,7 +237,7 @@ export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) 
 			</Button>
 		</ScrollView>
 	);
-};
+}
 
 type MonthDropDownProps = {
 	date: Date;

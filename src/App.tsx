@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import { extendTheme, NativeBaseProvider } from "native-base"
+import { extendTheme, NativeBaseProvider } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { colors } from "./contants/colors";
 
@@ -65,27 +65,26 @@ export const AppTheme = {
 	},
 };
 
-function Main () {
-    const user = useAuthStore(state => state.user)
-    const [isSplashToClose, setSplashToHide] = useState(false)
+function Main() {
+	const user = useAuthStore((state) => state.user);
+	const [isSplashToClose, setSplashToHide] = useState(false);
 
-    // eecuted when screen is viewed
-    useEffect(() => {
-        // checks from storage, if there is internal state of the user
-        //  if there is or missing, remoce
-        setSplashToHide(true)
-    }, [])
+	// eecuted when screen is viewed
+	useEffect(() => {
+		// checks from storage, if there is internal state of the user
+		//  if there is or missing, remoce
+		setSplashToHide(true);
+	}, []);
 
-    // Show splash screen if not ready
-    if (!isSplashToClose) return <Splash />
+	// Show splash screen if not ready
+	if (!isSplashToClose) return <Splash />;
 
+	if (user !== null && user !== undefined) {
+		return <AuthenticatedAppView />;
+	}
 
-    if (user !== null && user !== undefined) {
-        return <AuthenticatedAppView />
-    }
-
-    // Not authenticated
-    return <PlainAppView />    
+	// Not authenticated
+	return <PlainAppView />;
 }
 
 export default function App () {

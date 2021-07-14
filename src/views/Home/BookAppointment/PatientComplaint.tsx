@@ -11,15 +11,36 @@ import {
 	TextArea,
 } from "native-base";
 import { HeaderwithBack } from "../../../components/header";
-import { CommonActions, StackActions, useNavigation } from "@react-navigation/native";
-import { Symptom } from "../../../components/bars";
+import {
+	CommonActions,
+	RouteProp,
+	StackActions,
+	useNavigation,
+} from "@react-navigation/native";
+// import { Symptom } from "../../../components/bars";
 import { Spacer } from "../../../components/Spacer";
 import { colors } from "../../../contants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
 import { toggleStringFromList } from "../../../utils";
 
-import { HomeNavKey as AuthNavKey } from "../";
+import { HomeNavKey as MainNavKey } from "../";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { BookAppointmentStackParamList } from ".";
+
+type PatientComplaintScreenRouteProp = RouteProp<
+	BookAppointmentStackParamList,
+	"PatientComplaint"
+>;
+type PatientComplaintNavigationProp = StackNavigationProp<
+	BookAppointmentStackParamList,
+	"PatientComplaint"
+>;
+
+type PatientComplaintProps = {
+	route: PatientComplaintScreenRouteProp;
+	navigation: PatientComplaintNavigationProp;
+};
 
 const keySymptoms = [
 	"Fever",
@@ -30,50 +51,55 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
-export function PatientComplaint () {
+export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
+
+	const [complaint, setComplaint] = useState("n/a");
 
 	const toggleKeySymptom = (symptom: string) => {
 		const sy = toggleStringFromList(symptom, symptoms);
 		setSymptoms(sy);
 	};
 
-	const onSubmit = () => {
-		navigation.navigate(AuthNavKey.HomeScreen)
+	const consultant = route.params.consultant;
 
+	const appointment = route.params.appointment;
+
+	const onSubmit = () => {
 		// console.log(navigation.dangerouslyGetParent())
 
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
-		// ---------------------------------------- 
-		// Alert.alert(
-		// 	"Submit Request",
-		// 	"Please confirm that you have entered correct information.",
-		// 	[
-		// 		{ text: "Cancel", onPress: () => {} },
-		// 		{
-		// 			text: "Confirm",
-		// 			onPress: () => {
-		// 				navigation.dispatch(
-		// 					StackActions.popToTop()
-		// 				);
-		// 				setTimeout(() =>
-		// 					ToastAndroid.show(
-		// 						"Appoinmtent request submitted!",
-		// 						3000
-		// 					)
-		// 				);
-		// 			},
-		// 		},
-		// 	]
-		// );
+		// ----------------------------------------
+		Alert.alert(
+			"Submit Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => {} },
+				{
+					text: "Confirm",
+					onPress: () => {
+						navigation.navigate(MainNavKey.HomeScreen);
+						setTimeout(() =>
+							ToastAndroid.show(
+								"Appoinmtent request submitted!",
+								3000
+							)
+						);
+					},
+				},
+			]
+		);
 	};
 
 	return (
 		<ScrollView>
-			<HeaderwithBack text="About Your Visit" onBackPress={navigation.goBack} />
+			<HeaderwithBack
+				text="About Your Visit"
+				onBackPress={navigation.goBack}
+			/>
 
 			<Spacer size={30} />
 
@@ -187,22 +213,21 @@ export function PatientComplaint () {
 
 						<Box mt={2}>
 							<TextArea
+								value={complaint}
 								autoCorrect={false}
 								placeholder="Describe how you are feeling ..."
+								onChangeText={(complaint) => {
+									setComplaint(complaint);
+								}}
 							/>
 						</Box>
 					</Stack>
 				</Box>
 			</Stack>
-			<Button
-				my={6}
-				bg={colors.primary}
-				onPress={onSubmit}
-				rounded={20}
-			>
+			<Button my={6} bg={colors.primary} onPress={onSubmit} rounded={20}>
 				Book Appointment
 			</Button>
 			<Spacer size={10} />
 		</ScrollView>
 	);
-};
+}

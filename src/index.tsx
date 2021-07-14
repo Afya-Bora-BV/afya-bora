@@ -69,16 +69,6 @@ const Profile = () => {
 	);
 };
 
-export type RootStackParamList = {
-	SetAppointmentTime: {
-		consultant: any;
-	};
-	PatientComplaint: {
-		consultant: any;
-		appointment: any;
-	};
-};
-
 export const AppTheme = {
 	...DefaultTheme,
 	dark: false,
@@ -225,9 +215,9 @@ const AuthStak: React.FC = () => {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name="Login" component={LoginScreen} />
+			{/* <Stack.Screen name="Login" component={LoginScreen} />
 			<Stack.Screen name="SignUp" component={SignUpScreen} />
-			<Stack.Screen name="Verify" component={VerifyScreen} />
+			<Stack.Screen name="Verify" component={VerifyScreen} /> */}
 			<Stack.Screen name="CreateProfile" component={CreateProfile} />
 		</Stack.Navigator>
 	);
@@ -288,8 +278,8 @@ const AuthGate = () => {
 	}
 
 	useEffect(() => {
-		// const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		// return subscriber; // unsubscribe on unmount
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber; // unsubscribe on unmount
 	}, []);
 
 	if (initializing) return null;

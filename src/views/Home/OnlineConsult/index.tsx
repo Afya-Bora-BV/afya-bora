@@ -1,22 +1,32 @@
-import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
-import OnlineConsultantSelectDateTime from './OnlineConsultantSelectDateTime'
-import OnlineConsultChooseConsultant from './OnlineConsultChooseConsultant'
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import OnlineConsultantSelectDateTime from "./OnlineConsultantSelectDateTime";
+import OnlineConsultChooseConsultant from "./OnlineConsultChooseConsultant";
 
+const Stack = createStackNavigator();
 
-const Stack = createStackNavigator()
+export type OnlineConsultStackParamList = {
+	OnlineConsultChooseConsultant: {
+		appointment: any;
+	};
+};
 
 export const NavKey = {
-    SelectDateTimeScreen: "OnlineConsultantSelectDateTime",
-    ChooseConsultantScreen: "OnlineConsultChooseConsultant",
-}
-
+	SelectDateTimeScreen: "OnlineConsultantSelectDateTime",
+	ChooseConsultantScreen: "OnlineConsultChooseConsultant",
+};
 
 export default function BookAppointment() {
-    return (
-        <Stack.Navigator headerMode="none">
-            <Stack.Screen name={NavKey.SelectDateTimeScreen} component={OnlineConsultantSelectDateTime} />
-            <Stack.Screen name={NavKey.ChooseConsultantScreen} component={OnlineConsultChooseConsultant} />
-        </Stack.Navigator>
-    )
+	return (
+		<Stack.Navigator headerMode="none">
+			<Stack.Screen
+				name={NavKey.SelectDateTimeScreen}
+				component={OnlineConsultantSelectDateTime}
+			/>
+			<Stack.Screen
+				name={NavKey.ChooseConsultantScreen}
+				component={OnlineConsultChooseConsultant}
+			/>
+		</Stack.Navigator>
+	);
 }
