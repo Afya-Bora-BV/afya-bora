@@ -30,49 +30,22 @@ import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
 import PhoneIcon from "../../assets/icons/PhoneIcon";
 import InfoIcon from "../../assets/icons/InfoIcon";
 import LogoutIcon from "../../assets/icons/LogoutIcon";
-
+import { ProfileNavKey } from ".";
 
 // import auth from '@react-native-firebase/auth';
 
 const signOut = async () => {
 	// await auth().signOut()
-	console.log("Sign Out")
-
-}
+	console.log("Sign Out");
+};
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
 
 	const { width, height } = Dimensions.get("screen");
 
-	const nav = () => {
-		return (
-			<View>
-				<View alignItems="center" paddingY={20}>
-					<Text color="white" fontSize={35}>
-						Profile
-					</Text>
-				</View>
+	const nav = () => {};
 
-				<Stack alignItems="center">
-					<Box bg="white" shadow={2} rounded={10} width="90%">
-						<Stack
-							style={{
-								paddingHorizontal: 5,
-								paddingVertical: 10,
-							}}
-						>
-							<ProfileCard
-								name={"Ally Salim"}
-								number={"077777777"}
-								press={nav}
-							/>
-						</Stack>
-					</Box>
-				</Stack>
-			</View>
-		);
-	};
 	return (
 		<Box flex={1}>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
@@ -124,7 +97,9 @@ const ProfileMain: React.FC = () => {
 							<Stack paddingX={5} paddingY={3}>
 								<Pressable
 									onPress={() =>
-										navigation.navigate("Profile")
+										navigation.navigate(
+											ProfileNavKey.ProfileScreen
+										)
 									}
 								>
 									<HStack alignItems="center">
@@ -257,9 +232,7 @@ const ProfileMain: React.FC = () => {
 
 								<Spacer size={5} />
 
-								<Pressable
-									onPress={signOut}
-								>
+								<Pressable onPress={signOut}>
 									<HStack alignItems="center">
 										<Stack flex={0.5}>
 											<Icon>
