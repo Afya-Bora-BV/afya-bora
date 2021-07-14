@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import {
 	Box,
 	Center,
@@ -7,18 +7,14 @@ import {
 	Text,
 	View,
 	Heading,
-	ZStack,
 	Pressable,
 	ScrollView,
-	StatusBar,
 	Square,
 } from "native-base";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
 import SearchIcon from "../../assets/icons/Search";
 import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
-
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
 import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
@@ -31,7 +27,7 @@ import moment from "moment";
 import { HomeNavKey as MainNavKey } from '.'
 import _BaseContainer from "../../components/containers/_BaseContainer";
 import { colors } from "../../contants/colors";
-// import auth from '@react-native-firebase/auth';
+import MainContainer from "../../components/containers/MainContainer";
 
 const IconContainer: React.FC = ({ children }) => {
 	return (
@@ -59,28 +55,6 @@ const helpOptions = [
 		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
 	},
 ]
-
-function MainContainer ({ children, title, leftSection: LeftSection, rightSection: RightSection }: any) {
-	return (
-		<_BaseContainer>
-			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-			<Box width={"100%"} flex={1}>
-				{/* Header */}
-				<View flexDirection="row" bgColor="#003F5E" paddingX={5} paddingY={3}>
-					{ LeftSection !== undefined ?  <LeftSection /> : null }
-					<View flexGrow={1} flexDirection="row">
-						{title}
-					</View>
-					{ RightSection !== undefined ?  <RightSection /> : null }
-				</View>
-				{/* Body */}
-				<View>
-					{ children }
-				</View>
-			</Box>
-		</_BaseContainer>
-	)
-}
 
 export default function Home () {
 	const navigation = useNavigation();
