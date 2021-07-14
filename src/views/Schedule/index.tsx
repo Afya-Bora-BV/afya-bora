@@ -22,10 +22,18 @@ import Card_RedIcon from "../../assets/icons/Card_RedIcon";
 import SquareCheckIcon from "../../assets/icons/SquareCheckIcon";
 import { Spacer } from "../../components/Spacer";
 import { PrimaryButton } from "../../components/button";
+import {
+	DemoAppointmentType,
+	useAppointmentTempoStore,
+} from "../../internals/appointment/context";
+import { useQuery } from "react-query";
+
+import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
 
 const Schedule: React.FC = () => {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
+	const hasUpcomingAppointment = true;
 	return (
 		<Box flex={1}>
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
@@ -127,29 +135,51 @@ const Schedule: React.FC = () => {
 								</HStack>
 							</Stack>
 						</Box>
-
-						<Spacer size={30} />
-
-						<Box alignItems="center" paddingX={10}>
-							<Stack justifyContent="center">
-								<Text fontSize="xl" bold>
-									You do not have an appointment!
-								</Text>
-							</Stack>
-							<Spacer size={10} />
-							<Stack alignContent="center">
-								<Text
-									textAlign="center"
-									fontSize="lg"
-									color="grey"
-								>
-									Book a health care service right away for
-									you and your family!
-								</Text>
-							</Stack>
-						</Box>
 					</Stack>
+
+					<Spacer size={30} />
+
+					<UpcommingAppointments />
 				</Stack>
+			</ScrollView>
+		</Box>
+	);
+};
+
+const UpcommingAppointments: React.FC = () => {
+	const navigation = useNavigation();
+	const getAppointments = useAppointmentTempoStore(
+		(state) => state.getAppointments
+	);
+	const { isLoading, isError, data, error } = useQuery(
+		"appointments",
+		getAppointments,
+		{
+			// TODO: to remove this behaviour
+			// and instead just fetch either from offline or online state
+			refetchInterval: 5000,
+		}
+	);
+	if (isLoading) return <Text>Fetching appointement... </Text>;
+	if (error) return <Text>Something went wrong</Text>;
+	if (data?.length === 0)
+		return (
+			<Stack>
+				<Box alignItems="center" paddingX={10}>
+					<Stack justifyContent="center">
+						<Text fontSize="xl" bold>
+							You do not have an appointment!
+						</Text>
+					</Stack>
+					<Spacer size={10} />
+					<Stack alignContent="center">
+						<Text textAlign="center" fontSize="lg" color="grey">
+							Book a health care service right away for you and
+							your family!
+						</Text>
+					</Stack>
+				</Box>
+
 				<Box padding={"5%"}>
 					<PrimaryButton
 						text={"Make an appointment"}
@@ -157,8 +187,50 @@ const Schedule: React.FC = () => {
 						press={() => navigation.navigate("FindFacilityList")}
 					/>
 				</Box>
-			</ScrollView>
-		</Box>
+			</Stack>
+		);
+
+	console.log("appointment");
+	console.log(data);
+	return (
+		<VStack space={4}>
+			<Heading fontSize="md">Upcoming Appointments</Heading>
+			{data?.map((appointment) => (
+				<UpcomingAppointmentsAlert appointment={appointment} />
+			))}
+		</VStack>
+	);
+};
+
+const UpcomingAppointmentsAlert: React.FC<{
+	appointment: DemoAppointmentType;
+}> = ({ appointment }) => {
+	const {
+		dateTime: { timeSlots },
+		consultant: { name },
+	} = appointment;
+	return (
+		<VStack>
+			<HStack
+				justifyContent="space-between"
+				alignItems="center"
+				borderRadius={6}
+				borderColor="#B0B3C7"
+				borderWidth={1}
+				p={4}
+			>
+				<HStack
+					justifyContent="space-between"
+					alignItems="center"
+					space={4}
+				>
+					<MedicalHistoryIcon />
+					<Text>Meet Dr {name}</Text>
+				</HStack>
+				{/* TODO: specify the correct time for appointment */}
+				<Text color="#258FBE">{timeSlots[0]}</Text>
+			</HStack>
+		</VStack>
 	);
 };
 

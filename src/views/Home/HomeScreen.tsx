@@ -10,6 +10,8 @@ import {
 	Pressable,
 	ScrollView,
 	Square,
+	StatusBar,
+	Stack,
 } from "native-base";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
@@ -48,6 +50,11 @@ const helpOptions = [
 		onNavigate: (navigation: any) => navigation.navigate(MainNavKey.BookAppointmentViewScreen)
 	},
 ]
+import {
+	DemoAppointmentType,
+	useAppointmentTempoStore,
+} from "../../internals/appointment/context";
+import { useQuery } from "react-query";
 
 export default function Home () {
 	const navigation = useNavigation();
@@ -149,6 +156,7 @@ export default function Home () {
 									},
 								].map(({ color, name, location, specialization, textColor }, ix) => (
 									<Box 
+										key={`trspec-${ix}`}
 										paddingX={6}
 										paddingY={8} 
 										bgColor={color}  
@@ -180,17 +188,56 @@ export default function Home () {
 	);
 };
 
+// TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
+	const getAppointments = useAppointmentTempoStore(
+		(state) => state.getAppointments
+	);
+	const { isLoading, isError, data, error } = useQuery(
+		"appointments",
+		getAppointments,
+		{
+			// TODO: to remove this behaviour
+			// and instead just fetch either from offline or online state
+			refetchInterval: 5000,
+		}
+	);
+	if (isLoading) return <Text>Fetching appointement... </Text>;
+	if (error) return <Text>Something went wrong</Text>;
+	if (data?.length === 0)
+		return (
+			<Box
+				justifyContent="space-between"
+				borderRadius={6}
+				p={3}
+				borderColor="#B0B3C7"
+				borderWidth={1}
+			>
+				No upcomming appointment
+			</Box>
+		);
 
-	const hasUpcomingAppointment = true;
-
-	if (!hasUpcomingAppointment) {
-		return null
-	}
-
+	console.log("appointment");
+	console.log(data);
 	return (
 		<VStack space={4} marginX={5} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
+			{data?.map((appointment) => (
+				<UpcomingAppointmentsAlert appointment={appointment} />
+			))}
+		</VStack>
+	);
+};
+
+const UpcomingAppointmentsAlert: React.FC<{
+	appointment: DemoAppointmentType;
+}> = ({ appointment }) => {
+	const {
+		dateTime: { timeSlots },
+		consultant: { name },
+	} = appointment;
+	return (
+		<VStack>
 			<HStack
 				justifyContent="space-between"
 				alignItems="center"
@@ -205,9 +252,10 @@ const UpcomingAppointmentsSection = () => {
 					space={4}
 				>
 					<MedicalHistoryIcon />
-					<Text>Meet Dr. Mohamedali</Text>
+					<Text>Meet Dr {name}</Text>
 				</HStack>
-				<Text color="#258FBE">14:30 PM</Text>
+				{/* TODO: specify the correct time for appointment */}
+				<Text color="#258FBE">{timeSlots[0]}</Text>
 			</HStack>
 		</VStack>
 	);

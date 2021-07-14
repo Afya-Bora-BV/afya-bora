@@ -32,6 +32,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { BookAppointmentStackParamList } from ".";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
+import { useAppointmentTempoStore } from "../../../internals/appointment/context";
+
+import { useMutation } from 'react-query'
+import { TabNavKey } from "../../_Authenticated";
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -57,6 +61,21 @@ const keySymptoms = [
 ];
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
+	const setAppointment = useAppointmentTempoStore(state => state.setAppointment)
+
+	const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
+		onMutate: variables => {
+		},
+		onError: (error, variables, context) => {
+			console.log("Something went wrong")
+		},
+		onSuccess: (data, variables, context) => {
+			console.log("Data already saved ")
+			navigation.navigate(TabNavKey.HomeView);
+			// Boom baby!
+		},
+
+	})
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
@@ -67,36 +86,32 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		setSymptoms(sy);
 	};
 
-	// const consultant = route.params.consultant;
-
-	// const appointment = route.params.appointment;
+	const { consultant, appointment } = route.params;
 
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
-		navigation.navigate(MainNavKey.HomeScreen);
-
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
 		// ----------------------------------------
-		// Alert.alert(
-		// 	"Submit Request",
-		// 	"Please confirm that you have entered correct information.",
-		// 	[
-		// 		{ text: "Cancel", onPress: () => {} },
-		// 		{
-		// 			text: "Confirm",
-		// 			onPress: () => {
-		// 				navigation.navigate(MainNavKey.HomeScreen);
-		// 				setTimeout(() =>
-		// 					ToastAndroid.show(
-		// 						"Appoinmtent request submitted!",
-		// 						3000
-		// 					)
-		// 				);
-		// 			},
-		// 		},
-		// 	]
-		// );
+		Alert.alert(
+			"Submit Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => { } },
+				{
+					text: "Confirm",
+					onPress: () => {
+						// TODO: arguments to the add appointment function
+						addAppointment({
+							symptoms,
+							consultant,
+							complaint,
+							dateTime: appointment,
+						})
+					},
+				},
+			]
+		);
 	};
 
 	return (
@@ -236,7 +251,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						/>
 					</VStack>
 				</Box>
-				<Button width="100%" bg={colors.primary} onPress={onSubmit} rounded={20}>
+				<Button width="100%" bg={colors.primary} onPress={onSubmit}  isLoading={isLoading} disabled={isLoading} rounded={20}>
 					Book Appointment
 				</Button>
 			</VStack>

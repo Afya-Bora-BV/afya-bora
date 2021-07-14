@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import SplashScreen from 'react-native-splash-screen'
 
-import { extendTheme, NativeBaseProvider } from "native-base";
+import { extendTheme, NativeBaseProvider } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { useFonts } from 'expo-font'
@@ -13,6 +13,15 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import PlainAppView from "./views/_Plain";
 import AuthenticatedAppView from './views/_Authenticated';
+import { AppointmentTempoStoreProvider } from './internals/appointment/context';
+
+import {
+	QueryClient,
+	QueryClientProvider,
+} from 'react-query'
+
+const queryClient = new QueryClient()
+
 
 export const theme = extendTheme({
 	fontConfig: {
@@ -118,7 +127,7 @@ function Main() {
 	// eecuted when screen is viewed
 	useEffect(() => {
 		// checks from storage, if there is internal state of the user
-		//  if there is or missing, remoce
+		//  if there is or missing, remove
 		// setSplashToHide(true);
 		SplashScreen.hide()
 	}, []);
@@ -127,11 +136,13 @@ function Main() {
 	// if (!isSplashToClose) return <Splash />;
 
 	if (user !== null && user !== undefined) {
-		return <AuthenticatedAppView />;
+		return (
+			<AuthenticatedAppView />
+		)
 	}
 
 	// Not authenticated
-	return <PlainAppView />;
+	return <PlainAppView />
 }
 
 export default function App () {
@@ -154,8 +165,14 @@ export default function App () {
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
 					<AuthProvider>
-						{/* <Main /> */}
-						<AuthenticatedAppView />
+
+						{/* TODO: find a better place for this provider */}
+						<AppointmentTempoStoreProvider>
+							<QueryClientProvider client={queryClient}>
+								<Main />
+							</QueryClientProvider>
+						</AppointmentTempoStoreProvider>
+
 					</AuthProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>
