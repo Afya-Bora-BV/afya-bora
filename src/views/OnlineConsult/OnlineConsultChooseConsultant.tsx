@@ -1,12 +1,28 @@
 import React from "react";
 import { Box, VStack } from "native-base";
 import { HeaderwithBack } from "../../components/header";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../components/consultant-list-item";
 import _ from "lodash";
 
-import { NavKey as BookAppointmentNavKey } from '../BookAppointment'
-import { NavKey as MainNavKey } from '../_Authenticated'
+import { NavKey as BookAppointmentNavKey } from "../BookAppointment";
+import { NavKey as MainNavKey } from "../_Authenticated";
+import { OnlineConsultStackParamList } from ".";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type OnlineConsultChooseConsultantScreenRouteProp = RouteProp<
+	OnlineConsultStackParamList,
+	"OnlineConsultChooseConsultant"
+>;
+type OnlineConsultChooseConsultantNavigationProp = StackNavigationProp<
+	OnlineConsultStackParamList,
+	"OnlineConsultChooseConsultant"
+>;
+
+type OnlineConsultChooseConsultantProps = {
+	route: OnlineConsultChooseConsultantScreenRouteProp;
+	navigation: OnlineConsultChooseConsultantNavigationProp;
+};
 
 type DemoConsultant = {
 	id: string;
@@ -45,8 +61,13 @@ const demoConsultants: DemoConsultant[] = [
 	},
 ];
 
-export default function OnlineConsultChooseConsultant () {
+export default function OnlineConsultChooseConsultant({
+	route,
+}: OnlineConsultChooseConsultantProps) {
 	const { goBack, navigate } = useNavigation();
+
+	//ACCESS TIME HERE
+	const appointment = route.params.appointment;
 
 	return (
 		<VStack flex={1} py={8} px={4} position="relative">
@@ -57,7 +78,12 @@ export default function OnlineConsultChooseConsultant () {
 				/>
 				{demoConsultants.map((consultant) => (
 					<ConsultantListItem
-						onPress={() => navigate(MainNavKey.BookAppointmentViewScreen, { screen: BookAppointmentNavKey.PatientComplaintScreen })}
+						onPress={() =>
+							navigate(MainNavKey.BookAppointmentViewScreen, {
+								screen: BookAppointmentNavKey.PatientComplaintScreen,
+								params: { consultant },
+							})
+						}
 						key={consultant.id}
 						consultant={consultant}
 					/>
@@ -65,5 +91,4 @@ export default function OnlineConsultChooseConsultant () {
 			</VStack>
 		</VStack>
 	);
-};
-
+}

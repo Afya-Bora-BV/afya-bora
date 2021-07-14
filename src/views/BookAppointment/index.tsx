@@ -6,6 +6,16 @@ import SetAppointmentTime from "./SetAppointmentTime";
 
 const Stack = createStackNavigator();
 
+export type BookAppointmentStackParamList = {
+	SetAppointmentTime: {
+		consultant: any;
+	};
+	PatientComplaint: {
+		consultant: any;
+		appointment: any;
+	};
+};
+
 export const NavKey = {
 	ConsultantListScreen: "ConsultantList",
 	SetAppointmentTimeScreen: "SetAppointmentTime",

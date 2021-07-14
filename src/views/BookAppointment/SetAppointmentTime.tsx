@@ -19,7 +19,6 @@ import { Dimensions } from "react-native";
 import { HeaderwithBack } from "../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../components/consultant-list-item";
-import { RootStackParamList } from "../..";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getDaysInMonth, isSameDay } from "date-fns";
@@ -29,16 +28,16 @@ import { colors } from "../../contants/colors";
 import moment from "moment";
 import { toggleStringFromList } from "../../utils";
 
-import { NavKey } from ".";
+import { BookAppointmentStackParamList, NavKey } from ".";
 
 const { width } = Dimensions.get("window");
 
 type SetAppointmentTimeScreenRouteProp = RouteProp<
-	RootStackParamList,
+	BookAppointmentStackParamList,
 	"SetAppointmentTime"
 >;
 type SetAppointmentTimeNavigationProp = StackNavigationProp<
-	RootStackParamList,
+	BookAppointmentStackParamList,
 	"SetAppointmentTime"
 >;
 

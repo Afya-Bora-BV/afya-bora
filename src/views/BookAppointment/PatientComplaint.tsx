@@ -13,6 +13,7 @@ import {
 import { HeaderwithBack } from "../../components/header";
 import {
 	CommonActions,
+	RouteProp,
 	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
@@ -24,6 +25,22 @@ import { TouchableOpacity, Alert, ToastAndroid } from "react-native";
 import { toggleStringFromList } from "../../utils";
 
 import { NavKey as AuthNavKey } from "../_Authenticated";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { BookAppointmentStackParamList } from ".";
+
+type PatientComplaintScreenRouteProp = RouteProp<
+	BookAppointmentStackParamList,
+	"PatientComplaint"
+>;
+type PatientComplaintNavigationProp = StackNavigationProp<
+	BookAppointmentStackParamList,
+	"PatientComplaint"
+>;
+
+type PatientComplaintProps = {
+	route: PatientComplaintScreenRouteProp;
+	navigation: PatientComplaintNavigationProp;
+};
 
 const keySymptoms = [
 	"Fever",
@@ -34,15 +51,21 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
-export function PatientComplaint() {
+export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
+
+	const [complaint, setComplaint] = useState("n/a");
 
 	const toggleKeySymptom = (symptom: string) => {
 		const sy = toggleStringFromList(symptom, symptoms);
 		setSymptoms(sy);
 	};
+
+	const consultant = route.params.consultant;
+
+	const appointment = route.params.appointment;
 
 	const onSubmit = () => {
 		// console.log(navigation.dangerouslyGetParent())
@@ -190,8 +213,12 @@ export function PatientComplaint() {
 
 						<Box mt={2}>
 							<TextArea
+								value={complaint}
 								autoCorrect={false}
 								placeholder="Describe how you are feeling ..."
+								onChangeText={(complaint) => {
+									setComplaint(complaint);
+								}}
 							/>
 						</Box>
 					</Stack>

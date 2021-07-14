@@ -16,14 +16,15 @@ import {
 import { SafeAreaView, TouchableOpacity } from "react-native";
 import { colors } from "../../contants/colors";
 import { HeaderwithBack } from "../../components/header";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import _ from "lodash";
 import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { toggleStringFromList } from "../../utils";
 
-import { NavKey } from ".";
+import { NavKey, OnlineConsultStackParamList } from ".";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export default function OnlineConsultantSelectDateTime() {
 	const { goBack, navigate } = useNavigation();
@@ -44,7 +45,8 @@ export default function OnlineConsultantSelectDateTime() {
 		console.log("Mounted");
 	}, []);
 
-	const goNext = () => navigate(NavKey.ChooseConsultantScreen);
+	const goNext = () =>
+		navigate(NavKey.ChooseConsultantScreen, { appointment: state });
 
 	return (
 		<ScrollView>

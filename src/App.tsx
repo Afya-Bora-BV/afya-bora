@@ -1,15 +1,15 @@
-import React from 'react'
+import React from "react";
 
-import { extendTheme, NativeBaseProvider } from "native-base"
+import { extendTheme, NativeBaseProvider } from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { colors } from "./contants/colors";
 
 import PlainAppView from "./views/_Plain";
-import { AuthProvider, useAuthStore } from './internals/auth/context';
-import { useEffect } from 'react';
-import AuthenticatedAppView from './views/_Authenticated';
-import { useState } from 'react';
-import Splash from './screens/Splash';
+import { AuthProvider, useAuthStore } from "./internals/auth/context";
+import { useEffect } from "react";
+import AuthenticatedAppView from "./views/_Authenticated";
+import { useState } from "react";
+import Splash from "./screens/Splash";
 
 export const theme = extendTheme({
 	colors: {
@@ -63,37 +63,36 @@ export const AppTheme = {
 	},
 };
 
-function Main () {
-    const user = useAuthStore(state => state.user)
-    const [isSplashToClose, setSplashToHide] = useState(false)
+function Main() {
+	const user = useAuthStore((state) => state.user);
+	const [isSplashToClose, setSplashToHide] = useState(false);
 
-    // eecuted when screen is viewed
-    useEffect(() => {
-        // checks from storage, if there is internal state of the user
-        //  if there is or missing, remoce
-        setSplashToHide(true)
-    }, [])
+	// eecuted when screen is viewed
+	useEffect(() => {
+		// checks from storage, if there is internal state of the user
+		//  if there is or missing, remoce
+		setSplashToHide(true);
+	}, []);
 
-    // Show splash screen if not ready
-    if (!isSplashToClose) return <Splash />
+	// Show splash screen if not ready
+	if (!isSplashToClose) return <Splash />;
 
+	if (user !== null && user !== undefined) {
+		return <AuthenticatedAppView />;
+	}
 
-    if (user !== null && user !== undefined) {
-        return <AuthenticatedAppView />
-    }
-
-    // Not authenticated
-    return <PlainAppView />    
+	// Not authenticated
+	return <PlainAppView />;
 }
 
-export default function App () {
-    return (
-        <NativeBaseProvider theme={theme}>
-            <NavigationContainer theme={AppTheme}>
-                <AuthProvider>
-                    <Main />
-                </AuthProvider>
-            </NavigationContainer>
-        </NativeBaseProvider>
-    )
+export default function App() {
+	return (
+		<NativeBaseProvider theme={theme}>
+			<NavigationContainer theme={AppTheme}>
+				<AuthProvider>
+					<Main />
+				</AuthProvider>
+			</NavigationContainer>
+		</NativeBaseProvider>
+	);
 }
