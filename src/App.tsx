@@ -94,8 +94,8 @@ export default function App () {
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
 					<AuthProvider>
-						{/* <Main /> */}
-						<SignUpView />
+						<Main />
+						{/* <SignUpView /> */}
 					</AuthProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>
