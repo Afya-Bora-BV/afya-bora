@@ -24,7 +24,10 @@ export const NavKey = {
 
 export default function BookAppointment() {
 	return (
-		<Stack.Navigator headerMode="none">
+		<Stack.Navigator 
+			headerMode="none"
+			// initialRouteName={NavKey.SetAppointmentTimeScreen}
+		>
 			<Stack.Screen
 				name={NavKey.ConsultantListScreen}
 				component={ConsultantsList}

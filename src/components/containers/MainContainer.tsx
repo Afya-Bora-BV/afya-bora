@@ -9,7 +9,7 @@ export default function MainContainer ({ children, title, leftSection: LeftSecti
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
 			<Box width={"100%"} flex={1}>
 				{/* Header */}
-				<View flexDirection="row" justifyContent="space-between" paddingX={5} paddingY={8}>
+				<View flexDirection="row" justifyContent="space-between" paddingX={5} paddingTop={8}>
 					{ LeftSection !== undefined ?  (
 						<View>
 							<LeftSection />
@@ -18,7 +18,11 @@ export default function MainContainer ({ children, title, leftSection: LeftSecti
 					<View flexGrow={1} width="100%" flexDirection="row" alignItems="center" justifyContent="center">
 						<Text fontSize="xl">{title}</Text>
 					</View>
-					{ RightSection !== undefined ?  <RightSection /> : null }
+					{ RightSection !== undefined ?  (
+						<View>
+							<RightSection />
+						</View>
+					) : null }
 				</View>
 				{/* Body */}
 				<View>

@@ -24,8 +24,8 @@ export default function HomeView() {
         <NavStack.Navigator
             headerMode="none"
         >
-            <NavStack.Screen name={HomeNavKey.BookAppointmentViewScreen} component={BookAppointmentView} />
             <NavStack.Screen name={HomeNavKey.HomeScreen} component={HomeScreen} />
+            <NavStack.Screen name={HomeNavKey.BookAppointmentViewScreen} component={BookAppointmentView} />
             <NavStack.Screen name={HomeNavKey.OnlineConsultViewScreen} component={OnlineConsultView} />
             <NavStack.Screen name={HomeNavKey.MapFaciltyViewScreen} component={MapFaciltyView} />
         </NavStack.Navigator>
