@@ -9,9 +9,6 @@ import {
 	Heading,
 	Pressable,
 	ScrollView,
-	Square,
-	StatusBar,
-	Stack,
 } from "native-base";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
@@ -93,7 +90,9 @@ export default function Home () {
 				{/* Section to render upcoming appointments if any.
 					NOTE: To prevent re-rendering, dont use inline if statements
 					*/}
-				<UpcomingAppointmentsSection />
+				<Box marginX={5}>
+					<UpcomingAppointmentsSection />
+				</Box>
 
 				<VStack padding={5}>
 					<Heading fontSize="xl">How can we help?</Heading>
@@ -205,22 +204,12 @@ const UpcomingAppointmentsSection = () => {
 	if (isLoading) return <Text>Fetching appointement... </Text>;
 	if (error) return <Text>Something went wrong</Text>;
 	if (data?.length === 0)
-		return (
-			<Box
-				justifyContent="space-between"
-				borderRadius={6}
-				p={3}
-				borderColor="#B0B3C7"
-				borderWidth={1}
-			>
-				No upcomming appointment
-			</Box>
-		);
+		return null
 
-	console.log("appointment");
-	console.log(data);
+	// console.log("appointment");
+	// console.log(data);
 	return (
-		<VStack space={4} marginX={5} marginTop={8}>
+		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			{data?.map((appointment) => (
 				<UpcomingAppointmentsAlert appointment={appointment} />

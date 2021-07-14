@@ -129,7 +129,7 @@ function Main() {
 		// checks from storage, if there is internal state of the user
 		//  if there is or missing, remove
 		// setSplashToHide(true);
-		SplashScreen.hide()
+		// SplashScreen.hide()
 	}, []);
 
 	// Show splash screen if not ready
