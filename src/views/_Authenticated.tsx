@@ -6,8 +6,16 @@ import HomeView from "./Home";
 import ScheduleView from "./Schedule";
 import ChatView from "./Chat";
 import ProfileView from "./Profile/MainScreen";
+import TabHomeIcon from "../assets/icons/TabHomeIcon";
+import TabScheduleIcon from "../assets/icons/TabScheduleIcon";
+import TabChatIcon from "../assets/icons/TabChatIcon";
+import TabProfileIcon from "../assets/icons/TabProfileIcon";
+import createABSyleTabNavigator from "../components/Tab/createNavigator";
 
-const Tab = createBottomTabNavigator();
+
+
+// const Tab = createBottomTabNavigator();
+const Tab = createABSyleTabNavigator();
 
 export const TabNavKey = {
 	HomeView: "Home",
@@ -16,10 +24,6 @@ export const TabNavKey = {
 	Profile: "ProfileMain",
 };
 
-import TabHomeIcon from "../assets/icons/TabHomeIcon";
-import TabScheduleIcon from "../assets/icons/TabScheduleIcon";
-import TabChatIcon from "../assets/icons/TabChatIcon";
-import TabProfileIcon from "../assets/icons/TabProfileIcon";
 
 export default function AuthenticatedAppView() {
 	return (
