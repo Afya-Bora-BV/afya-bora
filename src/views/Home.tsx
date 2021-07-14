@@ -29,9 +29,9 @@ import {
 	TopRatedSpecialists,
 } from "../components/cards";
 import moment from "moment";
-import { TouchableOpacity } from "react-native";
-import { useAuthStore } from "../internals/auth/context";
 
+
+import { NavKey as MainNavKey } from './_Authenticated'
 // import auth from '@react-native-firebase/auth';
 
 const IconContainer: React.FC = ({ children }) => {
@@ -43,16 +43,15 @@ const IconContainer: React.FC = ({ children }) => {
 };
 
 const Home: React.FC = () => {
-	const { navigate } = useNavigation();
-
+	const navigation = useNavigation();
 	const hasUpcomingAppointment = true;
 
 	const user = useAuthStore(state => state.user)
 
-	console.log("user : ",user)
-	
+	console.log("user : ", user)
+
 	return (
-		<ScrollView>
+		<ScrollView width="100%">
 			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
 			<VStack paddingX={3} space={6} marginTop={10}>
 				<HStack justifyContent="space-between" alignItems="center">
@@ -97,7 +96,7 @@ const Home: React.FC = () => {
 						justifyContent="space-between"
 					>
 						<HeroIllustrationContainer
-							onPress={() => navigate("ConsultantsList")}
+							onPress={() => navigation.navigate(MainNavKey.BookAppointmentViewScreen)}
 						>
 							<AppointmentIllustration size={70} />
 							<Text textAlign="center">Appointment Booking</Text>
@@ -105,7 +104,7 @@ const Home: React.FC = () => {
 
 						<HeroIllustrationContainer
 							onPress={() =>
-								navigate("OnlineConsultantSelectTime")
+								navigation.navigate(MainNavKey.OnlineConsultViewScreen)
 							}
 						>
 							<OnlineConsulationIllustration size={70} />
@@ -120,7 +119,7 @@ const Home: React.FC = () => {
 							}}
 						> */}
 						<HeroIllustrationContainer
-							onPress={() => navigate("FindFacility")}
+							onPress={() => navigation.navigate(MainNavKey.MapFaciltyViewScreen)}
 						>
 							<FacilityIllustration size={70} />
 							<Text textAlign="center">Find a Facility</Text>
@@ -132,24 +131,34 @@ const Home: React.FC = () => {
 				<VStack>
 					<Heading fontSize="md">Top Rated Specialists</Heading>
 
-					<ScrollView horizontal={true} m={2} height={250}>
+					<ScrollView horizontal={true} height={250}>
 						<HStack
 							justifyContent="space-between"
 							paddingBottom={10}
 							minWidth={"90%"}
 						>
-							<TopRatedSpecialists
-								name={"Dr. Maryam Mohamedali"}
-								gender={"female"}
-							/>
-							<TopRatedSpecialists
-								name={"Dr. Wyckliffe Sango"}
-								gender={"male"}
-							/>
-							<TopRatedSpecialists
-								name={"Dr. Ally Salim"}
-								gender={"male"}
-							/>
+							{
+								[
+									{
+										name: "Dr. Maryam Mohamedali",
+										gender: "female"
+									},
+									{
+										name: "Dr. Wyckliffe Sango",
+										gender: "male"
+									},
+									{
+										name: "Dr. Ally Salim",
+										gender: "male"
+									},
+								].map((specialist, ix) => (
+									<TopRatedSpecialists
+										key={`trspec-${ix}`}
+										name={specialist.name}
+										gender={specialist.gender}
+									/>
+								))
+							}
 						</HStack>
 					</ScrollView>
 				</VStack>

@@ -16,30 +16,25 @@ import {
 	ChevronDownIcon,
 } from "native-base";
 import { Dimensions } from "react-native";
-import { HeaderwithBack } from "../components/header";
+import { HeaderwithBack } from "../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../components/consultant-list-item";
-import { RootStackParamList } from "..";
+import { ConsultantListItem } from "../../components/consultant-list-item";
+import { RootStackParamList } from "../..";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
-import { colors } from "../contants/colors";
+import { colors } from "../../contants/colors";
 import moment from "moment";
-import { toggleStringFromList } from "../utils";
+import { toggleStringFromList } from "../../utils";
+
+import { NavKey } from "."
 
 const { width } = Dimensions.get("window");
 
-type SetAppointmentTimeScreenRouteProp = RouteProp<
-	RootStackParamList,
-	"SetAppointmentTime"
->;
-
-type SetAppointmentTimeNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	"SetAppointmentTime"
->;
+type SetAppointmentTimeScreenRouteProp = RouteProp<RootStackParamList, "SetAppointmentTime">;
+type SetAppointmentTimeNavigationProp = StackNavigationProp<RootStackParamList, "SetAppointmentTime">;
 
 type SetAppointmentTimeProps = {
 	route: SetAppointmentTimeScreenRouteProp;
@@ -50,7 +45,7 @@ type SetAppointmentTimeProps = {
 // 	route: any;
 // };
 
-const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
+export default function SetAppointmentTime ({ route }: SetAppointmentTimeProps) {
 	const navigation = useNavigation();
 	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
 		date: new Date(),
@@ -65,24 +60,10 @@ const SetAppointmentTime: React.FC<SetAppointmentTimeProps> = ({ route }) => {
 	const handleBackPress = () => navigation.goBack();
 
 	const consultant = route.params.consultant;
-
-	// console.log(consultant);
-
-	// {
-	// 	consultant: string
-	// 	timeSlot: string
-	// 	date: Date
-	// 	symptoms: "" | ""
-	// 	reason: string
-	// }
-
-	const handleNext = () =>
-		navigation.navigate("PatientComplaint", {
-			consultant,
-			appointement: state,
-		});
+	
+	const handleNext = () => navigation.navigate(NavKey.PatientComplaintScreen);
 	return (
-		<ScrollView p={2} marginTop={8}>
+		<ScrollView>
 			{/* <StatusBar backgroundColor="#fff" /> */}
 			<HeaderwithBack onBackPress={handleBackPress} text="Day and Time" />
 
@@ -347,5 +328,3 @@ function listOfNextNMonths(n: number): Array<Date> {
 	}
 	return dates;
 }
-
-export { SetAppointmentTime };

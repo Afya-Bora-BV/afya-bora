@@ -1,9 +1,12 @@
 import React from "react";
 import { Box, VStack } from "native-base";
-import { HeaderwithBack } from "../components/header";
+import { HeaderwithBack } from "../../components/header";
 import { useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../components/consultant-list-item";
+import { ConsultantListItem } from "../../components/consultant-list-item";
 import _ from "lodash";
+
+import { NavKey as BookAppointmentNavKey } from '../BookAppointment'
+import { NavKey as MainNavKey } from '../_Authenticated'
 
 type DemoConsultant = {
 	id: string;
@@ -42,7 +45,7 @@ const demoConsultants: DemoConsultant[] = [
 	},
 ];
 
-const FindFacility: React.FC = () => {
+export default function OnlineConsultChooseConsultant () {
 	const { goBack, navigate } = useNavigation();
 
 	return (
@@ -54,7 +57,7 @@ const FindFacility: React.FC = () => {
 				/>
 				{demoConsultants.map((consultant) => (
 					<ConsultantListItem
-						onPress={() => navigate("PatientComplaint")}
+						onPress={() => navigate(MainNavKey.BookAppointmentViewScreen, { screen: BookAppointmentNavKey.PatientComplaintScreen })}
 						key={consultant.id}
 						consultant={consultant}
 					/>
@@ -64,4 +67,3 @@ const FindFacility: React.FC = () => {
 	);
 };
 
-export default FindFacility;

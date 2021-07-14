@@ -25,23 +25,23 @@ import { CheckBox, FBLogo, TimeSet } from "./components/bars";
 import { PicAvatar } from "./components/avatar";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "./screens/Home";
-// import LoginScreen from "./screens/Login";
-// import SignUpScreen from "./screens/SignUp";
-// import VerifyScreen from "./screens/Verify";
+import HomeScreen from "./views/Home";
+import LoginScreen from "./views/Login";
+import SignUpScreen from "./screens/SignUp";
+import VerifyScreen from "./views/SignUp/VerifyScreen";
 import ServiceScreen from "./screens/Service";
-import ConsultantsList from "./screens/ConsultantsList";
+import ConsultantsList from "./views/BookAppointment/ConsultantsList";
 import { FindFacility } from "./screens/FindFacility";
-import OnlineConsultantSelectTime from "./screens/OnlineConsultantSelectTime";
-import OnlineConsultantSelectConsultant from "./screens/OnlineConsultantSelectConsultant";
+import OnlineConsultantSelectTime from "./views/OnlineConsult/OnlineConsultantSelectDateTime";
+import OnlineConsultantSelectConsultant from "./views/OnlineConsult/OnlineConsultChooseConsultant";
 import FindFacilityList from "./screens/FindFacilityList";
 
 import ProfileScreen from "./screens/Profile";
 import ScheduleScreen from "./screens/Schedule";
 import ChatScreen from "./screens/Chat";
 
-import { SetAppointmentTime } from "./screens/SetAppointmentTime";
-import { PatientComplaint } from "./screens/PatientComplaint";
+import { SetAppointmentTime } from "./views/BookAppointment/SetAppointmentTime";
+import { PatientComplaint } from "./views/BookAppointment/PatientComplaint";
 import { CreateProfile } from "./screens/CreateProfile";
 import {
 	BottomTabBar,

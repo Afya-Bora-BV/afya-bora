@@ -14,18 +14,19 @@ import {
 	ChevronDownIcon,
 } from "native-base";
 import { SafeAreaView, TouchableOpacity } from "react-native";
-import { colors } from "../contants/colors";
-import { HeaderwithBack } from "../components/header";
+import { colors } from "../../contants/colors";
+import { HeaderwithBack } from "../../components/header";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import _ from "lodash";
 import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
-import { toggleStringFromList } from "../utils";
+import { toggleStringFromList } from "../../utils";
 
 
+import { NavKey } from '.'
 
-const FindFacility: React.FC = () => {
+export default function OnlineConsultantSelectDateTime () {
 	const { goBack, navigate } = useNavigation();
 
 	const [state, setState] = useState<{ date: Date; timeSlots: string[] }>({
@@ -46,7 +47,7 @@ const FindFacility: React.FC = () => {
 		console.log("Mounted");
 	}, []);
 
-	const goNext = () => navigate("OnlineConsultantSelectConsultant");
+	const goNext = () => navigate(NavKey.ChooseConsultantScreen);
 
 	return (
 		<VStack flex={1} py={8} px={4} position="relative">
@@ -303,5 +304,3 @@ function listOfNextNMonths(n: number): Array<Date> {
 	}
 	return dates;
 }
-
-export default FindFacility;
