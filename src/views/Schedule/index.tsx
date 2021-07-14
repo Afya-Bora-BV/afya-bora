@@ -29,120 +29,91 @@ import {
 import { useQuery } from "react-query";
 
 import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
+import AlternateContainer from "../../components/containers/AlternateContainer";
+import { IconContainer } from "../../components/misc";
 
-const Schedule: React.FC = () => {
+export default function Schedule () {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const hasUpcomingAppointment = true;
 	return (
-		<Box flex={1}>
-			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
-			<ScrollView>
-				<Stack
-					backgroundColor={colors.primary}
-					borderBottomRadius={36}
-					height={height / 3.5}
-					position="absolute"
-					top={0}
-					left={0}
-					right={0}
-				></Stack>
-				<Stack paddingBottom={10}>
-					<View alignItems="center" paddingY={20}>
-						<HStack paddingX={5}>
-							<Stack flex={2.2} alignItems="flex-end">
-								<Text color="white" fontSize={35}>
-									Schedule
-								</Text>
-							</Stack>
-
-							<Stack
-								justifyContent="center"
-								alignItems="flex-end"
-								flex={1}
-							>
+		<AlternateContainer 
+			rightSection={
+				() => (
+					<Pressable>
+							<IconContainer>
+								<UpdateClock />
+							</IconContainer>
+						</Pressable>
+					)
+				}
+			title="Schedule" 
+			titleColor="#FFF"
+			barStyle="dark-content"
+			backdropHeight={height / 5.6} 
+			bgColor="#7065E4"
+		>
+			<VStack alignItems="center" marginX={10} space={10}>
+				<Box bg="white" shadow={2} rounded={25} width="100%">
+					<Stack
+						style={{
+							paddingHorizontal: 1,
+							paddingVertical: 15,
+						}}
+					>
+						{/* TO DO - MOVE TO COMPONENTS FOLDER */}
+						<HStack justifyContent="space-between">
+							<VStack flex={1} alignItems="center">
 								<Pressable>
-									<Stack
-										backgroundColor="white"
-										borderRadius={10}
-										padding={1}
-										alignSelf="center"
-									>
-										<Icon>
-											<UpdateClock />
+									<Icon size={90}>
+										<Card_PurpleIcon size={20} />
+									</Icon>
+									<Text color={"#7065E4"} bold>
+										Wait for pay
+									</Text>
+								</Pressable>
+							</VStack>
+
+							<VStack flex={1} alignItems="center">
+								<Pressable>
+									<Stack alignSelf="center">
+										<Icon
+											alignSelf="center"
+											size={90}
+										>
+											<Card_RedIcon size={20} />
 										</Icon>
 									</Stack>
+									<Text
+										alignSelf="center"
+										color={"grey"}
+										bold
+									>
+										Endocrine
+									</Text>
 								</Pressable>
-							</Stack>
+							</VStack>
+
+							<VStack flex={1} alignItems="center">
+								<Pressable>
+									<Icon size={90}>
+										<SquareCheckIcon size={20} />
+									</Icon>
+									<Text
+										alignSelf="center"
+										color={"grey"}
+										bold
+									>
+										Dentist
+									</Text>
+								</Pressable>
+							</VStack>
 						</HStack>
-					</View>
-
-					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded={10} width="90%">
-							<Stack
-								style={{
-									paddingHorizontal: 5,
-									paddingVertical: 10,
-								}}
-							>
-								{/* TO DO - MOVE TO COMPONENTS FOLDER */}
-								<HStack justifyContent="space-between">
-									<VStack flex={1} alignItems="center">
-										<Pressable>
-											<Icon size={90}>
-												<Card_PurpleIcon size={20} />
-											</Icon>
-											<Text color={"#7065E4"} bold>
-												Wait for pay
-											</Text>
-										</Pressable>
-									</VStack>
-
-									<VStack flex={1} alignItems="center">
-										<Pressable>
-											<Stack alignSelf="center">
-												<Icon
-													alignSelf="center"
-													size={90}
-												>
-													<Card_RedIcon size={20} />
-												</Icon>
-											</Stack>
-											<Text
-												alignSelf="center"
-												color={"grey"}
-												bold
-											>
-												Endocrine
-											</Text>
-										</Pressable>
-									</VStack>
-
-									<VStack flex={1} alignItems="center">
-										<Pressable>
-											<Icon size={90}>
-												<SquareCheckIcon size={20} />
-											</Icon>
-											<Text
-												alignSelf="center"
-												color={"grey"}
-												bold
-											>
-												Dentist
-											</Text>
-										</Pressable>
-									</VStack>
-								</HStack>
-							</Stack>
-						</Box>
 					</Stack>
-
-					<Spacer size={30} />
-
-					<UpcommingAppointments />
-				</Stack>
-			</ScrollView>
-		</Box>
+				</Box>
+				<UpcommingAppointments />
+			</VStack>
+		</AlternateContainer>
 	);
 };
 
@@ -233,5 +204,3 @@ const UpcomingAppointmentsAlert: React.FC<{
 		</VStack>
 	);
 };
-
-export default Schedule;

@@ -25,6 +25,7 @@ export default function AuthenticatedAppView() {
 	return (
 		<Tab.Navigator
 			lazy
+			initialRouteName={TabNavKey.ScheduleView}
 			tabBarOptions={{
 				activeTintColor: "#561BB3",
 				inactiveTintColor: "#B0B3C7",

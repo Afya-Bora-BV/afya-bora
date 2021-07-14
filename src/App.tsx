@@ -121,6 +121,7 @@ export const AppTheme = {
 };
 
 function Main() {
+	return <AuthenticatedAppView />
 	const user = useAuthStore((state) => state.user);
 	// const [isSplashToClose, setSplashToHide] = useState(false);
 
