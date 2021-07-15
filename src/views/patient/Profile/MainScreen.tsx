@@ -26,7 +26,7 @@ import HeadphoneIcon from "../../../assets/icons/HeadphoneIcon";
 import PhoneIcon from "../../../assets/icons/PhoneIcon";
 import InfoIcon from "../../../assets/icons/InfoIcon";
 import LogoutIcon from "../../../assets/icons/LogoutIcon";
-import { ProfileNavKey } from ".";
+import { ProfileNavKey } from "./_navigator";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";

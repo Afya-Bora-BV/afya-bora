@@ -12,16 +12,16 @@ import {
 	Button,
 } from "native-base";
 import React, { useState } from "react";
-import { PicAvatar } from "../../../components/avatar";
-import { Spacer } from "../../../components/Spacer";
+import { PicAvatar } from "../../components/avatar";
+import { Spacer } from "../../components/Spacer";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { PrimaryButton } from "../../../components/button";
+import { PrimaryButton } from "../../components/button";
 import moment from "moment";
 
 
