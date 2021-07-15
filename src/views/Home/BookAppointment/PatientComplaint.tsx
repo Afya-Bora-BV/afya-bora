@@ -61,6 +61,7 @@ const keySymptoms = [
 ];
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
+	const navigation = useNavigation();
 	const setAppointment = useAppointmentTempoStore(state => state.setAppointment)
 
 	const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
@@ -71,12 +72,11 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		},
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ")
-			navigation.navigate(TabNavKey.HomeView);
+			navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
 
 	})
-	const navigation = useNavigation();
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -90,28 +90,35 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
+		addAppointment({
+			symptoms,
+			consultant,
+			complaint,
+			dateTime: appointment,
+		})
+
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
 		// ----------------------------------------
-		Alert.alert(
-			"Submit Request",
-			"Please confirm that you have entered correct information.",
-			[
-				{ text: "Cancel", onPress: () => { } },
-				{
-					text: "Confirm",
-					onPress: () => {
-						// TODO: arguments to the add appointment function
-						addAppointment({
-							symptoms,
-							consultant,
-							complaint,
-							dateTime: appointment,
-						})
-					},
-				},
-			]
-		);
+		// Alert.alert(
+		// 	"Submit Request",
+		// 	"Please confirm that you have entered correct information.",
+		// 	[
+		// 		{ text: "Cancel", onPress: () => { } },
+		// 		{
+		// 			text: "Confirm",
+		// 			onPress: () => {
+		// 				// TODO: arguments to the add appointment function
+		// 				addAppointment({
+		// 					symptoms,
+		// 					consultant,
+		// 					complaint,
+		// 					dateTime: appointment,
+		// 				})
+		// 			},
+		// 		},
+		// 	]
+		// );
 	};
 
 	return (
