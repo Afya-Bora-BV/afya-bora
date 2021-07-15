@@ -50,15 +50,12 @@ const FindFacilityList = () => {
 					: undefined
 			}
 		>
-		<ScrollView padding={5} paddingTop={3} width="100%" flex={1}>
-			<VStack space={6}>
-				<VStack space={2}>
-					<FacilityListItem
-						onPress={() => { }}
-						key={facility.id}
-						facility={facility}
-					/>
-				</VStack>
+			<VStack space={6} padding={5} paddingTop={3}>
+				<FacilityListItem
+					onPress={() => { }}
+					key={facility.id}
+					facility={facility}
+				/>
 				<VStack space={3} marginTop={10}>
 					<Heading fontSize="xl">Consultants at This Facility</Heading>
 					<VStack space={2}>
@@ -72,7 +69,6 @@ const FindFacilityList = () => {
 					</VStack>
 				</VStack>
 			</VStack>
-		</ScrollView>
 		</MainContainer>
 	);
 };
