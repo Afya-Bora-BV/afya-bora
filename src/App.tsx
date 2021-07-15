@@ -10,8 +10,8 @@ import { colors } from "./constants/colors";
 import { AuthProvider, useAuthStore } from './internals/auth/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import PlainAppView from "./views/_Plain";
-import AuthenticatedAppView from './views/_Authenticated';
+import PlainAppView from "./views/_Main";
+import PatientAppView from './views/patient';
 import { AppointmentTempoStoreProvider } from './internals/appointment/context';
 
 import {
@@ -120,7 +120,7 @@ export const AppTheme = {
 };
 
 function Main() {
-	return <AuthenticatedAppView />
+	return <PatientAppView />
 	const user = useAuthStore((state) => state.user);
 	// const [isSplashToClose, setSplashToHide] = useState(false);
 
@@ -137,7 +137,7 @@ function Main() {
 
 	if (user !== null && user !== undefined) {
 		return (
-			<AuthenticatedAppView />
+			<PatientAppView />
 		)
 	}
 

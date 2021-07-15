@@ -12,24 +12,24 @@ import {
 	Icon,
 	VStack,
 } from "native-base";
-import { colors } from "../../constants/colors";
+
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Pressable } from "react-native";
-import UpdateClock from "../../assets/icons/UpdateClock";
-import Card_PurpleIcon from "../../assets/icons/Card_PurpleIcon";
-import Card_RedIcon from "../../assets/icons/Card_RedIcon";
-import SquareCheckIcon from "../../assets/icons/SquareCheckIcon";
-import { Spacer } from "../../components/Spacer";
-import { PrimaryButton } from "../../components/button";
+import UpdateClock from "../../../assets/icons/UpdateClock";
+import Card_PurpleIcon from "../../../assets/icons/Card_PurpleIcon";
+import Card_RedIcon from "../../../assets/icons/Card_RedIcon";
+import SquareCheckIcon from "../../../assets/icons/SquareCheckIcon";
+import { Spacer } from "../../../components/Spacer";
+import { PrimaryButton } from "../../../components/button";
 import {
 	DemoAppointmentType,
 	useAppointmentTempoStore,
-} from "../../internals/appointment/context";
+} from "../../../internals/appointment/context";
 import { useQuery } from "react-query";
 
-import MedicalHistoryIcon from "../../assets/icons/MedicalHistory";
-import AlternateContainer from "../../components/containers/AlternateContainer";
-import { IconContainer } from "../../components/misc";
+import MedicalHistoryIcon from "../../../assets/icons/MedicalHistory";
+import AlternateContainer from "../../../components/containers/AlternateContainer";
+import { IconContainer } from "../../../components/misc";
 
 export default function Schedule() {
 	const navigation = useNavigation();

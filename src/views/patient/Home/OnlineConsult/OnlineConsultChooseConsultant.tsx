@@ -5,11 +5,17 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
 import _ from "lodash";
 
-import { NavKey } from "../BookAppointment";
-import { OnlineConsultStackParamList, OnlineNavKey } from ".";
+import { NavKey } from "../BookAppointment/_navigator";
 import { StackNavigationProp } from "@react-navigation/stack";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
+
+// NOTE: Dont move this to main.... results to require cycle
+export type OnlineConsultStackParamList = {
+	OnlineConsultChooseConsultant: {
+		appointment: any;
+	};
+};
 
 type OnlineConsultChooseConsultantScreenRouteProp = RouteProp<
 	OnlineConsultStackParamList,

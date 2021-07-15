@@ -41,17 +41,18 @@ interface AppointmentTempoStore {
 
 const { Provider, useStore } = createContext<AppointmentTempoStore>()
 
-const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
+// const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 
 const createAppointmentTempoStore = () => create<AppointmentTempoStore>(persist((set, get) => ({
     appointments: [],
     getAppointments: async function () {
-        await sleep(3000)
+        // NOTE: This throws a warning
+        // await sleep(3000)
         return get().appointments
     },
     setAppointment: async function (appointment) {
-        await sleep(3000)
+        // await sleep(3000)
         set({
             appointments: [...get().appointments, appointment]
         })

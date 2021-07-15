@@ -24,7 +24,7 @@ import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
 import { toggleStringFromList } from "../../../../utils";
 
-import { HomeNavKey as MainNavKey } from "..";
+import { HomeNavKey as MainNavKey } from "../_navigator";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { BookAppointmentStackParamList } from ".";
 import MainContainer from "../../../../components/containers/MainContainer";

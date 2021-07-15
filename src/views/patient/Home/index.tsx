@@ -1,22 +1,12 @@
 import React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
-
 import HomeScreen from "./HomeScreen";
 import BookAppointmentView from "./BookAppointment";
 import OnlineConsultView from "./OnlineConsult";
 import MapFaciltyView from "./MapFacility";
 import NotificationScreen from "./Notification";
 
-const NavStack = createStackNavigator();
-
-export const HomeNavKey = {
-	HomeScreen: "HomeScreen",
-	NotificationScreen: "NotificationScreen",
-	BookAppointmentViewScreen: "BookAppointmentView",
-	OnlineConsultViewScreen: "OnlineConsultView",
-	MapFaciltyViewScreen: "MapFaciltyView",
-};
+import { NavStack, HomeNavKey } from './_navigator'
 
 export default function HomeView() {
 	return (

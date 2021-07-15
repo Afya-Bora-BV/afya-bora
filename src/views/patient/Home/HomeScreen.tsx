@@ -22,7 +22,7 @@ import FacilityIllustration from "../../../assets/illustrations/FacilityIllustra
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
-import { HomeNavKey } from ".";
+import { HomeNavKey } from "./_navigator";
 import { colors } from "../../../constants/colors";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";

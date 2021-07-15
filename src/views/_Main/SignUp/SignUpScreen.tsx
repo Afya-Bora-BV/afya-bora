@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, VStack, View, Pressable, Stack, Text } from "native-base";
-import { PrimaryButton } from "../../components/button";
-import { colors } from "../../constants/colors";
+import { PrimaryButton } from "../../../components/button";
+import { colors } from "../../../constants/colors";
 
 
 import { NavKey as SignUpNavKey } from '.'
-import { NavKey as PlainNavKey} from '../_Plain'
-import AltContainer from "../../components/containers/AltContainer";
+import { NavKey as PlainNavKey} from '..'
+import AltContainer from "../../../components/containers/AltContainer";
 import { Dimensions } from "react-native";
-import { ControllerFormInput } from "../../components/forms/inputs";
+import { ControllerFormInput } from "../../../components/forms/inputs";
 
 import * as yup from "yup";
 import { useForm } from "react-hook-form";

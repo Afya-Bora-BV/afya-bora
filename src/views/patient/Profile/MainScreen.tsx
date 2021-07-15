@@ -18,18 +18,18 @@ import {
 } from "native-base";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AccountIcon from "../../assets/icons/AccountIcon";
-import UpdateClock from "../../assets/icons/UpdateClock";
-import MapPinIcon from "../../assets/icons/MapPinIcon";
-import CardIcon from "../../assets/icons/CardIcon";
-import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
-import PhoneIcon from "../../assets/icons/PhoneIcon";
-import InfoIcon from "../../assets/icons/InfoIcon";
-import LogoutIcon from "../../assets/icons/LogoutIcon";
+import AccountIcon from "../../../assets/icons/AccountIcon";
+import UpdateClock from "../../../assets/icons/UpdateClock";
+import MapPinIcon from "../../../assets/icons/MapPinIcon";
+import CardIcon from "../../../assets/icons/CardIcon";
+import HeadphoneIcon from "../../../assets/icons/HeadphoneIcon";
+import PhoneIcon from "../../../assets/icons/PhoneIcon";
+import InfoIcon from "../../../assets/icons/InfoIcon";
+import LogoutIcon from "../../../assets/icons/LogoutIcon";
 import { ProfileNavKey } from ".";
-import AlternateContainer from "../../components/containers/AlternateContainer";
-import { IconContainer } from "../../components/misc";
-import NextIcon from "../../assets/icons/NextIcon";
+import AlternateContainer from "../../../components/containers/AlternateContainer";
+import { IconContainer } from "../../../components/misc";
+import NextIcon from "../../../assets/icons/NextIcon";
 
 // import auth from '@react-native-firebase/auth';
 

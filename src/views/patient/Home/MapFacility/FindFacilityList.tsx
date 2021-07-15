@@ -6,8 +6,8 @@ import { FacilityListItem } from "../../../../components/facilities-list-item";
 import { HeaderWithRText } from "../../../../components/header";
 import { consultants } from "../../../../data/consultants";
 import { facilities } from "../../../../data/facilities";
-import { NavKey as BookAppointmentNavKey } from "../BookAppointment";
-import { HomeNavKey as MainNavKey } from "..";
+import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
+import { HomeNavKey as MainNavKey } from "../_navigator";
 
 const FindFacilityList = () => {
 	const navigation = useNavigation();

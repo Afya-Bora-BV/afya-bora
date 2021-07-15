@@ -1,26 +1,16 @@
 import React from "react";
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeView from "./patient/Home";
+import HomeView from "./Home";
 import ScheduleView from "./Schedule";
 import ChatView from "./Chat";
 import ProfileView from "./Profile/MainScreen";
-import TabHomeIcon from "../assets/icons/TabHomeIcon";
-import TabScheduleIcon from "../assets/icons/TabScheduleIcon";
-import TabChatIcon from "../assets/icons/TabChatIcon";
-import TabProfileIcon from "../assets/icons/TabProfileIcon";
-import createABSyleTabNavigator from "../components/Tab/createNavigator";
+import TabHomeIcon from "../../assets/icons/TabHomeIcon";
+import TabScheduleIcon from "../../assets/icons/TabScheduleIcon";
+import TabChatIcon from "../../assets/icons/TabChatIcon";
+import TabProfileIcon from "../../assets/icons/TabProfileIcon";
 
-const Tab = createBottomTabNavigator();
-// const Tab = createABSyleTabNavigator();
-
-export const TabNavKey = {
-	HomeView: "Home",
-	ScheduleView: "Schedule",
-	ChatView: "Chats",
-	Profile: "ProfileMain",
-};
+import { Tab, TabNavKey } from './_navigator'
 
 export default function AuthenticatedAppView() {
 	return (

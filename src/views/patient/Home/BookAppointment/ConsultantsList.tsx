@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
 import { consultants } from "../../../../data/consultants";
 
-import { NavKey } from ".";
+import { NavKey } from "./_navigator";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
 import { Pressable } from "react-native";

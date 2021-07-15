@@ -28,12 +28,20 @@ import { colors } from "../../../../constants/colors";
 import moment from "moment";
 import { toggleStringFromList } from "../../../../utils";
 
-import { BookAppointmentStackParamList, NavKey } from ".";
+import { NavKey } from "./_navigator";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
 import { useCallback } from "react";
 
-const { width } = Dimensions.get("window");
+export type BookAppointmentStackParamList = {
+	SetAppointmentTime: {
+		consultant: any;
+	};
+	PatientComplaint: {
+		consultant: any;
+		appointment: any;
+	};
+};
 
 type SetAppointmentTimeScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,

@@ -1,26 +1,9 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import ConsultantsList from "./ConsultantsList";
 import { PatientComplaint } from "./PatientComplaint";
 import SetAppointmentTime from "./SetAppointmentTime";
 
-const Stack = createStackNavigator();
-
-export type BookAppointmentStackParamList = {
-	SetAppointmentTime: {
-		consultant: any;
-	};
-	PatientComplaint: {
-		consultant: any;
-		appointment: any;
-	};
-};
-
-export const NavKey = {
-	ConsultantListScreen: "ConsultantList",
-	SetAppointmentTimeScreen: "SetAppointmentTime",
-	PatientComplaintScreen: "PatientComplaint",
-};
+import { Stack, NavKey } from './_navigator'
 
 export default function BookAppointment() {
 	return (

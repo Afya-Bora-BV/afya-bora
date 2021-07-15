@@ -38,7 +38,8 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
 
     // THINK: appropriate might be `setUser`
     signInWithEmailAndPassword: async function (email, password) {
-        await sleep(3000)
+        // NOTE: may results to an error
+        // await sleep(3000)
         // TODO: fetch name and other related information
         // create the fake user 
         set({

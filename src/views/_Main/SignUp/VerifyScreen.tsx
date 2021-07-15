@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, View, Stack, VStack, Pressable, Text } from "native-base";
-import { PrimaryButton } from "../../components/button";
-import { colors } from "../../constants/colors";
+import { PrimaryButton } from "../../../components/button";
+import { colors } from "../../../constants/colors";
 import { useState } from "react";
-import { useAuthStore } from "../../internals/auth/context";
-import AltContainer from "../../components/containers/AltContainer";
+import { useAuthStore } from "../../../internals/auth/context";
+import AltContainer from "../../../components/containers/AltContainer";
 
 import { Dimensions } from "react-native";
 

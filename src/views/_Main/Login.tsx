@@ -12,18 +12,18 @@ import {
 	VStack,
 } from "native-base";
 import * as React from "react";
-import { CheckBox } from "../../src/components/bars";
-import { colors } from "../../src/constants/colors";
-import { PrimaryButton } from "../../src/components/button";
+import { CheckBox } from "../../components/bars";
+import { colors } from "../../constants/colors";
+import { PrimaryButton } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
-import { NavKey as PlainAppNavKey } from './_Plain'
-import { useAuthStore } from "../../src/internals/auth/context";
-import AltContainer from "../../src/components/containers/AltContainer";
-import { ControllerFormInput } from "../../src/components/forms/inputs";
+import { NavKey as PlainAppNavKey } from '.'
+import { useAuthStore } from "../../internals/auth/context";
+import AltContainer from "../../components/containers/AltContainer";
+import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";
 
 interface LoginFormInputs {

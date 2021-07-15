@@ -4,13 +4,7 @@ import React from 'react'
 import FindFacilityView from './FindFacility'
 import FindFacilityListView from './FindFacilityList'
 
-const Stack = createStackNavigator()
-
-export const NavKey = {
-    FindFacilityScreen: "FindFacility",
-    FindFacilityListScreen: "FindFacilityList",
-}
-
+import { Stack, NavKey } from './_navigator'
 
 export default function MapFaciltyView() {
     return (

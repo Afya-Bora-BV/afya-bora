@@ -1,15 +1,9 @@
 import React from 'react'
 
-import { createStackNavigator } from "@react-navigation/stack"
 import LoginView from './Login'
 import SignUpView from './SignUp'
 
-const NavStack = createStackNavigator()
-
-export const NavKey = {
-    LoginScreen: "Login",
-    SignUpViewScreen: "AuthSignUp"
-}
+import { NavKey, Stack as NavStack } from './_navigator'
 
 export default function PlainAppView() {
     return (

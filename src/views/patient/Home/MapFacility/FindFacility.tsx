@@ -1,7 +1,6 @@
 import * as React from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions, Animated, Platform, Pressable } from "react-native";
-import { Box, HStack, ScrollView, ZStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");

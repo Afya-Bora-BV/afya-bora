@@ -1,20 +1,9 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import OnlineConsultantSelectDateTime from "./OnlineConsultantSelectDateTime";
 import OnlineConsultChooseConsultant from "./OnlineConsultChooseConsultant";
 
-const Stack = createStackNavigator();
+import { OnlineNavKey, Stack } from './_navigator'
 
-export type OnlineConsultStackParamList = {
-	OnlineConsultChooseConsultant: {
-		appointment: any;
-	};
-};
-
-export const OnlineNavKey = {
-	SelectDateTimeScreen: "OnlineConsultantSelectDateTime",
-	ChooseConsultantScreen: "OnlineConsultChooseConsultant",
-};
 
 export default function OnlineConsultView() {
 	return (

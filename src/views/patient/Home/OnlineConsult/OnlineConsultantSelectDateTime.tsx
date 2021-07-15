@@ -23,9 +23,8 @@ import moment from "moment";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { toggleStringFromList } from "../../../../utils";
 
-import { OnlineNavKey, OnlineConsultStackParamList } from ".";
-import { HomeNavKey, HomeNavKey as MainNavKey } from "..";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { OnlineNavKey } from "./_navigator";
+import { HomeNavKey as MainNavKey } from "../_navigator";
 import MainContainer from "../../../../components/containers/MainContainer";
 
 function PickADateSection({ chosenDate, onSelectDate }: any) {

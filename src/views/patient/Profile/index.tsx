@@ -3,14 +3,7 @@ import React from "react";
 import ProfileScreen from "./Profile";
 import MainProfileScreen from "./MainScreen";
 
-const Stack = createStackNavigator();
-
-export type ProfileStackParamList = {};
-
-export const ProfileNavKey = {
-	MainScreen: "Profile.MainScreen",
-	ProfileScreen: "Profile.ProfileScreen",
-};
+import { ProfileNavKey, Stack } from './_navigator'
 
 export default function ProfileView() {
 	return (
