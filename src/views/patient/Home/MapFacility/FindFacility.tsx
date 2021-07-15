@@ -1,9 +1,16 @@
 import * as React from "react";
 import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions, Animated, Platform, Pressable } from "react-native";
+import { StyleSheet, View, Dimensions, Animated, Platform, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import MainContainer from "../../../../components/containers/MainContainer";
+import { IconContainer } from "../../../../components/misc";
+import { ArrowBackIcon, Avatar, Heading, VStack, HStack, Text, Box } from "native-base";
 
-const { width, height } = Dimensions.get("window");
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { NavKey } from "./_navigator"
+
+const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
@@ -11,51 +18,33 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 export const markers = [
 	{
+		ratings: 4.1,
+		raters: 183,
 		coordinate: {
-			latitude: 22.6293867,
-			longitude: 88.4354486,
+			latitude: -6.7161577999999995,
+			longitude: 39.3513637,
 		},
-		title: "Amazing Food Place",
-		description: "This is the best food place",
+		title: "Aga Khan Hospital",
+		location: "123 Dar road, Dar es Salaam",
 	},
 	{
+		ratings: 4.2,
+		raters: 190,
 		coordinate: {
-			latitude: 22.6345648,
-			longitude: 88.4377279,
+			latitude: -6.7981299,
+			longitude: 39.1639385,
 		},
-		title: "Second Amazing Food Place",
-		description: "This is the second best food place",
-	},
-	{
-		coordinate: {
-			latitude: 22.6281662,
-			longitude: 88.4410113,
-		},
-		title: "Third Amazing Food Place",
-		description: "This is the third best food place",
-	},
-	{
-		coordinate: {
-			latitude: 22.6341137,
-			longitude: 88.4497463,
-		},
-		title: "Fourth Amazing Food Place",
-		description: "This is the fourth best food place",
-	},
-	{
-		coordinate: {
-			latitude: 22.6292757,
-			longitude: 88.444781,
-		},
-		title: "Fifth Amazing Food Place",
-		description: "This is the fifth best food place",
-
+		title: "Muhimbili National Hospital",
+		location: "Malik Rd, Dar es Salaam",
 	},
 ];
 
+/**
+ * Region window to show the contents
+ */
 const region = {
-	latitude: 22.62938671242907,
-	longitude: 88.4354486029795,
+	latitude: -6.70,
+	longitude: 39.3513637,
 	latitudeDelta: 0.04864195044303443,
 	longitudeDelta: 0.040142817690068,
 }
@@ -66,7 +55,7 @@ const initialState = {
 }
 const FindFacility: React.FC = () => {
 
-	const { navigate } = useNavigation()
+	const navigation = useNavigation()
 	let mapIndex = 0;
 	let mapAnimation = new Animated.Value(0);
 	const [state, setState] = React.useState(initialState);
@@ -132,7 +121,24 @@ const FindFacility: React.FC = () => {
 	}
 
 	return (
-		<View style={styles.container}>
+
+		<MainContainer
+			noScroll
+			title="Find Facilty"
+			headerMode="float"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
 			<MapView
 				ref={_map}
 				style={styles.map}
@@ -211,26 +217,93 @@ const FindFacility: React.FC = () => {
 				)}
 			>
 				{state.markers.map((marker, index) => (
-					<Pressable onPress={() => {
-						console.log("Pressed map carc : ", marker)
-						// TODO: taking this to a separate method
-						navigate("FindFacilityList", { facility: marker })
-					}}>
-						<View style={styles.card} key={index}>
-							{/* <Box
-							h="full"
-							w="full"
-							borderRadius={6}
-							shadow={2}
-							mx={2}
-							backgroundColor="white"
-						></Box> */}
-						</View>
+					<Pressable  
+						key={index} 
+						onPress={() => {
+							// console.log("Pressed map carc : ", marker)
+							// TODO: taking this to a separate method
+							navigation.navigate(NavKey.FindFacilityListScreen, { facility: marker })
+						}}
+					>
+						<VStack 
+							style={{
+								shadowColor: "#CCC",
+								shadowOffset: {
+									width: 0,
+									height: 5,
+								},
+								shadowOpacity: 0.57,
+								shadowRadius: 13.19,
+
+								elevation: 13,
+							}}
+							minWidth={300}
+							bgColor="#FFF"
+							shadow={40}
+							padding={3} 
+							space={1} 
+							borderRadius={20}
+							marginRight={5}>
+							<Avatar
+								alignSelf="flex-start"
+								width="100%"
+								height={120}
+								borderRadius={20}
+								source={{
+									uri: "https://wallpaperaccess.com/full/317501.jpg",
+								}}
+							/>
+							{/* Text ara */}
+							<VStack>
+								<Heading fontSize="lg">{marker.title}</Heading>
+								<Text fontSize="md" bold color="#747F9E">
+									{marker.location}
+								</Text>
+							</VStack>
+
+							{/* Ratings + Distance */}
+							<HStack
+								space={1}
+								justifyContent="space-between"
+								marginTop={2}
+							>
+								{/* Ratings */}
+								<HStack space={1} alignItems="center">
+									<MaterialCommunityIcons
+										name="star"
+										color="#FFC107"
+										size={24}
+									/>
+									<Text fontSize="md" color="#B0B3C7">
+										{marker.ratings} ({marker.raters})
+									</Text>
+								</HStack>
+
+								{/* Distance */}
+								<HStack
+									space={1}
+									px={2}
+									py={1}
+									borderRadius={4}
+									justifyContent="center"
+									alignItems="center"
+									style={{
+										backgroundColor: "rgba(37,143,190,0.2)",
+									}}
+								>
+									<MaterialCommunityIcons
+										name="google-maps"
+										size={18}
+										color="#258FBE"
+									/>
+									<Text color="#258FBE">{34}</Text>
+								</HStack>
+							</HStack>
+						</VStack>
 					</Pressable>
 				))}
 			</Animated.ScrollView>
-
-		</View>
+		</MainContainer>
 	);
 };
 
@@ -255,9 +328,6 @@ const styles = StyleSheet.create({
 		// padding: 10,
 		elevation: 2,
 		backgroundColor: "#FFF",
-		borderTopLeftRadius: 5,
-		borderTopRightRadius: 5,
-		marginHorizontal: 10,
 		shadowColor: "#000",
 		shadowRadius: 5,
 		shadowOpacity: 0.3,
@@ -265,6 +335,9 @@ const styles = StyleSheet.create({
 		height: CARD_HEIGHT,
 		width: CARD_WIDTH,
 		overflow: "hidden",
+
+		padding: 5,
+		borderRadius: 20,
 	},
 });
 
