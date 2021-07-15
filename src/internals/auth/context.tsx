@@ -4,13 +4,16 @@ import createContext from 'zustand/context'
 import { persist } from "zustand/middleware"
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
+import auth from '@react-native-firebase/auth';
+
 /**
  * User object
  */
 interface User {
     uid: string
     name: string
+    phone: string
     image?: string
 }
 
@@ -22,51 +25,97 @@ interface AuthStore {
     | undefined // User doesn't exist yet
     | User      // user exist and logged in
     | null      // user logged out
-
-    signInWithEmailAndPassword: (email: string, password: string) => Promise<void>
+    userExists: true | false
+    confirm: any
+    phone: string
+    signInWithEmailAndPassword: (phone: string) => Promise<void>
     signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
     confirmPhoneCode: (code: string) => Promise<void>
+    signOut: () => Promise<void>
 }
 
 const { Provider, useStore } = createContext<AuthStore>()
 
-const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
+const demoUsers = [{
+    uid: "ASa",
+    name: "George Millanzi",
+    phone: "+255692100918",
+    gender: "Male",
+    dob: "12/12/2001",
+    height: 12,
+    weight: 12,
+    bloodGroup: "0",
+    residence: "Arusha"
+}]
+
+// method to check if the user exists in database
+// the user dont login untill we make sure his details exist 
+const isNewUser = (phone: string): boolean => {
+    const user = demoUsers.filter(user => user.phone === phone)
+    console.log("User  : ", phone)
+    return Boolean(user[0])
+}
+
+const getUserDetails = (phone: string): User | undefined => {
+    const user = demoUsers.filter(user => user.phone === phone)
+    console.log("User  : ", phone)
+    return user[0]
+}
+
+const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     user: null,
-
+    userExists: false,
+    confirm: null,
+    phone: "",
     // THINK: appropriate might be `setUser`
-    signInWithEmailAndPassword: async function (email, password) {
-        await sleep(3000)
-        // TODO: fetch name and other related information
-        // create the fake user 
-        set({
-            user: {
-                uid: "asda",
-                name: "George Millanzi",
-            } as User
-        })
+    signInWithEmailAndPassword: async function (phone: string) {
+
+
     },
 
+    // demo signout
+    signOut: async () => {
+        await auth().signOut()
+        set({ user: null })
+    },
     // Signing in for user
-    signInWithPhoneNumber: async function (phoneNumber) {
-
+    signInWithPhoneNumber: async function (phone) {
+        await sleep(2000)
+        // TODO: fetch name and other related information
+        // create the fake user 
+        const isRegistered = isNewUser(phone)
+        if (isRegistered) {
+            // send verification code
+            const confirmation = await auth().signInWithPhoneNumber(phone);
+            set({
+                confirm: confirmation,
+                phone: phone
+            })
+        } else {
+            ToastAndroid.show("Phone number is not registered", ToastAndroid.LONG)
+        }
     },
 
     // confirming code
     confirmPhoneCode: async function (code) {
         // create fake person after 2 seconds
-        setInterval(() => {
-            // NOTE: if user is set, it forces the state of `user` in the 
-            //  `App.tsx -> <Main />` to change, thus forcing a login
+        try {
+            await get().confirm.confirm(code);
+
+            // assuming everything went right
+            // get the user with given phone number
+            const user = getUserDetails(get().phone)
             set({
-                user: {
-                    uid: "r31e4",
-                    name: "Raghav",
-                } as User
+                user: user,
+                confirm: null
             })
-        }, 2000)
+        } catch (error) {
+            console.log('Invalid code.');
+            ToastAndroid.show("Invalid confirmation code", ToastAndroid.LONG)
+        }
     }
 }), {
     name: "authState",

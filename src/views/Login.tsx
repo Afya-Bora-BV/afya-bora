@@ -10,6 +10,7 @@ import {
 	View,
 	Square,
 	VStack,
+	Button,
 } from "native-base";
 import * as React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,7 +18,7 @@ import { colors } from "../contants/colors";
 import { CheckBox } from "../components/bars";
 import { PrimaryButton } from "../components/button";
 import { useNavigation } from "@react-navigation/native";
-import { Dimensions } from "react-native";
+import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,24 +29,29 @@ import AltContainer from "../components/containers/AltContainer";
 import { ControllerFormInput } from "../components/forms/inputs";
 import { useCallback } from "react";
 import { useMutation } from "react-query";
+import _ from "lodash";
 
 interface LoginFormInputs {
-	email: string;
-	password: string;
+	phone: string;
+	// password: string;
+	confirmCode: string
 }
 
 const schema = yup.object().shape({
-	email: yup.string().email().required(),
-	password: yup.string().nullable().required(),
+	phone: yup.string(),
+	// password: yup.string().nullable().required(),
+	confirmCode: yup.string()
 });
 
 // let render = 0
+
+
 
 export default function Login() {
 	// const [remember, setRemember] = React.useState(false);
 	const [visibility, setVisibility] = React.useState("eye-off-outline");
 	const navigation = useNavigation();
-	const login = useAuthStore(state => state.signInWithEmailAndPassword)
+	const { login, confirm, confirmCode } = useAuthStore(state => ({ login: state.signInWithPhoneNumber, confirmCode: state.confirmPhoneCode, confirm: state.confirm }))
 
 	const { height } = Dimensions.get("screen");
 
@@ -53,33 +59,36 @@ export default function Login() {
 		control,
 		handleSubmit,
 		formState: { errors },
+		getValues
 	} = useForm<LoginFormInputs>({
 		// resolver: yupResolver(schema),
 	});
 
-	const onLogin = () => {
+	const onLogin = async () => {
 		console.log("Logging in ")
-		loginInWithEmailAndPassword()
-
+		loginWithPhoneNumber()
 	};
 
 	// TODO: pass to login the correct email and password
-	const { mutate: loginInWithEmailAndPassword, isLoading } = useMutation(() => login("demoemil@gmail.com", "password"), {
+	// TODO: considering having two Mutations
+	// 1. for login 
+	// 2. for verifying code
+	const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
 		onMutate: variables => {
 		},
 		onError: (error, variables, context) => {
 			console.log("Something went wrong")
 		},
 		onSuccess: (data, variables, context) => {
-			console.log("User logged in successfully ")
-
+			// console.log("User logged in successfully ")
 			// Boom baby!
 		},
 
 	})
 
 
-	// console.log('Rendering loginpage:', render++)
+	console.log('Rendering loginpage:', getValues())
+	// console.log("Confirm  : ",confirm)
 	return (
 		<AltContainer backdropHeight={height / 3.5}>
 			{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
@@ -93,13 +102,26 @@ export default function Login() {
 				{/* <Stack paddingBottom={10}> */}
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
 					<VStack space={5} marginBottom={15}>
-						<ControllerFormInput
-							name="email"
-							control={control}
-							label="Email or phone number"
-							keyboardType="email-address" />
+						{!confirm ?
+							<ControllerFormInput
+								name="phone"
+								control={control}
+								label="Phone number"
+								placeholder="+255755330099"
+							// keyboardType="email-address" 
+							/>
+							:
+							<ControllerFormInput
+								name="confirmCode"
+								control={control}
+								label="Verification code"
+								placeholder="1234"
+							// keyboardType="email-address" 
+							/>
+						}
 
-						<ControllerFormInput
+
+						{/* <ControllerFormInput
 							name="password"
 							control={control}
 							label="Enter Password"
@@ -134,9 +156,9 @@ export default function Login() {
 									/>
 								</Pressable>
 							}
-						/>
+						/> */}
 						{/* Remeber me + Forgot Password */}
-						<HStack justifyContent="space-between">
+						{/* <HStack justifyContent="space-between">
 							<CheckBox item={"Remember me"} />
 
 							<Stack justifyContent="center">
@@ -146,18 +168,28 @@ export default function Login() {
 									</Text>
 								</Pressable>
 							</Stack>
-						</HStack>
+						</HStack> */}
 					</VStack>
 					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
-						<PrimaryButton
-							text={"Login"}
-							shadow={5}
-							isLoading={isLoading}
-							disabled={isLoading}
-							press={handleSubmit(onLogin, () => {
+
+						<Button
+							onPress={handleSubmit(onLogin, () => {
 								console.log("Ther is a form error")
 							})}
-						/>
+							borderRadius={20}
+							// _disabled={{
+							// 	backgroundColor: "#B0B3C7",
+							// 	color: "white",
+							// }}
+							style={{ backgroundColor: colors.primary }}
+							_text={{ color: "white" }}
+							isLoading={isLoading}
+							disabled={isLoading}
+							shadow={5}
+
+						>
+							Login Now
+						</Button>
 					</Box>
 				</Box>
 				{/* </Stack> */}

@@ -122,7 +122,7 @@ export const AppTheme = {
 };
 
 function Main() {
-	return <AuthenticatedAppView />
+	// return <PlainAppView />
 	const user = useAuthStore((state) => state.user);
 	// const [isSplashToClose, setSplashToHide] = useState(false);
 
@@ -138,6 +138,8 @@ function Main() {
 	// if (!isSplashToClose) return <Splash />;
 
 	if (user !== null && user !== undefined) {
+		console.log("User")
+		console.log(user)
 		return (
 			<AuthenticatedAppView />
 		)
@@ -147,11 +149,11 @@ function Main() {
 	return <PlainAppView />
 }
 
-export default function App () {
+export default function App() {
 	let [fontsLoaded] = useFonts({
 		"Ubuntu-Bold": require('./assets/fonts/Ubuntu-Bold.ttf'),
 		"Ubuntu-BoldItalic": require('./assets/fonts/Ubuntu-BoldItalic.ttf'),
-		
+
 		"Ubuntu-Light": require('./assets/fonts/Ubuntu-Light.ttf'),
 		"Ubuntu-LightItalic": require('./assets/fonts/Ubuntu-LightItalic.ttf'),
 
@@ -161,10 +163,10 @@ export default function App () {
 		"Ubuntu-Regular": require('./assets/fonts/Ubuntu-Regular.ttf'),
 		"Ubuntu-Italic": require('./assets/fonts/Ubuntu-Italic.ttf'),
 	})
-	
-	if (!fontsLoaded) return <Text>Wait... Loading fonts</Text> 
-	
-    return (
+
+	if (!fontsLoaded) return <Text>Wait... Loading fonts</Text>
+
+	return (
 		<SafeAreaProvider>
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
@@ -181,5 +183,5 @@ export default function App () {
 				</NavigationContainer>
 			</NativeBaseProvider>
 		</SafeAreaProvider>
-    )
+	)
 }

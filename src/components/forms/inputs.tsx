@@ -5,9 +5,9 @@ import { useController, Controller } from 'react-hook-form';
 /**
  * Input form that uses react controller
  */
-export function ControllerFormInput ({ label, keyboardType, control, name, ...inputProps }: any)  {
+export function ControllerFormInput({ label, keyboardType, control, name, ...inputProps }: any) {
     // console.log({ others })
-    const { formState: { errors }, } =  useController({ name, control });
+    const { formState: { errors }, } = useController({ name, control });
 
     return (
         <Stack>
@@ -27,11 +27,11 @@ export function ControllerFormInput ({ label, keyboardType, control, name, ...in
                         }
                         variant="rounded"
                         autoCapitalize={"none"}
-						{...inputProps}
-                        placeholder={label}
+                        {...inputProps}
+                    // placeholder={label}
                     />
                 )}
-                name="email"
+                name={name}
                 rules={{ required: true }}
                 defaultValue=""
             />
