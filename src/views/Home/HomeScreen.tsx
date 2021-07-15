@@ -23,36 +23,39 @@ import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
 import { HomeNavKey } from ".";
-import _BaseContainer from "../../components/containers/_BaseContainer";
 import { colors } from "../../contants/colors";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 
-const helpOptions = [
-	{
-		illustration: AppointmentIllustration,
-		title: "Book an Appointment",
-		onNavigate: (navigation: any) =>
-			navigation.navigate(HomeNavKey.BookAppointmentViewScreen),
-	},
-	{
-		illustration: OnlineConsulationIllustration,
-		title: "Online Consultation",
-		onNavigate: (navigation: any) =>
-			navigation.navigate(HomeNavKey.OnlineConsultViewScreen),
-	},
-	{
-		illustration: FacilityIllustration,
-		title: "Find a Facility",
-		onNavigate: (navigation: any) =>
-			navigation.navigate(HomeNavKey.BookAppointmentViewScreen),
-	},
-];
 import {
 	DemoAppointmentType,
 	useAppointmentTempoStore,
 } from "../../internals/appointment/context";
 import { useQuery } from "react-query";
+
+const helpOptions = [
+	{
+		illustration: AppointmentIllustration,
+		title: "Book an Appointment",
+		onNavigate: (navigation: any) => {
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen)
+		},
+	},
+	{
+		illustration: OnlineConsulationIllustration,
+		title: "Online Consultation",
+		onNavigate: (navigation: any) => {
+			navigation.navigate(HomeNavKey.OnlineConsultViewScreen)
+		},
+	},
+	{
+		illustration: FacilityIllustration,
+		title: "Find a Facility",
+		onNavigate: (navigation: any) => {
+			navigation.navigate(HomeNavKey.MapFaciltyViewScreen)
+		}
+	},
+];
 
 export default function Home() {
 	const navigation = useNavigation();
@@ -121,6 +124,7 @@ export default function Home() {
 									ix
 								) => (
 									<Pressable
+										key={`helpOption-${ix}`}
 										onPress={() => onNavigate(navigation)}
 									>
 										{/* Find mean to set relative width: 160 -> 33%?? */}
