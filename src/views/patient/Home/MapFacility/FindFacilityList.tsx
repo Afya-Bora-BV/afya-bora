@@ -1,9 +1,12 @@
 import { useNavigation } from "@react-navigation/core";
-import { Box, Heading, ScrollView, Stack, StatusBar, VStack } from "native-base";
+import { ArrowBackIcon, Box, Heading, ScrollView, Stack, StatusBar, VStack } from "native-base";
 import React, { useCallback } from "react";
+import { Pressable } from "react-native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
+import MainContainer from "../../../../components/containers/MainContainer";
 import { FacilityListItem } from "../../../../components/facilities-list-item";
 import { HeaderWithRText } from "../../../../components/header";
+import { IconContainer } from "../../../../components/misc";
 import { consultants } from "../../../../data/consultants";
 import { facilities } from "../../../../data/facilities";
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
@@ -31,40 +34,46 @@ const FindFacilityList = () => {
 	}, [navigation])
 
 	return (
-		<ScrollView>
-			<Stack>
-				{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
-				<VStack p={2} space={6} paddingTop={8}>
-					{/* TODO: to be moved to components folder */}
-					<HeaderWithRText
-						text={"Select Hospital"}
-						rText={"Nearest"}
-						iconPress={nav}
-						onPress={nearest}
-					/>
 
+		<MainContainer
+			title="Select Hospital"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
+		<ScrollView padding={5} paddingTop={3} width="100%" flex={1}>
+			<VStack space={6}>
+				<VStack space={2}>
+					<FacilityListItem
+						onPress={() => { }}
+						key={facility.id}
+						facility={facility}
+					/>
+				</VStack>
+				<VStack space={3} marginTop={10}>
+					<Heading fontSize="xl">Consultants at This Facility</Heading>
 					<VStack space={2}>
-						<FacilityListItem
-							onPress={() => { }}
-							key={facility.id}
-							facility={facility}
-						/>
-					</VStack>
-					<VStack space={3}>
-						<Heading fontSize="md">Consultants at This Facility</Heading>
-						<VStack space={2}>
-							{consultants.map((consultant) => (
-								<ConsultantListItem
-									onPress={() => selectConsultant(consultant)}
-									key={consultant.id}
-									consultant={consultant}
-								/>
-							))}
-						</VStack>
+						{consultants.map((consultant) => (
+							<ConsultantListItem
+								onPress={() => selectConsultant(consultant)}
+								key={consultant.id}
+								consultant={consultant}
+							/>
+						))}
 					</VStack>
 				</VStack>
-			</Stack>
+			</VStack>
 		</ScrollView>
+		</MainContainer>
 	);
 };
 
