@@ -45,7 +45,7 @@ const helpOptions = [
 		illustration: FacilityIllustration,
 		title: "Find a Facility",
 		onNavigate: (navigation: any) =>
-			navigation.navigate(HomeNavKey.MapFaciltyViewScreen),
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen),
 	},
 ];
 import {
