@@ -38,16 +38,17 @@ const signOut = async () => {
 	console.log("Sign Out");
 };
 
-function ProfileCard ({ userProfile, ...props }) {
+function ProfileCard({ userProfile, ...props }) {
 	return (
 		<HStack
-			bg="white" 
-			shadow={2} 
+			bg="white"
+			shadow={2}
 			rounded={10}
 			width="100%"
 			{...props}
 			padding={3}
-			>	
+			maxHeight={100}
+		>
 			<HStack space={3} justifyContent="center">
 				<Avatar
 					size="lg"
@@ -59,7 +60,9 @@ function ProfileCard ({ userProfile, ...props }) {
 					SS
 				</Avatar>
 				<VStack flex={1} space={1} justifyContent="center">
-					<Text fontWeight="600" fontSize="xl">{userProfile.name}</Text>
+					<Text fontWeight="600" fontSize="xl">
+						{userProfile.name}
+					</Text>
 					<Text color="#747F9E">{userProfile.phoneNumber}</Text>
 				</VStack>
 			</HStack>
@@ -69,16 +72,15 @@ function ProfileCard ({ userProfile, ...props }) {
 				</IconContainer>
 			</Pressable>
 		</HStack>
-	)
+	);
 }
 
 const profileOptions = [
 	{
 		icon: AccountIcon,
 		title: "Profile",
-		onNavigate: (navigation: any) => navigation.navigate(
-			ProfileNavKey.ProfileScreen
-		)
+		onNavigate: (navigation: any) =>
+			navigation.navigate(ProfileNavKey.ProfileScreen),
 	},
 	{
 		icon: UpdateClock,
@@ -108,7 +110,7 @@ const profileOptions = [
 		icon: LogoutIcon,
 		title: "Logout",
 	},
-]
+];
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
@@ -116,25 +118,36 @@ const ProfileMain: React.FC = () => {
 
 	const userProfile = {
 		name: "Ally Jr. Salim",
-		phoneNumber: "0712 345 545"
-	}
+		phoneNumber: "0712 345 545",
+	};
 
 	return (
 		<AlternateContainer
-			title="Profile" 
+			title="Profile"
 			titleColor="#FFF"
 			barStyle="dark-content"
-			backdropHeight={height / 7} 
+			backdropHeight={height / 7}
 			bgColor="#7065E4"
 		>
 			<VStack alignItems="center" margin={8} marginTop={5} space={4}>
 				<ProfileCard userProfile={userProfile} />
-				<Box bg="white" shadow={2} rounded={10} width="100%" paddingX={5} paddingY={5}>
+				<Box
+					bg="white"
+					shadow={2}
+					rounded={10}
+					width="100%"
+					paddingX={5}
+					paddingY={5}
+				>
 					<VStack space={10}>
-						{
-							profileOptions.map(({ icon: ActualIcon, title, onNavigate }, ix) => (
+						{profileOptions.map(
+							({ icon: ActualIcon, title, onNavigate }, ix) => (
 								<Pressable
-									onPress={onNavigate !== undefined ? () =>  onNavigate(navigation) : undefined}
+									onPress={
+										onNavigate !== undefined
+											? () => onNavigate(navigation)
+											: undefined
+									}
 								>
 									<HStack alignItems="center" space={3}>
 										<Square size={6}>
@@ -143,8 +156,8 @@ const ProfileMain: React.FC = () => {
 										<Text fontSize={18}>{title}</Text>
 									</HStack>
 								</Pressable>
-							))
-						}
+							)
+						)}
 					</VStack>
 				</Box>
 			</VStack>
