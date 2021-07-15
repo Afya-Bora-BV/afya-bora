@@ -97,7 +97,7 @@ function SingleItem ( { name, tabIcon: TabIcon, onSelect, selected, label }: any
     // style for the text + icons
     const tabTextStyle = useAnimatedStyle(() => {
         return {
-            display: active.value ? "none": "flex",
+            display: active.value ? "flex": "none",
             color: active.value ? activeTextColor : inactiveTextColor
         }
     })
