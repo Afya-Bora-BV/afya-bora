@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import SplashScreen from 'react-native-splash-screen'
 
-import { extendTheme, NativeBaseProvider } from "native-base"
+import { extendTheme, NativeBaseProvider, Text } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { useFonts } from 'expo-font'
@@ -160,6 +160,8 @@ export default function App () {
 		"Ubuntu-Regular": require('./assets/fonts/Ubuntu-Regular.ttf'),
 		"Ubuntu-Italic": require('./assets/fonts/Ubuntu-Italic.ttf'),
 	})
+	
+	if (!fontsLoaded) return <Text>Wait...</Text> 
 	
     return (
 		<SafeAreaProvider>

@@ -10,7 +10,6 @@ import MapFaciltyView from "./MapFacility";
 import NotificationScreen from "./Notification";
 
 const NavStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 export const HomeNavKey = {
 	HomeScreen: "HomeScreen",
