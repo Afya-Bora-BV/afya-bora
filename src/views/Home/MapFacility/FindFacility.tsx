@@ -140,7 +140,7 @@ const FindFacility: React.FC = () => {
 				initialRegion={state.region}
 
 			>
-				{state.markers.map((marker, index) => {
+				{/* {state.markers.map((marker, index) => {
 					const scaleStyle = {
 						transform: [
 							{
@@ -176,7 +176,7 @@ const FindFacility: React.FC = () => {
 						</Marker>
 
 					)
-				})}
+				})} */}
 
 			</MapView>
 
@@ -269,4 +269,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export { FindFacility };
+export default  FindFacility;

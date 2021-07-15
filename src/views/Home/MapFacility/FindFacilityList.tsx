@@ -9,7 +9,7 @@ import { facilities } from "../../../data/facilities";
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment";
 import { HomeNavKey as MainNavKey } from "../";
 
-export const FindFacilityList = () => {
+const FindFacilityList = () => {
 	const navigation = useNavigation();
 
 	const nav = () => {
