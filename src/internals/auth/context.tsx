@@ -4,8 +4,7 @@ import createContext from 'zustand/context';
 import {persist} from 'zustand/middleware';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Platform, ToastAndroid} from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { ToastAndroid} from 'react-native';
 
 /**
  * User object
@@ -42,7 +41,7 @@ interface AuthStore {
     confirm: any
     phone: string
     demoUsers: typeof demoUsers
-    signInWithEmailAndPassword: (phone: string) => Promise<void>
+    signInWithEmailAndPassword: (email: string, password: string) => Promise<void>
     signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
     confirmPhoneCode: (code: string) => Promise<void>
     signOut: () => Promise<void>
@@ -53,13 +52,10 @@ interface AuthStore {
 
 const {Provider, useStore} = createContext<AuthStore>();
 
-
-
-
 // method to check if the user exists in database
 // the user dont login untill we make sure his details exist 
 
-const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
+// const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     user: null,
@@ -83,7 +79,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
 
     },
     // THINK: appropriate might be `setUser`
-    signInWithEmailAndPassword: async function (phone: string) {
+    signInWithEmailAndPassword: async function (email: string, password: string) {
 
 
     },
@@ -96,7 +92,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     },
     // Signing in for user
     signInWithPhoneNumber: async function (phone) {
-        await sleep(2000)
+        // await sleep(2000)
         // TODO: fetch name and other related information
         // create the fake user 
         console.log("Phone ", phone)
@@ -116,7 +112,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     // confirming code
     confirmPhoneCode: async function (code) {
         // create fake person after 2 seconds
-        await sleep(3000)
+        // await sleep(3000)
         try {
             if (get().confirm === code) {
                 const user = get().getUserDetails(get().phone)

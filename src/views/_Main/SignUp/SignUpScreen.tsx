@@ -20,7 +20,7 @@ interface SignUpFormInput {
 }
 
 const schema = yup.object().shape({
-	phoneNumber: yup.string(),
+	phoneNumber: yup.string().required()
 });
 
 export default function SignUp() {
@@ -36,7 +36,6 @@ export default function SignUp() {
 		control,
 		handleSubmit,
 		formState: { errors },
-		getValues
 	} = useForm<SignUpFormInput>({
 		resolver: yupResolver(schema),
 	});
@@ -52,8 +51,6 @@ export default function SignUp() {
 
 		// when invalid
 		(err) => {
-			// Show error
-			console.warn(`Unable to confirm: ${err.phoneNumber}`)
 			Toast.show({
 				title: "Error",
 				description: `Unable to confirm for ${err.phoneNumber}`
@@ -63,9 +60,8 @@ export default function SignUp() {
 
 
 	return (
-		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Sign up" headerMode="with-back" noScroll>
-			<VStack marginTop={10} flexDirection="column" flex={1}>
-				{/* <View flexGrow={1} height="100%"> */}
+		<AltContainer backdropHeight={height / 4.2} navigation={navigation} title="Sign up" headerMode="with-back">
+			<View flexGrow={1}>	
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
@@ -83,23 +79,22 @@ export default function SignUp() {
 						/>
 					</Box>
 				</Box>
-
-				<Stack alignItems="center" marginBottom={5}>
-					<HStack>
-						<Text> Already have an account? </Text>
-						<Pressable
-							focusable
-							onPress={() => {
-								navigation.navigate(PlainNavKey.LoginScreen);
-							}}
-						>
-							<Text bold color={colors.primary}>
-								Sign in!
-							</Text>
-						</Pressable>
-					</HStack>
-				</Stack>
-			</VStack>
+			</View>
+			<Stack alignItems="center" marginBottom={5}>
+				<HStack>
+					<Text> Already have an account? </Text>
+					<Pressable
+						focusable
+						onPress={() => {
+							navigation.navigate(PlainNavKey.LoginScreen);
+						}}
+					>
+						<Text bold color={colors.primary}>
+							Sign in!
+						</Text>
+					</Pressable>
+				</HStack>
+			</Stack>
 		</AltContainer>
 	)
 };
