@@ -1,7 +1,7 @@
-import React from 'react';
-import create from 'zustand';
-import createContext from 'zustand/context';
-import {persist} from 'zustand/middleware';
+import React from "react";
+import create from "zustand";
+import createContext from "zustand/context";
+import { persist } from "zustand/middleware";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,7 +25,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 
 // method to check if the user exists in database
-// the user dont login untill we make sure his details exist 
+// the user dont login untill we make sure his details exist
 
 // const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 const afyaBoraStoreKey = (addon: string) => `AFYA-BORA-AUTH-STATE-ITEM.${addon}`
@@ -175,11 +175,7 @@ const createAuthStore = () => {
 
 interface AuthProviderProps { children?: React.ReactElement }
 function AuthProvider({ children }: AuthProviderProps) {
-    return (
-        <Provider createStore={createAuthStore}>
-            {children}
-        </Provider>
-    )
+	return <Provider createStore={createAuthStore}>{children}</Provider>;
 }
 
-export {useStore as useAuthStore, AuthProvider};
+export { useStore as useAuthStore, AuthProvider };

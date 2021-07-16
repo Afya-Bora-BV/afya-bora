@@ -1,16 +1,15 @@
-import React from "react";
+import React from 'react';
 
+import HomeView from './Home';
+import ScheduleView from './Schedule';
+import ChatView from './Chat';
+import ProfileView from './Profile/MainScreen';
+import TabHomeIcon from '../../assets/icons/TabHomeIcon';
+import TabScheduleIcon from '../../assets/icons/TabScheduleIcon';
+import TabChatIcon from '../../assets/icons/TabChatIcon';
+import TabProfileIcon from '../../assets/icons/TabProfileIcon';
 
-import HomeView from "./Home";
-import ScheduleView from "./Schedule";
-import ChatView from "./Chat";
-import ProfileView from "./Profile/MainScreen";
-import TabHomeIcon from "../../assets/icons/TabHomeIcon";
-import TabScheduleIcon from "../../assets/icons/TabScheduleIcon";
-import TabChatIcon from "../../assets/icons/TabChatIcon";
-import TabProfileIcon from "../../assets/icons/TabProfileIcon";
-
-import { Tab, TabNavKey } from './_navigator'
+import {Tab, TabNavKey} from './_navigator';
 
 export default function PatientAppView () {
 	return (

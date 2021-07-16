@@ -1,6 +1,6 @@
-import React from 'react';
-import DoctorProfile from './Profile';
-import DoctorHome from './Home';
+import React from "react";
+import DoctorProfile from "./Profile";
+import DoctorHome from "./Home";
 
 import TabHomeIcon from "../../assets/icons/TabHomeIcon";
 import TabProfileIcon from "../../assets/icons/TabProfileIcon";
@@ -16,17 +16,17 @@ export default function DoctorAppView() {
 				inactiveTintColor: "#B0B3C7",
 			}}
 		>
-        <Tab.Screen
-          name={TabNavKey.HomeScreen}
-          component={DoctorHome}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color, size }) => (
-              <TabHomeIcon size={8} color={color} />
-            ),
-          }}
-        />
-        {/* <Tab.Screen
+			<Tab.Screen
+				name={TabNavKey.HomeScreen}
+				component={DoctorHome}
+				options={{
+					tabBarLabel: "Home",
+					tabBarIcon: ({ color, size }) => (
+						<TabHomeIcon size={8} color={color} />
+					),
+				}}
+			/>
+			{/* <Tab.Screen
           name={TabNavKey.ScheduleView}
           component={ScheduleView}
           options={{
@@ -46,16 +46,16 @@ export default function DoctorAppView() {
             ),
           }}
         /> */}
-        <Tab.Screen
-          name={TabNavKey.Profile}
-          component={DoctorProfile}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color, size }) => (
-              <TabProfileIcon size={8} color={color} />
-            ),
-          }}
-        />
+			<Tab.Screen
+				name={TabNavKey.Profile}
+				component={DoctorProfile}
+				options={{
+					tabBarLabel: "Profile",
+					tabBarIcon: ({ color, size }) => (
+						<TabProfileIcon size={8} color={color} />
+					),
+				}}
+			/>
 		</Tab.Navigator>
-  );
+	);
 }
