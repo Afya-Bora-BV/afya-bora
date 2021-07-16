@@ -22,7 +22,6 @@ interface AltContainerProps extends AlternateContainerProps {
 }
 
 export default function AltContainer ({ headerMode, navigation, ...restAlternateProps }: AltContainerProps) {
-	// const navigation = useNavigation()
 	const onBackPress = useCallback(() => navigation.goBack(), [])
 	const _headerMode = headerMode || 'none'
 
@@ -33,17 +32,21 @@ export default function AltContainer ({ headerMode, navigation, ...restAlternate
             leftSection={() => {
                 if (_headerMode === 'none') return null
                 if (_headerMode === 'with-back'){
-                    return (
-                        <Pressable onPress={onBackPress}>
-                            <Center p={2} backgroundColor="#E7E5FF" borderRadius="4">
-                                <MaterialIcons
-                                    name="chevron-left"
-                                    size={25}
-                                    color={colors.primary}
-                                />
-                            </Center>
-                        </Pressable>
-                    )
+                    if (navigation.canGoBack()) {
+                        return (
+                            <Pressable onPress={onBackPress}>
+                                <Center p={2} backgroundColor="#E7E5FF" borderRadius="4">
+                                    <MaterialIcons
+                                        name="chevron-left"
+                                        size={25}
+                                        color={colors.primary}
+                                    />
+                                </Center>
+                            </Pressable>
+                        )
+                    }
+
+                    console.warn("`headerMode=with-back but there is previous navigation to work with")
                 }
                 
                 // fallback
