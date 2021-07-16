@@ -11,7 +11,8 @@ import { AuthProvider, useAuthStore } from './internals/auth/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import PlainAppView from "./views/_Main";
-import PatientAppView from './views/patient';
+import PatientAppView from './views/Patient';
+import DoctorAppView from './views/Doctor';
 import { AppointmentTempoStoreProvider } from './internals/appointment/context';
 
 import {
@@ -120,7 +121,7 @@ export const AppTheme = {
 };
 
 function Main() {
-	return <PatientAppView />
+	return <DoctorAppView />
 	const user = useAuthStore((state) => state.user);
 	// const [isSplashToClose, setSplashToHide] = useState(false);
 

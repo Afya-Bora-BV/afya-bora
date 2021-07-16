@@ -33,6 +33,7 @@ import {
 	useAppointmentTempoStore,
 } from "../../../internals/appointment/context";
 import { useQuery } from "react-query";
+import { AppointmentAlert } from "../../../components/core/appointment";
 
 const helpOptions = [
 	{
@@ -260,8 +261,8 @@ const UpcomingAppointmentsSection = () => {
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				{/* <UpcomingAppointmentsAlert appointment={appointment} /> */}
-				<UpcomingAppointmentsAlert />
+				<AppointmentAlert />
+
 				<View width="100%" alignItems="flex-end">
 					<Pressable onPress={() => console.log("Something")}>
 						<Text fontStyle="italic">See All Appointments</Text>
@@ -271,42 +272,3 @@ const UpcomingAppointmentsSection = () => {
 		</VStack>
 	);
 };
-
-function UpcomingAppointmentsAlert (/*{ consultant, appointmentDate, facility }*/) {
-	return (
-		<Box 
-			flex={1} 
-			flexDirection="row" 
-			justifyContent="space-between"
-			alignItems="center"
-			padding={5} 
-			rounded={10}
-			style={{
-				shadowColor: "#EEE",
-				shadowOffset: {
-					width: 0,
-					height: 6,
-				},
-				shadowOpacity: 0.17,
-				shadowRadius: 6.49,
-				
-				elevation: 3,
-			}}
-		>
-			{/* left */}
-			<HStack space={3} flexGrow={1} justifyContent="flex-start">
-				{/* Icon */}
-				<Square size={8} rounded={5} bgColor="#AAA" />
-				<VStack>
-					<Heading fontSize="lg" color="#000">Dr. Mohamedali</Heading>
-					<Text fontSize="sm" color="#333">13 July, 14:30 PM</Text>
-					<Text fontSize="sm" fontStyle="italic" color="#333">Aga Khan Hospital, Arusha</Text>
-				</VStack>
-			</HStack>
-			{/* right */}
-			<View alignItems="center" flexDirection="column">
-				<Text>Edit &gt;</Text>
-			</View>
-		</Box>
-	)
-}
