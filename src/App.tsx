@@ -138,7 +138,7 @@ function Main() {
 	if (user !== null && user !== undefined) {
 		return (
 			<AppointmentTempoStoreProvider>
-					<PatientAppView />
+				<PatientAppView />
 			</AppointmentTempoStoreProvider>
 		)
 	}
@@ -152,13 +152,13 @@ export default function App () {
 		<SafeAreaProvider>
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
-					<AuthProvider>
-						<ToastProvider>
+					<ToastProvider>
+						<AuthProvider>
 							<QueryClientProvider client={queryClient}>
 								<Main />
 							</QueryClientProvider>
-						</ToastProvider>
-					</AuthProvider>
+						</AuthProvider>
+					</ToastProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>
 		</SafeAreaProvider>

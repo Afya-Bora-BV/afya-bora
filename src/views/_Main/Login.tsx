@@ -125,7 +125,7 @@ function EmailPasswordForm ({ onSuccess, onError }: any) {
 				<ControllerFormInput
 					name="email"
 					control={control}
-					label="Phone number"
+					label="Email address"
 					keyboardType="email-address" 
 				/>
 				<ControllerFormInput
@@ -184,9 +184,17 @@ function EmailPasswordForm ({ onSuccess, onError }: any) {
 export default function Login() {
 	// const [remember, setRemember] = React.useState(false);
 	const navigation = useNavigation();
-	const { signInWithEmailAndPassword, signInWithPhoneNumber } = useAuthStore(({ signInWithPhoneNumber, signInWithEmailAndPassword }) => ({ signInWithPhoneNumber, signInWithEmailAndPassword }))
-	const [type, setType] = useState<'email' | 'phone'>('phone')
+	const [
+		signInWithPhoneNumber, signInWithEmailAndPassword, 
+		getCode,
+	] = useAuthStore(s => ([
+		s.signInWithPhoneNumber, s.signInWithEmailAndPassword ,
+		s.getVerificationCode
+	]))
+	const [type, setType] = useState<'email' | 'phone'>('email')
 	const Toast = useToast()
+
+	// Load the verfication number
 
 	// TODO: pass to login the correct email and password
 	// TODO: considering having two Mutations
@@ -217,23 +225,46 @@ export default function Login() {
 
 	// })
 
-	const onSuccess = (data: FormEmailInputs | FormPhoneInputs ) => {
-		if (type === 'phone') {
-			// Dealing the sign in process as a form input
-			const { phoneNumber } = data as FormPhoneInputs
-			
-			signInWithPhoneNumber(phoneNumber)
-				.then(() => console.log("Yoooooo Phone!"))
+	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs ) => {
+		try {
+			if (type === 'phone') {
+				// Dealing the sign in process as a form input
+				const { phoneNumber } = data as FormPhoneInputs
+				const verificationCode = await getCode()
 
-		} else if (type === 'email') {
-			// Dealing the sign in process as a email
-			const { email, password } = data as FormEmailInputs
-			
-			signInWithEmailAndPassword(email, password)
-				.then(() => console.log("Yoooooo!"))
+				if (verificationCode === undefined) {
+					Toast.show({
+						title: "Error",
+						description: "Seem's like the email was never signed up in this device. Consider signing up!",
+					})
+					return;
+				}
+
+				// After loading the stored verification key, sign the user in
+				const user = await signInWithPhoneNumber(phoneNumber, verificationCode)
+
+				Toast.show({
+					title: user.name !== null ? `Welcome back, ${user.name}!` : `Welcome back!`
+				})
+
+			} else if (type === 'email') {
+				// Dealing the sign in process as a email
+				const { email, password } = data as FormEmailInputs
+				
+				const user = await signInWithEmailAndPassword(email, password)
+
+				Toast.show({
+					title: user.name !== null ? `Welcome back, ${user.name}!` : `Welcome back!`
+				})
+			}
+
+		} catch (err) {
+			console.error(err)
+			Toast.show({
+				title: "Error",
+				description: err.message,
+			})	
 		}
-
-		return;
 	}
 
 	const onError = (errMessage: string) => {
