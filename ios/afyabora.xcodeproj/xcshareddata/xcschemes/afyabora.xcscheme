@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "nativeApp.app"
-               BlueprintName = "nativeApp"
-               ReferencedContainer = "container:nativeApp.xcodeproj">
+               BuildableName = "afyabora.app"
+               BlueprintName = "afyabora"
+               ReferencedContainer = "container:afyabora.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "nativeAppTests.xctest"
-               BlueprintName = "nativeAppTests"
-               ReferencedContainer = "container:nativeApp.xcodeproj">
+               BuildableName = "afyaboraTests.xctest"
+               BlueprintName = "afyaboraTests"
+               ReferencedContainer = "container:afyabora.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nativeApp.app"
-            BlueprintName = "nativeApp"
-            ReferencedContainer = "container:nativeApp.xcodeproj">
+            BuildableName = "afyabora.app"
+            BlueprintName = "afyabora"
+            ReferencedContainer = "container:afyabora.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "nativeApp.app"
-            BlueprintName = "nativeApp"
-            ReferencedContainer = "container:nativeApp.xcodeproj">
+            BuildableName = "afyabora.app"
+            BlueprintName = "afyabora"
+            ReferencedContainer = "container:afyabora.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
