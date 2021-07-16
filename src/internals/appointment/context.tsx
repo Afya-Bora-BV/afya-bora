@@ -59,7 +59,7 @@ const createAppointmentTempoStore = () => create<AppointmentTempoStore>(persist(
     }
 }), {
     name: "appointments",
-    getStorage: () => Platform.OS !== "web" ? AsyncStorage : sessionStorage
+    getStorage: () => AsyncStorage
 }))
 
 interface AppointmentTempoStoreProps { children?: React.ReactElement }
