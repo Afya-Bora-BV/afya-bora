@@ -141,7 +141,7 @@ export default function Login() {
 							shadow={5}
 							isLoading={isLoading}
 							disabled={isLoading}
-							press={handleSubmit(onLogin, () => {
+							onPress={handleSubmit(onLogin, () => {
 								console.log("Ther is a form error")
 							})}
 						/>

@@ -149,7 +149,7 @@ const UpcommingAppointments: React.FC = () => {
 					<PrimaryButton
 						text={"Make an appointment"}
 						shadow={5}
-						press={() => navigation.navigate("FindFacilityList")}
+						onPress={() => navigation.navigate("FindFacilityList")}
 					/>
 				</Box>
 			</Stack>

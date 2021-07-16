@@ -109,7 +109,7 @@ export const HealthRecords = () => {
 								<PrimaryButton
 									text={"New profile"}
 									shadow={5}
-									press={nav}
+									onPress={nav}
 								/>
 							</Box>
 						</Box>

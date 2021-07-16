@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Box, HStack, View, Stack, VStack, Pressable, Text } from "native-base";
+import { Box, HStack, View, Stack, VStack, Pressable, Text, Button } from "native-base";
 import { PrimaryButton } from "../../../components/button";
 import { colors } from "../../../constants/colors";
 import { useState } from "react";
@@ -37,24 +37,34 @@ export default function VerifyScreen ({ route }: any) {
 
 	return (
 		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back">
-			<View>
-				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
-					<VStack space={5} marginBottom={15}>	
-						<CodeInput
-							value={code}
-							onChangeCode={set}
-							cellCount={4}
-							/>
-					</VStack>
-					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
-						<PrimaryButton
-							text={"Confirm"}
-							shadow={5}
-							press={onConfirmCode}
+			<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
+				<VStack space={5} marginBottom={15} alignContent="center">	
+					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
+						Enter the verification number that is sent to {phoneNumber}
+					</Text>
+					<CodeInput
+						value={code}
+						onChangeCode={set}
+						cellCount={4}
 						/>
-					</Box>
+				</VStack>
+				<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
+					{/* COnfirm button */}
+					<Button
+						onPress={onConfirmCode}
+						borderRadius={20}
+						width="100%"
+						_disabled={{
+							backgroundColor: "#B0B3C7",
+							color: "white",
+						}}
+						style={{ backgroundColor: colors.primary }}
+						_text={{ color: "white" }}
+					>
+						Confirm
+					</Button>
 				</Box>
-			</View>
+			</Box>
 			<View flex={1} alignItems="center" marginBottom={5}>
 		 		<Text color="#2AD3E7">Resend (00:39)</Text>
 		 	</View>

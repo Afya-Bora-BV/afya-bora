@@ -93,7 +93,7 @@ export default function SignUp  ()  {
 						<PrimaryButton
 							text={"Confirm"}
 							shadow={5}
-							press={onConfirm}
+							onPress={onConfirm}
 						/>
 					</Box>
 				</Box>

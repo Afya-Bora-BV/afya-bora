@@ -5,30 +5,28 @@ import { IButtonComponentType } from "native-base/lib/typescript/components/prim
 
 type buttonProps = IButtonComponentType & {
 	text: string;
-	press: () => void;
+	onPress: () => void;
 };
 
 export const PrimaryButton: React.FC<buttonProps> = ({
 	text,
-	press,
+	onPress,
 	...rest
 }) => {
 	return (
-		<View testID="button1">
-			<Button
-				onPress={press}
-				borderRadius={20}
-				_disabled={{
-					backgroundColor: "#B0B3C7",
-					color: "white",
-				}}
-				style={{ backgroundColor: colors.primary }}
-				_text={{ color: "white" }}
-				{...rest}
-			>
-				{text}
-			</Button>
-		</View>
+		<Button
+			onPress={onPress}
+			borderRadius={20}
+			_disabled={{
+				backgroundColor: "#B0B3C7",
+				color: "white",
+			}}
+			style={{ backgroundColor: colors.primary }}
+			_text={{ color: "white" }}
+			{...rest}
+		>
+			{text}
+		</Button>
 	);
 };
 export const OutLineButton = () => (
