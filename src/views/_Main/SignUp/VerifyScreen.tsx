@@ -8,13 +8,14 @@ import { useAuthStore } from "../../../internals/auth/context";
 import AltContainer from "../../../components/containers/AltContainer";
 
 import { Dimensions } from "react-native";
+import CodeInput from "../../../components/forms/codeInput";
 
 
 
 export default function VerifyScreen ({ route }: any) {
 	const phoneNumber: string = "123123" || route.params.phoneNumber
 	const navigation = useNavigation()
-	const [code, set] = useState<string | undefined>("3") 
+	const [code, set] = useState<string>("") 
 	const { height } = Dimensions.get("screen");
 
 	const confirmCode = useAuthStore(state => state.confirmPhoneCode)
@@ -39,7 +40,11 @@ export default function VerifyScreen ({ route }: any) {
 			<View>
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 					<VStack space={5} marginBottom={15}>	
-						<Text>react-native-confirmation-code-field</Text>
+						<CodeInput
+							value={code}
+							onChangeCode={set}
+							cellCount={4}
+							/>
 					</VStack>
 					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
 						<PrimaryButton

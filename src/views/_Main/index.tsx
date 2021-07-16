@@ -9,6 +9,7 @@ export default function PlainAppView() {
     return (
         <NavStack.Navigator
             headerMode="none"
+            initialRouteName={NavKey.SignUpViewScreen}
         >
             <NavStack.Screen name={NavKey.LoginScreen} component={LoginView} />
             <NavStack.Screen name={NavKey.SignUpViewScreen} component={SignUpView} />

@@ -27,6 +27,7 @@
     "react-google-maps": "^9.4.5",
     "react-hook-form": "^7.10.1",
     "react-native": "0.63.4",
+    "react-native-confirmation-code-field": "^7.1.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-maps": "^0.28.0",
     "react-native-reanimated": "^2.2.0",

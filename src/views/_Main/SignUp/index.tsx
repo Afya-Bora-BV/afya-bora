@@ -14,7 +14,7 @@ export default function SignUpView () {
     return (
         <Stack.Navigator
             headerMode="none"
-            initialRouteName={NavKey.SignUpScreen}
+            initialRouteName={NavKey.VerifyScreen}
         >
             <Stack.Screen name={NavKey.SignUpScreen} component={SignUpScreen}/>
             <Stack.Screen name={NavKey.VerifyScreen} component={VerifyScreen}/>
