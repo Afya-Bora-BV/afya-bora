@@ -30,20 +30,28 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 // const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 const afyaBoraStoreKey = (addon: string) => `AFYA-BORA-AUTH-STATE-ITEM.${addon}`
 const AFYABORA_VERFICATION_CODE = afyaBoraStoreKey('vCode')
+const AFYABORA_USER_PROFILES = afyaBoraStoreKey('user.profiles')
 
 interface AuthStore {
     user:
         | null      // User not in
         | User      // user exist and logged in
     
+    // Profile
+    // --------------------
+    currentProfile: UserProfile | undefined
+    setProfile: (profile: UserProfile) => void
+    applyProfile: (profileId: number) => Promise<void>
+    getProfiles: () => Promise<Array<UserProfile>>
+
+    // Login information
+    // --------------------
     signInWithEmailAndPassword: (email: string, password: string) => Promise<User>
     signInWithPhoneNumber: (phoneNumber: string, code: string) => Promise<User>
     signUpWithPhoneNumber: (phoneNumber: string) => Promise<(code: string) => Promise<User>>
     verifyPhoneNumber: (phoneNumber: string, code: string) => Promise<User>
+    
     signOut: () => Promise<void>
-    // registerUser: (data: any) => Promise<void>
-    // isNewUser: (phone: string) => boolean
-    // getUserDetails: (phone: string) => User | undefined
 
     getVerificationCode: () => Promise<string | undefined>
     setVerificationCode: (code: string) => Promise<void>
@@ -70,25 +78,27 @@ const {Provider, useStore} = createContext<AuthStore>();
 const createAuthStore = () => {
     return create<AuthStore>(persist((set, get) => ({
             user: null,
-            // userExists: false,
-            // confirm: null,
-            // phone: "",
-            // demoUsers: [
-            //     ...demoUsers
-            // ],
-            // isNewUser: (phone: string) => {
-            //     return true
-            //     // const user = get().demoUsers.filter(user => user.phone === phone)
-            //     // console.log("User  : ", phone)
-            //     // return Boolean(user[0])
-            // },
-            // getUserDetails: (phone: string) => {
-            //     // const user = get().demoUsers.filter(user => user.phone === phone)
-            //     // console.log("User  : ", phone)
-            //     // return user[0]
-            //     return get().user || undefined
-            // },
 
+            // ----------------------
+            currentProfile: undefined,
+
+            setProfile: (profile) => {
+                console.debug({ profile })
+                set({ currentProfile: profile })
+                // NOTE: might need to add the back to phone state... because reasons
+            },
+
+            applyProfile: async (profileId: number) => {
+                const profiles = await get().getProfiles()
+                console.debug({ profileId })
+                set({ currentProfile: profiles[profileId] })
+            },
+            getProfiles: async function () {
+                const c = await AsyncStorage.getItem(AFYABORA_USER_PROFILES)
+                return c !== null ? JSON.parse(c) : []
+            },
+
+            // ----------------------
             getVerificationCode: async () => (await AsyncStorage.getItem(AFYABORA_VERFICATION_CODE) || undefined),
             setVerificationCode: async (code: string) => await AsyncStorage.setItem(AFYABORA_VERFICATION_CODE, code),
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import SplashScreen from 'react-native-splash-screen'
 // import { Text } from 'react-native'
 
-import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base"
+import { extendTheme, NativeBaseProvider, Text, ToastProvider } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { colors } from "./constants/colors";
@@ -13,12 +13,15 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import PlainAppView from "./views/_Main";
 import PatientAppView from './views/Patient';
 import DoctorAppView from './views/Doctor';
+import ProfileSelectorView from './views/SelectProfile'
+
 import { AppointmentTempoStoreProvider } from './internals/appointment/context';
 
 import {
 	QueryClient,
 	QueryClientProvider,
 } from 'react-query'
+import { useState } from "react";
 
 const queryClient = new QueryClient()
 
@@ -121,26 +124,70 @@ export const AppTheme = {
 };
 
 function Main() {
-	const user = useAuthStore((state) => state.user);
-	const getUserStatus = ''
+	const [user, getUserProfiles, applyProfile] = useAuthStore(s => [s.user, s.getProfiles, s.applyProfile]);
+	const currentProfile = useAuthStore(s => s.currentProfile)
+	const [ready, setReady] = useState(false)
 
 	// eecuted when screen is viewed
 	useEffect(() => {
-		// checks from storage, if there is internal state of the user
-		//  if there is or missing, remove
-		// setSplashToHide(true);
-		SplashScreen.hide()
-	}, []);
+		async function preQuery () {
+			// checks from storage, if there is internal state of the user
+			//  if there is or missing, remove
+			// setSplashToHide(true);
+			if (user !== null) {
+				const profiles = await getUserProfiles();
+				if (profiles.length > 0) {
+					// Go to the profile screen
+					const defaultIndex = 0
+					applyProfile(defaultIndex)
+				}
+			}
+		}
 
-	// Show splash screen if not ready
-	// if (!isSplashToClose) return <Splash />;
 
-	if (user !== null) {
-		return (
-			<AppointmentTempoStoreProvider>
-				<PatientAppView />
-			</AppointmentTempoStoreProvider>
-		)
+		// set the profile
+		preQuery()
+	}, [user]);
+
+	/**
+	 * Checks to see if the user has logged in
+	 */
+	useEffect(() => {
+		if (currentProfile !== undefined) {
+			// ready only if the profile isn't set
+			setReady(true)
+		}
+	}, [currentProfile])
+
+	useEffect(() => {
+		// Remove splash screen if ready
+		if (ready) {
+			SplashScreen.hide()
+		}
+	}, [ready])
+
+	// If not ready... Don't ready anything
+	if (!ready) return null
+
+	/**
+	 * Loads if there is the user component
+	 */
+	if (currentProfile !== undefined) {
+		if (currentProfile.type === 'patient') {
+			return (
+				<AppointmentTempoStoreProvider>
+					<PatientAppView />
+				</AppointmentTempoStoreProvider>
+			)
+		}
+
+		if (currentProfile.type === 'doctor') {
+			return (
+				<AppointmentTempoStoreProvider>
+					<DoctorAppView />
+				</AppointmentTempoStoreProvider>
+			)
+		}		
 	}
 
 	// Not authenticated

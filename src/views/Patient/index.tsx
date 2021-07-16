@@ -12,7 +12,7 @@ import TabProfileIcon from "../../assets/icons/TabProfileIcon";
 
 import { Tab, TabNavKey } from './_navigator'
 
-export default function AuthenticatedAppView() {
+export default function PatientAppView () {
 	return (
 		<Tab.Navigator
 			lazy

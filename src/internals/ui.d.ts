@@ -15,6 +15,10 @@ interface User {
     isNew: boolean;
 }
 
+type UserProfile = 
+    |  { type: 'patient', profile?: PatientProfile }
+    |  { type: 'doctor', profile?: ConsultantProfile }
+
 // type UserStatus = 
 //     | null      // Setting user status
 //     | "new"     // user is new; doesn't have profile

@@ -46,7 +46,7 @@ const schema = yup.object().shape({
 	email: yup.string().required(),
 });
 
-export const CreateProfile = () => {
+export default function CreateProfileScreen () {
 	const navigation = useNavigation();
 	const [gender, setGender] = React.useState();
 	const { width, height } = Dimensions.get("screen");

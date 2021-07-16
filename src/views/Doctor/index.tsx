@@ -5,11 +5,9 @@ import DoctorHome from './Home';
 import TabHomeIcon from "../../assets/icons/TabHomeIcon";
 import TabProfileIcon from "../../assets/icons/TabProfileIcon";
 
-import { View } from 'native-base'
-
 import {Tab, NavKey as TabNavKey} from './_navigator';
 
-export default function BookAppointment() {
+export default function DoctorAppView() {
   return (
 		<Tab.Navigator
 			lazy

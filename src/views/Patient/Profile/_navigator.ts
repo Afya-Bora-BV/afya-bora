@@ -4,6 +4,7 @@ export const Stack = createStackNavigator();
 export type ProfileStackParamList = {};
 
 export const ProfileNavKey = {
-	MainScreen: "Profile.MainScreen",
-	ProfileScreen: "Profile.ProfileScreen",
+	MainScreen: "Patient.Profile.MainScreen",
+	ProfileScreen: "Patient.Profile.ProfileScreen",
+	CreateProfile: "Patient.Profile.CreateProfileScreen",
 };

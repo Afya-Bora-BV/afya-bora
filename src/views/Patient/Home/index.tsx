@@ -7,8 +7,32 @@ import MapFaciltyView from "./MapFacility";
 import NotificationScreen from "./Notification";
 
 import { NavStack, HomeNavKey } from './_navigator'
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+
+import { TabNavKey as MainTabNavKey } from '../_navigator'
+import { ProfileNavKey } from '../Profile/_navigator'
+import { useAuthStore } from "../../../internals/auth/context";
 
 export default function HomeView() {
+	const navigation = useNavigation()
+	const currentProfile = useAuthStore(s => s.currentProfile)
+
+	useEffect(() => {
+		// check if the user profile exists
+		if (currentProfile !== undefined) {
+			if (currentProfile.profile !== undefined) { return; }
+
+			// Navigate if the home screen is missing
+			navigation.navigate(MainTabNavKey.Profile, {
+				screen: ProfileNavKey.ProfileScreen,
+				params: {
+					screen: ProfileNavKey.CreateProfile
+				}
+			})
+		}
+	}, [currentProfile])
+
 	return (
 		<NavStack.Navigator headerMode="none">
 			<NavStack.Screen
