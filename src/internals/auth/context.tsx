@@ -36,8 +36,6 @@ interface AuthStore {
         | null      // User not in
         | User      // user exist and logged in
     
-    getStatus: () => 
-    
     signInWithEmailAndPassword: (email: string, password: string) => Promise<User>
     signInWithPhoneNumber: (phoneNumber: string, code: string) => Promise<User>
     signUpWithPhoneNumber: (phoneNumber: string) => Promise<(code: string) => Promise<User>>
