@@ -52,111 +52,116 @@ interface AuthStore {
     _setUser: (u: FirebaseAuthTypes.UserCredential) => User
 }
 
+const reshapeUser = (uc: FirebaseAuthTypes.UserCredential): User => {
+    let { email: emailAsIs, phoneNumber, photoURL: image, displayName: name, uid } = uc.user
+    let { isNewUser: isNew = false } = uc.additionalUserInfo || {}
+
+    return {
+        uid,
+        email: emailAsIs,
+        phoneNumber,
+        image,
+        name, 
+        isNew
+    }
+}
+
 const {Provider, useStore} = createContext<AuthStore>();
-const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
-    user: null,
-    // userExists: false,
-    // confirm: null,
-    // phone: "",
-    // demoUsers: [
-    //     ...demoUsers
-    // ],
-    // isNewUser: (phone: string) => {
-    //     return true
-    //     // const user = get().demoUsers.filter(user => user.phone === phone)
-    //     // console.log("User  : ", phone)
-    //     // return Boolean(user[0])
-    // },
-    // getUserDetails: (phone: string) => {
-    //     // const user = get().demoUsers.filter(user => user.phone === phone)
-    //     // console.log("User  : ", phone)
-    //     // return user[0]
-    //     return get().user || undefined
-    // },
+const createAuthStore = () => {
+    return create<AuthStore>(persist((set, get) => ({
+            user: null,
+            // userExists: false,
+            // confirm: null,
+            // phone: "",
+            // demoUsers: [
+            //     ...demoUsers
+            // ],
+            // isNewUser: (phone: string) => {
+            //     return true
+            //     // const user = get().demoUsers.filter(user => user.phone === phone)
+            //     // console.log("User  : ", phone)
+            //     // return Boolean(user[0])
+            // },
+            // getUserDetails: (phone: string) => {
+            //     // const user = get().demoUsers.filter(user => user.phone === phone)
+            //     // console.log("User  : ", phone)
+            //     // return user[0]
+            //     return get().user || undefined
+            // },
 
-    getVerificationCode: async () => (await AsyncStorage.getItem(AFYABORA_VERFICATION_CODE) || undefined),
-    setVerificationCode: async (code: string) => await AsyncStorage.setItem(AFYABORA_VERFICATION_CODE, code),
+            getVerificationCode: async () => (await AsyncStorage.getItem(AFYABORA_VERFICATION_CODE) || undefined),
+            setVerificationCode: async (code: string) => await AsyncStorage.setItem(AFYABORA_VERFICATION_CODE, code),
 
-    signInWithEmailAndPassword: async function (email, password) {
-        const val = await auth().signInWithEmailAndPassword(email, password)
-        return get()._setUser(val)
-    },
+            signInWithEmailAndPassword: async function (email, password) {
+                const val = await auth().signInWithEmailAndPassword(email, password)
+                return get()._setUser(val)
+            },
 
-    signUpWithPhoneNumber: async function (phoneNumber) {
-        let au = await auth().signInWithPhoneNumber(phoneNumber, true)
+            signUpWithPhoneNumber: async function (phoneNumber) {
+                let au = await auth().signInWithPhoneNumber(phoneNumber, true)
 
-        // Expose function that would then require passcode to be sent
-        return async function (code: string) {
-            let out = await au.confirm(code)
+                // Expose function that would then require passcode to be sent
+                return async function (code: string) {
+                    let out = await au.confirm(code)
 
-            if (out === null) {
-                throw Error(`Unable to verify for <${phoneNumber}>.`)
+                    if (out === null) {
+                        throw Error(`Unable to verify for <${phoneNumber}>.`)
+                    }
+
+                    // set user
+                    return get()._setUser(out)
+                }
+            },
+
+            // Signing in for user
+            signInWithPhoneNumber: async function (phoneNumber, code) {
+                // await sleep(2000)
+                // TODO: fetch name and other related information
+                // create the fake user 
+
+                const au = await auth().signInWithPhoneNumber(phoneNumber)
+                const out = await au.confirm(code)
+
+                if (out === null) {
+                    throw `Unable to verify for <${phoneNumber}>.`
+                }
+
+                // set the ser
+                return get()._setUser(out)
+            },
+
+            // confirming code
+            verifyPhoneNumber: async function (phoneNumber, code) {
+
+                const au = await auth().signInWithPhoneNumber(phoneNumber)
+                const out = await au.confirm(code)
+
+                if (out === null) {
+                    throw `Unable to verify for <${phoneNumber}>.`
+                }
+
+                // set the ser
+                return get()._setUser(out)
+            },
+
+            _setUser: (uc) => {
+                const user = reshapeUser(uc)
+                set({ user })
+                return user
+            },
+
+            // demo signout
+            signOut: async () => {
+                await auth().signOut()
+
+                // reset user
+                set({ user: null })
             }
-
-            // set user
-            return get()._setUser(out)
-        }
-    },
-
-    // Signing in for user
-    signInWithPhoneNumber: async function (phoneNumber, code) {
-        // await sleep(2000)
-        // TODO: fetch name and other related information
-        // create the fake user 
-
-        const au = await auth().signInWithPhoneNumber(phoneNumber)
-        const out = await au.confirm(code)
-
-        if (out === null) {
-            throw `Unable to verify for <${phoneNumber}>.`
-        }
-
-        // set the ser
-        return get()._setUser(out)
-    },
-
-    // confirming code
-    verifyPhoneNumber: async function (phoneNumber, code) {
-
-        const au = await auth().signInWithPhoneNumber(phoneNumber)
-        const out = await au.confirm(code)
-
-        if (out === null) {
-            throw `Unable to verify for <${phoneNumber}>.`
-        }
-
-        // set the ser
-        return get()._setUser(out)
-    },
-
-    _setUser: (uc) => {
-        let { email: emailAsIs, phoneNumber, photoURL: image, displayName: name, uid } = uc.user
-        let { isNewUser: isNew = false } = uc.additionalUserInfo || {}
-
-        const user = {
-            uid,
-            email: emailAsIs,
-            phoneNumber,
-            image,
-            name, 
-            isNew
-        }
-        set({ user })
-
-        return user
-    },
-
-    // demo signout
-    signOut: async () => {
-        await auth().signOut()
-
-        // reset user
-        set({ user: null })
-    },
-}), {
-    name: "authState",
-    getStorage: () => AsyncStorage
-}))
+    }), {
+        name: "authState",
+        getStorage: () => AsyncStorage
+    }))
+}
 
 interface AuthProviderProps { children?: React.ReactElement }
 function AuthProvider({ children }: AuthProviderProps) {
