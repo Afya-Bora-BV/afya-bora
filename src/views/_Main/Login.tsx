@@ -90,14 +90,9 @@ export default function Login() {
 	console.log('Rendering loginpage:', getValues())
 	// console.log("Confirm  : ",confirm)
 	return (
-		<AltContainer backdropHeight={height / 3.5}>
+		<AltContainer title="Afya Bora" backdropHeight={height / 3.5}>
 			{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
 			<View flexGrow={1}>
-				<View alignItems="center" paddingY={20}>
-					<Text color="white" fontSize={44}>
-						Afya Bora
-					</Text>
-				</View>
 				{/* </Stack> */}
 				{/* <Stack paddingBottom={10}> */}
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>

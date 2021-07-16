@@ -42,25 +42,23 @@ export default function SignUp  ()  {
 		resolver: yupResolver(schema),
 	});
 
-	const onConfirm = useCallback(() => {
-		handleSubmit(
-			// when successfull
-			({phoneNumber}) => {
-				// works
-				navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
-			},
+	const onConfirm = handleSubmit(
+		// when successfull
+		({phoneNumber}) => {
+			// works
+			navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
+		},
 
-			// when invalid
-			(err) => {
-				// Show error
-				console.warn(`Unable to confirm: ${err.phoneNumber}`)
-				Toast.show({
-					title: "Error",
-					description: `Unable to confirm for ${err.phoneNumber}`
-				})
-			}
-		)
-	}, [])
+		// when invalid
+		(err) => {
+			// Show error
+			console.warn(`Unable to confirm: ${err.phoneNumber}`)
+			Toast.show({
+				title: "Error",
+				description: `Unable to confirm for ${err.phoneNumber}`
+			})
+		}
+	)
 
 
 	return (
