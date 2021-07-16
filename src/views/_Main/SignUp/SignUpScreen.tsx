@@ -6,7 +6,7 @@ import { colors } from "../../../constants/colors";
 
 
 import { NavKey as SignUpNavKey } from './_navigator'
-import { NavKey as PlainNavKey} from '../_navigator'
+import { NavKey as PlainNavKey } from '../_navigator'
 import AltContainer from "../../../components/containers/AltContainer";
 import { Dimensions } from "react-native";
 import { ControllerFormInput } from "../../../components/forms/inputs";
@@ -14,18 +14,16 @@ import { ControllerFormInput } from "../../../components/forms/inputs";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback } from "react";
-import { ToastAndroid } from "react-native";
 
 interface SignUpFormInput {
 	phoneNumber: string;
 }
 
 const schema = yup.object().shape({
-	phoneNumber: yup.string().required(),
+	phoneNumber: yup.string(),
 });
 
-export default function SignUp  ()  {
+export default function SignUp() {
 	const navigation = useNavigation();
 	const { height } = Dimensions.get("screen");
 	const Toast = useToast()
@@ -38,10 +36,13 @@ export default function SignUp  ()  {
 		control,
 		handleSubmit,
 		formState: { errors },
+		getValues
 	} = useForm<SignUpFormInput>({
 		resolver: yupResolver(schema),
 	});
 
+	// NOTE: Let's try to avoid putting package specific code inside 
+	//  output JSX as much as we can
 	const onConfirm = handleSubmit(
 		// when successfull
 		({phoneNumber}) => {
@@ -64,11 +65,11 @@ export default function SignUp  ()  {
 	return (
 		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Sign up" headerMode="with-back" noScroll>
 			<VStack marginTop={10} flexDirection="column" flex={1}>
-			{/* <View flexGrow={1} height="100%"> */}
+				{/* <View flexGrow={1} height="100%"> */}
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
-					<VStack space={5} marginBottom={15}>						
+					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
-							name="phonenumber"
+							name="phoneNumber"
 							control={control}
 							label="Enter phone number"
 							keyboardType="phone-pad"
