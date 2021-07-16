@@ -1,20 +1,20 @@
-import React from 'react'
-import create from 'zustand'
-import createContext from 'zustand/context'
-import { persist } from "zustand/middleware"
+import React from 'react';
+import create from 'zustand';
+import createContext from 'zustand/context';
+import {persist} from 'zustand/middleware';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform, ToastAndroid } from 'react-native';
+import {Platform, ToastAndroid} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 /**
  * User object
  */
 interface User {
-    uid: string
-    name: string
-    phone: string
-    image?: string
+  uid: string;
+  name: string;
+  phone: string;
+  image?: string;
 }
 
 /**
@@ -34,7 +34,7 @@ const demoUsers = [{
 }]
 
 interface AuthStore {
-    user:
+  user:
     | undefined // User doesn't exist yet
     | User      // user exist and logged in
     | null      // user logged out
@@ -51,7 +51,7 @@ interface AuthStore {
     getUserDetails: (phone: string) => User | undefined
 }
 
-const { Provider, useStore } = createContext<AuthStore>()
+const {Provider, useStore} = createContext<AuthStore>();
 
 
 
@@ -150,8 +150,4 @@ function AuthProvider({ children }: AuthProviderProps) {
     )
 }
 
-
-export {
-    useStore as useAuthStore,
-    AuthProvider
-}
+export {useStore as useAuthStore, AuthProvider};
