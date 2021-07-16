@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Box, HStack, VStack, View, Pressable, Stack, Text } from "native-base";
+import { Box, HStack, VStack, View, Pressable, Stack, Text, useToast } from "native-base";
 import { PrimaryButton } from "../../../components/button";
 import { colors } from "../../../constants/colors";
 
 
-import { NavKey as SignUpNavKey } from '.'
-import { NavKey as PlainNavKey} from '..'
+import { NavKey as SignUpNavKey } from './_navigator'
+import { NavKey as PlainNavKey} from '../_navigator'
 import AltContainer from "../../../components/containers/AltContainer";
 import { Dimensions } from "react-native";
 import { ControllerFormInput } from "../../../components/forms/inputs";
@@ -15,20 +15,20 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback } from "react";
+import { ToastAndroid } from "react-native";
 
 interface SignUpFormInput {
-	email: string;
-	password: string;
+	phoneNumber: string;
 }
 
 const schema = yup.object().shape({
-	password: yup.string().required(),
+	phoneNumber: yup.string().required(),
 });
 
 export default function SignUp  ()  {
 	const navigation = useNavigation();
-	const [phoneNumber, setPhoneNumber] = useState('')
 	const { height } = Dimensions.get("screen");
+	const Toast = useToast()
 
 	// if (!confirm) {
 	// 	return (
@@ -43,50 +43,37 @@ export default function SignUp  ()  {
 	});
 
 	const onConfirm = useCallback(() => {
-		navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
+		handleSubmit(
+			// when successfull
+			({phoneNumber}) => {
+				// works
+				navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
+			},
+
+			// when invalid
+			(err) => {
+				// Show error
+				console.warn(`Unable to confirm: ${err.phoneNumber}`)
+				Toast.show({
+					title: "Error",
+					description: `Unable to confirm for ${err.phoneNumber}`
+				})
+			}
+		)
 	}, [])
 
 
 	return (
-		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Sign up" headerMode="with-back">
-			<View flexGrow={1} >
-				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5}>
+		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Sign up" headerMode="with-back" noScroll>
+			<VStack marginTop={10} flexDirection="column" flex={1}>
+			{/* <View flexGrow={1} height="100%"> */}
+				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 					<VStack space={5} marginBottom={15}>						
 						<ControllerFormInput
 							name="phonenumber"
 							control={control}
 							label="Enter phone number"
 							keyboardType="phone-pad"
-							type={"text"
-								// visibility === "eye-outline"
-								// 	? "text"
-								// 	: "password"
-							}
-							InputRightElement={
-								<Pressable
-									onPress={() => console.log("Pressed")
-										// visibility ===
-										// 	"eye-outline"
-										// 	? setVisibility(
-										// 		"eye-off-outline"
-										// 	)
-										// 	: setVisibility(
-										// 		"eye-outline"
-										// 	)
-									}
-								>
-									{/* <MaterialCommunityIcons
-										// name={visibility}
-										size={24}
-										color={
-											colors.primary
-										}
-										style={{
-											paddingEnd: 10,
-										}}
-									/> */}
-								</Pressable>
-							}
 						/>
 					</VStack>
 					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
@@ -97,24 +84,23 @@ export default function SignUp  ()  {
 						/>
 					</Box>
 				</Box>
-			</View>
 
-			<Stack alignItems="center" marginBottom={5}>
-				<HStack>
-					<Text> Already have an account? </Text>
-					<Pressable
-						focusable
-						cursor="pointer"
-						onPress={() => {
-							navigation.navigate(PlainNavKey.LoginScreen);
-						}}
-					>
-						<Text bold color={colors.primary}>
-							Sign in!
-						</Text>
-					</Pressable>
-				</HStack>
-			</Stack>
+				<Stack alignItems="center" marginBottom={5}>
+					<HStack>
+						<Text> Already have an account? </Text>
+						<Pressable
+							focusable
+							onPress={() => {
+								navigation.navigate(PlainNavKey.LoginScreen);
+							}}
+						>
+							<Text bold color={colors.primary}>
+								Sign in!
+							</Text>
+						</Pressable>
+					</HStack>
+				</Stack>
+			</VStack>
 		</AltContainer>
 	)
 };

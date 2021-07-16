@@ -21,6 +21,7 @@ export interface AlternateContainerProps {
 	titleColor?: string;
 	leftSection?: () => JSX.Element | null;
 	rightSection?: () => JSX.Element | null;
+	noScroll?: boolean
 }
 
 export default function AlternateContainer({
@@ -30,6 +31,7 @@ export default function AlternateContainer({
 	rightSection: RightSection,
 	barStyle,
 	bgColor,
+	noScroll,
 	titleColor: textColor,
 	backdropHeight,
 }: AlternateContainerProps) {
@@ -45,7 +47,7 @@ export default function AlternateContainer({
 				left={0}
 				right={0}
 			></Stack>
-			<Box width={"100%"} flex={1}>
+			<Box width={"100%"} flex={1} height={"100%"}>
 				{/* Header */}
 				<HStack
 					flexDirection="row"
@@ -65,10 +67,12 @@ export default function AlternateContainer({
 							flexDirection="row"
 							alignItems="center"
 							justifyContent="center"
+							width="100%"
 						>
 							<Text
 								fontSize="2xl"
 								alignContent="center"
+								textAlign="center"
 								fontWeight="500"
 								color={textColor}
 							>
@@ -84,9 +88,18 @@ export default function AlternateContainer({
 					) : null}
 				</HStack>
 				{/* Body */}
-				<ScrollView flexGrow={1} showsVerticalScrollIndicator={false}>
-					{children}
-				</ScrollView>
+				{/* Body */}
+				{
+					noScroll || true ? (
+						<View flex={1}>
+							{children}
+						</View>
+					) : (
+						<ScrollView flexGrow={1} showsVerticalScrollIndicator={false}>
+							{children}
+						</ScrollView>
+					)
+				}
 			</Box>
 		</_BaseContainer>
 	);

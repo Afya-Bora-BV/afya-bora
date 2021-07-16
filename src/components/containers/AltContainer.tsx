@@ -29,29 +29,28 @@ export default function AltContainer ({ headerMode, navigation, ...restAlternate
         <AlternateContainer
             bgColor={colors.primary}
             titleColor={"#FFF"}
-            leftSection={() => {
-                if (_headerMode === 'none') return null
-                if (_headerMode === 'with-back'){
-                    if (navigation.canGoBack()) {
-                        return (
-                            <Pressable onPress={onBackPress}>
-                                <Center p={2} backgroundColor="#E7E5FF" borderRadius="4">
-                                    <MaterialIcons
-                                        name="chevron-left"
-                                        size={25}
-                                        color={colors.primary}
-                                    />
-                                </Center>
-                            </Pressable>
-                        )
+            leftSection={_headerMode !== 'none' ? (
+                (_headerMode === 'with-back') ? (
+                    () => {
+                        if (navigation.canGoBack()) {
+                            return (
+                                <Pressable onPress={onBackPress}>
+                                    <Center p={2} backgroundColor="#E7E5FF" borderRadius="4">
+                                        <MaterialIcons
+                                            name="chevron-left"
+                                            size={25}
+                                            color={colors.primary}
+                                        />
+                                    </Center>
+                                </Pressable>
+                            )
+                        }
+                        console.warn("`headerMode=with-back but there is previous navigation to work with")
+                        return null
                     }
-
-                    console.warn("`headerMode=with-back but there is previous navigation to work with")
-                }
-                
-                // fallback
-                return null
-            }}
+                    ): undefined
+                ): undefined
+            }
             {...restAlternateProps}
          />
     );

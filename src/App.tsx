@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import SplashScreen from 'react-native-splash-screen'
 // import { Text } from 'react-native'
 
-import { extendTheme, NativeBaseProvider, Text } from "native-base"
+import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { colors } from "./constants/colors";
@@ -137,7 +137,9 @@ function Main() {
 
 	if (user !== null && user !== undefined) {
 		return (
-			<PatientAppView />
+			<AppointmentTempoStoreProvider>
+					<PatientAppView />
+			</AppointmentTempoStoreProvider>
 		)
 	}
 
@@ -146,34 +148,16 @@ function Main() {
 }
 
 export default function App () {
-	// let [fontsLoaded] = useFonts({
-	// 	"Ubuntu-Bold": require('./assets/fonts/Ubuntu-Bold.ttf'),
-	// 	"Ubuntu-BoldItalic": require('./assets/fonts/Ubuntu-BoldItalic.ttf'),
-		
-	// 	"Ubuntu-Light": require('./assets/fonts/Ubuntu-Light.ttf'),
-	// 	"Ubuntu-LightItalic": require('./assets/fonts/Ubuntu-LightItalic.ttf'),
-
-	// 	"Ubuntu-Medium": require('./assets/fonts/Ubuntu-Medium.ttf'),
-	// 	"Ubuntu-MediumItalic": require('./assets/fonts/Ubuntu-MediumItalic.ttf'),
-
-	// 	"Ubuntu-Regular": require('./assets/fonts/Ubuntu-Regular.ttf'),
-	// 	"Ubuntu-Italic": require('./assets/fonts/Ubuntu-Italic.ttf'),
-	// })
-	
-	
     return (
 		<SafeAreaProvider>
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
 					<AuthProvider>
-
-						{/* TODO: find a better place for this provider */}
-						<AppointmentTempoStoreProvider>
+						<ToastProvider>
 							<QueryClientProvider client={queryClient}>
 								<Main />
 							</QueryClientProvider>
-						</AppointmentTempoStoreProvider>
-
+						</ToastProvider>
 					</AuthProvider>
 				</NavigationContainer>
 			</NativeBaseProvider>

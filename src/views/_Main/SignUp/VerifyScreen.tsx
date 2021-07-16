@@ -13,7 +13,7 @@ import CodeInput from "../../../components/forms/codeInput";
 
 
 export default function VerifyScreen ({ route }: any) {
-	const phoneNumber: string = "123123" || route.params.phoneNumber
+	const phoneNumber: string = route.params.phoneNumber
 	const navigation = useNavigation()
 	const [code, set] = useState<string>("") 
 	const { height } = Dimensions.get("screen");
@@ -36,7 +36,7 @@ export default function VerifyScreen ({ route }: any) {
 	}
 
 	return (
-		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back">
+		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back" noScroll>
 			<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 				<VStack space={5} marginBottom={15} alignContent="center">	
 					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
