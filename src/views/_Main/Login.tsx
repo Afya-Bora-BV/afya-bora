@@ -46,6 +46,7 @@ const schema = yup.object().shape({
 // let render = 0
 
 
+const { height } = Dimensions.get("screen");
 
 export default function Login() {
 	// const [remember, setRemember] = React.useState(false);
@@ -53,8 +54,7 @@ export default function Login() {
 	const navigation = useNavigation();
 	const { login, confirm, confirmCode } = useAuthStore(state => ({ login: state.signInWithPhoneNumber, confirmCode: state.confirmPhoneCode, confirm: state.confirm }))
 
-	const { height } = Dimensions.get("screen");
-
+	
 	const {
 		control,
 		handleSubmit,
@@ -187,7 +187,7 @@ export default function Login() {
 							shadow={5}
 
 						>
-							Login Now
+							Login 
 						</Button>
 					</Box>
 				</Box>

@@ -31,7 +31,7 @@ export function ControllerFormInput ({ label, keyboardType, control, name, ...in
                         placeholder={label}
                     />
                 )}
-                name="email"
+                name={name}
                 rules={{ required: true }}
                 defaultValue=""
             />

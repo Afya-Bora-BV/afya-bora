@@ -86,6 +86,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
         await sleep(2000)
         // TODO: fetch name and other related information
         // create the fake user 
+        console.log("Phone ",phone)
         const isRegistered = isNewUser(phone)
         if (isRegistered) {
             // send verification code
