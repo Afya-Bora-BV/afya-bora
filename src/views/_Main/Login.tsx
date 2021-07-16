@@ -11,12 +11,11 @@ import {
 	Square,
 	VStack,
 	Button,
+	useToast,
 } from "native-base";
-import * as React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useState, useCallback } from "react";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../constants/colors";
-import { CheckBox } from "../../components/bars";
-import { PrimaryButton } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
@@ -27,171 +26,235 @@ import { NavKey as _MainAppNavKey } from './_navigator'
 import { useAuthStore } from "../../internals/auth/context";
 import AltContainer from "../../components/containers/AltContainer";
 import { ControllerFormInput } from "../../components/forms/inputs";
-import { useCallback } from "react";
 import { useMutation } from "react-query";
 import _ from "lodash";
-
-interface LoginFormInputs {
-	phone: string;
-	// password: string;
-	confirmCode: string
-}
-
-const schema = yup.object().shape({
-	phone: yup.string(),
-	// password: yup.string().nullable().required(),
-	confirmCode: yup.string()
-});
 
 // let render = 0
 
 
 const { height } = Dimensions.get("screen");
 
-export default function Login() {
-	// const [remember, setRemember] = React.useState(false);
-	const [visibility, setVisibility] = React.useState("eye-off-outline");
-	const navigation = useNavigation();
-	const { login, confirm, confirmCode } = useAuthStore(state => ({ login: state.signInWithPhoneNumber, confirmCode: state.confirmPhoneCode, confirm: state.confirm }))
 
-	
+/**
+ * Form for Phone number only
+ * ----------------------------
+ */
+ const formPhoneSchema = yup.object().shape({
+	phoneNumber: yup.string().required()
+});
+interface FormPhoneInputs {
+	phoneNumber: string
+}
+
+function PhoneNumberForm ({ onSuccess, onError }: any) {
 	const {
 		control,
 		handleSubmit,
-		formState: { errors },
-		getValues
-	} = useForm<LoginFormInputs>({
-		// resolver: yupResolver(schema),
+		formState: { errors }
+	} = useForm<FormPhoneInputs>({
+		resolver: yupResolver(formPhoneSchema),
 	});
 
-	const onLogin = async () => {
-		console.log("Logging in ")
-		loginWithPhoneNumber()
-	};
+	const onLogin = handleSubmit(
+		// When successfull
+		({ phoneNumber }) => onSuccess({ phoneNumber }),
+
+		// when invalid
+		(err) => onError(`Unable to confirm: ${err.phoneNumber?.message}`)
+	)
+
+	return (
+		<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
+			<VStack space={5} marginBottom={15}>
+				<ControllerFormInput
+					name="phone"
+					control={control}
+					label="Enter Phone number"
+					keyboardType="phone-pad" 
+				/>
+			</VStack>
+			<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
+				<Button
+					onPress={onLogin}
+					borderRadius={20}
+					style={{ backgroundColor: colors.primary }}
+					_text={{ color: "white" }}
+					shadow={5}
+				>
+					Login 
+				</Button>
+			</Box>
+		</Box>
+	)
+}
+/**
+ * Form for Phone number only
+ * ----------------------------
+ */
+const formEmailSchema = yup.object().shape({
+	email: yup.string().required(),
+	password: yup.string().required(),
+});
+interface FormEmailInputs {
+	email: string
+	password: string
+}
+
+function EmailPasswordForm ({ onSuccess, onError }: any) {
+	const {
+		control,
+		handleSubmit,
+		formState: { errors }
+	} = useForm<FormEmailInputs>({
+		resolver: yupResolver(formEmailSchema),
+	});
+
+	const [visibility, setVisibility] = React.useState("eye-off-outline");
+
+	const onLogin = handleSubmit(
+		// When successfull
+		({ email, password }) => onSuccess({ email, password }),
+
+		// when invalid
+		(err) => onError(`Unable to confirm: ${err.email?.message}`)
+	)
+
+	return (
+		<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
+			<VStack space={5} marginBottom={15}>
+				<ControllerFormInput
+					name="email"
+					control={control}
+					label="Phone number"
+					keyboardType="email-address" 
+				/>
+				<ControllerFormInput
+					name="password"
+					control={control}
+					label="Enter Password"
+					keyboardType="password"
+					type={
+						visibility === "eye-outline"
+							? "text"
+							: "password"
+					}
+					InputRightElement={
+						<Pressable
+							onPress={() =>
+								visibility ===
+									"eye-outline"
+									? setVisibility(
+										"eye-off-outline"
+									)
+									: setVisibility(
+										"eye-outline"
+									)
+							}
+						>
+							<MaterialCommunityIcons
+								name={visibility}
+								size={24}
+								color={
+									colors.primary
+								}
+								style={{
+									paddingEnd: 10,
+								}}
+							/>
+						</Pressable>
+					}
+				/>
+			</VStack>
+			<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
+
+				<Button
+					onPress={onLogin}
+					borderRadius={20}
+					style={{ backgroundColor: colors.primary }}
+					_text={{ color: "white" }}
+					shadow={5}
+				>
+					Login 
+				</Button>
+			</Box>
+		</Box>
+	)
+}
+
+export default function Login() {
+	// const [remember, setRemember] = React.useState(false);
+	const navigation = useNavigation();
+	const { signInWithEmailAndPassword, signInWithPhoneNumber } = useAuthStore(({ signInWithPhoneNumber, signInWithEmailAndPassword }) => ({ signInWithPhoneNumber, signInWithEmailAndPassword }))
+	const [type, setType] = useState<'email' | 'phone'>('phone')
+	const Toast = useToast()
 
 	// TODO: pass to login the correct email and password
 	// TODO: considering having two Mutations
 	// 1. for login 
 	// 2. for verifying code
-	const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
-		onMutate: variables => {
-		},
-		onError: (error, variables, context) => {
-			console.log("Something went wrong")
-		},
-		onSuccess: (data, variables, context) => {
-			// console.log("User logged in successfully ")
-			// Boom baby!
-		},
+	// const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
+	// 	onMutate: variables => {
+	// 	},
+	// 	onError: (error, variables, context) => {
+	// 		console.log("Something went wrong")
+	// 	},
+	// 	onSuccess: (data, variables, context) => {
+	// 		// console.log("User logged in successfully ")
+	// 		// Boom baby!
+	// 	},
 
-	})
+	// })
+	// const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
+	// 	onMutate: variables => {
+	// 	},
+	// 	onError: (error, variables, context) => {
+	// 		console.log("Something went wrong")
+	// 	},
+	// 	onSuccess: (data, variables, context) => {
+	// 		// console.log("User logged in successfully ")
+	// 		// Boom baby!
+	// 	},
 
+	// })
 
-	console.log('Rendering loginpage:', getValues())
+	const onSuccess = (data: FormEmailInputs | FormPhoneInputs ) => {
+		if (type === 'phone') {
+			// Dealing the sign in process as a form input
+			const { phoneNumber } = data as FormPhoneInputs
+			
+			signInWithPhoneNumber(phoneNumber)
+				.then(() => console.log("Yoooooo Phone!"))
+
+		} else if (type === 'email') {
+			// Dealing the sign in process as a email
+			const { email, password } = data as FormEmailInputs
+			
+			signInWithEmailAndPassword(email, password)
+				.then(() => console.log("Yoooooo!"))
+		}
+
+		return;
+	}
+
+	const onError = (errMessage: string) => {
+		// Show error
+		Toast.show({
+			title: "Error",
+			description: errMessage,
+		})
+	}
+
 	// console.log("Confirm  : ",confirm)
 	return (
-		<AltContainer backdropHeight={height / 3.5}>
-			{/* <Stack alignItems="center" style={{ paddingVertical: 10 }}> */}
+		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
 			<View flexGrow={1}>
-				<View alignItems="center" paddingY={20}>
-					<Text color="white" fontSize={44}>
-						Afya Bora
-					</Text>
-				</View>
-				{/* </Stack> */}
-				{/* <Stack paddingBottom={10}> */}
-				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
-					<VStack space={5} marginBottom={15}>
-						{!confirm ?
-							<ControllerFormInput
-								name="phone"
-								control={control}
-								label="Phone number"
-								placeholder="+255755330099"
-							// keyboardType="email-address" 
-							/>
-							:
-							<ControllerFormInput
-								name="confirmCode"
-								control={control}
-								label="Verification code"
-								placeholder="1234"
-							// keyboardType="email-address" 
-							/>
-						}
-
-
-						{/* <ControllerFormInput
-							name="password"
-							control={control}
-							label="Enter Password"
-							keyboardType="password"
-							type={
-								visibility === "eye-outline"
-									? "text"
-									: "password"
-							}
-							InputRightElement={
-								<Pressable
-									onPress={() =>
-										visibility ===
-											"eye-outline"
-											? setVisibility(
-												"eye-off-outline"
-											)
-											: setVisibility(
-												"eye-outline"
-											)
-									}
-								>
-									<MaterialCommunityIcons
-										name={visibility}
-										size={24}
-										color={
-											colors.primary
-										}
-										style={{
-											paddingEnd: 10,
-										}}
-									/>
-								</Pressable>
-							}
-						/> */}
-						{/* Remeber me + Forgot Password */}
-						{/* <HStack justifyContent="space-between">
-							<CheckBox item={"Remember me"} />
-							<Stack justifyContent="center">
-								<Pressable>
-									<Text color={"#2AD3E7"}>
-										Forgot Password
-									</Text>
-								</Pressable>
-							</Stack>
-						</HStack> */}
-					</VStack>
-					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
-
-						<Button
-							onPress={handleSubmit(onLogin, () => {
-								console.log("Ther is a form error")
-							})}
-							borderRadius={20}
-							// _disabled={{
-							// 	backgroundColor: "#B0B3C7",
-							// 	color: "white",
-							// }}
-							style={{ backgroundColor: colors.primary }}
-							_text={{ color: "white" }}
-							isLoading={isLoading}
-							disabled={isLoading}
-							shadow={5}
-
-						>
-							Login 
-						</Button>
-					</Box>
-				</Box>
-				{/* </Stack> */}
+				{
+					type === 'phone' ? (
+						<PhoneNumberForm onSuccess={onSuccess} onError={onError} />
+					) : (
+						<EmailPasswordForm onSuccess={onSuccess} onError={onError} />
+					)
+				}
 			</View>
 
 			<Stack alignItems="center" marginBottom={5}>

@@ -51,7 +51,10 @@ interface AuthStore {
 	confirm: any;
 	phone: string;
 	demoUsers: User[];
-	signInWithEmailAndPassword: (phone: string) => Promise<void>;
+	signInWithEmailAndPassword: (
+		email: string,
+		password: string
+	) => Promise<void>;
 	signInWithPhoneNumber: (phoneNumber: string) => Promise<void>;
 	confirmPhoneCode: (code: string) => Promise<void>;
 	signOut: () => Promise<void>;
@@ -65,8 +68,7 @@ const { Provider, useStore } = createContext<AuthStore>();
 // method to check if the user exists in database
 // the user dont login untill we make sure his details exist
 
-const sleep = (delay: number) =>
-	new Promise((resolve) => setTimeout(resolve, delay));
+// const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 const createAuthStore = () =>
 	create<AuthStore>(
@@ -76,7 +78,7 @@ const createAuthStore = () =>
 				userExists: false,
 				confirm: null,
 				phone: "",
-				demoUsers: demoUsers as User[],
+				demoUsers: [...(demoUsers as User[])],
 				isNewUser: (phone: string) => {
 					const user = get().demoUsers.filter(
 						(user) => user.phone === phone
@@ -91,23 +93,12 @@ const createAuthStore = () =>
 					console.log("User  : ", phone);
 					return user[0];
 				},
-				registerUser: async ({ phone }) => {
-					try {
-						const confirmation = await auth().signInWithPhoneNumber(
-							phone
-						);
-						set(confirmation);
-					} catch (error) {
-						console.log("Invalid code.");
-						ToastAndroid.show(
-							"Invalid confirmation code",
-							ToastAndroid.LONG
-						);
-					}
-				},
-
+				registerUser: async () => {},
 				// THINK: appropriate might be `setUser`
-				signInWithEmailAndPassword: async function (phone: string) {},
+				signInWithEmailAndPassword: async function (
+					email: string,
+					password: string
+				) {},
 
 				// demo signout
 				signOut: async () => {
@@ -117,7 +108,7 @@ const createAuthStore = () =>
 				},
 				// Signing in for user
 				signInWithPhoneNumber: async function (phone) {
-					await sleep(2000);
+					// await sleep(2000)
 					// TODO: fetch name and other related information
 					// create the fake user
 					console.log("Phone ", phone);
@@ -140,7 +131,7 @@ const createAuthStore = () =>
 				// confirming code
 				confirmPhoneCode: async function (code) {
 					// create fake person after 2 seconds
-					await sleep(3000);
+					// await sleep(3000)
 					try {
 						if (get().confirm === code) {
 							const user = get().getUserDetails(get().phone);
