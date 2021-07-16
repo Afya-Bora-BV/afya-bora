@@ -6,7 +6,7 @@ import { colors } from "../../../constants/colors";
 
 
 import { NavKey as SignUpNavKey } from './_navigator'
-import { NavKey as PlainNavKey} from '../_navigator'
+import { NavKey as PlainNavKey } from '../_navigator'
 import AltContainer from "../../../components/containers/AltContainer";
 import { Dimensions } from "react-native";
 import { ControllerFormInput } from "../../../components/forms/inputs";
@@ -22,10 +22,10 @@ interface SignUpFormInput {
 }
 
 const schema = yup.object().shape({
-	phoneNumber: yup.string().required(),
+	phoneNumber: yup.string(),
 });
 
-export default function SignUp  ()  {
+export default function SignUp() {
 	const navigation = useNavigation();
 	const { height } = Dimensions.get("screen");
 	const Toast = useToast()
@@ -38,39 +38,27 @@ export default function SignUp  ()  {
 		control,
 		handleSubmit,
 		formState: { errors },
+		getValues
 	} = useForm<SignUpFormInput>({
 		resolver: yupResolver(schema),
 	});
 
-	const onConfirm = useCallback(() => {
-		handleSubmit(
-			// when successfull
-			({phoneNumber}) => {
-				// works
-				navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
-			},
+	const onConfirm = (data: SignUpFormInput) => {
+		const phoneNumber = data.phoneNumber
+		console.log(phoneNumber)
+		navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
+	}
 
-			// when invalid
-			(err) => {
-				// Show error
-				console.warn(`Unable to confirm: ${err.phoneNumber}`)
-				Toast.show({
-					title: "Error",
-					description: `Unable to confirm for ${err.phoneNumber}`
-				})
-			}
-		)
-	}, [])
 
 
 	return (
 		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Sign up" headerMode="with-back" noScroll>
 			<VStack marginTop={10} flexDirection="column" flex={1}>
-			{/* <View flexGrow={1} height="100%"> */}
+				{/* <View flexGrow={1} height="100%"> */}
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
-					<VStack space={5} marginBottom={15}>						
+					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
-							name="phonenumber"
+							name="phoneNumber"
 							control={control}
 							label="Enter phone number"
 							keyboardType="phone-pad"
@@ -80,7 +68,18 @@ export default function SignUp  ()  {
 						<PrimaryButton
 							text={"Confirm"}
 							shadow={5}
-							onPress={onConfirm}
+							onPress={handleSubmit(onConfirm,
+
+								// when invalid
+								(err) => {
+									// Show error
+									console.warn(`Unable to confirm: ${err.phoneNumber}`)
+									Toast.show({
+										title: "Error",
+										description: `Unable to confirm for ${err.phoneNumber}`
+									})
+								}
+							)}
 						/>
 					</Box>
 				</Box>
