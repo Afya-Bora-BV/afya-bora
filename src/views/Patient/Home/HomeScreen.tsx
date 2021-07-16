@@ -34,6 +34,7 @@ import {
 } from "../../../internals/appointment/context";
 import { useQuery } from "react-query";
 import { AppointmentAlert } from "../../../components/core/appointment";
+import { useAuthStore } from "../../../internals/auth/context";
 
 const helpOptions = [
 	{
@@ -61,6 +62,7 @@ const helpOptions = [
 
 export default function Home() {
 	const navigation = useNavigation();
+	const { user } = useAuthStore(state => ({ user: state.user }))
 
 	return (
 		<MainContainer
@@ -92,7 +94,7 @@ export default function Home() {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, Ally Salim</Heading>
+					<Heading fontSize="3xl">Hi, {user?.name}</Heading>
 				</VStack>
 
 				{/* Section to render upcoming appointments if any.
@@ -143,8 +145,8 @@ export default function Home() {
 												fontWeight="800"
 												marginTop={5}
 												textAlign="center"
-												// wordBreak="break-word"
-												// overflowWrap="break-word"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
 											>
 												{title}
 											</Text>

@@ -30,6 +30,7 @@ import { ProfileNavKey } from "./_navigator";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
+import { useAuthStore } from "../../../internals/auth/context";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -49,7 +50,7 @@ function ProfileCard({ userProfile, ...props }) {
 			padding={3}
 			maxHeight={100}
 		>
-			<HStack space={3} justifyContent="center">
+			<HStack space={3} justifyContent="center" >
 				<Avatar
 					size="lg"
 					borderRadius={10}
@@ -59,13 +60,14 @@ function ProfileCard({ userProfile, ...props }) {
 				>
 					SS
 				</Avatar>
-				<VStack flex={1} space={1} justifyContent="center">
+				<VStack space={1} justifyContent="center">
 					<Text fontWeight="600" fontSize="xl">
 						{userProfile.name}
 					</Text>
 					<Text color="#747F9E">{userProfile.phoneNumber}</Text>
 				</VStack>
 			</HStack>
+
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
 					<NextIcon color="#7065E4" />
@@ -106,20 +108,20 @@ const profileOptions = [
 		icon: InfoIcon,
 		title: "About Us",
 	},
-	{
-		icon: LogoutIcon,
-		title: "Logout",
-	},
 ];
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
+	const { signOut, user } = useAuthStore(state => ({ signOut: state.signOut, user: state.user }))
+
 	const { height } = Dimensions.get("screen");
 
 	const userProfile = {
-		name: "Ally Jr. Salim",
-		phoneNumber: "0712 345 545",
+		name: user?.name,
+		phoneNumber: user?.phone,
 	};
+
+	console.log("User", user)
 
 	return (
 		<AlternateContainer
@@ -158,6 +160,16 @@ const ProfileMain: React.FC = () => {
 								</Pressable>
 							)
 						)}
+						<Pressable
+							onPress={signOut}
+						>
+							<HStack alignItems="center" space={3}>
+								<Square size={6}>
+									<LogoutIcon />
+								</Square>
+								<Text fontSize={18}>Logout</Text>
+							</HStack>
+						</Pressable>
 					</VStack>
 				</Box>
 			</VStack>

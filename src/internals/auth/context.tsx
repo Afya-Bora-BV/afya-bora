@@ -20,22 +20,6 @@ interface User {
 /**
  * Authentication store
  */
-interface AuthStore {
-    user:
-    | undefined // User doesn't exist yet
-    | User      // user exist and logged in
-    | null      // user logged out
-    userExists: true | false
-    confirm: any
-    phone: string
-    signInWithEmailAndPassword: (phone: string) => Promise<void>
-    signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
-    confirmPhoneCode: (code: string) => Promise<void>
-    signOut: () => Promise<void>
-}
-
-const { Provider, useStore } = createContext<AuthStore>()
-
 
 const demoUsers = [{
     uid: "ASa",
@@ -49,19 +33,31 @@ const demoUsers = [{
     residence: "Arusha"
 }]
 
-// method to check if the user exists in database
-// the user dont login untill we make sure his details exist 
-const isNewUser = (phone: string): boolean => {
-    const user = demoUsers.filter(user => user.phone === phone)
-    console.log("User  : ", phone)
-    return Boolean(user[0])
+interface AuthStore {
+    user:
+    | undefined // User doesn't exist yet
+    | User      // user exist and logged in
+    | null      // user logged out
+    userExists: true | false
+    confirm: any
+    phone: string
+    demoUsers: typeof demoUsers
+    signInWithEmailAndPassword: (phone: string) => Promise<void>
+    signInWithPhoneNumber: (phoneNumber: string) => Promise<void>
+    confirmPhoneCode: (code: string) => Promise<void>
+    signOut: () => Promise<void>
+    registerUser: (data: any) => Promise<void>
+    isNewUser: (phone: string) => boolean
+    getUserDetails: (phone: string) => User | undefined
 }
 
-const getUserDetails = (phone: string): User | undefined => {
-    const user = demoUsers.filter(user => user.phone === phone)
-    console.log("User  : ", phone)
-    return user[0]
-}
+const { Provider, useStore } = createContext<AuthStore>()
+
+
+
+
+// method to check if the user exists in database
+// the user dont login untill we make sure his details exist 
 
 const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
@@ -70,6 +66,22 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     userExists: false,
     confirm: null,
     phone: "",
+    demoUsers: [
+        ...demoUsers
+    ],
+    isNewUser: (phone: string) => {
+        const user = get().demoUsers.filter(user => user.phone === phone)
+        console.log("User  : ", phone)
+        return Boolean(user[0])
+    },
+    getUserDetails: (phone: string) => {
+        const user = get().demoUsers.filter(user => user.phone === phone)
+        console.log("User  : ", phone)
+        return user[0]
+    },
+    registerUser: async () => {
+
+    },
     // THINK: appropriate might be `setUser`
     signInWithEmailAndPassword: async function (phone: string) {
 
@@ -78,21 +90,22 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
 
     // demo signout
     signOut: async () => {
-        await auth().signOut()
-        set({ user: null })
+        // await auth().signOut()
+        // await sleep(3000)
+        set({ user: null, confirm: null, phone: "" })
     },
     // Signing in for user
     signInWithPhoneNumber: async function (phone) {
         await sleep(2000)
         // TODO: fetch name and other related information
         // create the fake user 
-        console.log("Phone ",phone)
-        const isRegistered = isNewUser(phone)
+        console.log("Phone ", phone)
+        const isRegistered = get().isNewUser(phone)
         if (isRegistered) {
             // send verification code
-            const confirmation = await auth().signInWithPhoneNumber(phone);
+            // const confirmation = await auth().signInWithPhoneNumber(phone);
             set({
-                confirm: confirmation,
+                confirm: "1234",
                 phone: phone
             })
         } else {
@@ -103,16 +116,21 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     // confirming code
     confirmPhoneCode: async function (code) {
         // create fake person after 2 seconds
+        await sleep(3000)
         try {
-            await get().confirm.confirm(code);
+            if (get().confirm === code) {
+                const user = get().getUserDetails(get().phone)
+                set({
+                    user: user,
+                    confirm: null
+                })
+            } else {
+                ToastAndroid.show("Invalid confirmation code", ToastAndroid.LONG)
+            }
 
             // assuming everything went right
             // get the user with given phone number
-            const user = getUserDetails(get().phone)
-            set({
-                user: user,
-                confirm: null
-            })
+
         } catch (error) {
             console.log('Invalid code.');
             ToastAndroid.show("Invalid confirmation code", ToastAndroid.LONG)
