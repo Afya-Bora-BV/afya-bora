@@ -9,6 +9,7 @@ import {
 	Heading,
 	Pressable,
 	ScrollView,
+	Square,
 } from "native-base";
 import UserIcon from "../../../assets/icons/User";
 import BellIcon from "../../../assets/icons/Bell";
@@ -236,62 +237,76 @@ export default function Home() {
 
 // TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
-	const getAppointments = useAppointmentTempoStore(
-		(state) => state.getAppointments
-	);
-	const { isLoading, isError, data, error } = useQuery(
-		"appointments",
-		getAppointments,
-		{
-			// TODO: to remove this behaviour
-			// and instead just fetch either from offline or online state
-			refetchInterval: 5000,
-		}
-	);
-	if (isLoading) return <Text>Fetching appointement... </Text>;
-	if (error) return <Text>Something went wrong</Text>;
-	if (data?.length === 0) return null;
+	// const navigation = useNavigation()
+	// const getAppointments = useAppointmentTempoStore(
+	// 	(state) => state.getAppointments
+	// );
+	// const { isLoading, isError, data, error } = useQuery(
+	// 	"appointments",
+	// 	getAppointments,
+	// 	{
+	// 		// TODO: to remove this behaviour
+	// 		// and instead just fetch either from offline or online state
+	// 		refetchInterval: 5000,
+	// 	}
+	// );
+	// if (isLoading) return <Text>Fetching appointement... </Text>;
+	// if (error) return <Text>Something went wrong</Text>;
+	// if (data?.length === 0) return null;
 
 	// console.log("appointment");
 	// console.log(data);
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
-			{data?.map((appointment) => (
-				<UpcomingAppointmentsAlert appointment={appointment} />
-			))}
+			<VStack space={3}>
+				{/* <UpcomingAppointmentsAlert appointment={appointment} /> */}
+				<UpcomingAppointmentsAlert />
+				<View width="100%" alignItems="flex-end">
+					<Pressable onPress={() => console.log("Something")}>
+						<Text fontStyle="italic">See All Appointments</Text>
+					</Pressable>
+				</View>
+			</VStack>
 		</VStack>
 	);
 };
 
-const UpcomingAppointmentsAlert: React.FC<{
-	appointment: DemoAppointmentType;
-}> = ({ appointment }) => {
-	const {
-		dateTime: { timeSlots },
-		consultant: { name },
-	} = appointment;
+function UpcomingAppointmentsAlert (/*{ consultant, appointmentDate, facility }*/) {
 	return (
-		<VStack>
-			<HStack
-				justifyContent="space-between"
-				alignItems="center"
-				borderRadius={6}
-				borderColor="#B0B3C7"
-				borderWidth={1}
-				p={4}
-			>
-				<HStack
-					justifyContent="space-between"
-					alignItems="center"
-					space={4}
-				>
-					<MedicalHistoryIcon />
-					<Text>Meet Dr {name}</Text>
-				</HStack>
-				{/* TODO: specify the correct time for appointment */}
-				<Text color="#258FBE">{timeSlots[0]}</Text>
+		<Box 
+			flex={1} 
+			flexDirection="row" 
+			justifyContent="space-between"
+			alignItems="center"
+			padding={5} 
+			rounded={10}
+			style={{
+				shadowColor: "#EEE",
+				shadowOffset: {
+					width: 0,
+					height: 6,
+				},
+				shadowOpacity: 0.17,
+				shadowRadius: 6.49,
+				
+				elevation: 3,
+			}}
+		>
+			{/* left */}
+			<HStack space={3} flexGrow={1} justifyContent="flex-start">
+				{/* Icon */}
+				<Square size={8} rounded={5} bgColor="#AAA" />
+				<VStack>
+					<Heading fontSize="lg" color="#000">Dr. Mohamedali</Heading>
+					<Text fontSize="sm" color="#333">13 July, 14:30 PM</Text>
+					<Text fontSize="sm" fontStyle="italic" color="#333">Aga Khan Hospital, Arusha</Text>
+				</VStack>
 			</HStack>
-		</VStack>
-	);
-};
+			{/* right */}
+			<View alignItems="center" flexDirection="column">
+				<Text>Edit &gt;</Text>
+			</View>
+		</Box>
+	)
+}
