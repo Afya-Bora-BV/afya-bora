@@ -1,4 +1,4 @@
-package com.nativeapp;
+package io.afyabora;
 
 import com.facebook.react.ReactActivity;
 

@@ -1,4 +1,4 @@
-package com.nativeapp;
+package io.afyabora;
 
 import android.app.Application;
 import android.content.Context;

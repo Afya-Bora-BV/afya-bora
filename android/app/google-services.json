@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "120573366412",
+    "project_id": "afya-bora-fb",
+    "storage_bucket": "afya-bora-fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120573366412:android:cbda81098719cc7286eba9",
+        "android_client_info": {
+          "package_name": "io.afyabora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120573366412-p5d54f3aqfah43gg2jt58edhb0gp1elc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9tVoMVFEb47IKTm_LCRmaT1LIbK1AvEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120573366412-p5d54f3aqfah43gg2jt58edhb0gp1elc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
