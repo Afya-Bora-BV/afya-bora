@@ -11,17 +11,16 @@ import {
 import _BaseContainer from "./_BaseContainer";
 import { StatusBarStyle } from "react-native";
 
-interface AlternateContainerProps {
+export interface AlternateContainerProps {
 	children: JSX.Element[] | JSX.Element;
 	title?: string;
 	backdropHeight?: number;
-	headerMode?: "with-back" | "none";
 	navigation?: any;
 	barStyle?: StatusBarStyle;
 	bgColor?: string;
 	titleColor?: string;
-	leftSection?: () => JSX.Element;
-	rightSection?: () => JSX.Element;
+	leftSection?: () => JSX.Element | null;
+	rightSection?: () => JSX.Element | null;
 }
 
 export default function AlternateContainer({
