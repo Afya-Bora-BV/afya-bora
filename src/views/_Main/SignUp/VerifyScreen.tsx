@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Box, HStack, View, Stack, VStack, Pressable, Text, Button } from "native-base";
+import { Box, HStack, View, Stack, VStack, Pressable, Text, Button, useToast } from "native-base";
 import { PrimaryButton } from "../../../components/button";
 import { colors } from "../../../constants/colors";
 import { useState } from "react";
@@ -9,31 +9,34 @@ import AltContainer from "../../../components/containers/AltContainer";
 
 import { Dimensions } from "react-native";
 import CodeInput from "../../../components/forms/codeInput";
-
-
+import { useEffect } from "react";
+import { useCallback } from "react";
 
 export default function VerifyScreen ({ route }: any) {
-	const phoneNumber: string = route.params.phoneNumber
+	const { phoneNumber, confirmCode }: { phoneNumber: string, confirmCode: (code: string) => Promise<User> } = route.params
 	const navigation = useNavigation()
 	const [code, set] = useState<string>("") 
 	const { height } = Dimensions.get("screen");
 
-	const confirmCode = useAuthStore(state => state.confirmPhoneCode)
+	const Toast = useToast()
 
 	// do some action when the code is confirmed
-	const onConfirmCode = () => {
-
-		// stop if code is undefined
-		if (code === undefined) {
-			console.warn("Code is UNDEFINED")
-			return;
-		}
-
+	const onConfirmCode = useCallback(() => {
 		// if there is code, confirm it
 		confirmCode(code)
-			.then(() => console.log("Code confirmed. User object updated, moving to new page"))
-			.catch(err => console.log("There is a problem"))
-	}
+			.then(user => {
+				Toast.show({
+					title: user.name !== null ? `Welcome back, ${user.name}!` : `Welcome back!`
+				})
+			})
+			.catch(err => {
+				console.error(err)
+				Toast.show({
+					title: "Error",
+					description: err.message,
+				})	
+			})
+	}, [confirmCode, code])
 
 	return (
 		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back" noScroll>

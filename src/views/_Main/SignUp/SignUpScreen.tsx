@@ -14,6 +14,7 @@ import { ControllerFormInput } from "../../../components/forms/inputs";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuthStore } from "../../../internals/auth/context";
 
 interface SignUpFormInput {
 	phoneNumber: string;
@@ -28,10 +29,8 @@ export default function SignUp() {
 	const { height } = Dimensions.get("screen");
 	const Toast = useToast()
 
-	// if (!confirm) {
-	// 	return (
-	// 	);
-	// }
+	const signUpWithPhoneNumber = useAuthStore(s => s.signUpWithPhoneNumber)
+
 	const {
 		control,
 		handleSubmit,
@@ -44,9 +43,21 @@ export default function SignUp() {
 	//  output JSX as much as we can
 	const onConfirm = handleSubmit(
 		// when successfull
-		({phoneNumber}) => {
+		({ phoneNumber }) => {
 			// works
-			navigation.navigate(SignUpNavKey.VerifyScreen, { phoneNumber })
+			signUpWithPhoneNumber(phoneNumber)
+				.then(confirmCode => {
+					navigation.navigate(SignUpNavKey.VerifyScreen, { 
+						phoneNumber,
+						confirmCode
+					})
+				}).catch(err => {
+					console.error(err)
+					Toast.show({
+						title: "Error",
+						description: err.message,
+					})	
+				})
 		},
 
 		// when invalid

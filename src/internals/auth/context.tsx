@@ -8,18 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 /**
- * User object
- */
-interface User {
-  uid: string;
-  email: string | null;
-  name: string | null;
-  phoneNumber: string | null;
-  image: string | null;
-  isNew: boolean;
-}
-
-/**
  * Authentication store
  */
 
@@ -47,14 +35,13 @@ interface AuthStore {
     user:
         | null      // User not in
         | User      // user exist and logged in
-    // userExists: true | false
-    // confirm: any
-    // phone: string
-    // demoUsers: typeof demoUsers
+    
+    getStatus: () => 
+    
     signInWithEmailAndPassword: (email: string, password: string) => Promise<User>
     signInWithPhoneNumber: (phoneNumber: string, code: string) => Promise<User>
     signUpWithPhoneNumber: (phoneNumber: string) => Promise<(code: string) => Promise<User>>
-    // confirmPhoneCode: (code: string) => Promise<void>
+    verifyPhoneNumber: (phoneNumber: string, code: string) => Promise<User>
     signOut: () => Promise<void>
     // registerUser: (data: any) => Promise<void>
     // isNewUser: (phone: string) => boolean
@@ -68,7 +55,6 @@ interface AuthStore {
 }
 
 const {Provider, useStore} = createContext<AuthStore>();
-
 const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     user: null,
     // userExists: false,
@@ -109,7 +95,7 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
                 throw Error(`Unable to verify for <${phoneNumber}>.`)
             }
 
-            // set the ser
+            // set user
             return get()._setUser(out)
         }
     },
@@ -132,28 +118,18 @@ const createAuthStore = () => create<AuthStore>(persist((set, get) => ({
     },
 
     // confirming code
-    // confirmPhoneCode: async function (code) {
-    //     // create fake person after 2 seconds
-    //     // await sleep(3000)
-    //     try {
-    //         if (get().confirm === code) {
-    //             const user = get().getUserDetails(get().phone)
-    //             set({
-    //                 user: user,
-    //                 confirm: null
-    //             })
-    //         } else {
-    //             ToastAndroid.show("Invalid confirmation code", ToastAndroid.LONG)
-    //         }
+    verifyPhoneNumber: async function (phoneNumber, code) {
 
-    //         // assuming everything went right
-    //         // get the user with given phone number
+        const au = await auth().signInWithPhoneNumber(phoneNumber)
+        const out = await au.confirm(code)
 
-    //     } catch (error) {
-    //         console.log('Invalid code.');
-    //         ToastAndroid.show("Invalid confirmation code", ToastAndroid.LONG)
-    //     }
-    // },
+        if (out === null) {
+            throw `Unable to verify for <${phoneNumber}>.`
+        }
+
+        // set the ser
+        return get()._setUser(out)
+    },
 
     _setUser: (uc) => {
         let { email: emailAsIs, phoneNumber, photoURL: image, displayName: name, uid } = uc.user
