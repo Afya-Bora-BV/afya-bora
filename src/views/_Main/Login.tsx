@@ -194,37 +194,6 @@ export default function Login() {
 	const [type, setType] = useState<'email' | 'phone'>('email')
 	const Toast = useToast()
 
-	// Load the verfication number
-
-	// TODO: pass to login the correct email and password
-	// TODO: considering having two Mutations
-	// 1. for login 
-	// 2. for verifying code
-	// const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
-	// 	onMutate: variables => {
-	// 	},
-	// 	onError: (error, variables, context) => {
-	// 		console.log("Something went wrong")
-	// 	},
-	// 	onSuccess: (data, variables, context) => {
-	// 		// console.log("User logged in successfully ")
-	// 		// Boom baby!
-	// 	},
-
-	// })
-	// const { mutate: loginWithPhoneNumber, isLoading } = useMutation(() => !confirm ? login(getValues("phone")) : confirmCode(getValues("confirmCode")), {
-	// 	onMutate: variables => {
-	// 	},
-	// 	onError: (error, variables, context) => {
-	// 		console.log("Something went wrong")
-	// 	},
-	// 	onSuccess: (data, variables, context) => {
-	// 		// console.log("User logged in successfully ")
-	// 		// Boom baby!
-	// 	},
-
-	// })
-
 	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs ) => {
 		try {
 			if (type === 'phone') {
