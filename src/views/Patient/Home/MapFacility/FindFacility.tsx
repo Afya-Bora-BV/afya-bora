@@ -21,18 +21,19 @@ export const markers = [
 		ratings: 4.1,
 		raters: 183,
 		coordinate: {
-			latitude: -6.7161577999999995,
-			longitude: 39.3513637,
+			latitude: -6.803380008888317,
+			longitude: 39.28789428424221,
 		},
 		title: "Aga Khan Hospital",
-		location: "123 Dar road, Dar es Salaam",
+		location: "Ocean Road Dar es Salaam TZ, 2289",
 	},
 	{
 		ratings: 4.2,
 		raters: 190,
+		imageUrl: "https://lh5.googleusercontent.com/p/AF1QipNDZ_RfsPE7WneCCNts_7sPVr_48YkPGf1qUMii=w408-h244-k-no",
 		coordinate: {
-			latitude: -6.7981299,
-			longitude: 39.1639385,
+			latitude: -6.801707786030863,
+			longitude: 39.27184542122396,
 		},
 		title: "Muhimbili National Hospital",
 		location: "Malik Rd, Dar es Salaam",
@@ -43,8 +44,8 @@ export const markers = [
  * Region window to show the contents
  */
 const region = {
-	latitude: -6.70,
-	longitude: 39.3513637,
+	latitude: -6.8039469,
+	longitude: 39.2750461,
 	latitudeDelta: 0.04864195044303443,
 	longitudeDelta: 0.040142817690068,
 }
@@ -53,6 +54,7 @@ const initialState = {
 	markers,
 	region
 }
+
 const FindFacility: React.FC = () => {
 
 	const navigation = useNavigation()
@@ -143,45 +145,18 @@ const FindFacility: React.FC = () => {
 				ref={_map}
 				style={styles.map}
 				initialRegion={state.region}
-
 			>
-				{/* {state.markers.map((marker, index) => {
-					const scaleStyle = {
-						transform: [
-							{
-								scale: interpolations[index].scale,
-							},
-
-						],
-					};
+				{state.markers.map((marker, index) => {
 					return (
 						<Marker
-							key={index} coordinate={marker.coordinate} onPress={(e) => onMarkerPress(e)}
-							title={`Hospital ${index}`}
-							description={`Descriptio ${index}`}
-						>
-							<Animated.View style={{
-								alignItems: "center",
-								justifyContent: "center",
-								width: 50,
-								height: 50,
-							}}>
-								<Animated.Image
-									source={require('../../../assets/images/pin.png')}
-									style={[{
-										alignItems: "center",
-										justifyContent: "center",
-										width: 38,
-										height: 38,
-									}, scaleStyle]}
-									resizeMode="cover"
-								/>
-
-							</Animated.View>
-						</Marker>
-
+							key={index} 
+							coordinate={marker.coordinate} 
+							onPress={(e) => onMarkerPress(e)}
+							title={`${marker.title}`}
+							description={marker.location}
+						/>
 					)
-				})} */}
+				})}
 
 			</MapView>
 
@@ -250,7 +225,7 @@ const FindFacility: React.FC = () => {
 								height={120}
 								borderRadius={20}
 								source={{
-									uri: "https://wallpaperaccess.com/full/317501.jpg",
+									uri: marker.imageUrl || "https://wallpaperaccess.com/full/317501.jpg",
 								}}
 							/>
 							{/* Text ara */}
