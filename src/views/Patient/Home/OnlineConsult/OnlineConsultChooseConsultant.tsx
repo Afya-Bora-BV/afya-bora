@@ -5,11 +5,12 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
 import _ from "lodash";
 
-import { NavKey } from "../BookAppointment/_navigator";
 import { StackNavigationProp } from "@react-navigation/stack";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
 
+import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
+import { HomeNavKey as MainNavKey } from "../_navigator";
 
 // NOTE: Dont move this to main.... results to require cycle
 export type OnlineConsultStackParamList = {
@@ -80,10 +81,13 @@ export default function OnlineConsultChooseConsultant({
 
 	const onPressNext = useCallback(
 		(consultant: any) => {
-			navigation.navigate(NavKey.PatientComplaintScreen, {
-				consultant,
-				appointment,
-			});
+			navigation.navigate(MainNavKey.BookAppointmentViewScreen, {
+				screen: BookAppointmentNavKey.PatientComplaintScreen,
+				params: {
+					consultant,
+					appointment,
+				},
+			})
 		},
 		[navigation, appointment]
 	);
@@ -95,11 +99,11 @@ export default function OnlineConsultChooseConsultant({
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
 					  )
 					: undefined
 			}
