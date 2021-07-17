@@ -30,11 +30,15 @@ import { useQuery } from "react-query";
 import MedicalHistoryIcon from "../../../assets/icons/MedicalHistory";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
+import { AppointmentAlert } from "../../../components/core/appointment";
+
+
+import { NavKey as BookAppointmentNavKey } from "../Home/BookAppointment/_navigator";
+import { TabNavKey as MainNavKey, TabNavKey } from "../_navigator";
 
 export default function Schedule() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
-	const hasUpcomingAppointment = true;
 	return (
 		<AlternateContainer
 			rightSection={() => (
@@ -127,7 +131,7 @@ const UpcommingAppointments: React.FC = () => {
 	);
 	if (isLoading) return <Text>Fetching appointement... </Text>;
 	if (error) return <Text>Something went wrong</Text>;
-	if (data?.length === 0)
+	if (data === undefined || data.length === 0)
 		return (
 			<Stack>
 				<Box alignItems="center" paddingX={10}>
@@ -149,18 +153,20 @@ const UpcommingAppointments: React.FC = () => {
 					<PrimaryButton
 						text={"Make an appointment"}
 						shadow={5}
-						onPress={() => navigation.navigate("FindFacilityList")}
+						onPress={() => {
+							navigation.navigate(TabNavKey.HomeView, {
+								screen: BookAppointmentNavKey.SetAppointmentTimeScreen,
+							})
+						}}
 					/>
 				</Box>
 			</Stack>
 		);
 
-	console.log("appointment");
-	console.log(data);
 	return (
 		<VStack space={4}>
 			<Heading fontSize="md">Upcoming Appointments</Heading>
-			{data?.map((appointment) => (
+			{data.map((appointment) => (
 				<UpcomingAppointmentsAlert appointment={appointment} />
 			))}
 		</VStack>
@@ -171,30 +177,15 @@ const UpcomingAppointmentsAlert: React.FC<{
 	appointment: DemoAppointmentType;
 }> = ({ appointment }) => {
 	const {
-		dateTime: { timeSlots },
-		consultant: { name },
+		dateTime: { date, timeSlots },
 	} = appointment;
+
 	return (
-		<VStack>
-			<HStack
-				justifyContent="space-between"
-				alignItems="center"
-				borderRadius={6}
-				borderColor="#B0B3C7"
-				borderWidth={1}
-				p={4}
-			>
-				<HStack
-					justifyContent="space-between"
-					alignItems="center"
-					space={4}
-				>
-					<MedicalHistoryIcon />
-					<Text>Meet Dr {name}</Text>
-				</HStack>
-				{/* TODO: specify the correct time for appointment */}
-				<Text color="#258FBE">{timeSlots[0]}</Text>
-			</HStack>
-		</VStack>
+		<AppointmentAlert
+			consultantName={appointment.consultant.name}
+			appointmentDate={`${date}, ${timeSlots[0]}`}
+			facilityName={appointment.consultant.hospital}
+			facilityLocation={appointment.consultant.region}
+		/>
 	);
 };

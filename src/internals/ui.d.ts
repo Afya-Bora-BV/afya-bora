@@ -22,3 +22,12 @@ type UserProfile =
 // type UserStatus = 
 //     | null      // Setting user status
 //     | "new"     // user is new; doesn't have profile
+interface PatientAppointment { 
+    consultant: {
+        name: string
+    }
+    date: Date
+    type: ConsultantionType
+    symptoms: string[]
+    complaint: string
+}

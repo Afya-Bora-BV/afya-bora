@@ -12,7 +12,7 @@ import {
   Text,
   Icon,
 } from 'native-base';
-import {IconContainer} from '../misc';
+import { TouchableOpacity } from 'react-native';
 
 /**
  * TODO: Upgrade this:
@@ -22,46 +22,57 @@ import {IconContainer} from '../misc';
  * - Render stuff only
  *   | Date, Name, Facility + Location (if offline, otherwise say Online),
  */
-export function AppointmentAlert(/*{ consultant, appointmentDate, facility }*/) {
+interface AppointmentAlertProps {
+  consultantName: string
+  appointmentDate: string
+  facilityName: string,
+  facilityLocation: string
+  onPress?: () => void
+}
+export function AppointmentAlert(props: AppointmentAlertProps) {
+  console.debug({ props })
   return (
-    <Box
-      flex={1}
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      padding={5}
-      rounded={20}
-      shadow={2}
-      bg="white">
-      {/* left */}
-      <HStack space={3} flexGrow={1} justifyContent="flex-start">
-        {/* Icon */}
-        <Square size={8}>
-          <MedicalHistoryIcon size={6} />
-        </Square>
-        <VStack>
-          <Heading fontSize="lg" color="#000">
-            Dr. Mohamedali
-          </Heading>
-          <Text fontSize="sm" color="#333">
-            13 July, 14:30 PM
+    // <TouchableOpacity onPress={props.onPress}>
+      <Box
+        flex={1}
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        padding={5}
+        rounded={20}
+        shadow={2}
+        bg="white">
+        {/* left */}
+        <HStack space={3} flexGrow={1} justifyContent="flex-start">
+          {/* Icon */}
+          <Square size={8}>
+            <MedicalHistoryIcon size={6} />
+          </Square>
+          <VStack>
+            <Heading fontSize="lg" color="#000">
+              {props.consultantName || "Dr. Ally Salim"}
+            </Heading>
+            <Text fontSize="sm" color="#333">
+              {props.appointmentDate || "17 July, 14:30 PM"}
+            </Text>
+            <Text fontSize="sm" fontStyle="italic" color="#333">
+              {/* Aga Khan Hospital, Arusha */}
+              {props.facilityName || "Aga Khan Hospital"}, {props.facilityLocation || "Arusha"}
+            </Text>
+          </VStack>
+        </HStack>
+        {/* right */}
+        <View alignItems="center" flexDirection="row">
+          <Text fontSize={15} color={'#561BB3'}>
+            Join/Edit
           </Text>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            Aga Khan Hospital, Arusha
-          </Text>
-        </VStack>
-      </HStack>
-      {/* right */}
-      <View alignItems="center" flexDirection="row">
-        <Text fontSize={15} color={'#561BB3'}>
-          Join/Edit
-        </Text>
 
-        <Icon size={5}>
-          <ArrowIcon_Next size={5} />
-        </Icon>
-      </View>
-    </Box>
+          <Icon size={5}>
+            <ArrowIcon_Next size={5} />
+          </Icon>
+        </View>
+      </Box>
+    // </TouchableOpacity>
   );
 }
 
