@@ -182,7 +182,7 @@ function EmailPasswordForm ({ onSuccess, onError }: any) {
 }
 
 export default function Login() {
-	// const [remember, setRemember] = React.useState(false);
+	const Toast = useToast()
 	const navigation = useNavigation();
 	const [
 		signInWithPhoneNumber, signInWithEmailAndPassword, 
@@ -191,8 +191,10 @@ export default function Login() {
 		s.signInWithPhoneNumber, s.signInWithEmailAndPassword ,
 		s.getVerificationCode
 	]))
-	const [type, setType] = useState<'email' | 'phone'>('email')
-	const Toast = useToast()
+
+	// TODO: add a toggle the uses `setType` to change the login form 
+	//  from `email` to `phone` and viseverse
+	const [type, setType] = useState<'email' | 'phone'>('phone')
 
 	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs ) => {
 		try {
