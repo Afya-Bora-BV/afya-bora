@@ -162,10 +162,11 @@ const createAuthStore = () => {
 
             // demo signout
             signOut: async () => {
-                await auth().signOut()
-
                 // reset user
                 set({ user: null })
+
+                // remove
+                await auth().signOut()
             }
     }), {
         name: "authState",

@@ -14,8 +14,7 @@ import { TabNavKey as MainTabNavKey } from '../_navigator'
 import { ProfileNavKey } from '../Profile/_navigator'
 import { useAuthStore } from "../../../internals/auth/context";
 
-export default function HomeView() {
-	const navigation = useNavigation()
+export default function HomeView({ navigation }: any) {
 	const currentProfile = useAuthStore(s => s.currentProfile)
 
 	useEffect(() => {
@@ -26,9 +25,9 @@ export default function HomeView() {
 			// Navigate if the home screen is missing
 			navigation.navigate(MainTabNavKey.Profile, {
 				screen: ProfileNavKey.ProfileScreen,
-				params: {
-					screen: ProfileNavKey.CreateProfile
-				}
+				// params: {
+				// 	screen: ProfileNavKey.CreateProfile
+				// }
 			})
 		}
 	}, [currentProfile])

@@ -145,6 +145,7 @@ const ProfileMain: React.FC = () => {
 						{profileOptions.map(
 							({ icon: ActualIcon, title, onNavigate }, ix) => (
 								<Pressable
+									key={`profOpt-${ix}`}
 									onPress={
 										onNavigate !== undefined
 											? () => onNavigate(navigation)

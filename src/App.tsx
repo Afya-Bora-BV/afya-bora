@@ -117,12 +117,13 @@ export const AppTheme = {
 };
 
 function Main() {
-	const [user, getUserProfiles, applyProfile] = useAuthStore((s) => [
-		s.user,
+	const user = useAuthStore((s) => s.user);
+	const currentProfile = useAuthStore((s) => s.currentProfile);
+
+	const [getUserProfiles, applyProfile] = useAuthStore((s) => [
 		s.getProfiles,
 		s.applyProfile,
 	]);
-	const currentProfile = useAuthStore((s) => s.currentProfile);
 	const [ready, setReady] = useState(false);
 
 	// eecuted when screen is viewed
@@ -167,21 +168,23 @@ function Main() {
 	/**
 	 * Loads if there is the user component
 	 */
-	if (currentProfile !== undefined) {
-		if (currentProfile.type === "patient") {
-			return (
-				<AppointmentTempoStoreProvider>
-					<PatientAppView />
-				</AppointmentTempoStoreProvider>
-			);
-		}
+	if (user !== null) {
+		if (currentProfile !== undefined) {
+			if (currentProfile.type === "patient") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<PatientAppView />
+					</AppointmentTempoStoreProvider>
+				);
+			}
 
-		if (currentProfile.type === "doctor") {
-			return (
-				<AppointmentTempoStoreProvider>
-					<DoctorAppView />
-				</AppointmentTempoStoreProvider>
-			);
+			if (currentProfile.type === "doctor") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<DoctorAppView />
+					</AppointmentTempoStoreProvider>
+				);
+			}
 		}
 	}
 
