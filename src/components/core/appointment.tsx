@@ -115,35 +115,38 @@ export function StatusAppointmentAlert(/*{ consultant, appointmentDate, facility
   // 			</HStack>
   // 		</VStack>
   return (
-    <HStack
+    <Box
+      flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
       padding={5}
       rounded={20}
-      shadow={2}>
-      {/* left */}
-      <HStack space={3} alignSelf="flex-start">
-        {/* Icon */}
-        <MedicalHistoryIcon size={6} />
-        <VStack space={2}>
-          <Heading fontSize="lg" color="#000">
-            13 July, 14:30 PM
-          </Heading>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            Online Consultation
-          </Text>
-        </VStack>
-      </HStack>
+      shadow={2}
+      bg="white"
+    >
+        {/* left */}
+        <HStack space={3} alignSelf="flex-start">
+          {/* Icon */}
+          <MedicalHistoryIcon size={6} />
+          <VStack space={2}>
+            <Heading fontSize="lg" color="#000">
+              13 July, 14:30 PM
+            </Heading>
+            <Text fontSize="sm" fontStyle="italic" color="#333">
+              Online Consultation
+            </Text>
+          </VStack>
+        </HStack>
 
-      {/* right */}
-      <View alignSelf="flex-end" justifyContent="center">
-        {/* TODO FIX: "Status positioning" */}
-        <Box rounded={10} backgroundColor={'#A9FA0F'} padding={1.5}>
-          <Text fontSize="sm" color={'#24D626'}>
-            Confirmed
-          </Text>
-        </Box>
-      </View>
-    </HStack>
+        {/* right */}
+        <View alignSelf="flex-end" justifyContent="center">
+          {/* TODO FIX: "Status positioning" */}
+          <Box rounded={10} backgroundColor={'#A9FA0F'} padding={1.5}>
+            <Text fontSize="sm" color={'#24D626'}>
+              Confirmed
+            </Text>
+          </Box>
+        </View>
+    </Box>
   );
 }

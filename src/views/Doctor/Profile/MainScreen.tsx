@@ -117,10 +117,9 @@ const ProfileMain: React.FC = () => {
 	const { height } = Dimensions.get("screen");
 
 	const userProfile = {
-		name: user?.name,
-		subText: user?.phoneNumber || user?.email || "Patient",
+		name: "Dr. Mohamedali", //user?.name ,
+		subText: "Pediatric, General"//user?.phoneNumber || user?.email || "Patient",
 	};
-
 
 	return (
 		<AlternateContainer
