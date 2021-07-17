@@ -10,6 +10,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
 
+
 // NOTE: Dont move this to main.... results to require cycle
 export type OnlineConsultStackParamList = {
 	OnlineConsultChooseConsultant: {
@@ -84,7 +85,7 @@ export default function OnlineConsultChooseConsultant({
 				appointment,
 			});
 		},
-		[navigation]
+		[navigation, appointment]
 	);
 
 	return (

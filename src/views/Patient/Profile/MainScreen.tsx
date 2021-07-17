@@ -64,7 +64,7 @@ function ProfileCard({ userProfile, ...props }) {
 					<Text fontWeight="600" fontSize="xl">
 						{userProfile.name}
 					</Text>
-					<Text color="#747F9E">{userProfile.phoneNumber}</Text>
+					<Text color="#747F9E">{userProfile.subText}</Text>
 				</VStack>
 			</HStack>
 
@@ -118,10 +118,9 @@ const ProfileMain: React.FC = () => {
 
 	const userProfile = {
 		name: user?.name,
-		phoneNumber: user?.phone,
+		subText: user?.phoneNumber || user?.email || "Patient",
 	};
 
-	console.log("User", user)
 
 	return (
 		<AlternateContainer
