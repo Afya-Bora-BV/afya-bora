@@ -249,7 +249,7 @@ export default function Login() {
 	// console.log("Confirm  : ",confirm)
 	return (
 		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
-			<View flexGrow={1}>
+			<View flexGrow={1} marginTop={10}>
 				{
 					type === 'phone' ? (
 						<PhoneNumberForm onSuccess={onSuccess} onError={onError} />
