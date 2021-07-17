@@ -1,22 +1,21 @@
-import React, {useEffect} from 'react';
-import SplashScreen from 'react-native-splash-screen';
+import React, { useEffect, useState } from "react";
+import SplashScreen from "react-native-splash-screen";
 // import { Text } from 'react-native'
 
-import {extendTheme, NativeBaseProvider, ToastProvider} from 'native-base';
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
-import {colors} from './constants/colors';
+import { colors } from "./constants/colors";
 
-import {AuthProvider, useAuthStore} from './internals/auth/context';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { AuthProvider, useAuthStore } from "./internals/auth/context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import PlainAppView from './views/_Main';
-import PatientAppView from './views/Patient';
-import DoctorAppView from './views/Doctor';
-import {AppointmentTempoStoreProvider} from './internals/appointment/context';
+import PlainAppView from "./views/_Main";
+import PatientAppView from "./views/Patient";
+import DoctorAppView from "./views/Doctor";
+import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 
-import {QueryClient, QueryClientProvider} from 'react-query';
-import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -90,24 +89,27 @@ export const theme = extendTheme({
 });
 
 export const AppTheme = {
-  ...DefaultTheme,
-  dark: false,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'white',
-  },
+	...DefaultTheme,
+	dark: false,
+	colors: {
+		...DefaultTheme.colors,
+		background: "white",
+	},
 };
 
 function Main() {
-  const user = useAuthStore(s => s.user)
-	const currentProfile = useAuthStore(s => s.currentProfile)
+	const user = useAuthStore((s) => s.user);
+	const currentProfile = useAuthStore((s) => s.currentProfile);
 
-  const [getUserProfiles, applyProfile] = useAuthStore(s => [s.getProfiles, s.applyProfile]);
-	const [ready, setReady] = useState(false)
+	const [getUserProfiles, applyProfile] = useAuthStore((s) => [
+		s.getProfiles,
+		s.applyProfile,
+	]);
+	const [ready, setReady] = useState(false);
 
 	// eecuted when screen is viewed
 	useEffect(() => {
-		async function preQuery () {
+		async function preQuery() {
 			// checks from storage, if there is internal state of the user
 			//  if there is or missing, remove
 			// setSplashToHide(true);
@@ -115,15 +117,14 @@ function Main() {
 				const profiles = await getUserProfiles();
 				if (profiles.length > 0) {
 					// Go to the profile screen
-					const defaultIndex = 0
-					applyProfile(defaultIndex)
+					const defaultIndex = 0;
+					applyProfile(defaultIndex);
 				}
 			}
 		}
 
-
 		// set the profile
-		preQuery()
+		preQuery();
 	}, [user]);
 
 	/**
@@ -132,49 +133,48 @@ function Main() {
 	useEffect(() => {
 		if (currentProfile !== undefined) {
 			// ready only if the profile isn't set
-			setReady(true)
+			setReady(true);
 		}
-	}, [currentProfile])
+	}, [currentProfile]);
 
 	useEffect(() => {
 		// Remove splash screen if ready
-		if (ready) {
-			SplashScreen.hide()
-		}
-	}, [ready])
+
+		SplashScreen.hide();
+	}, [ready]);
 
 	// If not ready... Don't ready anything
-	if (!ready) return null
+	// if (!ready) return SplashScreen.hide();
 
 	/**
 	 * Loads if there is the user component
 	 */
-  if (user !== null) {
-    if (currentProfile !== undefined) {
-      if (currentProfile.type === 'patient') {
-        return (
-          <AppointmentTempoStoreProvider>
-            <PatientAppView />
-          </AppointmentTempoStoreProvider>
-        )
-      }
-  
-      if (currentProfile.type === 'doctor') {
-        return (
-          <AppointmentTempoStoreProvider>
-            <DoctorAppView />
-          </AppointmentTempoStoreProvider>
-        )
-      }		
-    }
-  }
+	if (user !== null) {
+		if (currentProfile !== undefined) {
+			if (currentProfile.type === "patient") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<PatientAppView />
+					</AppointmentTempoStoreProvider>
+				);
+			}
 
-  // Not authenticated
-  return <PlainAppView />;
+			if (currentProfile.type === "doctor") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<DoctorAppView />
+					</AppointmentTempoStoreProvider>
+				);
+			}
+		}
+	}
+
+	// Not authenticated
+	return <PlainAppView />;
 }
 
-export default function App () {
-    return (
+export default function App() {
+	return (
 		<SafeAreaProvider>
 			<NativeBaseProvider theme={theme}>
 				<NavigationContainer theme={AppTheme}>
@@ -188,5 +188,5 @@ export default function App () {
 				</NavigationContainer>
 			</NativeBaseProvider>
 		</SafeAreaProvider>
-    )
+	);
 }
