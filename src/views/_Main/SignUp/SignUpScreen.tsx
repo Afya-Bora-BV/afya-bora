@@ -28,7 +28,7 @@ export default function SignUp() {
 	const navigation = useNavigation();
 	const { height } = Dimensions.get("screen");
 	const Toast = useToast()
-
+	
 	const signUpWithPhoneNumber = useAuthStore(s => s.signUpWithPhoneNumber)
 
 	const {
@@ -85,7 +85,6 @@ export default function SignUp() {
 					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
 						<PrimaryButton
 							text={"Confirm"}
-							shadow={5}
 							onPress={onConfirm}
 						/>
 					</Box>

@@ -1,6 +1,6 @@
 import React from 'react'
 import SignUpScreen from './SignUpScreen'
-import VerifyScreen from './VerifyScreen'
+import VerifyScreen from '../VerifyScreen'
 
 import { Stack, NavKey } from './_navigator'
 

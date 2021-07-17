@@ -21,22 +21,22 @@ export default function ProfileOptions () {
 		{ 
 			type: 'patient',
 			profile: {
-				title: "Patient",
+				title: "A Patient",
 				description: "Create a profile for a patient",
 			}
 		},
 		{
 			type: 'doctor',
 			profile: {
-				title: "Doctor",
-				description: "Create a profile for a doctor",
+				title: "A consultant",
+				description: "Create a profile for a consultant",
 			}
 		},
 	]
 
 	return (
 		<MainContainer
-			title="List of user profiles"
+			title="Join in as..."
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
@@ -50,6 +50,9 @@ export default function ProfileOptions () {
 					: undefined
 			}
 		>
+			<Box>
+
+			</Box>
 			<VStack flex={1} space={5} paddingTop={10} paddingX={5}>
 				{
 					profiles.map((v) => (

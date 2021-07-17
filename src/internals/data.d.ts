@@ -41,7 +41,7 @@ interface ConsultantProfile {
     rating: number
     locationOfResidence: string
     clinicalType: ClinicianType['id']
-    areaOfSpeciality: Array<Speciality["id"]>
+    areaOfSpeciality: Speciality["id"][]
     calendarSlots?: Array<ConsultantionSlot>
 }
 
@@ -52,18 +52,16 @@ type ConsultantionType = 'online' | 'offline'
 
 interface ConsultantionSlot {
     type: ConsultantionType
-    date: DateString
-    timeSlots: Array<TimeString>
+    dateTime: Date
 }
 
 interface Appointment {
-    id: string
     pid: PatientProfile['id']
     cid: ConsultantProfile['id']
     date: Date
     type: ConsultantionType
     aboutVisit: {
-        symptomps: string[]
+        symptoms: string[]
         complaint: string
     }
 }

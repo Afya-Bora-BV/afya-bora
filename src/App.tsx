@@ -13,6 +13,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import PlainAppView from "./views/_Main";
 import PatientAppView from "./views/Patient";
 import DoctorAppView from "./views/Doctor";
+import ProfileSelectorView from "./views/SelectProfile";
+
 import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -100,10 +102,16 @@ export const AppTheme = {
 function Main() {
 	const user = useAuthStore((s) => s.user);
 	const currentProfile = useAuthStore((s) => s.currentProfile);
+	const [profileType, ] = useState<'patient' | 'doctor'>('patient')
 
-	const [getUserProfiles, applyProfile] = useAuthStore((s) => [
-		s.getProfiles,
-		s.applyProfile,
+	const [
+		getUserProfiles, addProfile,
+		applyProfile, fetchProfile,
+		toRemove_setProfile
+	] = useAuthStore((s) => [
+		s.getProfiles, s.addProfile,
+		s.applyProfile, s.fetchProfile,
+		s.setProfile
 	]);
 	const [ready, setReady] = useState(false);
 
@@ -114,18 +122,37 @@ function Main() {
 			//  if there is or missing, remove
 			// setSplashToHide(true);
 			if (user !== null) {
+
 				const profiles = await getUserProfiles();
-				if (profiles.length > 0) {
-					// Go to the profile screen
-					const defaultIndex = 0;
-					applyProfile(defaultIndex);
+				if (profiles.length === 0) {
+					// NOTE: this is expected to work since the forced user has this id
+
+					// TODO default as patients
+					const patientProfiles = await fetchProfile(user.uid, profileType)
+					patientProfiles.forEach(
+						(profile) => {
+							addProfile({ type: 'patient', profile: profile as PatientProfile })
+						}
+					)
+					
+					if (patientProfiles.length > 0) {
+						// NOTE: force put the patient profile
+						const profile = patientProfiles[0]
+						toRemove_setProfile({ type: profileType, profile } as UserProfile)
+					}
+				} else {
+					if (profiles.length > 0) {
+						// Go to the profile screen
+						const defaultIndex = 0;
+						await applyProfile(defaultIndex);
+					}
 				}
 			}
 		}
 
 		// set the profile
 		preQuery();
-	}, [user]);
+	}, [user, profileType]);
 
 	/**
 	 * Checks to see if the user has logged in
@@ -166,6 +193,8 @@ function Main() {
 					</AppointmentTempoStoreProvider>
 				);
 			}
+		} else {
+			return <ProfileSelectorView />
 		}
 	}
 

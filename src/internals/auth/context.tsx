@@ -6,6 +6,8 @@ import { persist } from "zustand/middleware";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
+import produce from "immer";
 
 /**
  * Authentication store
@@ -41,7 +43,9 @@ interface AuthStore {
     // --------------------
     currentProfile: UserProfile | undefined
     setProfile: (profile: UserProfile) => void
+    addProfile: (profile: UserProfile) => Promise<void>
     applyProfile: (profileId: number) => Promise<void>
+    fetchProfile: (uid: string, profileType: 'patient' | 'doctor') => Promise<PatientProfile[] | ConsultantProfile[]>
     getProfiles: () => Promise<Array<UserProfile>>
 
     // Login information
@@ -74,28 +78,75 @@ const reshapeUser = (uc: FirebaseAuthTypes.UserCredential): User => {
     }
 }
 
+const fetchPatientProfiles = async (uid: string) => {
+    const collectionRef = firestore().collection('patients')
+    const patientProfiles = await collectionRef.get({ source: 'server' })
+    const existingPatientProfileDocs = patientProfiles.docs.filter(d => d.exists)
+    return existingPatientProfileDocs
+            .map(d => d.data() as PatientProfile)
+            .filter(d => d.uid ===  uid)
+}
+const fetchConsultantProfiles = async (uid: string) => {
+    const collectionRef = firestore().collection('patients')
+    const patientProfiles = await collectionRef.get({ source: 'server' })
+    const existingPatientProfileDocs = patientProfiles.docs.filter(d => d.exists)
+    return existingPatientProfileDocs
+            .map(d => d.data() as ConsultantProfile)
+            .filter(d => d.uid ===  uid)
+}
+
 const {Provider, useStore} = createContext<AuthStore>();
 const createAuthStore = () => {
-    return create<AuthStore>(persist((set, get) => ({
-            user: null,
+    return create<AuthStore>(
+        // persist(
+            (set, get) => ({
+            // user: null,
+            user: {
+                name: "Test Patient",
+                email: "raghav@testpatient.com",
+                uid: "o2e9Z7WMAXhk8kro6QPAAUPho763",
+                image: null,
+                isNew: false,
+                phoneNumber: null,
+            },
 
             // ----------------------
             currentProfile: undefined,
 
+            fetchProfile: async function (uid, profileType) {
+                switch (profileType) {
+                    case 'doctor':
+                        return await fetchConsultantProfiles(uid)
+                    case 'patient':
+                        return await fetchPatientProfiles(uid)
+                    default:
+                        throw Error("Profile should either for `patient` or `doctor`")
+                }
+            },
             setProfile: (profile) => {
                 console.debug({ profile })
                 set({ currentProfile: profile })
                 // NOTE: might need to add the back to phone state... because reasons
             },
-
-            applyProfile: async (profileId: number) => {
-                const profiles = await get().getProfiles()
-                console.debug({ profileId })
-                set({ currentProfile: profiles[profileId] })
-            },
             getProfiles: async function () {
                 const c = await AsyncStorage.getItem(AFYABORA_USER_PROFILES)
                 return c !== null ? JSON.parse(c) : []
+            },
+            addProfile: async function (profile) {
+                const profiles = await get().getProfiles()
+                const newProfiles = produce(profiles, df => {
+                    df.push(profile)
+                    return df
+                });
+
+                await AsyncStorage.setItem(
+                    AFYABORA_USER_PROFILES, JSON.stringify(newProfiles)
+                )
+            },
+            applyProfile: async function (profileId: number) {
+                const profiles = await get().getProfiles()
+                console.debug({ profileId })
+                set({ currentProfile: profiles[profileId] })
             },
 
             // ----------------------
@@ -163,15 +214,17 @@ const createAuthStore = () => {
             // demo signout
             signOut: async () => {
                 // reset user
-                set({ user: null })
+                set({ user: null, currentProfile: undefined })
 
                 // remove
                 await auth().signOut()
             }
-    }), {
-        name: "authState",
-        getStorage: () => AsyncStorage
-    }))
+        }),
+        // {
+        //     name: "authState",
+        //     getStorage: () => AsyncStorage
+        // })
+    )
 }
 
 interface AuthProviderProps { children?: React.ReactElement }

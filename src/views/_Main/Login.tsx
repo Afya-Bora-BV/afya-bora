@@ -194,9 +194,9 @@ export default function Login() {
 
 	// TODO: add a toggle the uses `setType` to change the login form 
 	//  from `email` to `phone` and viseverse
-	const [type, setType] = useState<'email' | 'phone'>('phone')
+	const [type, setType] = useState<'email' | 'phone'>('email')
 
-	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs ) => {
+	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs) => {
 		try {
 			if (type === 'phone') {
 				// Dealing the sign in process as a form input
