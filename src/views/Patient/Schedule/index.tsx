@@ -164,11 +164,13 @@ const UpcommingAppointments: React.FC = () => {
 		);
 
 	return (
-		<VStack space={4}>
+		<VStack space={4} marginX={10}>
 			<Heading fontSize="md">Upcoming Appointments</Heading>
-			{data.map((appointment) => (
-				<UpcomingAppointmentsAlert appointment={appointment} />
-			))}
+			<VStack paddingX={4} space={3} >
+				{data.map((appointment) => (
+					<UpcomingAppointmentsAlert appointment={appointment} />
+				))}
+			</VStack>
 		</VStack>
 	);
 };

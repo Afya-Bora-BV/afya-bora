@@ -124,29 +124,29 @@ function Main() {
 			if (user !== null) {
 
 				const profiles = await getUserProfiles();
-				if (profiles.length === 0) {
-					// NOTE: this is expected to work since the forced user has this id
+				// if (profiles.length === 0) {
+				// 	// NOTE: this is expected to work since the forced user has this id
 
-					// TODO default as patients
-					const patientProfiles = await fetchProfile(user.uid, profileType)
-					patientProfiles.forEach(
-						(profile) => {
-							addProfile({ type: 'patient', profile: profile as PatientProfile })
-						}
-					)
+				// 	// TODO default as patients
+				// 	const patientProfiles = await fetchProfile(user.uid, profileType)
+				// 	patientProfiles.forEach(
+				// 		(profile) => {
+				// 			addProfile({ type: 'patient', profile: profile as PatientProfile })
+				// 		}
+				// 	)
 					
-					if (patientProfiles.length > 0) {
-						// NOTE: force put the patient profile
-						const profile = patientProfiles[0]
-						toRemove_setProfile({ type: profileType, profile } as UserProfile)
-					}
-				} else {
-					if (profiles.length > 0) {
-						// Go to the profile screen
-						const defaultIndex = 0;
-						await applyProfile(defaultIndex);
-					}
-				}
+				// 	if (patientProfiles.length > 0) {
+				// 		// NOTE: force put the patient profile
+				// 		const profile = patientProfiles[0]
+				// 		toRemove_setProfile({ type: profileType, profile } as UserProfile)
+				// 	}
+				// } else {
+				// 	if (profiles.length > 0) {
+				// 		// Go to the profile screen
+				// 		const defaultIndex = 0;
+				// 		await applyProfile(defaultIndex);
+				// 	}
+				// }
 			}
 		}
 

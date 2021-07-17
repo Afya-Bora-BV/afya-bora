@@ -7,6 +7,5 @@ export const Tab = createBottomTabNavigator();
 export const TabNavKey = {
 	HomeView: "Home",
 	ScheduleView: "Schedule",
-	ChatView: "Chats",
 	Profile: "ProfileMain",
 };

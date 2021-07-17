@@ -42,16 +42,6 @@ export default function PatientAppView () {
 				}}
 			/>
 			<Tab.Screen
-				name={TabNavKey.ChatView}
-				component={ChatView}
-				options={{
-					tabBarLabel: "Chat",
-					tabBarIcon: ({ color, size }) => (
-						<TabChatIcon size={8} color={color} />
-					),
-				}}
-			/>
-			<Tab.Screen
 				name={TabNavKey.Profile}
 				component={ProfileView}
 				options={{

@@ -30,6 +30,7 @@ import { ProfileNavKey } from "./_navigator";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
+import { useAuthStore } from "../../../internals/auth/context";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -63,7 +64,7 @@ function ProfileCard({ userProfile, ...props }) {
 					<Text fontWeight="600" fontSize="xl">
 						{userProfile.name}
 					</Text>
-					<Text color="#747F9E">{userProfile.phoneNumber}</Text>
+					<Text color="#747F9E">{userProfile.subText}</Text>
 				</VStack>
 			</HStack>
 
@@ -107,20 +108,19 @@ const profileOptions = [
 		icon: InfoIcon,
 		title: "About Us",
 	},
-	{
-		icon: LogoutIcon,
-		title: "Logout",
-	},
 ];
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
+	const { signOut, user } = useAuthStore(state => ({ signOut: state.signOut, user: state.user }))
+
 	const { height } = Dimensions.get("screen");
 
 	const userProfile = {
-		name: "Ally Jr. Salim",
-		phoneNumber: "0712 345 545",
+		name: user?.name,
+		subText: user?.phoneNumber || user?.email || "Patient",
 	};
+
 
 	return (
 		<AlternateContainer
@@ -144,6 +144,7 @@ const ProfileMain: React.FC = () => {
 						{profileOptions.map(
 							({ icon: ActualIcon, title, onNavigate }, ix) => (
 								<Pressable
+									key={`profOpt-${ix}`}
 									onPress={
 										onNavigate !== undefined
 											? () => onNavigate(navigation)
@@ -159,6 +160,16 @@ const ProfileMain: React.FC = () => {
 								</Pressable>
 							)
 						)}
+						<Pressable
+							onPress={signOut}
+						>
+							<HStack alignItems="center" space={3}>
+								<Square size={6}>
+									<LogoutIcon />
+								</Square>
+								<Text fontSize={18}>Logout</Text>
+							</HStack>
+						</Pressable>
 					</VStack>
 				</Box>
 			</VStack>

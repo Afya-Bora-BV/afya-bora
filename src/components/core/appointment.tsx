@@ -30,11 +30,9 @@ interface AppointmentAlertProps {
   onPress?: () => void
 }
 export function AppointmentAlert(props: AppointmentAlertProps) {
-  console.debug({ props })
   return (
     // <TouchableOpacity onPress={props.onPress}>
       <Box
-        flex={1}
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
