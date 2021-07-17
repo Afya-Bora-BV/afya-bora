@@ -84,7 +84,7 @@ export default function MainContainer({
 				
 				{/* Body */}
 				{
-					noScroll || true ? (
+					noScroll || false ? (
 						<View flexGrow={1}>
 							{children}
 						</View>
