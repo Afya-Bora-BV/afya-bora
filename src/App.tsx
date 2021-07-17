@@ -16,6 +16,7 @@ import DoctorAppView from './views/Doctor';
 import {AppointmentTempoStoreProvider} from './internals/appointment/context';
 
 import {QueryClient, QueryClientProvider} from 'react-query';
+import { useState } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -117,8 +118,10 @@ export const AppTheme = {
 };
 
 function Main() {
-	const [user, getUserProfiles, applyProfile] = useAuthStore(s => [s.user, s.getProfiles, s.applyProfile]);
+  const user = useAuthStore(s => s.user)
 	const currentProfile = useAuthStore(s => s.currentProfile)
+
+  const [getUserProfiles, applyProfile] = useAuthStore(s => [s.getProfiles, s.applyProfile]);
 	const [ready, setReady] = useState(false)
 
 	// eecuted when screen is viewed
@@ -165,23 +168,25 @@ function Main() {
 	/**
 	 * Loads if there is the user component
 	 */
-	if (currentProfile !== undefined) {
-		if (currentProfile.type === 'patient') {
-			return (
-				<AppointmentTempoStoreProvider>
-					<PatientAppView />
-				</AppointmentTempoStoreProvider>
-			)
-		}
-
-		if (currentProfile.type === 'doctor') {
-			return (
-				<AppointmentTempoStoreProvider>
-					<DoctorAppView />
-				</AppointmentTempoStoreProvider>
-			)
-		}		
-	}
+  if (user !== null) {
+    if (currentProfile !== undefined) {
+      if (currentProfile.type === 'patient') {
+        return (
+          <AppointmentTempoStoreProvider>
+            <PatientAppView />
+          </AppointmentTempoStoreProvider>
+        )
+      }
+  
+      if (currentProfile.type === 'doctor') {
+        return (
+          <AppointmentTempoStoreProvider>
+            <DoctorAppView />
+          </AppointmentTempoStoreProvider>
+        )
+      }		
+    }
+  }
 
   // Not authenticated
   return <PlainAppView />;
