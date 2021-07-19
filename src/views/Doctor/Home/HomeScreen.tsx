@@ -29,6 +29,7 @@ import { HomeNavKey } from "./_navigator";
 import _ from "lodash";
 import { AppointmentAlert } from "../../../components/core/appointment";
 import { TouchableOpacityBase } from "react-native";
+import { useAuthStore } from "../../../internals/auth/context";
 
 export const MONTH_NAMES = [
 	"January",
@@ -86,7 +87,7 @@ const NextAppointmentsSection = () => {
 
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Next Appointment</Heading>
-			<Pressable 
+			<Pressable
 				onPress={() => {
 					navigation.navigate(HomeNavKey.AppointmentInfoScreen)
 				}}>
@@ -131,8 +132,8 @@ const TodayAppointmentsSection = () => {
 			<Heading fontSize="xl">Today's Appointments</Heading>
 			<VStack space={3}>
 				{
-					_.times(3).map((_ , ix) => (
-						<AppointmentAlert key={ix}/>
+					_.times(3).map((_, ix) => (
+						<AppointmentAlert key={ix} />
 					))
 				}
 
@@ -177,8 +178,8 @@ const UpcomingAppointmentsSection = () => {
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
 				{
-					_.times(5).map((_ , ix) => (
-						<AppointmentAlert key={ix}/>
+					_.times(5).map((_, ix) => (
+						<AppointmentAlert key={ix} />
 					))
 				}
 
@@ -253,8 +254,9 @@ const UpcomingAppointmentsSection = () => {
 // 	);
 // };
 
-export default function DoctorHome () {
+export default function DoctorHome() {
 	const navigation = useNavigation();
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
 	return (
 		<MainContainer
@@ -283,7 +285,7 @@ export default function DoctorHome () {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, Dr. Mohamedali</Heading>
+					<Heading fontSize="3xl">Hi, {profile?.name}</Heading>
 				</VStack>
 
 				<VStack space={3} marginX={5}>

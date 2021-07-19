@@ -36,24 +36,14 @@ import CodeInput from "../../components/forms/codeInput";
 
 
 // TODO : logic to be moved somewhere on refactor
-type Profile = {
-	bloodGroup: string
-	dob: Date
-	gender: "male" | "female"
-	height: number
-	location: string
-	name: string
-	uid: string
-	weight: number
-	patientDocId: string
-}
-const checkUserProfile = async (phoneNumber: string): Promise<Profile | undefined> => {
+
+const checkUserProfile = async (phoneNumber: string): Promise<User | undefined> => {
 	const uid = await auth().currentUser?.uid
 	console.log("USER ID 1 : ", uid)
 	const profile = await firestore().collection("patients").doc(uid).get()
 	let data = undefined
 	if (profile.exists) {
-		data = profile.data() as Profile
+		data = profile.data() as User
 	}
 	return data
 }
@@ -61,9 +51,7 @@ const checkUserProfile = async (phoneNumber: string): Promise<Profile | undefine
 
 // let render = 0
 
-
 const { height } = Dimensions.get("screen");
-
 
 /**
  * Form for Phone number only
@@ -188,9 +176,7 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 			navigation.navigate(_MainAppNavKey.CreateProfileView)
 			console.log("What cant navigate ")
 		} else {
-
 			updateProfile(profile)
-
 		}
 
 		console.log("The user exists ", profile)

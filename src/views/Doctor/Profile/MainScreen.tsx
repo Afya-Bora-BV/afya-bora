@@ -31,6 +31,9 @@ import AlternateContainer from "../../../components/containers/AlternateContaine
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
 import { useAuthStore } from "../../../internals/auth/context";
+import { useMutation } from "react-query";
+import auth from '@react-native-firebase/auth';
+
 
 // import auth from '@react-native-firebase/auth';
 
@@ -112,14 +115,38 @@ const profileOptions = [
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
-	const { signOut, user } = useAuthStore(state => ({ signOut: state.signOut, user: state.user }))
+	const { profile, clearProfile } = useAuthStore(state => ({ profile: state.profile, clearProfile: state.clearProfile }))
 
 	const { height } = Dimensions.get("screen");
 
 	const userProfile = {
-		name: "Dr. Mohamedali", //user?.name ,
-		subText: "Pediatric, General"//user?.phoneNumber || user?.email || "Patient",
+		name: profile?.name,
+		subText: profile?.phoneNumber || profile?.email || "Patient",
 	};
+
+	// TODO : considering moving the logic out
+	// currently kept here so as to update the global store
+	// possibly codes for cleaning the global store can be kept in onSuccess of useMutation()
+	const signOutAndClearStore = async () => {
+		await auth().signOut()
+		clearProfile()
+	}
+
+	const signOut = () => {
+		logout()
+	}
+
+	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
+		onError: (error, variables, context) => {
+			// An error happened!
+			console.log(`error on signing out  `, error)
+		},
+		onSuccess: (data, variables, context) => {
+			// Boom baby!
+			console.log("Signned out successuly ")
+		},
+
+	})
 
 	return (
 		<AlternateContainer
@@ -166,7 +193,7 @@ const ProfileMain: React.FC = () => {
 								<Square size={6}>
 									<LogoutIcon />
 								</Square>
-								<Text fontSize={18}>Logout</Text>
+								<Text fontSize={18}>{isLoading ? "Logging out ..." : "Logout"}</Text>
 							</HStack>
 						</Pressable>
 					</VStack>

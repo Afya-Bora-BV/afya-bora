@@ -24,25 +24,14 @@ export interface User {
     type: "doctor" | "patient" | "admin";
 }
 
-
-/**
- * Authentication store
- */
-
-const demoUsers = [
-    {
-        uid: "ASa",
-        name: "George Millanzi",
-        phone: "+255712088775",
-        gender: "Male",
-        dob: "12/12/2001",
-        height: 12,
-        weight: 12,
-        bloodGroup: "0",
-        residence: "Arusha",
-        type: "doctor",
-    },
-];
+export interface Consultant {
+    email: string
+    gender: string
+    name: string
+    rating: string
+    uid: string
+    type: "doctor"
+}
 
 // its safe to delete 'user' now, its been replaced with 'profile'
 interface AuthStore {
@@ -54,8 +43,8 @@ interface AuthStore {
     userExists: true | false;
     confirm: any;
     phone: string;
-    profile: User | null;
-    updateProfile: (profile: User) => void
+    profile: User | Consultant | null;
+    updateProfile: (profile: User | Consultant) => void
     clearProfile: () => void
     signInWithEmailAndPassword: (
         email: string,

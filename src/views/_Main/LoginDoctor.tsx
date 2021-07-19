@@ -23,14 +23,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { NavKey as _MainAppNavKey } from './_navigator'
-import { useAuthStore } from "../../internals/auth/context";
+import { Consultant, useAuthStore } from "../../internals/auth/context";
 import AltContainer from "../../components/containers/AltContainer";
 import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";
 import _ from "lodash";
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 // let render = 0
-
 
 const { height } = Dimensions.get("screen");
 
@@ -44,10 +45,29 @@ interface FormEmailInputs {
     password: string
 }
 
+const fetchUserProfile = async (): Promise<Consultant | undefined> => {
+    const uid = await auth().currentUser?.uid
+    const profile = await firestore().collection("consultants").doc(uid).get()
+    let data = undefined
+    if (profile.exists) {
+        data = profile.data() as Consultant
+    }
+    return data
+}
+
+const loginWithEmailAndPassword = async ({ email, password }: FormEmailInputs): Promise<Consultant | undefined> => {
+    await auth().signInWithEmailAndPassword(email, password)
+    const profile = await fetchUserProfile()
+    if (profile) {
+        return profile
+    }
+    return undefined
+}
 
 export default function LoginDoctor() {
     const Toast = useToast()
     const navigation = useNavigation();
+    const { updateProfile } = useAuthStore((state) => ({ updateProfile: state.updateProfile }))
 
     const {
         control,
@@ -59,13 +79,28 @@ export default function LoginDoctor() {
 
     const [visibility, setVisibility] = React.useState("eye-off-outline");
 
-    const [type, setType] = useState<'email' | 'phone'>('email')
 
-
-    const onLogin = () => {
+    const onLogin = (data: FormEmailInputs) => {
         console.log("Logging in ... ")
+        login(data)
     }
 
+    const { isLoading, mutate: login } = useMutation(loginWithEmailAndPassword, {
+        onError: (error, variables, context) => {
+            // An error happened!
+            console.log(`rolling back optimistic update with id `, error)
+            Toast.show({
+                title: `${error}`,
+            })
+        },
+        onSuccess: (data: Consultant | undefined, variables, context) => {
+            console.log("Logged in successfully ", data)
+            if (data) {
+                updateProfile({ ...data, type: "doctor" } as Consultant)
+            }
+        },
+
+    })
     // console.log("Confirm  : ",confirm)
     return (
         <AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
@@ -119,7 +154,9 @@ export default function LoginDoctor() {
                     <Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
 
                         <Button
-                            onPress={onLogin}
+                            onPress={handleSubmit(onLogin)}
+                            isLoading={isLoading}
+                            isDisabled={isLoading}
                             borderRadius={20}
                             style={{ backgroundColor: colors.primary }}
                             _text={{ color: "white" }}

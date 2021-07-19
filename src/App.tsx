@@ -156,8 +156,7 @@ function Main() {
 		}
 	}
 
-	console.log("Profile details ")
-	console.log(JSON.stringify(profile, null, 3))
+
 	// Not authenticated
 	return <PlainAppView />;
 }
