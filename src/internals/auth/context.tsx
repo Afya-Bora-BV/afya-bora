@@ -10,9 +10,10 @@ import auth from "@react-native-firebase/auth";
 /**
  * User object
  */
-interface User {
+export interface User {
     name: string;
     phone: string;
+    email?: string;
     gender: "male" | "female";
     dob: Date; //change to date
     height: number;
@@ -43,6 +44,7 @@ const demoUsers = [
     },
 ];
 
+// its safe to delete 'user' now, its been replaced with 'profile'
 interface AuthStore {
     user:
     | undefined // User doesn't exist yet
@@ -86,7 +88,7 @@ const createAuthStore = () =>
                     set({ profile: profile })
                 },
                 clearProfile: () => {
-
+                    set({ profile: null })
                 },
                 updatePhoneNumber: (phone: string) => {
                     set({ phone: phone })
