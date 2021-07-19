@@ -12,18 +12,36 @@ import {
 	Button,
 } from "native-base";
 import React, { useState } from "react";
-import { PicAvatar } from "../../../components/avatar";
-import { Spacer } from "../../../components/Spacer";
+import { PicAvatar } from "../../components/avatar";
+import { Spacer } from "../../components/Spacer";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { PrimaryButton } from "../../../components/button";
+import { PrimaryButton } from "../../components/button";
 import moment from "moment";
+import { useAuthStore } from "../../internals/auth/context";
 
+import firestore from '@react-native-firebase/firestore';
+import { useMutation } from "react-query";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+
+
+type Profile = CompleteProfileInputs & {
+	phoneNumber: string;
+}
+
+const createPatientProfile = async (profile: Profile) => {
+	console.log("Creating a profile")
+	console.log(profile)
+	const profilesRef = firestore().collection("patients")
+	const uid = await auth().currentUser?.uid
+	console.log("USER ID 2 : ", uid)
+	await profilesRef.doc(uid).set({ ...profile, uid })
+}
 
 function friendlyFormatDate(timeStamp: Date | string | number) {
 	const dateObj = new Date(timeStamp);
@@ -35,43 +53,54 @@ function friendlyFormatDate(timeStamp: Date | string | number) {
 	return `${date}-${month + 1}-${year}`;
 }
 
+
+
+
 //yup form control attrib
-interface LoginFormInputs {
+interface CompleteProfileInputs {
 	name: string;
-	gender: "male" | "female" | "other";
-	dateOfBirth: Date;
+	phone: string;
+	gender: "male" | "female";
+	dob: Date
+	height: number;
+	weight: number;
+	bloodGroup: string;
+	residence: string;
+	type: "doctor" | "patient" | "admin";
 }
 
 const schema = yup.object().shape({
 	email: yup.string().required(),
 });
 
-export default function CreateProfileScreen () {
+export default function CreateProfileScreen() {
 	const navigation = useNavigation();
-	const [gender, setGender] = React.useState();
 	const { width, height } = Dimensions.get("screen");
 
-	const [bloodGroup, setBloodGroup] = React.useState();
-	const [location, setLocation] = React.useState();
+	const { phoneNumber, updateProfile } = useAuthStore((state) => ({ phoneNumber: state.phone, updateProfile: state.updateProfile }))
 
 
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginFormInputs>({
-		resolver: yupResolver(schema),
+	} = useForm<CompleteProfileInputs>({
+		// resolver: yupResolver(schema),
 	});
 
-	const onSubmit = (data: LoginFormInputs) => {
+	const onSubmit = (data: CompleteProfileInputs) => {
+		console.log("Form data : ")
 		console.log(data);
-		nav();
+		completProfile({ ...data, phoneNumber, type: "patient" })
+
+		// TODO: to reconsider better way to store this server state
+		updateProfile({ ...data, phoneNumber, type: "patient" })
 	};
 
 	//navigation attrib
-
 	// TODO: on registering instead of navigating just update the global store which in turn will update the stack
 	// to render
+
 	const nav = () => {
 		navigation.navigate("Home");
 	};
@@ -84,6 +113,20 @@ export default function CreateProfileScreen () {
 		setShow(true);
 	};
 
+	const { isLoading, mutate: completProfile } = useMutation(createPatientProfile, {
+		onError: (error, variables, context) => {
+			// An error happened!
+			console.log(`rolling back optimistic update with id `, error)
+		},
+		onSuccess: (data, variables, context) => {
+			// Boom baby!
+			console.log("created successfully ")
+
+		},
+
+	})
+
+	console.log("Phone number : 2 ", phoneNumber)
 
 	return (
 		<Box flex={1}>
@@ -106,7 +149,7 @@ export default function CreateProfileScreen () {
 						paddingY={20}
 					>
 						<Text color="white" fontSize={24}>
-							Create A Health Profile
+							Complete Profile
 						</Text>
 					</View>
 					{/* </Stack> */}
@@ -150,9 +193,8 @@ export default function CreateProfileScreen () {
 													autoCapitalize={"words"}
 												/>
 											)}
-										// name="names"
-										// rules={{ required: true }}
-										// defaultValue=""
+											name="name"
+											defaultValue=""
 										/>
 									</Stack>
 
@@ -161,29 +203,44 @@ export default function CreateProfileScreen () {
 									<Stack>
 										<Text>Gender</Text>
 
-										<Select
-											variant="rounded"
-											selectedValue={gender}
-											minWidth={200}
-											accessibilityLabel="Gender"
-											placeholder="Gender"
-											onValueChange={(itemValue) =>
-												setGender(itemValue)
-											}
-											_selectedItem={{
-												bg: "cyan.600",
-												endIcon: <CheckIcon size={4} />,
-											}}
-										>
-											<Select.Item
-												label="Male"
-												value="male"
-											/>
-											<Select.Item
-												label="Female"
-												value="female"
-											/>
-										</Select>
+										<Controller
+											control={control}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+												},
+											}) => (
+												<Select
+													variant="rounded"
+													selectedValue={value}
+													minWidth={200}
+													accessibilityLabel="Gender"
+													placeholder="Gender"
+													onValueChange={(itemValue) =>
+														onChange(itemValue)
+													}
+													_selectedItem={{
+														bg: "cyan.600",
+														endIcon: <CheckIcon size={4} />,
+													}}
+												>
+													<Select.Item
+														label="Male"
+														value="male"
+													/>
+													<Select.Item
+														label="Female"
+														value="female"
+													/>
+												</Select>
+											)}
+											name="gender"
+											defaultValue="male"
+										/>
+
+
 									</Stack>
 
 									<Spacer size={20} />
@@ -270,7 +327,7 @@ export default function CreateProfileScreen () {
 													)}
 												</>
 											)}
-											name="dateOfBirth"
+											name="dob"
 											defaultValue={date}
 										/>
 									</Stack>
@@ -291,8 +348,9 @@ export default function CreateProfileScreen () {
 														},
 													}) => (
 														<Input
-															value={value}
+															value={`${value}`}
 															onBlur={onBlur}
+															keyboardType="name-phone-pad"
 															onChangeText={(
 																value
 															) =>
@@ -319,9 +377,9 @@ export default function CreateProfileScreen () {
 															}
 														/>
 													)}
-												// name="names"
-												// rules={{ required: true }}
-												// defaultValue=""
+													name="height"
+													// rules={{ required: true }}
+													defaultValue={0}
 												/>
 											</Stack>
 
@@ -340,8 +398,9 @@ export default function CreateProfileScreen () {
 														},
 													}) => (
 														<Input
-															value={value}
+															value={`${value}`}
 															onBlur={onBlur}
+															keyboardType="name-phone-pad"
 															onChangeText={(
 																value
 															) =>
@@ -368,9 +427,9 @@ export default function CreateProfileScreen () {
 															}
 														/>
 													)}
-												// name="names"
-												// rules={{ required: true }}
-												// defaultValue=""
+													name="weight"
+													// rules={{ required: true }}
+													defaultValue={0}
 												/>
 											</Stack>
 										</HStack>
@@ -381,26 +440,41 @@ export default function CreateProfileScreen () {
 									<Stack>
 										<Text>Blood Group</Text>
 
-										<Select
-											variant="rounded"
-											selectedValue={bloodGroup}
-											minWidth={200}
-											accessibilityLabel="BloodGroup"
-											placeholder="BloodGroup"
-											onValueChange={(itemValue) =>
-												setBloodGroup(itemValue)
-											}
-											_selectedItem={{
-												bg: "cyan.600",
-												endIcon: <CheckIcon size={4} />,
-											}}
-										>
-											<Select.Item
-												label="AB+"
-												value="AB+"
-											/>
-											<Select.Item label="O" value="O" />
-										</Select>
+										<Controller
+											control={control}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+												},
+											}) => (
+												<Select
+													variant="rounded"
+													selectedValue={value}
+													minWidth={200}
+													accessibilityLabel="BloodGroup"
+													placeholder="BloodGroup"
+													onValueChange={(itemValue) =>
+														onChange(itemValue)
+													}
+													_selectedItem={{
+														bg: "cyan.600",
+														endIcon: <CheckIcon size={4} />,
+													}}
+												>
+													<Select.Item
+														label="AB+"
+														value="AB+"
+													/>
+													<Select.Item label="O" value="O" />
+												</Select>
+											)}
+											name="bloodGroup"
+											// rules={{ required: true }}
+											defaultValue=""
+										/>
+
 									</Stack>
 
 									<Spacer size={20} />
@@ -408,36 +482,54 @@ export default function CreateProfileScreen () {
 									<Stack>
 										<Text>Location of Residence</Text>
 
-										<Select
-											variant="rounded"
-											selectedValue={location}
-											minWidth={200}
-											accessibilityLabel="Location"
-											placeholder="Location"
-											onValueChange={(itemValue) =>
-												setLocation(itemValue)
-											}
-											_selectedItem={{
-												bg: "cyan.600",
-												endIcon: <CheckIcon size={4} />,
-											}}
-										>
-											<Select.Item
-												label="Location1"
-												value="Location1"
-											/>
-											<Select.Item
-												label="Location2"
-												value="Location2"
-											/>
-										</Select>
+										<Controller
+											control={control}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+												},
+											}) => (
+												<Select
+													variant="rounded"
+													selectedValue={value}
+													minWidth={200}
+													accessibilityLabel="Location"
+													placeholder="Location"
+													onValueChange={(itemValue) =>
+														onChange(itemValue)
+													}
+													_selectedItem={{
+														bg: "cyan.600",
+														endIcon: <CheckIcon size={4} />,
+													}}
+												>
+													<Select.Item
+														label="Location1"
+														value="Location1"
+													/>
+													<Select.Item
+														label="Location2"
+														value="Location2"
+													/>
+												</Select>
+											)}
+											name="residence"
+											// rules={{ required: true }}
+											defaultValue=""
+										/>
+
+
 									</Stack>
 								</Stack>
 							</Stack>
 							<Box mb={-6} paddingX={"5%"}>
 								<Button
-									onPress={nav}
+									onPress={handleSubmit(onSubmit)}
 									testID="button1"
+									disabled={isLoading}
+									isLoading={isLoading}
 									borderRadius={20}
 									_disabled={{
 										backgroundColor: "#B0B3C7",

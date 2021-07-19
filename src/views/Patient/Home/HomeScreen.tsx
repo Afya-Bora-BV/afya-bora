@@ -62,7 +62,7 @@ const helpOptions = [
 
 export default function Home() {
 	const navigation = useNavigation();
-	const { user } = useAuthStore(state => ({ user: state.user }))
+	const { profile } = useAuthStore(state => ({ profile: state.profile }))
 
 	return (
 		<MainContainer
@@ -94,7 +94,7 @@ export default function Home() {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, {user?.name}</Heading>
+					<Heading fontSize="3xl">Hi, {profile?.name}</Heading>
 				</VStack>
 
 				{/* Section to render upcoming appointments if any.

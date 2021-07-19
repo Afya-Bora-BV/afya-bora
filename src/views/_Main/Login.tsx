@@ -29,6 +29,36 @@ import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";
 import _ from "lodash";
 
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import CodeInput from "../../components/forms/codeInput";
+
+
+
+// TODO : logic to be moved somewhere on refactor
+type Profile = {
+	bloodGroup: string
+	dob: Date
+	gender: "male" | "female"
+	height: number
+	location: string
+	name: string
+	uid: string
+	weight: number
+	patientDocId: string
+}
+const checkUserProfile = async (phoneNumber: string): Promise<Profile | undefined> => {
+	const uid = await auth().currentUser?.uid
+	console.log("USER ID 1 : ", uid)
+	const profile = await firestore().collection("patients").doc(uid).get()
+	let data = undefined
+	if (profile.exists) {
+		data = profile.data() as Profile
+	}
+	return data
+}
+
+
 // let render = 0
 
 
@@ -39,229 +69,86 @@ const { height } = Dimensions.get("screen");
  * Form for Phone number only
  * ----------------------------
  */
- const formPhoneSchema = yup.object().shape({
+const formPhoneSchema = yup.object().shape({
 	phoneNumber: yup.string().required()
 });
 interface FormPhoneInputs {
 	phoneNumber: string
 }
 
-function PhoneNumberForm ({ onSuccess, onError }: any) {
-	const {
-		control,
-		handleSubmit,
-		formState: { errors }
-	} = useForm<FormPhoneInputs>({
-		resolver: yupResolver(formPhoneSchema),
-	});
-
-	const onLogin = handleSubmit(
-		// When successfull
-		({ phoneNumber }) => onSuccess({ phoneNumber }),
-
-		// when invalid
-		(err) => onError(`Unable to confirm: ${err.phoneNumber?.message}`)
-	)
-
-	return (
-		<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
-			<VStack space={5} marginBottom={15}>
-				<ControllerFormInput
-					name="phone"
-					control={control}
-					label="Enter Phone number"
-					keyboardType="phone-pad" 
-				/>
-			</VStack>
-			<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
-				<Button
-					onPress={onLogin}
-					borderRadius={20}
-					style={{ backgroundColor: colors.primary }}
-					_text={{ color: "white" }}
-					shadow={5}
-				>
-					Login 
-				</Button>
-			</Box>
-		</Box>
-	)
-}
-/**
- * Form for Phone number only
- * ----------------------------
- */
-const formEmailSchema = yup.object().shape({
-	email: yup.string().required(),
-	password: yup.string().required(),
-});
-interface FormEmailInputs {
-	email: string
-	password: string
-}
-
-function EmailPasswordForm ({ onSuccess, onError }: any) {
-	const {
-		control,
-		handleSubmit,
-		formState: { errors }
-	} = useForm<FormEmailInputs>({
-		resolver: yupResolver(formEmailSchema),
-	});
-
-	const [visibility, setVisibility] = React.useState("eye-off-outline");
-
-	const onLogin = handleSubmit(
-		// When successfull
-		({ email, password }) => onSuccess({ email, password }),
-
-		// when invalid
-		(err) => onError(`Unable to confirm: ${err.email?.message}`)
-	)
-
-	return (
-		<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
-			<VStack space={5} marginBottom={15}>
-				<ControllerFormInput
-					name="email"
-					control={control}
-					label="Email address"
-					keyboardType="email-address" 
-				/>
-				<ControllerFormInput
-					name="password"
-					control={control}
-					label="Enter Password"
-					keyboardType="password"
-					type={
-						visibility === "eye-outline"
-							? "text"
-							: "password"
-					}
-					InputRightElement={
-						<Pressable
-							onPress={() =>
-								visibility ===
-									"eye-outline"
-									? setVisibility(
-										"eye-off-outline"
-									)
-									: setVisibility(
-										"eye-outline"
-									)
-							}
-						>
-							<MaterialCommunityIcons
-								name={visibility}
-								size={24}
-								color={
-									colors.primary
-								}
-								style={{
-									paddingEnd: 10,
-								}}
-							/>
-						</Pressable>
-					}
-				/>
-			</VStack>
-			<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
-
-				<Button
-					onPress={onLogin}
-					borderRadius={20}
-					style={{ backgroundColor: colors.primary }}
-					_text={{ color: "white" }}
-					shadow={5}
-				>
-					Login 
-				</Button>
-			</Box>
-		</Box>
-	)
-}
-
-export default function Login() {
-	const Toast = useToast()
+const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber: (phoneNumber: string) => Promise<void> }) => {
 	const navigation = useNavigation();
-	const [
-		signInWithPhoneNumber, signInWithEmailAndPassword, 
-		getCode,
-	] = useAuthStore(s => ([
-		s.signInWithPhoneNumber, s.signInWithEmailAndPassword ,
-		s.getVerificationCode
-	]))
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		getValues
+	} = useForm<FormPhoneInputs>({
+		// resolver: yupResolver(formPhoneSchema),
+	});
 
-	// TODO: add a toggle the uses `setType` to change the login form 
-	//  from `email` to `phone` and viseverse
-	const [type, setType] = useState<'email' | 'phone'>('email')
+	const { phoneNumber, updatePhoneNumber } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber }))
 
-	const onSuccess =  async (data: FormEmailInputs | FormPhoneInputs) => {
-		try {
-			if (type === 'phone') {
-				// Dealing the sign in process as a form input
-				const { phoneNumber } = data as FormPhoneInputs
-				const verificationCode = await getCode()
+	const onLogin = handleSubmit(
+		// When successfull
+		async ({ phoneNumber }) => {
+			// do somthign with phone #
+			console.log("Usee phone number ", phoneNumber)
+			await login(phoneNumber)
+			console.log("Phone to be updated ", phoneNumber)
+			updatePhoneNumber(phoneNumber)
 
-				if (verificationCode === undefined) {
-					Toast.show({
-						title: "Error",
-						description: "Seem's like the email was never signed up in this device. Consider signing up!",
-					})
-					return;
-				}
+		},
+		// when invalid
+		(err: any) => { console.log("Form is invalid") }
+	)
 
-				// After loading the stored verification key, sign the user in
-				const user = await signInWithPhoneNumber(phoneNumber, verificationCode)
 
-				Toast.show({
-					title: user.name !== null ? `Welcome back, ${user.name}!` : `Welcome back!`
-				})
+	const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
+		onError: (error, variables, context) => {
+			// An error happened!
+			console.log(`rolling back optimistic update with id `, error)
+		},
+		onSuccess: (data, variables, context) => {
+			// Boom baby!
+			// updating phoneNumber on success
 
-			} else if (type === 'email') {
-				// Dealing the sign in process as a email
-				const { email, password } = data as FormEmailInputs
-				
-				const user = await signInWithEmailAndPassword(email, password)
+		},
 
-				Toast.show({
-					title: user.name !== null ? `Welcome back, ${user.name}!` : `Welcome back!`
-				})
-			}
+	})
 
-		} catch (err) {
-			console.error(err)
-			Toast.show({
-				title: "Error",
-				description: err.message,
-			})	
-		}
-	}
 
-	const onError = (errMessage: string) => {
-		// Show error
-		Toast.show({
-			title: "Error",
-			description: errMessage,
-		})
-	}
-
-	// console.log("Confirm  : ",confirm)
 	return (
 		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10}>
-				{
-					type === 'phone' ? (
-						<PhoneNumberForm onSuccess={onSuccess} onError={onError} />
-					) : (
-						<EmailPasswordForm onSuccess={onSuccess} onError={onError} />
-					)
-				}
+				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
+					<VStack space={5} marginBottom={15}>
+						<ControllerFormInput
+							name="phoneNumber"
+							control={control}
+							label="Enter Phone number"
+							keyboardType="phone-pad"
+						/>
+					</VStack>
+					<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
+						<Button
+							onPress={onLogin}
+							borderRadius={20}
+							isLoading={isLoading}
+							disabled={isLoading}
+							style={{ backgroundColor: colors.primary }}
+							_text={{ color: "white" }}
+							shadow={5}
+						>
+							Login
+						</Button>
+					</Box>
+				</Box>
 			</View>
 
 			<Stack alignItems="center" marginBottom={5}>
 				<HStack>
-					<Text> Don't have an account? </Text>
+					<Text> Are you a doctor ? </Text>
 					<Pressable
 						focusable
 
@@ -269,15 +156,129 @@ export default function Login() {
 						// using Platform api in RN
 						// cursor="pointer"
 						onPress={() => {
-							navigation.navigate(_MainAppNavKey.SignUpViewScreen);
+							navigation.navigate(_MainAppNavKey.LoginDoctorScreen);
 						}}
 					>
 						<Text bold color={colors.primary}>
-							Sign up now!
+							Sign in
 						</Text>
 					</Pressable>
 				</HStack>
 			</Stack>
 		</AltContainer>
+	)
+}
+
+const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => {
+	const navigation = useNavigation();
+	const [code, set] = useState<string>("")
+
+	const { phoneNumber, updatePhoneNumber } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber }))
+
+	const onConfirmCode = async () => {
+		console.log("Phone ", phoneNumber)
+		await confirmCode()
+
+		// after success login we check is the user exists
+
+		const user = await checkUserProfile(phoneNumber)
+
+		if (user === undefined) {
+			// directing to complete profile screen
+			navigation.navigate(_MainAppNavKey.CreateProfileView)
+			console.log("What cant navigate ")
+		}
+
+		console.log("The user exists ", user)
+		// check if the user exists
+
+	}
+
+	const { isLoading, mutate: confirmCode } = useMutation(() => verify(code), {
+		onError: (error, variables, context) => {
+			// An error happened!
+			console.log(`rolling back optimistic update with id `, error)
+		},
+		onSuccess: (data, variables, context) => {
+			// Boom baby!
+			console.log("Successfully logged on ")
+		},
+
+	})
+
+
+
+	return (
+		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back" noScroll>
+			<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
+				<VStack space={5} marginBottom={15} alignContent="center">
+					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
+						Enter the verification number {phoneNumber}
+					</Text>
+					<CodeInput
+						value={code}
+						onChangeCode={set}
+						cellCount={4}
+					/>
+				</VStack>
+				<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
+					{/* COnfirm button */}
+					<Button
+						onPress={onConfirmCode}
+						borderRadius={20}
+						isLoading={isLoading}
+						disabled={isLoading}
+						width="100%"
+						_disabled={{
+							backgroundColor: "#B0B3C7",
+							color: "white",
+						}}
+						style={{ backgroundColor: colors.primary }}
+						_text={{ color: "white" }}
+					>
+						Confirm
+					</Button>
+				</Box>
+			</Box>
+			<View flex={1} alignItems="center" marginBottom={5}>
+				<Text color="#2AD3E7">Resend (00:39)</Text>
+			</View>
+		</AltContainer>
+	)
+}
+
+export default function Login() {
+
+	const Toast = useToast()
+	const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult>();
+
+
+	async function signInWithPhoneNumber(phoneNumber: string) {
+		// checking if the phone exists
+		// await checkUserProfile(phoneNumber)
+		const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+		setConfirm(confirmation);
+		Toast.show({
+			title: `Verification code sent to ${phoneNumber}`,
+		})
+
+	}
+
+	async function confirmCode(code: string) {
+		try {
+			await confirm?.confirm(code);
+		} catch (error) {
+			console.log('Invalid code.');
+		}
+	}
+
+	if (!confirm) {
+		return (
+			<SendConfirmationCode signInWithPhoneNumber={signInWithPhoneNumber} />
+
+		);
+	}
+	return (
+		<VerifyCode verify={confirmCode} />
 	);
 };
