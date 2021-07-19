@@ -30,8 +30,8 @@ import { BookAppointmentStackParamList } from ".";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { IconContainer } from "../../../../components/misc";
 import { useAppointmentTempoStore } from "../../../../internals/appointment/context";
-
-import { useMutation } from 'react-query'
+import firestore from "@react-native-firebase/firestore";
+import { useMutation } from "react-query";
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -58,21 +58,21 @@ const keySymptoms = [
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
-	const setAppointment = useAppointmentTempoStore(state => state.setAppointment)
+	// const setAppointment = useAppointmentTempoStore(
+	// 	(state) => state.setAppointment
+	// );
 
-	const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
-		onMutate: variables => {
-		},
-		onError: (error, variables, context) => {
-			console.log("Something went wrong")
-		},
-		onSuccess: (data, variables, context) => {
-			console.log("Data already saved ")
-			navigation.navigate(MainNavKey.HomeScreen);
-			// Boom baby!
-		},
-
-	})
+	// const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
+	// 	onMutate: (variables) => {},
+	// 	onError: (error, variables, context) => {
+	// 		console.log("Something went wrong");
+	// 	},
+	// 	onSuccess: (data, variables, context) => {
+	// 		console.log("Data already saved ");
+	// 		navigation.navigate(MainNavKey.HomeScreen);
+	// 		// Boom baby!
+	// 	},
+	// });
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -82,39 +82,47 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		setSymptoms(sy);
 	};
 
-	const { consultant, appointment } = route.params;
+	const { consultant, appointment, appointmentType } = route.params;
 
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
-		addAppointment({
-			symptoms,
-			consultant,
-			complaint,
-			dateTime: appointment,
-		})
+		// addAppointment({
+		// 	symptoms,
+		// 	consultant,
+		// 	complaint,
+		// 	dateTime: appointment,
+		// });
 
 		// FIXME (ghmecc): This is platform-centric code, right? to mean
 		//  that this code won't render on the web sio? any way to help with that?
 		// ----------------------------------------
-		// Alert.alert(
-		// 	"Submit Request",
-		// 	"Please confirm that you have entered correct information.",
-		// 	[
-		// 		{ text: "Cancel", onPress: () => { } },
-		// 		{
-		// 			text: "Confirm",
-		// 			onPress: () => {
-		// 				// TODO: arguments to the add appointment function
-		// 				addAppointment({
-		// 					symptoms,
-		// 					consultant,
-		// 					complaint,
-		// 					dateTime: appointment,
-		// 				})
-		// 			},
-		// 		},
-		// 	]
-		// );
+		Alert.alert(
+			"Submit Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => {} },
+				{
+					text: "Confirm",
+					onPress: () => {
+						firestore()
+							.collection("appointments")
+							.doc(consultant.hospital)
+							.collection(consultant.id)
+							.add({
+								aboutVisit: { complaint, symptoms },
+								cid: consultant.id,
+								appointment: appointment,
+								// pid: user.id, //TO DO - @GEORGE ADD USER ID HERE
+								type: appointmentType,
+							})
+							.then(() => {
+								console.log("Added to firebase");
+								navigation.navigate(MainNavKey.HomeScreen);
+							});
+					},
+				},
+			]
+		);
 	};
 
 	return (
@@ -122,18 +130,17 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 			title="About your Visit"
 			leftSection={
 				// Go back if can go back
-				navigation.canGoBack() ? (
-					() => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
-				) : undefined
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
 			}
 		>
-
 			<VStack alignItems="center" paddingX={10} space={10}>
 				{/* Symptomps section */}
 				<Box bg="white" shadow={2} rounded={10} width="100%">
@@ -254,7 +261,14 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						/>
 					</VStack>
 				</Box>
-				<Button width="100%" bg={colors.primary} onPress={onSubmit}  isLoading={isLoading} disabled={isLoading} rounded={20}>
+				<Button
+					width="100%"
+					bg={colors.primary}
+					onPress={onSubmit}
+					// isLoading={isLoading}
+					// disabled={isLoading}
+					rounded={20}
+				>
 					Book Appointment
 				</Button>
 			</VStack>

@@ -32,9 +32,9 @@ import AlternateContainer from "../../../components/containers/AlternateContaine
 import { IconContainer } from "../../../components/misc";
 import { AppointmentAlert } from "../../../components/core/appointment";
 
-
 import { NavKey as BookAppointmentNavKey } from "../Home/BookAppointment/_navigator";
 import { TabNavKey as MainNavKey, TabNavKey } from "../_navigator";
+import { friendlyFormatDate } from "../../../utils";
 
 export default function Schedule() {
 	const navigation = useNavigation();
@@ -156,7 +156,7 @@ const UpcommingAppointments: React.FC = () => {
 						onPress={() => {
 							navigation.navigate(TabNavKey.HomeView, {
 								screen: BookAppointmentNavKey.SetAppointmentTimeScreen,
-							})
+							});
 						}}
 					/>
 				</Box>
@@ -166,7 +166,7 @@ const UpcommingAppointments: React.FC = () => {
 	return (
 		<VStack space={4} marginX={10}>
 			<Heading fontSize="md">Upcoming Appointments</Heading>
-			<VStack paddingX={4} space={3} >
+			<VStack paddingX={4} space={3}>
 				{data.map((appointment) => (
 					<UpcomingAppointmentsAlert appointment={appointment} />
 				))}
@@ -185,9 +185,19 @@ const UpcomingAppointmentsAlert: React.FC<{
 	return (
 		<AppointmentAlert
 			consultantName={appointment.consultant.name}
-			appointmentDate={`${date}, ${timeSlots[0]}`}
-			facilityName={appointment.consultant.hospital}
-			facilityLocation={appointment.consultant.region}
+			appointmentDate={
+				friendlyFormatDate(`${date}`) + ", " + `${timeSlots[0]}`
+			}
+			facilityName={
+				appointment.appointmentType === "offline"
+					? appointment.consultant.hospital
+					: "Online Consultation"
+			}
+			facilityLocation={
+				appointment.appointmentType === "offline"
+					? appointment.consultant.region
+					: ""
+			}
 		/>
 	);
 };

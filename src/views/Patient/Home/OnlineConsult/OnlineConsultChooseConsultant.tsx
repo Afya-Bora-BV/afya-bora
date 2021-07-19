@@ -86,8 +86,9 @@ export default function OnlineConsultChooseConsultant({
 				params: {
 					consultant,
 					appointment,
+					appointmentType: "online",
 				},
-			})
+			});
 		},
 		[navigation, appointment]
 	);
@@ -99,11 +100,11 @@ export default function OnlineConsultChooseConsultant({
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
 					  )
 					: undefined
 			}

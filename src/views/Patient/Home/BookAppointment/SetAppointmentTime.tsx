@@ -40,6 +40,7 @@ export type BookAppointmentStackParamList = {
 	PatientComplaint: {
 		consultant: any;
 		appointment: any;
+		appointmentType: "offline";
 	};
 };
 
@@ -57,7 +58,7 @@ type SetAppointmentTimeProps = {
 	navigation: SetAppointmentTimeNavigationProp;
 };
 
-function PickADateSection ({chosenDate, onSelectDate}: any) {
+function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
 
 	return (
@@ -68,9 +69,7 @@ function PickADateSection ({chosenDate, onSelectDate}: any) {
 				</Text>
 
 				<MonthDropDown
-					onChangeDate={(date) =>
-						onSelectDate(date)
-					}
+					onChangeDate={(date) => onSelectDate(date)}
 					date={chosenDate}
 				/>
 			</HStack>
@@ -106,11 +105,10 @@ function PickADateSection ({chosenDate, onSelectDate}: any) {
 				</HStack>
 			</ScrollView>
 		</View>
-	)
+	);
 }
 
-function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
-
+function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 	const selectTime = (timeBlock: string) => {
 		const list = toggleStringFromList(timeBlock, chosenTimeSlots);
 		onSelectTimeSlot(list);
@@ -127,12 +125,12 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
 					const t = n + 6;
-					const time1 = `${
-						_.padStart(t + "", 2, "0") + ":00"
-					} ${t > 11 ? "PM" : "AM"}`;
-					const time2 = `${
-						_.padStart(t + "", 2, "0") + ":30"
-					} ${t > 11 ? "PM" : "AM"}`;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
 					return (
 						<HStack flexWrap="wrap" space="md">
 							<TouchableOpacity
@@ -145,9 +143,7 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 									rounded={10}
 									alignItems="center"
 									bg={
-										chosenTimeSlots.includes(
-											time1
-										)
+										chosenTimeSlots.includes(time1)
 											? "#258FBE"
 											: "white"
 									}
@@ -155,9 +151,7 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 								>
 									<Text
 										color={
-											!chosenTimeSlots.includes(
-												time1
-											)
+											!chosenTimeSlots.includes(time1)
 												? "black"
 												: "white"
 										}
@@ -176,9 +170,7 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 									rounded={10}
 									alignItems="center"
 									bg={
-										chosenTimeSlots.includes(
-											time2
-										)
+										chosenTimeSlots.includes(time2)
 											? "#258FBE"
 											: "white"
 									}
@@ -186,9 +178,7 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 								>
 									<Text
 										color={
-											!chosenTimeSlots.includes(
-												time2
-											)
+											!chosenTimeSlots.includes(time2)
 												? "black"
 												: "white"
 										}
@@ -202,7 +192,7 @@ function PickATimeSection ({ chosenTimeSlots, onSelectTimeSlot }) {
 				})}
 			</VStack>
 		</View>
-	)
+	);
 }
 
 export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
@@ -218,26 +208,28 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 			consultant,
 			appointment: {
 				date: chosenDate,
-				timeSlots: chosenTimeSlots
+				timeSlots: chosenTimeSlots,
 			},
-		})
-	}, [chosenDate, chosenTimeSlots, navigation])
+			appointmentType: "offline",
+		});
+	}, [chosenDate, chosenTimeSlots, navigation]);
 
 	return (
 		<MainContainer
 			title="Day and Time"
 			leftSection={
 				// Go back if can go back
-				navigation.canGoBack() ? (
-					() => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
-				) : undefined
-			}>
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
 			<VStack paddingX={10} space={10}>
 				{/* Consultant Preview */}
 				<Box>
@@ -251,17 +243,15 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
 					<PickADateSection
 						chosenDate={chosenDate}
-						onSelectDate={selectDate} />
+						onSelectDate={selectDate}
+					/>
 					<PickATimeSection
 						chosenTimeSlots={chosenTimeSlots}
-						onSelectTimeSlot={setTimeSlots} />
+						onSelectTimeSlot={setTimeSlots}
+					/>
 				</VStack>
 
-				<Button
-					bg={colors.primary}
-					onPress={onPressNext}
-					rounded={20}
-				>
+				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
 					Next
 				</Button>
 			</VStack>
