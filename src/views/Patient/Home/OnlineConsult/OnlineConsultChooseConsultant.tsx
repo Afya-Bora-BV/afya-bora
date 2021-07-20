@@ -11,6 +11,8 @@ import { IconContainer } from "../../../../components/misc";
 
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
+import { getConsultants } from "../BookAppointment/ConsultantsList";
+import { useQuery } from "react-query";
 
 // NOTE: Dont move this to main.... results to require cycle
 export type OnlineConsultStackParamList = {
@@ -93,6 +95,17 @@ export default function OnlineConsultChooseConsultant({
 		[navigation, appointment]
 	);
 
+	const {
+		status,
+		data: consultants,
+		error,
+		isLoading,
+	} = useQuery(["consultants"], getConsultants);
+
+	console.log("Status ", isLoading);
+	console.log("Error ", error);
+	console.log("Data ", consultants);
+
 	return (
 		<MainContainer
 			title="Choose a consultant"
@@ -100,21 +113,21 @@ export default function OnlineConsultChooseConsultant({
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
 			<ScrollView padding={5}>
 				<VStack space={2}>
-					{demoConsultants.map((consultant) => (
+					{consultants?.map((consultant) => (
 						<ConsultantListItem
 							onPress={() => onPressNext(consultant)}
-							key={consultant.id}
+							key={consultant.cid}
 							consultant={consultant}
 						/>
 					))}

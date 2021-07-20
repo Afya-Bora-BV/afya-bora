@@ -73,7 +73,7 @@ const createAuthStore = () =>
                 confirm: null,
                 phone: "",
                 profile: null,
-                updateProfile: (profile: User) => {
+                updateProfile: (profile: User | Consultant) => {
                     set({ profile: profile })
                 },
                 clearProfile: () => {

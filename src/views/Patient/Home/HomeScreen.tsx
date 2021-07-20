@@ -242,17 +242,21 @@ export default function Home() {
 	);
 }
 
+
+// TODo : to extended as appointment data grows
+
+
 // TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
 	const uid = auth().currentUser?.uid
-	const [appointments, setAppointments] = useState([])
+	const [appointments, setAppointments] = useState<Appointment[]>([])
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection('appointments')
 			.where("pid", "==", uid)
 			.onSnapshot(documentSnapshot => {
 				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
-				setAppointments(shots as never)
+				setAppointments(shots as Appointment[])
 			});
 
 		// Stop listening for updates when no longer required
@@ -265,8 +269,7 @@ const UpcomingAppointmentsSection = () => {
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlert />
-
+				<AppointmentAlert appointment={appointments[0]} />
 				<View width="100%" alignItems="flex-end">
 					<Pressable onPress={() => console.log("Something")}>
 						<Text fontStyle="italic">See All Appointments</Text>

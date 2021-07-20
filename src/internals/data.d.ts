@@ -56,13 +56,17 @@ interface ConsultantionSlot {
 }
 
 interface Appointment {
-    pid: PatientProfile['id']
-    cid: ConsultantProfile['id']
-    date: Date
-    type: ConsultantionType
+    pid: string
+    cid: string
+    createdAt: number
+    type: "online" | "offline"
+    appointment: {
+        date: Date
+        timeslots: string[]
+    }
     aboutVisit: {
+        complaint: string;
         symptoms: string[]
-        complaint: string
     }
 }
 
