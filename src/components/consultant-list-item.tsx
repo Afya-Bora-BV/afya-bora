@@ -13,16 +13,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type ConsultantListItemProps = {
-	consultant: {
-		name: string;
-		hospital: string;
-		region: string;
-		expertise: string;
-		rating: number;
-		ratedBy: number;
-		time: string;
-		status?: "online" | "offline";
-	};
+	consultant: Consultant;
 	onPress: () => void;
 };
 

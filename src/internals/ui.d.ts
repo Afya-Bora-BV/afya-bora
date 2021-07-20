@@ -7,22 +7,26 @@
  * User object
  */
 interface User {
-    uid: string;
-    email: string | null;
-    name: string | null;
-    phoneNumber: string | null;
-    image: string | null;
-    isNew: boolean;
+    pid: string
+    name: string
+    gender: "male" | "female"
+    dob: Date,
+    height: string,
+    weight: string,
+    bloodGroup: string,
+    residence: string,
+    phoneNumber: string,
+    type: "patient"
 }
 
-type UserProfile = 
-    |  { type: 'patient', profile?: PatientProfile }
-    |  { type: 'doctor', profile?: ConsultantProfile }
+type UserProfile =
+    | { type: 'patient', profile?: PatientProfile }
+    | { type: 'doctor', profile?: ConsultantProfile }
 
 // type UserStatus = 
 //     | null      // Setting user status
 //     | "new"     // user is new; doesn't have profile
-interface PatientAppointment { 
+interface PatientAppointment {
     consultant: {
         name: string
     }

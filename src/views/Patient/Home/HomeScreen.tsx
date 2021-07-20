@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Center,
@@ -35,6 +35,8 @@ import {
 import { useQuery } from "react-query";
 import { AppointmentAlert } from "../../../components/core/appointment";
 import { useAuthStore } from "../../../internals/auth/context";
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const helpOptions = [
 	{
@@ -64,6 +66,8 @@ export default function Home() {
 	const navigation = useNavigation();
 	const { profile } = useAuthStore(state => ({ profile: state.profile }))
 
+	console.log("User profile")
+	console.log(JSON.stringify(profile, null, 2))
 	return (
 		<MainContainer
 			leftSection={() => (
@@ -240,25 +244,23 @@ export default function Home() {
 
 // TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
-	// const navigation = useNavigation()
-	// const getAppointments = useAppointmentTempoStore(
-	// 	(state) => state.getAppointments
-	// );
-	// const { isLoading, isError, data, error } = useQuery(
-	// 	"appointments",
-	// 	getAppointments,
-	// 	{
-	// 		// TODO: to remove this behaviour
-	// 		// and instead just fetch either from offline or online state
-	// 		refetchInterval: 5000,
-	// 	}
-	// );
-	// if (isLoading) return <Text>Fetching appointement... </Text>;
-	// if (error) return <Text>Something went wrong</Text>;
-	// if (data?.length === 0) return null;
+	const uid = auth().currentUser?.uid
+	const [appointments, setAppointments] = useState([])
+	useEffect(() => {
+		const subscriber = firestore()
+			.collection('appointments')
+			.where("pid", "==", uid)
+			.onSnapshot(documentSnapshot => {
+				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
+				setAppointments(shots as never)
+			});
 
-	// console.log("appointment");
-	// console.log(data);
+		// Stop listening for updates when no longer required
+		return () => subscriber();
+	}, [uid]);
+
+	console.log("Appontments : ")
+	console.log(JSON.stringify(appointments, null, 3))
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>

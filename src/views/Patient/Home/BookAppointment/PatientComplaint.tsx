@@ -32,6 +32,7 @@ import { IconContainer } from "../../../../components/misc";
 import { useAppointmentTempoStore } from "../../../../internals/appointment/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
+import auth from "@react-native-firebase/auth"
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -56,23 +57,14 @@ const keySymptoms = [
 	"Skin Rash",
 ];
 
+// to be extended
+const saveAppointment = async (data: any) => {
+	await firestore().collection("appointments").add(data)
+}
+
 export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
-	// const setAppointment = useAppointmentTempoStore(
-	// 	(state) => state.setAppointment
-	// );
 
-	// const { mutate: addAppointment, isLoading } = useMutation(setAppointment, {
-	// 	onMutate: (variables) => {},
-	// 	onError: (error, variables, context) => {
-	// 		console.log("Something went wrong");
-	// 	},
-	// 	onSuccess: (data, variables, context) => {
-	// 		console.log("Data already saved ");
-	// 		navigation.navigate(MainNavKey.HomeScreen);
-	// 		// Boom baby!
-	// 	},
-	// });
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -100,30 +92,39 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
 					onPress: () => {
-						firestore()
-							.collection("appointments")
-							.doc(consultant.hospital)
-							.collection(consultant.id)
-							.add({
-								aboutVisit: { complaint, symptoms },
-								cid: consultant.id,
-								appointment: appointment,
-								// pid: user.id, //TO DO - @GEORGE ADD USER ID HERE
-								type: appointmentType,
-							})
-							.then(() => {
-								console.log("Added to firebase");
-								navigation.navigate(MainNavKey.HomeScreen);
-							});
+						const uid = auth().currentUser?.uid
+						const data = {
+							aboutVisit: { complaint, symptoms },
+							pid: uid,
+							cid: consultant.cid,
+							appointment: appointment,
+							// pid: user.id, //TO DO - @GEORGE ADD USER ID HERE
+							type: appointmentType,
+							createdAt: (new Date()).getTime(),
+
+						}
+						addAppointment(data)
 					},
 				},
 			]
 		);
 	};
+
+	const { mutate: addAppointment, isLoading } = useMutation(saveAppointment, {
+		onMutate: (variables) => { },
+		onError: (error, variables, context) => {
+			console.log("Something went wrong");
+		},
+		onSuccess: (data, variables, context) => {
+			console.log("Data already saved ");
+			navigation.navigate(MainNavKey.HomeScreen);
+			// Boom baby!
+		},
+	});
 
 	return (
 		<MainContainer
@@ -132,12 +133,12 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -265,8 +266,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 					width="100%"
 					bg={colors.primary}
 					onPress={onSubmit}
-					// isLoading={isLoading}
-					// disabled={isLoading}
+					isLoading={isLoading}
+					disabled={isLoading}
 					rounded={20}
 				>
 					Book Appointment
