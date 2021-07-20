@@ -108,9 +108,9 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 	);
 }
 
-function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
+function PickATimeSection({ chosenTimeSlot, onSelectTimeSlot }) {
 	const selectTime = (timeBlock: string) => {
-		const list = toggleStringFromList(timeBlock, chosenTimeSlots);
+		const list = toggleStringFromList(timeBlock, chosenTimeSlot);
 		onSelectTimeSlot(list);
 	};
 
@@ -143,7 +143,7 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 									rounded={10}
 									alignItems="center"
 									bg={
-										chosenTimeSlots.includes(time1)
+										chosenTimeSlot.includes(time1)
 											? "#258FBE"
 											: "white"
 									}
@@ -151,7 +151,7 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 								>
 									<Text
 										color={
-											!chosenTimeSlots.includes(time1)
+											!chosenTimeSlot.includes(time1)
 												? "black"
 												: "white"
 										}
@@ -170,7 +170,7 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 									rounded={10}
 									alignItems="center"
 									bg={
-										chosenTimeSlots.includes(time2)
+										chosenTimeSlot.includes(time2)
 											? "#258FBE"
 											: "white"
 									}
@@ -178,7 +178,7 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 								>
 									<Text
 										color={
-											!chosenTimeSlots.includes(time2)
+											!chosenTimeSlot.includes(time2)
 												? "black"
 												: "white"
 										}
@@ -199,7 +199,7 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const navigation = useNavigation();
 
 	const [chosenDate, selectDate] = useState<Date>(new Date());
-	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
+	const [chosenTimeSlot, setTimeSlot] = useState("");
 
 	const { consultant } = route.params;
 
@@ -208,11 +208,11 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 			consultant,
 			appointment: {
 				date: chosenDate,
-				timeSlots: chosenTimeSlots,
+				timeSlots: chosenTimeSlot,
 			},
 			appointmentType: "offline",
 		});
-	}, [chosenDate, chosenTimeSlots, navigation]);
+	}, [chosenDate, chosenTimeSlot, navigation]);
 
 	return (
 		<MainContainer
@@ -246,8 +246,8 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 						onSelectDate={selectDate}
 					/>
 					<PickATimeSection
-						chosenTimeSlots={chosenTimeSlots}
-						onSelectTimeSlot={setTimeSlots}
+						chosenTimeSlot={chosenTimeSlot}
+						onSelectTimeSlot={setTimeSlot}
 					/>
 				</VStack>
 

@@ -16,25 +16,28 @@ import { IconContainer } from "../../../../components/misc";
 import { Pressable } from "react-native";
 import { useCallback } from "react";
 
-import firestore from '@react-native-firebase/firestore';
+import firestore from "@react-native-firebase/firestore";
 import { useQuery } from "react-query";
 
 interface Consultant {
-	cid: string
-	email: string
-	facilityId: string
-	gender: "male" | "female"
-	name: string
-	rating: number
-	specialities: string[]
+	cid: string;
+	email: string;
+	facilityId: string;
+	gender: "male" | "female";
+	name: string;
+	rating: number;
+	specialities: string[];
+	ratedBy: number;
 }
 
 const getConsultants = async (): Promise<Consultant[]> => {
-	const consultants = await firestore().collection('consultants').get()
+	const consultants = await firestore().collection("consultants").get();
 	// TODO for reach for consulatant fetch  facility information, combined in batch read
-	const data = consultants.docs.map(doc => ({ ...doc.data(), cid: doc.id } as Consultant))
-	return data
-}
+	const data = consultants.docs.map(
+		(doc) => ({ ...doc.data(), cid: doc.id } as Consultant)
+	);
+	return data;
+};
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
@@ -48,11 +51,16 @@ const ConsultantsList = () => {
 		[navigation]
 	);
 
-	const { status, data: consultants, error, isLoading } = useQuery(['consultants'], getConsultants)
+	const {
+		status,
+		data: consultants,
+		error,
+		isLoading,
+	} = useQuery(["consultants"], getConsultants);
 
-	console.log("Status ", isLoading)
-	console.log("Error ", error)
-	console.log("Data ", consultants)
+	console.log("Status ", isLoading);
+	console.log("Error ", error);
+	console.log("Data ", consultants);
 
 	return (
 		<MainContainer
@@ -61,12 +69,12 @@ const ConsultantsList = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>

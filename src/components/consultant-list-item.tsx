@@ -11,6 +11,7 @@ import {
 	Avatar,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { consultants } from "../data/consultants";
 
 type ConsultantListItemProps = {
 	consultant: Consultant;
@@ -22,7 +23,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 		name,
 		hospital,
 		region,
-		expertise,
+		specialities,
 		rating,
 		ratedBy,
 		time,
@@ -94,7 +95,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 										name="clipboard-pulse-outline"
 										size={16}
 									/>
-									{expertise}
+									{specialities + ", "}
 								</Text>
 							</VStack>
 
