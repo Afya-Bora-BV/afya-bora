@@ -31,8 +31,11 @@ import AlternateContainer from "../../../components/containers/AlternateContaine
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
 import { useAuthStore } from "../../../internals/auth/context";
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 import { useMutation } from "react-query";
+import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineConsulationIllustration";
+import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
+import { NoAppointment } from "./UpcomingAppointments";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -41,7 +44,8 @@ const signOut = async () => {
 	console.log("Sign Out");
 };
 
-function ProfileCard({ userProfile, ...props }) {
+function ProfileCard({ userProfile, press, ...props }) {
+	const navigation = useNavigation();
 	return (
 		<HStack
 			bg="white"
@@ -52,7 +56,7 @@ function ProfileCard({ userProfile, ...props }) {
 			padding={3}
 			maxHeight={100}
 		>
-			<HStack space={3} justifyContent="center" >
+			<HStack space={3} justifyContent="center">
 				<Avatar
 					size="lg"
 					borderRadius={10}
@@ -72,7 +76,15 @@ function ProfileCard({ userProfile, ...props }) {
 
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
-					<NextIcon color="#7065E4" />
+					<Pressable
+						onPress={() => {
+							navigation.navigate(
+								ProfileNavKey.EditHealthProfile
+							);
+						}}
+					>
+						<NextIcon color="#7065E4" />
+					</Pressable>
 				</IconContainer>
 			</Pressable>
 		</HStack>
@@ -82,30 +94,18 @@ function ProfileCard({ userProfile, ...props }) {
 const profileOptions = [
 	{
 		icon: AccountIcon,
-		title: "Profile",
+		title: "Switch Profile",
 		onNavigate: (navigation: any) =>
-			navigation.navigate(ProfileNavKey.ProfileScreen),
+			navigation.navigate(ProfileNavKey.MainScreen, {
+				screen: ProfileNavKey.ProfileScreen,
+			}),
 	},
-	{
-		icon: UpdateClock,
-		title: "Q & A History",
-	},
-	{
-		icon: MapPinIcon,
-		title: "Address",
-	},
-	{
-		icon: CardIcon,
-		title: "Payment Method",
-	},
+
 	{
 		icon: HeadphoneIcon,
 		title: "Help Center",
 	},
-	{
-		icon: PhoneIcon,
-		title: "Hotline",
-	},
+
 	{
 		icon: InfoIcon,
 		title: "About Us",
@@ -114,7 +114,10 @@ const profileOptions = [
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
-	const { profile, clearProfile } = useAuthStore(state => ({ profile: state.profile, clearProfile: state.clearProfile }))
+	const { profile, clearProfile } = useAuthStore((state) => ({
+		profile: state.profile,
+		clearProfile: state.clearProfile,
+	}));
 
 	const { height } = Dimensions.get("screen");
 
@@ -127,29 +130,26 @@ const ProfileMain: React.FC = () => {
 	// currently kept here so as to update the global store
 	// possibly codes for cleaning the global store can be kept in onSuccess of useMutation()
 	const signOutAndClearStore = async () => {
-		await auth().signOut()
-		clearProfile()
-	}
+		await auth().signOut();
+		clearProfile();
+	};
 
 	const signOut = () => {
-		logout()
-	}
+		logout();
+	};
 
 	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
 		onError: (error, variables, context) => {
 			// An error happened!
-			console.log(`error on signing out  `, error)
+			console.log(`error on signing out  `, error);
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
-			console.log("Signned out successuly ")
+			console.log("Signned out successuly ");
 		},
+	});
 
-	})
-
-
-
-	console.log("Profile ", profile)
+	console.log("Profile ", profile);
 	return (
 		<AlternateContainer
 			title="Profile"
@@ -158,49 +158,100 @@ const ProfileMain: React.FC = () => {
 			backdropHeight={height / 7}
 			bgColor="#7065E4"
 		>
-			<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-				<ProfileCard userProfile={userProfile} />
-				<Box
-					bg="white"
-					shadow={2}
-					rounded={10}
-					width="100%"
-					paddingX={5}
-					paddingY={5}
-				>
-					<VStack space={10}>
-						{profileOptions.map(
-							({ icon: ActualIcon, title, onNavigate }, ix) => (
-								<Pressable
-									key={`profOpt-${ix}`}
-									onPress={
-										onNavigate !== undefined
-											? () => onNavigate(navigation)
-											: undefined
-									}
-								>
-									<HStack alignItems="center" space={3}>
-										<Square size={6}>
-											<ActualIcon />
-										</Square>
-										<Text fontSize={18}>{title}</Text>
-									</HStack>
-								</Pressable>
-							)
-						)}
-						<Pressable
-							onPress={signOut}
-						>
-							<HStack alignItems="center" space={3}>
-								<Square size={6}>
-									<LogoutIcon />
-								</Square>
-								<Text fontSize={18}>{isLoading? "Logging out ... ":"Logout"}</Text>
-							</HStack>
-						</Pressable>
-					</VStack>
-				</Box>
-			</VStack>
+			<ScrollView>
+				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
+					<ProfileCard userProfile={userProfile} />
+					<HStack
+						space={4}
+						marginTop={3}
+						justifyContent="space-between"
+					>
+						<Box bg="white" shadow={2} rounded={10} width="45%">
+							<Pressable
+								onPress={() => {
+									navigation.navigate(
+										ProfileNavKey.VisitHistory
+									);
+								}}
+							>
+								<HStack justifyContent={"center"} paddingY={2}>
+									<Stack flex={1}>
+										<AppointmentIllustration size={60} />
+									</Stack>
+									<Stack flex={1.5} justifyContent="center">
+										<Text textAlign="center">
+											Visit History
+										</Text>
+									</Stack>
+								</HStack>
+							</Pressable>
+						</Box>
+
+						<Box bg="white" shadow={2} rounded={10} width="45%">
+							<Pressable onPress={() => {}}>
+								<HStack justifyContent={"center"} paddingY={2}>
+									<Stack flex={1}>
+										<OnlineConsulationIllustration
+											size={60}
+											color="red"
+										/>
+									</Stack>
+									<Stack flex={1.5} justifyContent="center">
+										<Text textAlign="center">
+											Upcoming Visits
+										</Text>
+									</Stack>
+								</HStack>
+							</Pressable>
+						</Box>
+					</HStack>
+					<Box
+						bg="white"
+						shadow={2}
+						rounded={10}
+						width="100%"
+						paddingX={5}
+						paddingY={5}
+					>
+						<VStack space={10}>
+							{profileOptions.map(
+								(
+									{ icon: ActualIcon, title, onNavigate },
+									ix
+								) => (
+									<Pressable
+										key={`profOpt-${ix}`}
+										onPress={
+											onNavigate !== undefined
+												? () => onNavigate(navigation)
+												: undefined
+										}
+									>
+										<HStack alignItems="center" space={3}>
+											<Square size={6}>
+												<ActualIcon />
+											</Square>
+											<Text fontSize={18}>{title}</Text>
+										</HStack>
+									</Pressable>
+								)
+							)}
+							<Pressable onPress={signOut}>
+								<HStack alignItems="center" space={3}>
+									<Square size={6}>
+										<LogoutIcon />
+									</Square>
+									<Text fontSize={18}>
+										{isLoading
+											? "Logging out ... "
+											: "Logout"}
+									</Text>
+								</HStack>
+							</Pressable>
+						</VStack>
+					</Box>
+				</VStack>
+			</ScrollView>
 		</AlternateContainer>
 	);
 };

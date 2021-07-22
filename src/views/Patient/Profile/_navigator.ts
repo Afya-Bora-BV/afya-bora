@@ -6,5 +6,6 @@ export type ProfileStackParamList = {};
 export const ProfileNavKey = {
 	MainScreen: "Patient.Profile.MainScreen",
 	ProfileScreen: "Patient.Profile.ProfileScreen",
-	CreateProfile: "Patient.Profile.CreateProfileScreen",
+	EditHealthProfile: "Patient.Profile.EditHealthProfile",
+	VisitHistory: "Patient.VisitHistory"
 };
