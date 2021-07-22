@@ -6,6 +6,7 @@ import EditHealthProfile from "./EditHealthProfile";
 
 import { ProfileNavKey, Stack } from "./_navigator";
 import VisitHistory from "./VisitHistory";
+import UpcomingAppointments from "./UpcomingAppointments";
 
 export default function ProfileView({ navigation }: any) {
 	
@@ -35,6 +36,10 @@ export default function ProfileView({ navigation }: any) {
 			<Stack.Screen
 				name={ProfileNavKey.VisitHistory}
 				component={VisitHistory}
+			/>
+			Stack.Screen
+				name={ProfileNavKey.UpcomingAppointments}
+				component={UpcomingAppointments}
 			/>
 		</Stack.Navigator>
 	);

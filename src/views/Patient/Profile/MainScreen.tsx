@@ -188,7 +188,9 @@ const ProfileMain: React.FC = () => {
 						</Box>
 
 						<Box bg="white" shadow={2} rounded={10} width="45%">
-							<Pressable onPress={() => {}}>
+							<Pressable onPress={() => {navigation.navigate(
+										ProfileNavKey.UpcomingAppointments
+									);}}>
 								<HStack justifyContent={"center"} paddingY={2}>
 									<Stack flex={1}>
 										<OnlineConsulationIllustration
