@@ -74,10 +74,6 @@ const FindFacilityList = () => {
 	const facility = route.params.facility
 
 
-	const nav = () => {
-		navigation.navigate("Home");
-	};
-
 	const nearest = () => { };
 
 	const selectFacility = (facility: any) => navigation.navigate("SetAppointmentTime", { facility });

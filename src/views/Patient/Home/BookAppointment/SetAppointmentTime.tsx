@@ -125,12 +125,10 @@ function PickATimeSection({ chosenTimeSlot, onSelectTimeSlot }) {
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
 					const t = n + 6;
-					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
-					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
+						}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
+						}`;
 					return (
 						<HStack flexWrap="wrap" space="md">
 							<TouchableOpacity
@@ -204,12 +202,13 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const { consultant } = route.params;
 
 	const onPressNext = useCallback(() => {
+
+		const time = chosenTimeSlot[0]?.split(" ")[0] || '00:00'
+		const dateTime = `${moment(new Date(chosenDate)).format("YYYY-MM-DD")}T${time}:00`
+		const date = new Date(dateTime)
 		navigation.navigate(NavKey.PatientComplaintScreen, {
 			consultant,
-			appointment: {
-				date: chosenDate,
-				timeSlots: chosenTimeSlot,
-			},
+			appointment: date,
 			appointmentType: "offline",
 		});
 	}, [chosenDate, chosenTimeSlot, navigation]);
@@ -221,12 +220,12 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>

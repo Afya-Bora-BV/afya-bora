@@ -105,7 +105,7 @@ export default function Home() {
 					NOTE: To prevent re-rendering, dont use inline if statements
 					*/}
 				<Box marginX={5}>
-					<UpcomingAppointmentsSection />
+					{/* <UpcomingAppointmentsSection /> */}
 				</Box>
 
 				<VStack padding={5}>
