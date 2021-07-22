@@ -103,7 +103,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						const data = {
 							aboutVisit: { complaint, symptoms },
 							pid: uid,
-							consultant: consultant.id,
+							cid: consultant.id,
 							appointmentDate: appointment,
 							type: appointmentType,
 							createdAt: (new Date()).getTime(),
