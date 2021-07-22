@@ -6,6 +6,10 @@ import FindFacilityListView from './FindFacilityList'
 
 import { Stack, NavKey } from './_navigator'
 
+type RootStackParamList = {
+    [NavKey.FindFacilityListScreen]: { facility: Facility };
+};
+
 export default function MapFaciltyView() {
     return (
         <Stack.Navigator headerMode="none">

@@ -13,19 +13,17 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type FacilityListItemProps = {
-	facility: {
-		name: string;
-		street: string;
-		region: string;
-		rating: number;
-		ratedBy: number;
-		distance: string;
-	};
+	facility: Facility
 	onPress: () => void;
 };
 
+// TODO: calcultae distance from geopoint and render distance
+const getDistance = (geopoint: { lat: number, lng: number }) => {
+	return `${0} km`
+}
+
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
-	facility: { name, street, region, rating, ratedBy, distance },
+	facility: { name, address, rating: { count, stars }, geopoint },
 	onPress,
 }) => {
 	return (
@@ -56,7 +54,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							</HStack>
 							<VStack>
 								<Text fontSize="md" bold color="#747F9E">
-									{street + ", " + region}
+									{address}
 								</Text>
 							</VStack>
 
@@ -72,7 +70,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 										size={24}
 									/>
 									<Text fontSize="md" color="#B0B3C7">
-										{rating} ({ratedBy})
+										{stars} ({count})
 									</Text>
 								</HStack>
 								<HStack
@@ -91,7 +89,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 										size={18}
 										color="#258FBE"
 									/>
-									<Text color="#258FBE">{distance}</Text>
+									<Text color="#258FBE">{getDistance(geopoint)}</Text>
 								</HStack>
 							</HStack>
 						</VStack>

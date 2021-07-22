@@ -9,6 +9,9 @@ import { ArrowBackIcon, Avatar, Heading, VStack, HStack, Text, Box } from "nativ
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { NavKey } from "./_navigator"
+import axios from "axios";
+import { API_ROOT } from "../BookAppointment/ConsultantsList";
+import { useQuery } from "react-query";
 
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
@@ -16,28 +19,27 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
+export const getFacilities = async (): Promise<Facility[]> => {
+	const res = await axios.get<Facility[]>(`${API_ROOT}/v0/data/facilities`)
+	const consultants: Facility[] = await res.data.data
+	return consultants
+};
+
 export const markers = [
 	{
-		ratings: 4.1,
-		raters: 183,
-		coordinate: {
-			latitude: -6.803380008888317,
-			longitude: 39.28789428424221,
+		id: "SAdad",
+		name: "Demo Hospital",
+		geopoint: {
+			lat: -6.801707786030863,
+			lng: 39.27184542122396,
 		},
-		title: "Aga Khan Hospital",
-		location: "Ocean Road Dar es Salaam TZ, 2289",
+		address: "Malik Rd, Dar es Salaam",
+		rating: {
+			stars: 4.5,
+			count: 934
+		}
 	},
-	{
-		ratings: 4.2,
-		raters: 190,
-		imageUrl: "https://lh5.googleusercontent.com/p/AF1QipNDZ_RfsPE7WneCCNts_7sPVr_48YkPGf1qUMii=w408-h244-k-no",
-		coordinate: {
-			latitude: -6.801707786030863,
-			longitude: 39.27184542122396,
-		},
-		title: "Muhimbili National Hospital",
-		location: "Malik Rd, Dar es Salaam",
-	},
+
 ];
 
 /**
@@ -50,17 +52,14 @@ const region = {
 	longitudeDelta: 0.040142817690068,
 }
 
-const initialState = {
-	markers,
-	region
-}
+
 
 const FindFacility: React.FC = () => {
 
 	const navigation = useNavigation()
 	let mapIndex = 0;
 	let mapAnimation = new Animated.Value(0);
-	const [state, setState] = React.useState(initialState);
+	const [state, setState] = React.useState<Facility[]>(markers);
 
 	const _map = React.useRef(null);
 	const _scrollView = React.useRef(null);
@@ -68,8 +67,8 @@ const FindFacility: React.FC = () => {
 	React.useEffect(() => {
 		mapAnimation.addListener(({ value }) => {
 			let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-			if (index >= state.markers.length) {
-				index = state.markers.length - 1;
+			if (index >= state.length) {
+				index = state.length - 1;
 			}
 			if (index <= 0) {
 				index = 0;
@@ -77,12 +76,12 @@ const FindFacility: React.FC = () => {
 			const regionTimeout = setTimeout(() => {
 				if (mapIndex !== index) {
 					mapIndex = index;
-					const { coordinate } = state.markers[index];
+					const { geopoint } = state[index];
 					_map.current?.animateToRegion(
 						{
-							...coordinate,
-							latitudeDelta: state.region.latitudeDelta,
-							longitudeDelta: state.region.longitudeDelta,
+							...geopoint,
+							latitudeDelta: region.latitudeDelta,
+							longitudeDelta: region.longitudeDelta,
 						},
 						350
 					);
@@ -95,7 +94,7 @@ const FindFacility: React.FC = () => {
 		});
 	});
 
-	const interpolations = state.markers.map((marker, index) => {
+	const interpolations = state.map((marker, index) => {
 		const inputRange = [
 			(index - 1) * CARD_WIDTH,
 			index * CARD_WIDTH,
@@ -122,6 +121,23 @@ const FindFacility: React.FC = () => {
 		_scrollView.current.scrollTo({ x: x, y: 0, animated: true });
 	}
 
+
+	const {
+		status,
+		data: facilities,
+		error,
+		isLoading,
+	} = useQuery(["facilities"], getFacilities);
+
+	console.log("Facilities-> Loading : ", isLoading, " Error: ", error)
+	console.log(JSON.stringify(facilities, null, 3))
+
+	React.useEffect(() => {
+		if (!!facilities) {
+			setState(facilities)
+		}
+	}, [facilities])
+
 	return (
 
 		<MainContainer
@@ -132,28 +148,28 @@ const FindFacility: React.FC = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
 			<MapView
 				ref={_map}
 				style={styles.map}
-				initialRegion={state.region}
+				initialRegion={region}
 			>
-				{state.markers.map((marker, index) => {
+				{state.map((marker, index) => {
 					return (
 						<Marker
-							key={index} 
-							coordinate={marker.coordinate} 
+							key={index}
+							coordinate={{ longitude: marker.geopoint.lng, latitude: marker.geopoint.lat }}
 							onPress={(e) => onMarkerPress(e)}
-							title={`${marker.title}`}
-							description={marker.location}
+							title={`${marker.name}`}
+							description={marker.address}
 						/>
 					)
 				})}
@@ -191,16 +207,16 @@ const FindFacility: React.FC = () => {
 					{ useNativeDriver: true }
 				)}
 			>
-				{state.markers.map((marker, index) => (
-					<Pressable  
-						key={index} 
+				{state.map((marker, index) => (
+					<Pressable
+						key={index}
 						onPress={() => {
-							// console.log("Pressed map carc : ", marker)
+							console.log("Pressed map carc : ", marker)
 							// TODO: taking this to a separate method
 							navigation.navigate(NavKey.FindFacilityListScreen, { facility: marker })
 						}}
 					>
-						<VStack 
+						<VStack
 							style={{
 								shadowColor: "#CCC",
 								shadowOffset: {
@@ -215,8 +231,8 @@ const FindFacility: React.FC = () => {
 							minWidth={300}
 							bgColor="#FFF"
 							shadow={40}
-							padding={3} 
-							space={1} 
+							padding={3}
+							space={1}
 							borderRadius={20}
 							marginRight={5}>
 							<Avatar
@@ -225,14 +241,14 @@ const FindFacility: React.FC = () => {
 								height={120}
 								borderRadius={20}
 								source={{
-									uri: marker.imageUrl || "https://wallpaperaccess.com/full/317501.jpg",
+									uri: marker?.imageUrl || "https://wallpaperaccess.com/full/317501.jpg",
 								}}
 							/>
 							{/* Text ara */}
 							<VStack>
-								<Heading fontSize="lg">{marker.title}</Heading>
+								<Heading fontSize="lg">{marker.name}</Heading>
 								<Text fontSize="md" bold color="#747F9E">
-									{marker.location}
+									{marker.address}
 								</Text>
 							</VStack>
 
@@ -250,7 +266,7 @@ const FindFacility: React.FC = () => {
 										size={24}
 									/>
 									<Text fontSize="md" color="#B0B3C7">
-										{marker.ratings} ({marker.raters})
+										{marker.rating.stars} ({marker.rating.count})
 									</Text>
 								</HStack>
 
@@ -316,4 +332,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default  FindFacility;
+export default FindFacility;

@@ -32,7 +32,7 @@ interface Consultant {
 
 
 
-const API_ROOT = "https://afya-bora-api.herokuapp.com"
+export const API_ROOT = "https://afya-bora-api.herokuapp.com"
 
 export const getConsultants = async (): Promise<Consultant[]> => {
 	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants`)
@@ -63,7 +63,7 @@ const ConsultantsList = () => {
 
 	// console.log("Status ", isLoading);
 	// console.log("Error ", error);
-	// console.log("Data ", consultants);
+	console.log("Data ", consultants);
 
 	return (
 		<MainContainer

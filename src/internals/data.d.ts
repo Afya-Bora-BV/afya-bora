@@ -71,12 +71,3 @@ interface Appointment {
 }
 
 
-/**
- * 
- */
-interface Facility {
-    id: string
-    name: string
-    location: LocationOption
-    users: Array<ConsultantProfile['id']>
-}

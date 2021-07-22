@@ -1,14 +1,20 @@
 type DBDate = number | Date;
 
-type Consultant = {
+interface Facility {
+	id: string
 	name: string
-	gender: "male" | "female",
-	facility: { name: string, address: string },
-	clinicianType: string,
-	specialities: string[],
-	rating: number,
-	ratedBy: number
-};
+	geopoint: {
+		lat: number
+		lng: number
+	}
+	address: string
+	imageUrl?: string
+	rating: {
+		stars: number // 4.5
+		count: number // 934
+	}
+}
+
 
 type Rating = {
 	stars: number;
