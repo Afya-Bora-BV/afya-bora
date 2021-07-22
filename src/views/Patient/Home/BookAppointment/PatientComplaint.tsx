@@ -131,6 +131,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						}
 						console.log(JSON.stringify(data, null, 3))
 						console.log("create appointment data")
+
 						addAppointment({ data: data, cid: consultant.id, pid: uid || "" })
 					},
 				},

@@ -176,11 +176,11 @@ export default function OnlineConsultantSelectDateTime() {
 	// }, []);
 
 	const goNext = useCallback(() => {
+		const time = chosenTimeSlots[0]?.split(" ")[0] || '00:00'
+		const dateTime = `${moment(new Date(chosenDate)).format("YYYY-MM-DD")}T${time}:00`
+		const date = new Date(dateTime)
 		navigation.navigate(OnlineNavKey.ChooseConsultantScreen, {
-			appointment: {
-				date: chosenDate,
-				timeSlots: chosenTimeSlots,
-			},
+			appointment: date,
 		});
 	}, [chosenDate, chosenTimeSlots, navigation]);
 
