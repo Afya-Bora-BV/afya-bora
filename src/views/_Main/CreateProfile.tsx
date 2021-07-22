@@ -25,23 +25,69 @@ import { PrimaryButton } from "../../components/button";
 import moment from "moment";
 import { useAuthStore } from "../../internals/auth/context";
 
-import firestore from '@react-native-firebase/firestore';
+import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+
+const regions: { name: string }[] = [
+	"Residency Location",
+	"Arusha",
+	"Dar es Salaam",
+	"Dodoma",
+	"Geita",
+	"Iringa",
+	"Kagera",
+	"Katavi",
+	"Kigoma",
+	"Kilimanjaro",
+	"Lindi",
+	"Manyara",
+	"Mara",
+	"Mbeya",
+	"Morogoro",
+	"Mtwara",
+	"Mwanza",
+	"Njombe",
+	"Pemba North",
+	"Pemba South",
+	"Pwani",
+	"Rukwa",
+	"Ruvuma",
+	"Shinyanga",
+	"Simiyu",
+	"Singida",
+	"Tabora",
+	"Tanga",
+	"Zanzibar North",
+	"Zanzibar South and Central",
+	"Zanzibar West",
+].map((region) => ({ name: region }));
+
+const bloodGroups: { name: string }[] = [
+	"A+",
+	"B+",
+	"AB+",
+	"O+",
+	"A-",
+	"B-",
+	"AB-",
+	"O-",
+	
+].map((bloodGroup) => ({ name: bloodGroup }));
 
 
 type Profile = CompleteProfileInputs & {
 	phoneNumber: string;
-}
+};
 
 const createPatientProfile = async (profile: Profile) => {
-	console.log("Creating a profile")
-	console.log(profile)
-	const profilesRef = firestore().collection("patients")
-	const uid = await auth().currentUser?.uid
-	console.log("USER ID 2 : ", uid)
-	await profilesRef.doc(uid).set({ ...profile, uid })
-}
+	console.log("Creating a profile");
+	console.log(profile);
+	const profilesRef = firestore().collection("patients");
+	const uid = await auth().currentUser?.uid;
+	console.log("USER ID 2 : ", uid);
+	await profilesRef.doc(uid).set({ ...profile, uid });
+};
 
 function friendlyFormatDate(timeStamp: Date | string | number) {
 	const dateObj = new Date(timeStamp);
@@ -53,15 +99,12 @@ function friendlyFormatDate(timeStamp: Date | string | number) {
 	return `${date}-${month + 1}-${year}`;
 }
 
-
-
-
 //yup form control attrib
 interface CompleteProfileInputs {
 	name: string;
 	phone: string;
 	gender: "male" | "female";
-	dob: Date
+	dob: Date;
 	height: number;
 	weight: number;
 	bloodGroup: string;
@@ -77,8 +120,10 @@ export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 
-	const { phoneNumber, updateProfile } = useAuthStore((state) => ({ phoneNumber: state.phone, updateProfile: state.updateProfile }))
-
+	const { phoneNumber, updateProfile } = useAuthStore((state) => ({
+		phoneNumber: state.phone,
+		updateProfile: state.updateProfile,
+	}));
 
 	const {
 		control,
@@ -89,12 +134,12 @@ export default function CreateProfileScreen() {
 	});
 
 	const onSubmit = (data: CompleteProfileInputs) => {
-		console.log("Form data : ")
+		console.log("Form data : ");
 		console.log(data);
-		completProfile({ ...data, phoneNumber, type: "patient" })
+		completProfile({ ...data, phoneNumber, type: "patient" });
 
 		// TODO: to reconsider better way to store this server state
-		updateProfile({ ...data, phoneNumber, type: "patient" })
+		updateProfile({ ...data, phoneNumber, type: "patient" });
 	};
 
 	//navigation attrib
@@ -109,20 +154,21 @@ export default function CreateProfileScreen() {
 		setShow(true);
 	};
 
-	const { isLoading, mutate: completProfile } = useMutation(createPatientProfile, {
-		onError: (error, variables, context) => {
-			// An error happened!
-			console.log(`rolling back optimistic update with id `, error)
-		},
-		onSuccess: (data, variables, context) => {
-			// Boom baby!
-			console.log("created successfully ")
+	const { isLoading, mutate: completProfile } = useMutation(
+		createPatientProfile,
+		{
+			onError: (error, variables, context) => {
+				// An error happened!
+				console.log(`rolling back optimistic update with id `, error);
+			},
+			onSuccess: (data, variables, context) => {
+				// Boom baby!
+				console.log("created successfully ");
+			},
+		}
+	);
 
-		},
-
-	})
-
-	console.log("Phone number : 2 ", phoneNumber)
+	console.log("Phone number : 2 ", phoneNumber);
 
 	return (
 		<Box flex={1}>
@@ -214,12 +260,16 @@ export default function CreateProfileScreen() {
 													minWidth={200}
 													accessibilityLabel="Gender"
 													placeholder="Gender"
-													onValueChange={(itemValue) =>
-														onChange(itemValue)
-													}
+													onValueChange={(
+														itemValue
+													) => onChange(itemValue)}
 													_selectedItem={{
 														bg: "cyan.600",
-														endIcon: <CheckIcon size={4} />,
+														endIcon: (
+															<CheckIcon
+																size={4}
+															/>
+														),
 													}}
 												>
 													<Select.Item
@@ -235,8 +285,6 @@ export default function CreateProfileScreen() {
 											name="gender"
 											defaultValue="male"
 										/>
-
-
 									</Stack>
 
 									<Spacer size={20} />
@@ -268,7 +316,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => { }}
+														) => {}}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -307,7 +355,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																	"ios"
+																		"ios"
 																);
 																onChange(
 																	currentDate
@@ -451,26 +499,31 @@ export default function CreateProfileScreen() {
 													minWidth={200}
 													accessibilityLabel="BloodGroup"
 													placeholder="BloodGroup"
-													onValueChange={(itemValue) =>
-														onChange(itemValue)
-													}
+													onValueChange={(
+														itemValue
+													) => onChange(itemValue)}
 													_selectedItem={{
 														bg: "cyan.600",
-														endIcon: <CheckIcon size={4} />,
+														endIcon: (
+															<CheckIcon
+																size={4}
+															/>
+														),
 													}}
 												>
-													<Select.Item
-														label="AB+"
-														value="AB+"
-													/>
-													<Select.Item label="O" value="O" />
+													{bloodGroups.map((bloodGroup) => (
+														<Select.Item
+															label={bloodGroup.name}
+															value={bloodGroup.name}
+														/>
+													))}
+													
 												</Select>
 											)}
 											name="bloodGroup"
 											// rules={{ required: true }}
 											defaultValue=""
 										/>
-
 									</Stack>
 
 									<Spacer size={20} />
@@ -493,30 +546,31 @@ export default function CreateProfileScreen() {
 													minWidth={200}
 													accessibilityLabel="Location"
 													placeholder="Location"
-													onValueChange={(itemValue) =>
-														onChange(itemValue)
-													}
+													onValueChange={(
+														itemValue
+													) => onChange(itemValue)}
 													_selectedItem={{
 														bg: "cyan.600",
-														endIcon: <CheckIcon size={4} />,
+														endIcon: (
+															<CheckIcon
+																size={4}
+															/>
+														),
 													}}
 												>
-													<Select.Item
-														label="Location1"
-														value="Location1"
-													/>
-													<Select.Item
-														label="Location2"
-														value="Location2"
-													/>
+													{regions.map((region) => (
+														<Select.Item
+															label={region.name}
+															value={region.name}
+														/>
+													))}
+													
 												</Select>
 											)}
 											name="residence"
 											// rules={{ required: true }}
 											defaultValue=""
 										/>
-
-
 									</Stack>
 								</Stack>
 							</Stack>
@@ -543,4 +597,4 @@ export default function CreateProfileScreen() {
 			</ScrollView>
 		</Box>
 	);
-};
+}

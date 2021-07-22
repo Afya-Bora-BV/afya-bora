@@ -35,7 +35,7 @@ type OnlineConsultChooseConsultantProps = {
 	navigation: OnlineConsultChooseConsultantNavigationProp;
 };
 
-type DemoConsultant = {
+export type DemoConsultant = {
 	id: string;
 	name: string;
 	hospital: string;

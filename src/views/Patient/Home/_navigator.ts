@@ -8,4 +8,5 @@ export const HomeNavKey = {
 	BookAppointmentViewScreen: "BookAppointmentView",
 	OnlineConsultViewScreen: "OnlineConsultView",
 	MapFaciltyViewScreen: "MapFaciltyView",
+	AppointmentInfoScreen: "AppointmentInfo",
 };
