@@ -72,7 +72,7 @@ const bloodGroups: { name: string }[] = [
 	"B-",
 	"AB-",
 	"O-",
-	
+
 ].map((bloodGroup) => ({ name: bloodGroup }));
 
 
@@ -316,7 +316,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => {}}
+														) => { }}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -355,7 +355,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																		"ios"
+																	"ios"
 																);
 																onChange(
 																	currentDate
@@ -517,7 +517,7 @@ export default function CreateProfileScreen() {
 															value={bloodGroup.name}
 														/>
 													))}
-													
+
 												</Select>
 											)}
 											name="bloodGroup"
@@ -564,7 +564,7 @@ export default function CreateProfileScreen() {
 															value={region.name}
 														/>
 													))}
-													
+
 												</Select>
 											)}
 											name="residence"

@@ -31,7 +31,6 @@ interface Consultant {
 }
 
 
-
 export const API_ROOT = "https://afya-bora-api.herokuapp.com"
 
 export const getConsultants = async (): Promise<Consultant[]> => {
