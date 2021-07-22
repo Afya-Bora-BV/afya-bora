@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import ProfileScreen from "./Profile";
 import MainProfileScreen from "./MainScreen";
-import CreateProfileScreen from "./CreateProfile";
+import CreateProfileScreen from "../../_Main/CreateProfile";
 
 import { ProfileNavKey, Stack } from './_navigator'
 

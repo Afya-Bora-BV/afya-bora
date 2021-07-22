@@ -101,10 +101,6 @@ export default function CreateProfileScreen() {
 	// TODO: on registering instead of navigating just update the global store which in turn will update the stack
 	// to render
 
-	const nav = () => {
-		navigation.navigate("Home");
-	};
-
 	//Date picker attrib
 	const [show, setShow] = useState(false);
 	const [date, setDate] = useState(new Date(1598051730000));

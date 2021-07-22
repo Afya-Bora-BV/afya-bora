@@ -18,25 +18,28 @@ import { useCallback } from "react";
 
 import firestore from "@react-native-firebase/firestore";
 import { useQuery } from "react-query";
+import axios, { AxiosResponse } from 'axios';
 
 interface Consultant {
-	cid: string;
-	email: string;
-	facilityId: string;
-	gender: "male" | "female";
-	name: string;
-	rating: number;
-	specialities: string[];
-	ratedBy: number;
+	name: string
+	gender: "male" | "female",
+	facility: { name: string, address: string },
+	clinicianType: string,
+	specialities: string[],
+	rating: number,
+	ratedBy: number
 }
 
-const getConsultants = async (): Promise<Consultant[]> => {
-	const consultants = await firestore().collection("consultants").get();
-	// TODO for reach for consulatant fetch  facility information, combined in batch read
-	const data = consultants.docs.map(
-		(doc) => ({ ...doc.data(), cid: doc.id } as Consultant)
-	);
-	return data;
+
+
+const API_ROOT = "https://afya-bora-api.herokuapp.com"
+
+export const getConsultants = async (): Promise<Consultant[]> => {
+	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants`)
+	const consultants: Consultant[] = await res.data.data
+	console.log("Data found is ")
+	console.log(consultants)
+	return consultants
 };
 
 const ConsultantsList = () => {
@@ -58,9 +61,9 @@ const ConsultantsList = () => {
 		isLoading,
 	} = useQuery(["consultants"], getConsultants);
 
-	console.log("Status ", isLoading);
-	console.log("Error ", error);
-	console.log("Data ", consultants);
+	// console.log("Status ", isLoading);
+	// console.log("Error ", error);
+	// console.log("Data ", consultants);
 
 	return (
 		<MainContainer
@@ -69,12 +72,12 @@ const ConsultantsList = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -85,7 +88,7 @@ const ConsultantsList = () => {
 					{consultants?.map((consultant) => (
 						<ConsultantListItem
 							onPress={() => selectConsultant(consultant)}
-							key={consultant.cid}
+							key={consultant.name}
 							consultant={consultant}
 						/>
 					))}

@@ -43,7 +43,7 @@ const checkUserProfile = async (phoneNumber: string): Promise<User | undefined> 
 	const profile = await firestore().collection("patients").doc(uid).get()
 	let data = undefined
 	if (profile.exists) {
-		data = profile.data() as User
+		data = { ...profile.data(), pid: profile.id } as User
 	}
 	return data
 }

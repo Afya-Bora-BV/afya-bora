@@ -21,8 +21,7 @@ type ConsultantListItemProps = {
 export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 	consultant: {
 		name,
-		hospital,
-		region,
+		facility: { name: facilityName, address: facilityAddress },
 		specialities,
 		rating,
 		ratedBy,
@@ -81,14 +80,14 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							</HStack>
 							<VStack>
 								<Text fontSize="md" bold color="#747F9E">
-									{hospital}
+									{facilityName}
 								</Text>
 								<Text fontSize="md" color="#747F9E">
 									<MaterialCommunityIcons
 										name="google-maps"
 										size={16}
 									/>
-									{region}
+									{facilityAddress}
 								</Text>
 								<Text fontSize="md" color="#747F9E">
 									<MaterialCommunityIcons

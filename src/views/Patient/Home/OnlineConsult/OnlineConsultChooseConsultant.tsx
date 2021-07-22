@@ -11,7 +11,7 @@ import { IconContainer } from "../../../../components/misc";
 
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
-import { getConsultants } from "../BookAppointment/ConsultantsList";
+import ConsultantsList, { getConsultants } from "../BookAppointment/ConsultantsList";
 import { useQuery } from "react-query";
 
 // NOTE: Dont move this to main.... results to require cycle
@@ -94,6 +94,9 @@ export default function OnlineConsultChooseConsultant({
 		},
 		[navigation, appointment]
 	);
+
+	// TODO: to asbstract to custom hook and fetch all online and offline consultants
+	// and filter from there, and use the hook in ConsultantsList and Here
 
 	const {
 		status,

@@ -94,12 +94,10 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
 					const t = n + 6;
-					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
-					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
+						}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
+						}`;
 					return (
 						<HStack flexWrap="wrap" space="md">
 							<TouchableOpacity
@@ -197,12 +195,12 @@ export default function OnlineConsultantSelectDateTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>

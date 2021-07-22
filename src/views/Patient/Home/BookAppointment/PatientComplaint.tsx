@@ -97,16 +97,19 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 					text: "Confirm",
 					onPress: () => {
 						const uid = auth().currentUser?.uid
+						console.log("create appointment data")
+						
 						const data = {
 							aboutVisit: { complaint, symptoms },
 							pid: uid,
-							cid: consultant.cid,
+							consultant: consultant,
 							appointment: appointment,
 							// pid: user.id, //TO DO - @GEORGE ADD USER ID HERE
 							type: appointmentType,
 							createdAt: (new Date()).getTime(),
 
 						}
+						console.log(JSON.stringify(data,null,3))
 						addAppointment(data)
 					},
 				},

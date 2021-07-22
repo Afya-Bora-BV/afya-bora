@@ -1,14 +1,13 @@
 type DBDate = number | Date;
 
 type Consultant = {
-	cid: string;
-	email: string;
-	facilityId: string;
-	gender: "male" | "female";
-	name: string;
-	rating: number;
-	specialities: string[];
-	ratedBy: number;
+	name: string
+	gender: "male" | "female",
+	facility: { name: string, address: string },
+	clinicianType: string,
+	specialities: string[],
+	rating: number,
+	ratedBy: number
 };
 
 type Rating = {
