@@ -146,7 +146,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
 			console.log("Whats the response : ", data)
-			// navigation.navigate(MainNavKey.HomeScreen);
+			navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
 	});

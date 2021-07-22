@@ -21,3 +21,35 @@ type Rating = {
 	createdAt: DBDate;
 	ratedById: string;
 };
+
+
+interface RealTimeAppointment {
+	cid: string,
+	aboutVisit: {
+		complaint: string,
+		symptoms: string[]
+	},
+	facilityId: string,
+	type: "offline" | "online",
+	trl_facility?: {
+		geopoint: {
+			lat: number,
+			lng: 39.2807287
+		},
+		rating: {
+			stars: number,
+			count: number
+		},
+		name: string,
+		address: string
+	},
+	pid: string,
+	createdAt: {
+		seconds: number,
+		nanoseconds: number
+	},
+	date: {
+		seconds: number,
+		nanoseconds: number
+	}
+}

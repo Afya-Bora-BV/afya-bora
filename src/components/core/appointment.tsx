@@ -12,7 +12,7 @@ import {
   Text,
   Icon,
 } from 'native-base';
-import { TouchableOpacity } from 'react-native';
+import { TextPropTypes, TouchableOpacity } from 'react-native';
 
 /**
  * TODO: Upgrade this:
@@ -23,7 +23,7 @@ import { TouchableOpacity } from 'react-native';
  *   | Date, Name, Facility + Location (if offline, otherwise say Online),
  */
 
-export function AppointmentAlert({ appointment }: { appointment: Appointment }) {
+export function AppointmentAlert({ appointment, onPress }: { appointment: RealTimeAppointment, onPress: () => void }) {
   if (!appointment) return null
   return (
     // <TouchableOpacity onPress={props.onPress}>
@@ -43,14 +43,14 @@ export function AppointmentAlert({ appointment }: { appointment: Appointment }) 
         </Square>
         <VStack>
           <Heading fontSize="lg" color="#000">
-            {"Do Doctor "}
+            {"No doctor"}
           </Heading>
           <Text fontSize="sm" color="#333">
-            {appointment.appointment.date.seconds.toString()}
+            {appointment.date.seconds}
           </Text>
           <Text fontSize="sm" fontStyle="italic" color="#333">
             {/* TODO: include facility in appointment */}
-            {appointment.type === "online" ? "Online" : "Facility Name"}
+            {appointment.type === "online" ? "Online" : appointment.trl_facility?.name}
           </Text>
         </VStack>
       </HStack>
@@ -59,12 +59,14 @@ export function AppointmentAlert({ appointment }: { appointment: Appointment }) 
         {appointment.type === "offline" ?
           <Text fontSize={15} color={'#561BB3'} onPress={() => {
             console.log("Offline facility edit")
+            onPress()
           }}>
             Edit
           </Text>
           :
           <Text fontSize={15} color={'#561BB3'} onPress={() => {
             console.log("Online facility edit")
+            onPress()
           }}>
             Join/Edit
           </Text>
@@ -80,46 +82,8 @@ export function AppointmentAlert({ appointment }: { appointment: Appointment }) 
   );
 }
 
-export function StatusAppointmentAlert(/*{ consultant, appointmentDate, facility }*/) {
-  // <VStack>
-  // 			<HStack
-  // 				justifyContent="space-between"
-  // 				alignItems="center"
-  // 				shadow={2}
-  // 				rounded={10}
-  // 				bg="white"
-  // 				p={4}
-  // 			>
-  // 				<VStack>
-  // 					<HStack
-  // 						justifyContent="space-between"
-  // 						alignItems="center"
-  // 						space={4}
-  // 					>
-  // 						<MedicalHistoryIcon />
-  // 						<VStack>
-  // 							{/* TODO: specify the correct time for appointment */}
+export function StatusAppointmentAlert({ time = '', type = "offline" }: { time: string, type: "offline" | "online" }) {
 
-  // 							<HStack>
-  // 								<Text bold color="#747F9E">
-  // 									{friendlyFormatDate(date) + ", "}
-  // 								</Text>
-  // 								<Text bold color="#747F9E">
-  // 									{timeSlots[0]}
-  // 								</Text>
-  // 							</HStack>
-  // 							{/* TO DO - CHANGE TO SHOW STATUS */}
-  // 							<Text italic>Online Consultation</Text>
-  // 						</VStack>
-  // 					</HStack>
-  // 				</VStack>
-  // 				<Stack rounded={10} backgroundColor={"#A9FA0F"} padding={1.5}>
-  // 					<Text fontSize={12} color={"#24D626"}>
-  // 						Confirmed
-  // 					</Text>
-  // 				</Stack>
-  // 			</HStack>
-  // 		</VStack>
   return (
     <Box
       flexDirection="row"
@@ -136,10 +100,10 @@ export function StatusAppointmentAlert(/*{ consultant, appointmentDate, facility
         <MedicalHistoryIcon size={6} />
         <VStack space={2}>
           <Heading fontSize="lg" color="#000">
-            13 July, 14:30 PM
+            {time}
           </Heading>
           <Text fontSize="sm" fontStyle="italic" color="#333">
-            Online Consultation
+            {TextPropTypes} Consultation
           </Text>
         </VStack>
       </HStack>

@@ -21,116 +21,94 @@ import PenEditIcon from "../../../assets/icons/PenEditIcon";
 import WhatsAppLogo from "../../../assets/icons/WhatsAppLogo";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
-import { Spacer } from "../../../components/Spacer";
-import {
-	DemoAppointmentType,
-	useAppointmentTempoStore,
-} from "../../../internals/appointment/context";
 import { StatusAppointmentAlert } from "../../../components/core/appointment";
 import { Alert } from "react-native";
-import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { DemoConsultant } from "./OnlineConsult/OnlineConsultChooseConsultant";
+import { API_ROOT } from "./BookAppointment/ConsultantsList";
+import axios from "axios";
+import { useRoute } from "@react-navigation/native";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
+import { FacilityListItem } from "../../../components/facilities-list-item";
 
-const demoConsultant: DemoConsultant = {
-	id: "uindlxAa",
-	name: "Ally Salim",
-	hospital: "Aga Khan Hospital",
-	region: "Arusha, Tanzania",
-	expertise: "General Practitioner",
-	rating: 4,
-	ratedBy: 289,
-	time: "1:00",
-	status: "online",
+
+interface ConsultantDetails {
+	id: string,
+	name: string,
+	gender: "male" | "female",
+	clinicianType: string,
+	specialities: string[],
+	rating: number,
+	ratedBy: number
+}
+
+
+interface AppointmentDetails {
+	id: string
+	cid: string,
+	pid: string,
+	date: string,
+	type: "offline" | "online",
+	aboutVisit: {
+		complaint: string[],
+		symptoms: string[]
+	},
+	trl_facility?: {
+		address: string,
+		geopoint: {
+			lat: number,
+			lng: number
+		},
+		name: number,
+		rating: {
+			stars: number,
+			count: number
+		}
+	},
+	createdAt: {
+		_seconds: number,
+		_nanoseconds: number
+	},
+	facility: {
+		id: string,
+		name: string,
+		geopoint: {
+			lat: number,
+			lng: number
+		},
+		address: string,
+		rating: {
+			stars: string,
+			count: string
+		}
+	}
+	consultant?: ConsultantDetails,
+}
+
+export const getAppointmentDetails = async ({ cid, pid }: { cid: string, pid: string }): Promise<AppointmentDetails> => {
+	console.log("Link ", `${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`)
+	const res = await axios.get<AppointmentDetails>(`${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`)
+	const consultants: AppointmentDetails = await res.data.data
+	return consultants[0]
 };
-
-// const DateTimeCard: React.FC<{
-// 	appointment: DemoAppointmentType;
-// }> = ({ appointment }) => {
-// 	const {
-// 		dateTime: { timeSlots, date },
-// 	} = appointment;
-// 	return (
-// 		<VStack>
-// 			<HStack
-// 				justifyContent="space-between"
-// 				alignItems="center"
-// 				shadow={2}
-// 				rounded={10}
-// 				bg="white"
-// 				p={4}
-// 			>
-// 				<VStack>
-// 					<HStack
-// 						justifyContent="space-between"
-// 						alignItems="center"
-// 						space={4}
-// 					>
-// 						<MedicalHistoryIcon />
-// 						<VStack>
-// 							{/* TODO: specify the correct time for appointment */}
-
-// 							<HStack>
-// 								<Text bold color="#747F9E">
-// 									{friendlyFormatDate(date) + ", "}
-// 								</Text>
-// 								<Text bold color="#747F9E">
-// 									{timeSlots[0]}
-// 								</Text>
-// 							</HStack>
-// 							{/* TO DO - CHANGE TO SHOW STATUS */}
-// 							<Text italic>Online Consultation</Text>
-// 						</VStack>
-// 					</HStack>
-// 				</VStack>
-// 				<Stack rounded={10} backgroundColor={"#A9FA0F"} padding={1.5}>
-// 					<Text fontSize={12} color={"#24D626"}>
-// 						Confirmed
-// 					</Text>
-// 				</Stack>
-// 			</HStack>
-// 		</VStack>
-// 	);
-// };
-
-// type PatientAdditionalInfoProps = {};
-// const PatientAdditionalInfo: React.FC<PatientInfoProps> = () => {
-// 	return (
-// 		<VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
-// 			<Text bold fontSize="lg">Symptoms</Text>
-// 			<HStack space={4}>
-// 				<Box
-// 					rounded="xl"
-// 					bg={"#B0B3C7"}
-// 					flex={1}
-// 					alignItems="center"
-// 					paddingY={2}
-// 				>
-// 					<Text color={"white"}>Chest Pain</Text>
-// 				</Box>
-// 				<Box
-// 					rounded="xl"
-// 					bg={"#B0B3C7"}
-// 					flex={1}
-// 					alignItems="center"
-// 					paddingY={2}
-// 				>
-// 					<Text color={"white"}>Genital Itching</Text>
-// 				</Box>
-// 			</HStack>
-
-// 			<Text bold fontSize="lg">Other Notes</Text>
-// 			<Text fontSize={13}>
-// 				I have had a really bad stomach ache for a long time and I
-// 				am not sure what is happening. I took some medicine but it
-// 				didn’t help.
-// 			</Text>
-// 		</VStack>
-// 	);
-// };
 
 export default function AppointmentInfo() {
 	const navigation = useNavigation();
 
+	const route = useRoute();
+	const { appointment } = route?.params
+	const { cid, pid } = appointment
+	const {
+		status,
+		data,
+		error,
+		isLoading,
+	} = useQuery(["appointmentDetails", cid, pid], () => getAppointmentDetails({ cid, pid }));
+
+	if (isLoading) return <Text>Loading...</Text>
+	if (error) return <Text>Something went wrong</Text>
+
+	console.log("Appointment Data")
+	console.log(JSON.stringify(data, null, 3))
 	return (
 		<MainContainer
 			title="Appointment Info"
@@ -138,12 +116,12 @@ export default function AppointmentInfo() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -158,7 +136,7 @@ export default function AppointmentInfo() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert />
+					<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} />
 				</View>
 
 				<HStack justifyContent="space-between">
@@ -178,19 +156,37 @@ export default function AppointmentInfo() {
 					</Pressable>
 				</HStack>
 
-				<Button
-					style={{ backgroundColor: "#24D626" }}
-					borderRadius={20}
-					onPress={() => Alert.alert("WIP")}
-				>
-					Join Consultation
-				</Button>
+				{data?.type === "online" ?
+					<Button
+						style={{ backgroundColor: "#24D626" }}
+						borderRadius={20}
+						onPress={() => Alert.alert("WIP")}
+					>
+						Join Consultation
+					</Button>
+					:
+					<FacilityListItem
+						onPress={() => { }}
+						key={data?.facility.id}
+						facility={data?.facility}
+					/>
+				}
+
+
 
 				<ConsultantListItem
-					key={demoConsultant.id}
-					consultant={demoConsultant}
+					key={data?.consultant?.id}
+					consultant={
+						{
+							name: data?.consultant?.name,
+							facility: { name: data?.facility?.name, address: data?.facility?.address },
+							specialities: data?.consultant?.specialities,
+							rating: data?.consultant?.rating,
+							ratedBy: data?.consultant?.ratedBy,
+						}
+					}
+					onPress={() => { }}
 				/>
-
 				{/* NOTE: Abstracting away makes difficult to deal with */}
 				<VStack
 					space={5}
@@ -203,34 +199,27 @@ export default function AppointmentInfo() {
 					<Text bold fontSize="xl">
 						Symptoms
 					</Text>
-					<HStack space={4}>
-						<Box
-							rounded="xl"
-							bg={"#B0B3C7"}
-							flex={1}
-							alignItems="center"
-							paddingY={2}
-						>
-							<Text color={"white"}>Chest Pain</Text>
-						</Box>
-						<Box
-							rounded="xl"
-							bg={"#B0B3C7"}
-							flex={1}
-							alignItems="center"
-							paddingY={2}
-						>
-							<Text color={"white"}>Genital Itching</Text>
-						</Box>
+					<HStack space={4} flexWrap="wrap">
+						{data?.aboutVisit.symptoms.map(symptom => (
+							<Box
+								rounded="xl"
+								bg={"#B0B3C7"}
+								flex={1}
+								alignItems="center"
+								paddingY={2}
+							>
+								<Text color={"white"}>{symptom}</Text>
+							</Box>
+						))}
+
+
 					</HStack>
 
 					<Text bold fontSize="lg">
 						Other Notes
 					</Text>
 					<Text fontSize={13}>
-						I have had a really bad stomach ache for a long time and
-						I am not sure what is happening. I took some medicine
-						but it didn’t help.
+						{data?.aboutVisit.complaint}
 					</Text>
 				</VStack>
 			</VStack>
