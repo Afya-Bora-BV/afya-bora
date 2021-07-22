@@ -248,6 +248,7 @@ export default function Home() {
 
 // TODO: find a better place to fetch all the data
 const UpcomingAppointmentsSection = () => {
+	const navigation = useNavigation();
 	const uid = auth().currentUser?.uid
 	const [appointments, setAppointments] = useState<Appointment[]>([])
 	useEffect(() => {
@@ -269,7 +270,7 @@ const UpcomingAppointmentsSection = () => {
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlert appointment={appointments[0]} />
+				<AppointmentAlert appointment={appointments[0]} onPress={()=>{navigation.navigate(HomeNavKey.AppointmentInfoScreen)}} />
 				<View width="100%" alignItems="flex-end">
 					<Pressable onPress={() => console.log("Something")}>
 						<Text fontStyle="italic">See All Appointments</Text>

@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { TabNavKey as MainTabNavKey } from '../_navigator'
 import { ProfileNavKey } from '../Profile/_navigator'
 import { useAuthStore } from "../../../internals/auth/context";
+import AppointmentInfo from "./AppointmentInfo";
 
 export default function HomeView({ navigation }: any) {
 	const currentProfile = useAuthStore(s => s.currentProfile)
@@ -53,6 +54,10 @@ export default function HomeView({ navigation }: any) {
 			<NavStack.Screen
 				name={HomeNavKey.MapFaciltyViewScreen}
 				component={MapFaciltyView}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentInfoScreen}
+				component={AppointmentInfo}
 			/>
 		</NavStack.Navigator>
 	);
