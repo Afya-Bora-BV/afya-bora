@@ -33,6 +33,9 @@ import { useAppointmentTempoStore } from "../../../../internals/appointment/cont
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth"
+import { API_ROOT } from "./ConsultantsList";
+import axios from "axios";
+
 
 type PatientComplaintScreenRouteProp = RouteProp<
 	BookAppointmentStackParamList,
@@ -58,8 +61,26 @@ const keySymptoms = [
 ];
 
 // to be extended
-const saveAppointment = async (data: any) => {
-	await firestore().collection("appointments").add(data)
+interface NewAppointmentRequestBody {
+	utcDate: string // Date UTCString
+	type: "online" | "offline"
+	facilityId?: string
+	aboutVisit: {
+		symptoms: string[]
+		complaint: string
+	}
+}
+
+
+const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequestBody, cid: string, pid: string }) => {
+	// await firestore().collection("appointments").add(data)
+	console.log("Data : ", data)
+	console.log("cid : ", cid)
+	console.log("pid : ", pid)
+	const res = await axios.post(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`, {
+		...data
+	})
+	return res
 }
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
@@ -97,21 +118,20 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 					text: "Confirm",
 					onPress: () => {
 						const uid = auth().currentUser?.uid
-						 
+
 						console.log("appointment is undefined why")
-						console.log(appointment)
+						console.log(consultant)
+
 						const data = {
 							aboutVisit: { complaint, symptoms },
-							pid: uid,
-							cid: consultant.id,
-							appointmentDate: appointment,
+							utcDate: appointment,
 							type: appointmentType,
-							createdAt: (new Date()).getTime(),
+							facilityId: appointmentType === "offline" ? consultant.facility.id : null
 
 						}
 						console.log(JSON.stringify(data, null, 3))
 						console.log("create appointment data")
-						addAppointment(data)
+						addAppointment({ data: data, cid: consultant.id, pid: uid || "" })
 					},
 				},
 			]
@@ -125,7 +145,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		},
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
-			navigation.navigate(MainNavKey.HomeScreen);
+			console.log("Whats the response : ", data)
+			// navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
 	});

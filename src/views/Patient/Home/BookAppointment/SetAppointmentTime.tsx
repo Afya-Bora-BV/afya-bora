@@ -208,7 +208,7 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 		const date = new Date(dateTime)
 		navigation.navigate(NavKey.PatientComplaintScreen, {
 			consultant,
-			appointment: date,
+			appointment: date.toUTCString(),
 			appointmentType: "offline",
 		});
 	}, [chosenDate, chosenTimeSlot, navigation]);
