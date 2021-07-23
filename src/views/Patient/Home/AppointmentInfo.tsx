@@ -269,8 +269,9 @@ export default function AppointmentInfo() {
 								flex={1}
 								alignItems="center"
 								paddingY={2}
+								
 							>
-								<Text color={"white"}>{symptom}</Text>
+								<Text textAlign="center" color={"white"}>{symptom}</Text>
 							</Box>
 						))}
 

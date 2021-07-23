@@ -183,7 +183,7 @@ export default function EditAppointment() {
 
 	return (
 		<MainContainer
-			title="Appointment Info"
+			title="Edit Appointment"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()

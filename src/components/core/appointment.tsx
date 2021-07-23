@@ -13,6 +13,7 @@ import {
   Icon,
 } from 'native-base';
 import { TextPropTypes, TouchableOpacity } from 'react-native';
+import moment from 'moment';
 
 /**
  * TODO: Upgrade this:
@@ -46,7 +47,7 @@ export function AppointmentAlert({ appointment, onPress }: { appointment: RealTi
             {"No doctor"}
           </Heading>
           <Text fontSize="sm" color="#333">
-            {appointment.date.seconds}
+            {moment(appointment.date.seconds).format("DD MMM, H:MM A")}
           </Text>
           <Text fontSize="sm" fontStyle="italic" color="#333">
             {/* TODO: include facility in appointment */}
@@ -100,7 +101,7 @@ export function StatusAppointmentAlert({ time = '', type = "offline" }: { time: 
         <MedicalHistoryIcon size={6} />
         <VStack space={2}>
           <Heading fontSize="lg" color="#000">
-            {time}
+            {moment(time).format("DD MMM, H:MM A")}
           </Heading>
           <Text fontSize="sm" fontStyle="italic" color="#333">
             {TextPropTypes} Consultation
