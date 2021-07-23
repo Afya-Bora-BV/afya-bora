@@ -32,8 +32,9 @@ import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
 import { useAuthStore } from "../../../internals/auth/context";
 import { useMutation } from "react-query";
-import auth from '@react-native-firebase/auth';
-
+import auth from "@react-native-firebase/auth";
+import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineConsulationIllustration";
+import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
 
 // import auth from '@react-native-firebase/auth';
 
@@ -53,7 +54,7 @@ function ProfileCard({ userProfile, ...props }) {
 			padding={3}
 			maxHeight={100}
 		>
-			<HStack space={3} justifyContent="center" >
+			<HStack space={3} justifyContent="center">
 				<Avatar
 					size="lg"
 					borderRadius={10}
@@ -82,30 +83,8 @@ function ProfileCard({ userProfile, ...props }) {
 
 const profileOptions = [
 	{
-		icon: AccountIcon,
-		title: "Profile",
-		onNavigate: (navigation: any) =>
-			navigation.navigate(ProfileNavKey.ProfileScreen),
-	},
-	{
-		icon: UpdateClock,
-		title: "Q & A History",
-	},
-	{
-		icon: MapPinIcon,
-		title: "Address",
-	},
-	{
-		icon: CardIcon,
-		title: "Payment Method",
-	},
-	{
 		icon: HeadphoneIcon,
 		title: "Help Center",
-	},
-	{
-		icon: PhoneIcon,
-		title: "Hotline",
 	},
 	{
 		icon: InfoIcon,
@@ -115,7 +94,10 @@ const profileOptions = [
 
 const ProfileMain: React.FC = () => {
 	const navigation = useNavigation();
-	const { profile, clearProfile } = useAuthStore(state => ({ profile: state.profile, clearProfile: state.clearProfile }))
+	const { profile, clearProfile } = useAuthStore((state) => ({
+		profile: state.profile,
+		clearProfile: state.clearProfile,
+	}));
 
 	const { height } = Dimensions.get("screen");
 
@@ -128,25 +110,24 @@ const ProfileMain: React.FC = () => {
 	// currently kept here so as to update the global store
 	// possibly codes for cleaning the global store can be kept in onSuccess of useMutation()
 	const signOutAndClearStore = async () => {
-		await auth().signOut()
-		clearProfile()
-	}
+		await auth().signOut();
+		clearProfile();
+	};
 
 	const signOut = () => {
-		logout()
-	}
+		logout();
+	};
 
 	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
 		onError: (error, variables, context) => {
 			// An error happened!
-			console.log(`error on signing out  `, error)
+			console.log(`error on signing out  `, error);
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
-			console.log("Signned out successuly ")
+			console.log("Signned out successuly ");
 		},
-
-	})
+	});
 
 	return (
 		<AlternateContainer
@@ -158,6 +139,54 @@ const ProfileMain: React.FC = () => {
 		>
 			<VStack alignItems="center" margin={8} marginTop={5} space={4}>
 				<ProfileCard userProfile={userProfile} />
+
+				<HStack space={4} marginTop={3} justifyContent="space-between">
+					<Box bg="white" shadow={2} rounded={10} width="45%">
+						<Pressable
+							onPress={() => {
+								// navigation.navigate(
+								// 	ProfileNavKey.VisitHistory
+								// );
+							}}
+						>
+							<HStack justifyContent={"center"} marginY={2}>
+								<Stack flex={1}>
+									<AppointmentIllustration size={60} />
+								</Stack>
+								<Stack flex={1.5} justifyContent="center">
+									<Text textAlign="center">
+										Update Calendar
+									</Text>
+								</Stack>
+							</HStack>
+						</Pressable>
+					</Box>
+
+					<Box bg="white" shadow={2} rounded={10} width="45%">
+						<Pressable
+							onPress={() => {
+								navigation.navigate(
+									ProfileNavKey.UpcomingAppointments
+								);
+							}}
+						>
+							<HStack justifyContent={"center"} paddingY={2}>
+								<Stack flex={1}>
+									<OnlineConsulationIllustration
+										size={60}
+										color="red"
+									/>
+								</Stack>
+								<Stack flex={1.5} justifyContent="center">
+									<Text textAlign="center">
+										Upcoming Visits
+									</Text>
+								</Stack>
+							</HStack>
+						</Pressable>
+					</Box>
+				</HStack>
+
 				<Box
 					bg="white"
 					shadow={2}
@@ -186,14 +215,15 @@ const ProfileMain: React.FC = () => {
 								</Pressable>
 							)
 						)}
-						<Pressable
-							onPress={signOut}
-						>
+
+						<Pressable onPress={signOut}>
 							<HStack alignItems="center" space={3}>
 								<Square size={6}>
 									<LogoutIcon />
 								</Square>
-								<Text fontSize={18}>{isLoading ? "Logging out ..." : "Logout"}</Text>
+								<Text fontSize={18}>
+									{isLoading ? "Logging out ..." : "Logout"}
+								</Text>
 							</HStack>
 						</Pressable>
 					</VStack>

@@ -8,4 +8,5 @@ export const ProfileNavKey = {
 	MainScreen: "Doctor.Profile.MainScreen",
 	ProfileScreen: "Doctor.Profile.ProfileScreen",
 	CreateProfile: "Doctor.Profile.CreateProfileScreen",
+	UpcomingAppointments: "Doctor.Profile.UpcomingAppointments"
 };

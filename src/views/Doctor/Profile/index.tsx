@@ -4,6 +4,7 @@ import MainProfileScreen from "./MainScreen";
 import CreateProfileScreen from "./CreateProfile";
 
 import { ProfileNavKey, Stack } from './_navigator'
+import UpcomingAppointments from "./UpcomingAppointments";
 
 export default function ProfileView() {
 	return (
@@ -19,6 +20,10 @@ export default function ProfileView() {
 			<Stack.Screen
 				name={ProfileNavKey.CreateProfile}
 				component={CreateProfileScreen}
+			/>
+			<Stack.Screen
+				name={ProfileNavKey.UpcomingAppointments}
+				component={UpcomingAppointments}
 			/>
 		</Stack.Navigator>
 	);

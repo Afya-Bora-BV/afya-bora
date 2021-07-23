@@ -32,14 +32,22 @@ const NotificationScreen = () => {
 					: undefined
 			}
 		>
+			<Spacer size={10}/>
 			<Stack paddingBottom={10} alignItems="center">
 				<Box bg="white" shadow={2} rounded={10} width="90%">
-					<Stack paddingLeft={5} paddingBottom={-5}>
+					<Box
+						position="absolute"
+						top={-20}
+						left={0}
+						right={0}
+						width="100%"
+						paddingX={5}
+					>
 						<Icon size={10}>
-							<BellIcon_Red size={10} />
+							<BellIcon_Red size={10}/>
 						</Icon>
-					</Stack>
-
+					</Box>
+					<Spacer size={5}/>
 					<Stack padding={5}>
 						<Text fontSize="xl" bold>
 							The doctor has ended his consultation

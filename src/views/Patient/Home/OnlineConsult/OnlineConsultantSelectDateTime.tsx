@@ -26,6 +26,7 @@ import { toggleStringFromList } from "../../../../utils";
 import { OnlineNavKey } from "./_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
 import MainContainer from "../../../../components/containers/MainContainer";
+import { Spacer } from "../../../../components/Spacer";
 
 function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
@@ -204,7 +205,8 @@ export default function OnlineConsultantSelectDateTime() {
 					: undefined
 			}
 		>
-			<VStack paddingX={10} space={10}>
+			<Spacer size={10}/>
+			<VStack paddingX={5} space={10}>
 				{/* Picking appointment times */}
 				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
 					<PickADateSection

@@ -280,6 +280,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						<TextArea
 							value={complaint}
 							autoCorrect={false}
+							multiline
+							textAlignVertical="top"
 							borderColor="#FFF"
 							placeholder="Describe how you are feeling ..."
 							onChangeText={(complaint) => {

@@ -37,7 +37,7 @@ export default function VisitHistory() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={""} />
+					<StatusAppointmentAlert time={1627070154} />
 				</View>
 			</VStack>
 		</MainContainer>
