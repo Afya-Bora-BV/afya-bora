@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack";
 
 export const NavStack = createStackNavigator();
 
@@ -9,4 +9,5 @@ export const HomeNavKey = {
 	OnlineConsultViewScreen: "OnlineConsultView",
 	MapFaciltyViewScreen: "MapFaciltyView",
 	AppointmentInfoScreen: "AppointmentInfo",
+	EditAppointment: "EditAppointment",
 };

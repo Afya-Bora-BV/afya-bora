@@ -11,10 +11,11 @@ import {
 	Box,
 	View,
 	Heading,
+	Modal,
 } from "native-base";
 import React from "react";
 import { useQuery } from "react-query";
-import { NavKey } from "../_navigator";
+
 import AccountIcon from "../../../assets/icons/AccountIcon";
 import GenderIcon from "../../../assets/icons/GenderIcon";
 import PenEditIcon from "../../../assets/icons/PenEditIcon";
@@ -29,7 +30,9 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { FacilityListItem } from "../../../components/facilities-list-item";
+import { colors } from "../../../constants/colors";
 
+import { HomeNavKey } from "./_navigator";
 
 interface ConsultantDetails {
 	id: string,
@@ -91,6 +94,48 @@ export const getAppointmentDetails = async ({ cid, pid }: { cid: string, pid: st
 	return consultants[0]
 };
 
+const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
+	return (
+		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
+			<Modal.Content>
+				<Modal.CloseButton />
+				<Modal.Header>Cancellation of appointment</Modal.Header>
+				<Modal.Body >
+					<Text textAlign="center">
+						Are you sure you want to cancel this appointment?
+					</Text>
+
+
+					<HStack mt={6} justifyContent="space-between">
+						<Button
+							h={44}
+							w={144}
+							borderRadius={24}
+							variant="outline"
+							onPress={() => {
+								setModalVisible(!modalVisible)
+							}}
+						>No</Button>
+						<Button
+							h={44}
+							w={144}
+							borderRadius={24}
+							onPress={() => {
+								console.log("Cancelling the appointment here ... ")
+							}}
+						>
+							Yes
+						</Button>
+					</HStack>
+				</Modal.Body>
+				<Modal.Footer>
+
+
+				</Modal.Footer>
+			</Modal.Content>
+		</Modal>
+	)
+}
 export default function AppointmentInfo() {
 	const navigation = useNavigation();
 
@@ -104,8 +149,15 @@ export default function AppointmentInfo() {
 		isLoading,
 	} = useQuery(["appointmentDetails", cid, pid], () => getAppointmentDetails({ cid, pid }));
 
+
 	if (isLoading) return <Text>Loading...</Text>
 	if (error) return <Text>Something went wrong</Text>
+
+	const [modalVisible, setModalVisible] = React.useState(false)
+
+	const handleCancelAppointment = () => {
+		setModalVisible(!modalVisible)
+	}
 
 	console.log("Appointment Data")
 	console.log(JSON.stringify(data, null, 3))
@@ -125,6 +177,7 @@ export default function AppointmentInfo() {
 					: undefined
 			}
 		>
+			<CancelAppointment modalVisible={modalVisible} setModalVisible={setModalVisible} />
 			<VStack
 				flex={1}
 				width="100%"
@@ -140,7 +193,9 @@ export default function AppointmentInfo() {
 				</View>
 
 				<HStack justifyContent="space-between">
-					<Pressable onPress={() => console.log("Edit Appointment")}>
+					<Pressable onPress={() => {
+						navigation.navigate(HomeNavKey.EditAppointment)
+					}}>
 						<HStack space={2}>
 							<PenEditIcon size={4} />
 							<Text fontSize="sm">Edit Appointment</Text>
@@ -148,7 +203,9 @@ export default function AppointmentInfo() {
 					</Pressable>
 
 					<Pressable
-						onPress={() => console.log("Cancel Appointment")}
+						onPress={() => {
+							handleCancelAppointment()
+						}}
 					>
 						<Text style={{ color: "red" }} fontSize="sm">
 							Cancel Appointment
