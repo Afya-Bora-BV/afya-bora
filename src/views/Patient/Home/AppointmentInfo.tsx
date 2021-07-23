@@ -29,6 +29,7 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { FacilityListItem } from "../../../components/facilities-list-item";
+import { HomeNavKey } from "./_navigator";
 
 
 interface ConsultantDetails {
@@ -140,7 +141,7 @@ export default function AppointmentInfo() {
 				</View>
 
 				<HStack justifyContent="space-between">
-					<Pressable onPress={() => console.log("Edit Appointment")}>
+					<Pressable onPress={() => {navigation.navigate(HomeNavKey.EditAppointment)}}>
 						<HStack space={2}>
 							<PenEditIcon size={4} />
 							<Text fontSize="sm">Edit Appointment</Text>
