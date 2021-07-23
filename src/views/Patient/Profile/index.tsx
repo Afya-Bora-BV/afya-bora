@@ -37,7 +37,7 @@ export default function ProfileView({ navigation }: any) {
 				name={ProfileNavKey.VisitHistory}
 				component={VisitHistory}
 			/>
-			Stack.Screen
+			<Stack.Screen
 				name={ProfileNavKey.UpcomingAppointments}
 				component={UpcomingAppointments}
 			/>

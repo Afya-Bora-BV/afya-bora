@@ -2,7 +2,8 @@ import React from 'react';
 
 import HomeView from './Home';
 import ScheduleView from './Schedule';
-import ProfileView from './Profile/MainScreen';
+import ProfileView from './Profile';
+
 import TabHomeIcon from '../../assets/icons/TabHomeIcon';
 import TabScheduleIcon from '../../assets/icons/TabScheduleIcon';
 import TabChatIcon from '../../assets/icons/TabChatIcon';

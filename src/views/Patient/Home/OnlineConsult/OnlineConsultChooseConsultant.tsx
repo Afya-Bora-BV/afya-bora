@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ArrowBackIcon, Box, Pressable, ScrollView, VStack } from "native-base";
+import { ArrowBackIcon, Box, Pressable, ScrollView, Text, useToast, VStack } from "native-base";
 import { HeaderwithBack } from "../../../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
@@ -13,6 +13,7 @@ import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
 import ConsultantsList, { getConsultants } from "../BookAppointment/ConsultantsList";
 import { useQuery } from "react-query";
+import { useEffect } from "react";
 
 // NOTE: Dont move this to main.... results to require cycle
 export type OnlineConsultStackParamList = {
@@ -77,11 +78,12 @@ export default function OnlineConsultChooseConsultant({
 }: OnlineConsultChooseConsultantProps) {
 	// const { goBack, navigate } = useNavigation();
 	const navigation = useNavigation();
+	const Toast = useToast();
 
 	//ACCESS TIME HERE
 	const appointment = route.params.appointment;
 
-	const onPressNext = useCallback(
+	const selectConsultant = useCallback(
 		(consultant: any) => {
 	
 			navigation.navigate(MainNavKey.BookAppointmentViewScreen, {
@@ -106,9 +108,18 @@ export default function OnlineConsultChooseConsultant({
 		isLoading,
 	} = useQuery(["consultants"], getConsultants);
 
-	console.log("Status ", isLoading);
-	console.log("Error ", error);
-	console.log("Data ", consultants);
+
+	useEffect(() => {
+		if (error !== undefined || error !== null) {
+			console.error(error)
+			// Show message
+			Toast.show({ title: "Unable to load results", description: String(error)})
+		}
+	}, [error])
+
+	// console.log("Status ", isLoading);
+	// console.log("Error ", error);
+	// console.log("Data ", consultants);
 
 	return (
 		<MainContainer
@@ -126,17 +137,31 @@ export default function OnlineConsultChooseConsultant({
 					: undefined
 			}
 		>
-			<ScrollView padding={5}>
-				<VStack space={2}>
-					{consultants?.map((consultant) => (
-						<ConsultantListItem
-							onPress={() => onPressNext(consultant)}
-							key={consultant.cid}
-							consultant={consultant}
-						/>
-					))}
-				</VStack>
-			</ScrollView>
+			
+			{
+				isLoading ? (
+					consultants !== undefined ?
+					(
+						<ScrollView padding={5}>
+							<VStack space={2}>
+								{consultants.map((consultant, ix) => {
+									return (
+										<ConsultantListItem
+											onPress={() => selectConsultant(consultant)}
+											key={consultant.name}
+											consultant={consultant}
+										/>
+									)
+								})}
+							</VStack>
+						</ScrollView>
+					) : (
+						<Text>Unable to show...</Text>
+					)
+				) : (
+					<Text>Loading consultants...</Text>
+				)
+			}
 		</MainContainer>
 	);
 }

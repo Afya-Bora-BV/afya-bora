@@ -199,7 +199,7 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 
 
 	return (
-		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" headerMode="with-back" noScroll>
+		<AltContainer backdropHeight={height / 5.2} navigation={navigation} title="Verify Your Number" noScroll>
 			<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 				<VStack space={5} marginBottom={15} alignContent="center">
 					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>

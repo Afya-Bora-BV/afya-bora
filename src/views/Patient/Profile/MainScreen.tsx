@@ -39,13 +39,12 @@ import { NoAppointment } from "./UpcomingAppointments";
 
 // import auth from '@react-native-firebase/auth';
 
-const signOut = async () => {
-	// await auth().signOut()
-	console.log("Sign Out");
-};
+// const signOut = async () => {
+// 	// await auth().signOut()
+// 	console.log("Sign Out");
+// };
 
-function ProfileCard({ userProfile, press, ...props }) {
-	const navigation = useNavigation();
+function ProfileCard({ userProfile, onPress, ...props }) {
 	return (
 		<HStack
 			bg="white"
@@ -77,11 +76,7 @@ function ProfileCard({ userProfile, press, ...props }) {
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
 					<Pressable
-						onPress={() => {
-							navigation.navigate(
-								ProfileNavKey.EditHealthProfile
-							);
-						}}
+						onPress={onPress}
 					>
 						<NextIcon color="#7065E4" />
 					</Pressable>
@@ -112,7 +107,7 @@ const profileOptions = [
 	},
 ];
 
-const ProfileMain: React.FC = () => {
+export default function ProfileMain () {
 	const navigation = useNavigation();
 	const { profile, clearProfile } = useAuthStore((state) => ({
 		profile: state.profile,
@@ -160,7 +155,11 @@ const ProfileMain: React.FC = () => {
 		>
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-					<ProfileCard userProfile={userProfile} />
+					<ProfileCard userProfile={userProfile} onPress={() => {
+							navigation.navigate(
+								ProfileNavKey.EditHealthProfile
+							);
+						}} />
 					<HStack
 						space={4}
 						marginTop={3}
@@ -257,5 +256,3 @@ const ProfileMain: React.FC = () => {
 		</AlternateContainer>
 	);
 };
-
-export default ProfileMain;

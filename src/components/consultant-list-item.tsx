@@ -18,6 +18,21 @@ type ConsultantListItemProps = {
 	onPress: () => void;
 };
 
+export interface Consultant {
+	id: string
+	name: string
+	gender: string
+	facility?: {
+		id: string
+		name: string
+		address: string
+	}
+	clinicianType: string
+	specialities: string[]
+	rating: number
+	ratedBy: number
+}
+
 export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 	consultant: {
 		name,

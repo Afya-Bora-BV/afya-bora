@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	StatusBar,
 	ArrowBackIcon,
+	useToast,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
@@ -19,6 +20,7 @@ import { useCallback } from "react";
 import firestore from "@react-native-firebase/firestore";
 import { useQuery } from "react-query";
 import axios, { AxiosResponse } from 'axios';
+import { useEffect } from "react";
 
 interface Consultant {
 	name: string
@@ -36,13 +38,12 @@ export const API_ROOT = "https://afya-bora-api.herokuapp.com"
 export const getConsultants = async (): Promise<Consultant[]> => {
 	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants`)
 	const consultants: Consultant[] = await res.data.data
-	console.log("Data found is ")
-	console.log(consultants)
 	return consultants
 };
 
 const ConsultantsList = () => {
 	const navigation = useNavigation();
+	const Toast = useToast()
 
 	const selectConsultant = useCallback(
 		(consultant: any) => {
@@ -54,15 +55,20 @@ const ConsultantsList = () => {
 	);
 
 	const {
-		status,
 		data: consultants,
 		error,
-		isLoading,
 	} = useQuery(["consultants"], getConsultants);
 
-	// console.log("Status ", isLoading);
-	// console.log("Error ", error);
-	console.log("Data ", consultants);
+	useEffect(() => {
+		if (error !== undefined && error !== null) {
+			console.error(error)
+			// Show message
+			Toast.show({ title: "Unable to load results", description: String(error)})
+		}
+	}, [error])
+	
+	console.log({ ALL: consultants });
+
 
 	return (
 		<MainContainer
@@ -76,23 +82,30 @@ const ConsultantsList = () => {
 								<ArrowBackIcon size={6} color="#561BB3" />
 							</IconContainer>
 						</Pressable>
-					)
+					)	
 					: undefined
 			}
 		>
-			<ScrollView padding={5}>
-				<VStack space={2}>
-					{isLoading && <Text>Loading...</Text>}
-					{error && <Text>Something went wrong</Text>}
-					{consultants?.map((consultant) => (
-						<ConsultantListItem
-							onPress={() => selectConsultant(consultant)}
-							key={consultant.name}
-							consultant={consultant}
-						/>
-					))}
-				</VStack>
-			</ScrollView>
+			{
+				consultants !== undefined ?
+				(
+					<ScrollView padding={5}>
+						<VStack space={2}>
+							{consultants.map((consultant, ix) => {
+								return (
+									<ConsultantListItem
+										onPress={() => selectConsultant(consultant)}
+										key={consultant.name}
+										consultant={consultant}
+									/>
+								)
+							})}
+						</VStack>
+					</ScrollView>
+				) : (
+					<Text>Loading...</Text>
+				)
+			}
 		</MainContainer>
 	);
 };
