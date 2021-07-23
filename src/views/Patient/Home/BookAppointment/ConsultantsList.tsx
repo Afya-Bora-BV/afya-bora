@@ -23,6 +23,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useEffect } from "react";
 
 interface Consultant {
+	id: string
 	name: string
 	gender: "male" | "female",
 	facility: { name: string, address: string },
@@ -63,10 +64,10 @@ const ConsultantsList = () => {
 		if (error !== undefined && error !== null) {
 			console.error(error)
 			// Show message
-			Toast.show({ title: "Unable to load results", description: String(error)})
+			Toast.show({ title: "Unable to load results", description: String(error) })
 		}
 	}, [error])
-	
+
 	console.log({ ALL: consultants });
 
 
@@ -82,29 +83,29 @@ const ConsultantsList = () => {
 								<ArrowBackIcon size={6} color="#561BB3" />
 							</IconContainer>
 						</Pressable>
-					)	
+					)
 					: undefined
 			}
 		>
 			{
 				consultants !== undefined ?
-				(
-					<ScrollView padding={5}>
-						<VStack space={2}>
-							{consultants.map((consultant, ix) => {
-								return (
-									<ConsultantListItem
-										onPress={() => selectConsultant(consultant)}
-										key={consultant.name}
-										consultant={consultant}
-									/>
-								)
-							})}
-						</VStack>
-					</ScrollView>
-				) : (
-					<Text>Loading...</Text>
-				)
+					(
+						<ScrollView padding={5}>
+							<VStack space={2}>
+								{consultants.map((consultant, ix) => {
+									return (
+										<ConsultantListItem
+											onPress={() => selectConsultant(consultant)}
+											key={consultant.name}
+											consultant={consultant}
+										/>
+									)
+								})}
+							</VStack>
+						</ScrollView>
+					) : (
+						<Text>Loading...</Text>
+					)
 			}
 		</MainContainer>
 	);

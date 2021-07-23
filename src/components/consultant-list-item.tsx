@@ -13,35 +13,32 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { consultants } from "../data/consultants";
 
+export interface Consultant {
+	id: string
+	name: string
+	gender: "male" | "female",
+	facility?: { name: string, address: string },
+	clinicianType: string,
+	specialities: string[],
+	rating: number,
+	ratedBy: number
+	status?: "offline" | "online"
+}
+
 type ConsultantListItemProps = {
 	consultant: Consultant;
 	onPress: () => void;
 };
 
-export interface Consultant {
-	id: string
-	name: string
-	gender: string
-	facility?: {
-		id: string
-		name: string
-		address: string
-	}
-	clinicianType: string
-	specialities: string[]
-	rating: number
-	ratedBy: number
-}
 
 export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 	consultant: {
 		name,
-		facility: { name: facilityName, address: facilityAddress },
+		facility,
 		specialities,
 		rating,
 		ratedBy,
-		time,
-		status,
+		status
 	},
 	onPress,
 }) => {
@@ -95,14 +92,14 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							</HStack>
 							<VStack>
 								<Text fontSize="md" bold color="#747F9E">
-									{facilityName}
+									{facility?.name}
 								</Text>
 								<Text fontSize="md" color="#747F9E">
 									<MaterialCommunityIcons
 										name="google-maps"
 										size={16}
 									/>
-									{facilityAddress}
+									{facility?.address}
 								</Text>
 								<Text fontSize="md" color="#747F9E">
 									<MaterialCommunityIcons
@@ -144,7 +141,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 										size={18}
 										color="#258FBE"
 									/>
-									<Text color="#258FBE">{time}</Text>
+									<Text color="#258FBE">{" "}</Text>
 								</HStack>
 							</HStack>
 						</VStack>
