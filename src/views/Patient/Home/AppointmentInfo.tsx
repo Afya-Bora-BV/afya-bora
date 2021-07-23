@@ -94,6 +94,7 @@ export const getAppointmentDetails = async ({ cid, pid }: { cid: string, pid: st
 	return consultants[0]
 };
 
+
 const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
 	return (
 		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
@@ -149,15 +150,16 @@ export default function AppointmentInfo() {
 		isLoading,
 	} = useQuery(["appointmentDetails", cid, pid], () => getAppointmentDetails({ cid, pid }));
 
-
-	if (isLoading) return <Text>Loading...</Text>
-	if (error) return <Text>Something went wrong</Text>
-
 	const [modalVisible, setModalVisible] = React.useState(false)
 
 	const handleCancelAppointment = () => {
 		setModalVisible(!modalVisible)
 	}
+
+	if (isLoading) return <Text>Loading...</Text>
+	if (error) return <Text>Something went wrong</Text>
+
+
 
 	console.log("Appointment Data")
 	console.log(JSON.stringify(data, null, 3))
@@ -235,11 +237,14 @@ export default function AppointmentInfo() {
 					key={data?.consultant?.id}
 					consultant={
 						{
-							name: data?.consultant?.name,
-							facility: { name: data?.facility?.name, address: data?.facility?.address },
-							specialities: data?.consultant?.specialities,
-							rating: data?.consultant?.rating,
-							ratedBy: data?.consultant?.ratedBy,
+							clinicianType: data?.consultant?.clinicianType || "",
+							gender: data?.consultant?.gender || "male",
+							id: data?.consultant?.id || "",
+							name: data?.consultant?.name || "",
+							facility: { name: data?.facility?.name || "", address: data?.facility?.address || "" },
+							specialities: data?.consultant?.specialities || [""],
+							rating: data?.consultant?.rating || 0,
+							ratedBy: data?.consultant?.ratedBy || 0,
 						}
 					}
 					onPress={() => { }}
