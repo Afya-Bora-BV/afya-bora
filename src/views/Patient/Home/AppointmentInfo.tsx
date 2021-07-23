@@ -15,7 +15,7 @@ import {
 } from "native-base";
 import React from "react";
 import { useQuery } from "react-query";
-import { NavKey } from "../_navigator";
+
 import AccountIcon from "../../../assets/icons/AccountIcon";
 import GenderIcon from "../../../assets/icons/GenderIcon";
 import PenEditIcon from "../../../assets/icons/PenEditIcon";
@@ -32,6 +32,7 @@ import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { FacilityListItem } from "../../../components/facilities-list-item";
 import { colors } from "../../../constants/colors";
 
+import { HomeNavKey } from "./_navigator";
 
 interface ConsultantDetails {
 	id: string,
@@ -161,124 +162,124 @@ export default function AppointmentInfo() {
 	console.log("Appointment Data")
 	console.log(JSON.stringify(data, null, 3))
 	return (
-		<>
+		<MainContainer
+			title="Appointment Info"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
+					: undefined
+			}
+		>
 			<CancelAppointment modalVisible={modalVisible} setModalVisible={setModalVisible} />
-			<MainContainer
-				title="Appointment Info"
-				leftSection={
-					// Go back if can go back
-					navigation.canGoBack()
-						? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-						)
-						: undefined
-				}
+			<VStack
+				flex={1}
+				width="100%"
+				paddingX={5}
+				space={5}
+				marginTop={5}
+				marginBottom={10}
 			>
+				{/* NOTE: This is supposed to render.... regardless */}
+				{/* <DateTimeCardRender /> */}
+				<View width="100%">
+					<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} />
+				</View>
+
+				<HStack justifyContent="space-between">
+					<Pressable onPress={() => {
+						navigation.navigate(HomeNavKey.EditAppointment)
+					}}>
+						<HStack space={2}>
+							<PenEditIcon size={4} />
+							<Text fontSize="sm">Edit Appointment</Text>
+						</HStack>
+					</Pressable>
+
+					<Pressable
+						onPress={() => {
+							handleCancelAppointment()
+						}}
+					>
+						<Text style={{ color: "red" }} fontSize="sm">
+							Cancel Appointment
+						</Text>
+					</Pressable>
+				</HStack>
+
+				{data?.type === "online" ?
+					<Button
+						style={{ backgroundColor: "#24D626" }}
+						borderRadius={20}
+						onPress={() => Alert.alert("WIP")}
+					>
+						Join Consultation
+					</Button>
+					:
+					<FacilityListItem
+						onPress={() => { }}
+						key={data?.facility.id}
+						facility={data?.facility}
+					/>
+				}
+
+
+
+				<ConsultantListItem
+					key={data?.consultant?.id}
+					consultant={
+						{
+							name: data?.consultant?.name,
+							facility: { name: data?.facility?.name, address: data?.facility?.address },
+							specialities: data?.consultant?.specialities,
+							rating: data?.consultant?.rating,
+							ratedBy: data?.consultant?.ratedBy,
+						}
+					}
+					onPress={() => { }}
+				/>
+				{/* NOTE: Abstracting away makes difficult to deal with */}
 				<VStack
-					flex={1}
-					width="100%"
-					paddingX={5}
 					space={5}
-					marginTop={5}
-					marginBottom={10}
+					shadow={2}
+					rounded={10}
+					bg="white"
+					paddingX={5}
+					paddingY={5}
 				>
-					{/* NOTE: This is supposed to render.... regardless */}
-					{/* <DateTimeCardRender /> */}
-					<View width="100%">
-						<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} />
-					</View>
+					<Text bold fontSize="xl">
+						Symptoms
+					</Text>
+					<HStack space={4} flexWrap="wrap">
+						{data?.aboutVisit.symptoms.map(symptom => (
+							<Box
+								rounded="xl"
+								bg={"#B0B3C7"}
+								flex={1}
+								alignItems="center"
+								paddingY={2}
+							>
+								<Text color={"white"}>{symptom}</Text>
+							</Box>
+						))}
 
-					<HStack justifyContent="space-between">
-						<Pressable onPress={() => console.log("Edit Appointment")}>
-							<HStack space={2}>
-								<PenEditIcon size={4} />
-								<Text fontSize="sm">Edit Appointment</Text>
-							</HStack>
-						</Pressable>
 
-						<Pressable
-							onPress={() => {
-								handleCancelAppointment()
-							}}
-						>
-							<Text style={{ color: "red" }} fontSize="sm">
-								Cancel Appointment
-							</Text>
-						</Pressable>
 					</HStack>
 
-					{data?.type === "online" ?
-						<Button
-							style={{ backgroundColor: "#24D626" }}
-							borderRadius={20}
-							onPress={() => Alert.alert("WIP")}
-						>
-							Join Consultation
-						</Button>
-						:
-						<FacilityListItem
-							onPress={() => { }}
-							key={data?.facility.id}
-							facility={data?.facility}
-						/>
-					}
-
-
-
-					<ConsultantListItem
-						key={data?.consultant?.id}
-						consultant={
-							{
-								name: data?.consultant?.name,
-								facility: { name: data?.facility?.name, address: data?.facility?.address },
-								specialities: data?.consultant?.specialities,
-								rating: data?.consultant?.rating,
-								ratedBy: data?.consultant?.ratedBy,
-							}
-						}
-						onPress={() => { }}
-					/>
-					{/* NOTE: Abstracting away makes difficult to deal with */}
-					<VStack
-						space={5}
-						shadow={2}
-						rounded={10}
-						bg="white"
-						paddingX={5}
-						paddingY={5}
-					>
-						<Text bold fontSize="xl">
-							Symptoms
-						</Text>
-						<HStack space={4} flexWrap="wrap">
-							{data?.aboutVisit.symptoms.map(symptom => (
-								<Box
-									rounded="xl"
-									bg={"#B0B3C7"}
-									flex={1}
-									alignItems="center"
-									paddingY={2}
-								>
-									<Text color={"white"}>{symptom}</Text>
-								</Box>
-							))}
-
-
-						</HStack>
-
-						<Text bold fontSize="lg">
-							Other Notes
-						</Text>
-						<Text fontSize={13}>
-							{data?.aboutVisit.complaint}
-						</Text>
-					</VStack>
+					<Text bold fontSize="lg">
+						Other Notes
+					</Text>
+					<Text fontSize={13}>
+						{data?.aboutVisit.complaint}
+					</Text>
 				</VStack>
-			</MainContainer>
-		</>
+			</VStack>
+		</MainContainer>
 	);
 }
