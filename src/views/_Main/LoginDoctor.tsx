@@ -47,12 +47,9 @@ interface FormEmailInputs {
 
 const fetchUserProfile = async (): Promise<Consultant | undefined> => {
     const uid = await auth().currentUser?.uid
-    const profile = await firestore().collection("consultants").doc(uid).get()
-    let data = undefined
-    if (profile.exists) {
-        data = profile.data() as Consultant
-    }
-    return data
+    const profile = await firestore().collection("consultants").where("uid", "==", uid).get()
+    const data = profile.docs.map(doc => ({ ...doc.data(), uid: doc.id } as Consultant))
+    return data[0]
 }
 
 const loginWithEmailAndPassword = async ({ email, password }: FormEmailInputs): Promise<Consultant | undefined> => {
@@ -96,6 +93,7 @@ export default function LoginDoctor() {
         onSuccess: (data: Consultant | undefined, variables, context) => {
             console.log("Logged in successfully ", data)
             if (data) {
+                console.log("Demo doctor ")
                 updateProfile({ ...data, type: "doctor" } as Consultant)
             }
         },

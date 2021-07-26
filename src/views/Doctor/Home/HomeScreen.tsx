@@ -12,7 +12,7 @@ import {
 	View,
 	VStack,
 } from "native-base";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import UserIcon from "../../../assets/icons/User";
@@ -30,6 +30,9 @@ import _ from "lodash";
 import { AppointmentAlert } from "../../../components/core/appointment";
 import { TouchableOpacityBase } from "react-native";
 import { useAuthStore } from "../../../internals/auth/context";
+import { RealTimeAppointment } from "../../../types";
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 export const MONTH_NAMES = [
 	"January",
@@ -147,51 +150,7 @@ const TodayAppointmentsSection = () => {
 	);
 };
 
-const UpcomingAppointmentsSection = () => {
-	// const getAppointments = useAppointmentTempoStore(
-	// 	(state) => state.getAppointments
-	// );
-	// const { isLoading, isError, data, error } = useQuery(
-	// 	"appointments",
-	// 	getAppointments,
-	// 	{
-	// 		// TODO: to remove this behaviour
-	// 		// and instead just fetch either from offline or online state
-	// 		refetchInterval: 5000,
-	// 	}
-	// );
-	// if (isLoading) return <Text>Fetching appointement... </Text>;
-	// if (error) return <Text>Something went wrong</Text>;
-	// if (data?.length === 0) return null;
 
-	// console.log("appointment");
-	// console.log(data);
-	return (
-		// <VStack space={4} marginTop={8}>
-		// 	<Heading fontSize="xl">Upcoming Appointments</Heading>
-		// 	{data?.map((appointment) => (
-		// 		<AppointmentAlert appointment={appointment} />
-		// 	))}
-		// </VStack>
-
-		<VStack space={4} marginTop={8}>
-			<Heading fontSize="xl">Upcoming Appointments</Heading>
-			<VStack space={3}>
-				{
-					_.times(5).map((_, ix) => (
-						<AppointmentAlert key={ix} />
-					))
-				}
-
-				<View width="100%" alignItems="flex-end">
-					<Pressable onPress={() => console.log("Something")}>
-						<Text fontStyle="italic">See Upcoming Appointments</Text>
-					</Pressable>
-				</View>
-			</VStack>
-		</VStack>
-	);
-};
 
 // const AppointmentAlert: React.FC<{
 // 	appointment: DemoAppointmentType;
@@ -285,7 +244,8 @@ export default function DoctorHome() {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					<Heading fontSize="3xl">Hi, {profile?.name}</Heading>
+					{profile?.type == "doctor" && <Heading fontSize="3xl">Hi, {profile?.name}</Heading>}
+
 				</VStack>
 
 				<VStack space={3} marginX={5}>
@@ -295,5 +255,46 @@ export default function DoctorHome() {
 				</VStack>
 			</ScrollView>
 		</MainContainer>
+	);
+};
+
+
+const UpcomingAppointmentsSection = () => {
+	const navigation = useNavigation();
+	const uid = auth().currentUser?.uid
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
+	useEffect(() => {
+		const subscriber = firestore()
+			.collection('appointments')
+			.where("cid", "==", uid)
+			.onSnapshot(documentSnapshot => {
+				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
+				setAppointments(shots as RealTimeAppointment[])
+			});
+
+		// Stop listening for updates when no longer required
+		return () => subscriber();
+	}, [uid]);
+
+	console.log("Appontments : ")
+	console.log(JSON.stringify(appointments, null, 3))
+	return (
+		<VStack space={4} marginTop={8}>
+			<Heading fontSize="xl">Upcoming Appointments</Heading>
+			<VStack space={3}>
+				<AppointmentAlert appointment={appointments[0]} onPress={() => {
+					navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
+						appointment: appointments[0]
+					})
+				}} />
+
+
+				<View width="100%" alignItems="flex-end">
+					<Pressable onPress={() => console.log("Something")}>
+						<Text fontStyle="italic">See All Appointments</Text>
+					</Pressable>
+				</View>
+			</VStack>
+		</VStack>
 	);
 };

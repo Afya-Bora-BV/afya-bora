@@ -25,10 +25,17 @@ export interface User {
 }
 
 export interface Consultant {
+    clinicianType: string
+    createdAt: string
     email: string
-    gender: string
+    facilityId: string
+    identifier: string
     name: string
-    rating: string
+    phoneNumber: string
+    ratedBy: number
+    rating: number
+    residence: string
+    specialities: string
     uid: string
     type: "doctor"
 }
