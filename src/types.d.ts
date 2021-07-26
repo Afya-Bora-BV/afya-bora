@@ -22,9 +22,26 @@ type Rating = {
 	ratedById: string;
 };
 
+export interface ConsultantProfile {
+	id: string
+	uid: Uid
+	identifier: string
+	facilityId?: Facility['id']
+	name: string
+	gender: GenderType
+	phoneNumber?: string
+	email: string
+	residence: string,
+	rating: number
+	ratedBy: number
+	clinicianType: string
+	specialities: string[]
+}
+
 
 interface RealTimeAppointment {
 	cid: string,
+	consultant: ConsultantProfile,
 	aboutVisit: {
 		complaint: string,
 		symptoms: string[]

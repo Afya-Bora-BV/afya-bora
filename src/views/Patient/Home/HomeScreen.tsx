@@ -37,6 +37,7 @@ import { AppointmentAlert } from "../../../components/core/appointment";
 import { useAuthStore } from "../../../internals/auth/context";
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { RealTimeAppointment } from "../../../types";
 
 const helpOptions = [
 	{

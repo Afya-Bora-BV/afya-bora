@@ -14,6 +14,7 @@ import {
 } from 'native-base';
 import { TextPropTypes, TouchableOpacity } from 'react-native';
 import moment from 'moment';
+import { RealTimeAppointment } from '../../types';
 
 /**
  * TODO: Upgrade this:
@@ -44,7 +45,7 @@ export function AppointmentAlert({ appointment, onPress }: { appointment: RealTi
         </Square>
         <VStack>
           <Heading fontSize="lg" color="#000">
-            {"No doctor"}
+            Dr {appointment.consultant.name}
           </Heading>
           <Text fontSize="sm" color="#333">
             {moment(appointment.date.seconds).format("DD MMM, H:MM A")}
