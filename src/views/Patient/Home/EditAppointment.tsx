@@ -79,12 +79,10 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
 					const t = n + 6;
-					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
-					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
-						t > 11 ? "PM" : "AM"
-					}`;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
+						}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
+						}`;
 					return (
 						<HStack flexWrap="wrap" space="md">
 							<TouchableOpacity
@@ -173,13 +171,8 @@ export default function EditAppointment() {
 	const [chosenDate, selectDate] = useState<Date>(new Date());
 	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
 
-	// const route = useRoute();
-	// const { appointment } = route?.params;
-	// const { cid, pid } = appointment;
-	// const { status, data, error, isLoading } = useQuery(
-	// 	["appointmentDetails", cid, pid],
-	// 	() => getAppointmentDetails({ cid, pid })
-	// );
+	const route = useRoute();
+	const { appointment } = route?.params
 
 	return (
 		<MainContainer
@@ -188,12 +181,12 @@ export default function EditAppointment() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -208,7 +201,7 @@ export default function EditAppointment() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={""} type={"offline"} />
+					<StatusAppointmentAlert time={appointment?.date || (Date())} type={"offline"} />
 				</View>
 			</VStack>
 
@@ -219,16 +212,16 @@ export default function EditAppointment() {
 						chosenDate={chosenDate}
 						onSelectDate={selectDate}
 					/>
-                    <Spacer size={5}/>
+					<Spacer size={5} />
 					<PickATimeSection
 						chosenTimeSlots={chosenTimeSlots}
 						onSelectTimeSlot={setTimeSlots}
 					/>
 				</VStack>
-                <Spacer size={5}/>
-                <Text style={{color:"#747F9E"}} italic textAlign="center">Your requested change will be reviewed by the doctor. If they acceept your request, you will be notified. </Text>
-                <Spacer size={5}/>
-				<Button bg={colors.primary} onPress={()=>{}} rounded={20}>
+				<Spacer size={5} />
+				<Text style={{ color: "#747F9E" }} italic textAlign="center">Your requested change will be reviewed by the doctor. If they acceept your request, you will be notified. </Text>
+				<Spacer size={5} />
+				<Button bg={colors.primary} onPress={() => { }} rounded={20}>
 					Request Change
 				</Button>
 			</VStack>
