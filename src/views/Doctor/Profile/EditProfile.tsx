@@ -25,10 +25,6 @@ import { PrimaryButton } from "../../../components/button";
 import moment from "moment";
 import { useAuthStore } from "../../../internals/auth/context";
 
-import firestore from "@react-native-firebase/firestore";
-import { useMutation } from "react-query";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { PatientProfile } from "../../../types";
 
 const regions: { name: string }[] = [
 	"Residency Location",

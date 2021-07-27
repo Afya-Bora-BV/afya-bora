@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileScreen from "./Profile";
 import MainProfileScreen from "./MainScreen";
-import CreateProfileScreen from "./CreateProfile";
+import CreateProfileScreen from "./EditProfile";
 
 import { ProfileNavKey, Stack } from './_navigator'
 import UpcomingAppointments from "./UpcomingAppointments";
@@ -18,7 +18,7 @@ export default function ProfileView() {
 				component={ProfileScreen}
 			/>
 			<Stack.Screen
-				name={ProfileNavKey.CreateProfile}
+				name={ProfileNavKey.EditProfileScreen}
 				component={CreateProfileScreen}
 			/>
 			<Stack.Screen
