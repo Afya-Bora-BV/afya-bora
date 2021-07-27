@@ -10,8 +10,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { NavKey } from "./_navigator"
 import axios from "axios";
-import { API_ROOT } from "../BookAppointment/ConsultantsList";
 import { useQuery } from "react-query";
+import { Facility } from "../../../../types";
+import { API_ROOT } from "../../../../api";
 
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;

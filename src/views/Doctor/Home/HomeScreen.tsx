@@ -7,6 +7,7 @@ import {
 	Icon,
 	Pressable,
 	ScrollView,
+	Square,
 	Stack,
 	Text,
 	View,
@@ -33,6 +34,7 @@ import { useAuthStore } from "../../../internals/auth/context";
 import { RealTimeAppointment } from "../../../types";
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import ArrowIcon_Next from "../../../assets/icons/ArrowIcon_Next";
 
 export const MONTH_NAMES = [
 	"January",
@@ -259,6 +261,65 @@ export default function DoctorHome() {
 };
 
 
+export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: RealTimeAppointment, onPress: () => void }) {
+	if (!appointment) return null
+	return (
+		// <TouchableOpacity onPress={props.onPress}>
+		<Box
+			flexDirection="row"
+			justifyContent="space-between"
+			alignItems="center"
+			padding={5}
+			rounded={20}
+			shadow={2}
+			bg="white">
+			{/* left */}
+			<HStack space={3} flexGrow={1} justifyContent="flex-start">
+				{/* Icon */}
+				<Square size={8}>
+					<MedicalHistoryIcon size={6} />
+				</Square>
+				<VStack>
+					<Heading fontSize="lg" color="#000">
+						{appointment.pid}
+					</Heading>
+					<Text fontSize="sm" color="#333">
+						{moment(appointment.date.seconds).format("DD MMM, H:MM A")}
+					</Text>
+					<Text fontSize="sm" fontStyle="italic" color="#333">
+						{/* TODO: include facility in appointment */}
+						{appointment.type === "online" ? "Online" : appointment.trl_facility?.name}
+					</Text>
+				</VStack>
+			</HStack>
+			{/* right */}
+			<View alignItems="center" flexDirection="row">
+				{appointment.type === "offline" ?
+					<Text fontSize={15} color={'#561BB3'} onPress={() => {
+						console.log("Offline facility edit")
+						onPress()
+					}}>
+						Edit
+					</Text>
+					:
+					<Text fontSize={15} color={'#561BB3'} onPress={() => {
+						console.log("Online facility edit")
+						onPress()
+					}}>
+						Join/Edit
+					</Text>
+				}
+
+
+				<Icon size={5}>
+					<ArrowIcon_Next size={5} />
+				</Icon>
+			</View>
+		</Box>
+		// </TouchableOpacity>
+	);
+}
+
 const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 	const uid = auth().currentUser?.uid
@@ -282,10 +343,11 @@ const UpcomingAppointmentsSection = () => {
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlert appointment={appointments[0]} onPress={() => {
+				<AppointmentAlertDoctor appointment={appointments[0]} onPress={() => {
 					navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
 						appointment: appointments[0]
 					})
+					console.log("Clickinig appointment event")
 				}} />
 
 

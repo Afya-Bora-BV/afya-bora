@@ -8,4 +8,5 @@ export const HomeNavKey = {
 	HomeScreen: "DoctorHomeScreen",
 	NotificationScreen: "DoctorNotificationScreen",
 	AppointmentInfoScreen: "DoctorAppointmentInfoScreen",
+	DoctorVideoCallScreen: "DoctorVideoCallScreen"
 };

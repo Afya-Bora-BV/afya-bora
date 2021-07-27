@@ -3,6 +3,7 @@ import React from "react";
 import HomeScreen from "./HomeScreen";
 import AppointmentInfoScreen from "./AppointmentInfo";
 import NotificationScreen from "./Notification";
+import DoctorVideoScreen from "./DoctorVideoCall";
 
 import { NavStack, HomeNavKey } from './_navigator'
 
@@ -20,6 +21,10 @@ export default function HomeView() {
 			<NavStack.Screen
 				name={HomeNavKey.AppointmentInfoScreen}
 				component={AppointmentInfoScreen}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.DoctorVideoCallScreen}
+				component={DoctorVideoScreen}
 			/>
 		</NavStack.Navigator>
 	);

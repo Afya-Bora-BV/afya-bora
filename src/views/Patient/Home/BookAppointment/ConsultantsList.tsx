@@ -21,6 +21,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useQuery } from "react-query";
 import axios, { AxiosResponse } from 'axios';
 import { useEffect } from "react";
+import { API_ROOT } from "../../../../api";
 
 interface Consultant {
 	id: string
@@ -34,7 +35,6 @@ interface Consultant {
 }
 
 
-export const API_ROOT = "https://afya-bora-api.herokuapp.com"
 
 export const getConsultants = async (): Promise<Consultant[]> => {
 	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants`)
@@ -69,7 +69,7 @@ const ConsultantsList = () => {
 	}, [error])
 
 	// console.log({ ALL: consultants });
-	console.log(JSON.stringify(consultants,null,4))
+	console.log(JSON.stringify(consultants, null, 4))
 
 	return (
 		<MainContainer

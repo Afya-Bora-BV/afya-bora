@@ -11,6 +11,7 @@ import {
 	Box,
 	View,
 	Heading,
+	Modal,
 } from "native-base";
 import React from "react";
 import { useQuery } from "react-query";
@@ -28,56 +29,9 @@ import {
 } from "../../../internals/appointment/context";
 import { StatusAppointmentAlert } from "../../../components/core/appointment";
 import { Alert } from "react-native";
-
-
-// const DateTimeCard: React.FC<{
-// 	appointment: DemoAppointmentType;
-// }> = ({ appointment }) => {
-// 	const {
-// 		dateTime: { timeSlots, date },
-// 	} = appointment;
-// 	return (
-// 		<VStack>
-// 			<HStack
-// 				justifyContent="space-between"
-// 				alignItems="center"
-// 				shadow={2}
-// 				rounded={10}
-// 				bg="white"
-// 				p={4}
-// 			>
-// 				<VStack>
-// 					<HStack
-// 						justifyContent="space-between"
-// 						alignItems="center"
-// 						space={4}
-// 					>
-// 						<MedicalHistoryIcon />
-// 						<VStack>
-// 							{/* TODO: specify the correct time for appointment */}
-
-// 							<HStack>
-// 								<Text bold color="#747F9E">
-// 									{friendlyFormatDate(date) + ", "}
-// 								</Text>
-// 								<Text bold color="#747F9E">
-// 									{timeSlots[0]}
-// 								</Text>
-// 							</HStack>
-// 							{/* TO DO - CHANGE TO SHOW STATUS */}
-// 							<Text italic>Online Consultation</Text>
-// 						</VStack>
-// 					</HStack>
-// 				</VStack>
-// 				<Stack rounded={10} backgroundColor={"#A9FA0F"} padding={1.5}>
-// 					<Text fontSize={12} color={"#24D626"}>
-// 						Confirmed
-// 					</Text>
-// 				</Stack>
-// 			</HStack>
-// 		</VStack>
-// 	);
-// };
+import { useRoute } from "@react-navigation/native";
+import { getAppointmentDetails } from "../../../api";
+import { NavStack, HomeNavKey } from './_navigator'
 
 type PatientInfoProps = {
 	name: string;
@@ -118,45 +72,76 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
 	);
 };
 
-// type PatientAdditionalInfoProps = {};
-// const PatientAdditionalInfo: React.FC<PatientInfoProps> = () => {
-// 	return (
-// 		<VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
-// 			<Text bold fontSize="lg">Symptoms</Text>
-// 			<HStack space={4}>
-// 				<Box
-// 					rounded="xl"
-// 					bg={"#B0B3C7"}
-// 					flex={1}
-// 					alignItems="center"
-// 					paddingY={2}
-// 				>
-// 					<Text color={"white"}>Chest Pain</Text>
-// 				</Box>
-// 				<Box
-// 					rounded="xl"
-// 					bg={"#B0B3C7"}
-// 					flex={1}
-// 					alignItems="center"
-// 					paddingY={2}
-// 				>
-// 					<Text color={"white"}>Genital Itching</Text>
-// 				</Box>
-// 			</HStack>
+const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
+	return (
+		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
+			<Modal.Content>
+				<Modal.CloseButton />
+				<Modal.Header>Cancellation of appointment</Modal.Header>
+				<Modal.Body >
+					<Text textAlign="center">
+						Are you sure you want to cancel this appointment?
+					</Text>
 
-// 			<Text bold fontSize="lg">Other Notes</Text>
-// 			<Text fontSize={13}>
-// 				I have had a really bad stomach ache for a long time and I
-// 				am not sure what is happening. I took some medicine but it
-// 				didn’t help.
-// 			</Text>
-// 		</VStack>
-// 	);
-// };
 
-export default function AppointmentInfo () {
+					<HStack mt={6} justifyContent="space-between">
+						<Button
+							h={44}
+							w={144}
+							borderRadius={24}
+							variant="outline"
+							onPress={() => {
+								setModalVisible(!modalVisible)
+							}}
+						>No</Button>
+						<Button
+							h={44}
+							w={144}
+							borderRadius={24}
+							onPress={() => {
+								console.log("Cancelling the appointment here ... ")
+							}}
+						>
+							Yes
+						</Button>
+					</HStack>
+				</Modal.Body>
+				<Modal.Footer>
+
+
+				</Modal.Footer>
+			</Modal.Content>
+		</Modal>
+	)
+}
+
+
+
+export default function AppointmentInfo() {
 	const navigation = useNavigation();
 
+
+	const route = useRoute();
+	const { appointment } = route?.params
+	const { cid, pid } = appointment
+	const {
+		status,
+		data: appointmentDetails,
+		error,
+		isLoading,
+	} = useQuery(["appointmentDetails", cid, pid], () => getAppointmentDetails({ cid, pid }));
+
+	const [modalVisible, setModalVisible] = React.useState(false)
+
+	const handleCancelAppointment = () => {
+		setModalVisible(!modalVisible)
+	}
+
+	if (isLoading) return <Text>Loading...</Text>
+	if (error) return <Text>Something went wrong</Text>
+
+	console.log("Data ")
+	console.log(JSON.stringify(appointmentDetails, null, 4))
 	return (
 		<MainContainer
 			title="Appointment Info"
@@ -164,31 +149,32 @@ export default function AppointmentInfo () {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
+			<CancelAppointment modalVisible={modalVisible} setModalVisible={setModalVisible} />
 			<VStack flex={1} width="100%" paddingX={5} space={5} marginTop={5} marginBottom={10}>
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert />
+					<StatusAppointmentAlert time={appointmentDetails?.date} />
 				</View>
 
 				<HStack justifyContent="space-between">
 					<Pressable onPress={() => console.log("Edit Appointment")}>
 						<HStack space={2}>
-							<PenEditIcon size={4}/>
+							<PenEditIcon size={4} />
 							<Text fontSize="sm">Edit Appointment</Text>
 						</HStack>
 					</Pressable>
 
-					<Pressable onPress={() => console.log("Cancel Appointment")}>
+					<Pressable onPress={() => handleCancelAppointment()}>
 						<Text style={{ color: "red" }} fontSize="sm">
 							Cancel Appointment
 						</Text>
@@ -198,46 +184,42 @@ export default function AppointmentInfo () {
 				<Button
 					style={{ backgroundColor: "#24D626" }}
 					borderRadius={20}
-					onPress={() => Alert.alert("WIP")}
+					onPress={() => {
+						navigation.navigate(HomeNavKey.DoctorVideoCallScreen)
+					}}
 				>
 					Join Consultation
 				</Button>
 
 				<PatientInfo
-					name="Ally Salim"
-					phoneNumber="+255 (0) 756 922 868"
-					gender="male"
+					name="No data"
+					phoneNumber="+No phone"
+					gender="female"
 				/>
-				
+
 				{/* NOTE: Abstracting away makes difficult to deal with */}
 				<VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
 					<Text bold fontSize="xl">Symptoms</Text>
 					<HStack space={4}>
-						<Box
-							rounded="xl"
-							bg={"#B0B3C7"}
-							flex={1}
-							alignItems="center"
-							paddingY={2}
-						>
-							<Text color={"white"}>Chest Pain</Text>
-						</Box>
-						<Box
-							rounded="xl"
-							bg={"#B0B3C7"}
-							flex={1}
-							alignItems="center"
-							paddingY={2}
-						>
-							<Text color={"white"}>Genital Itching</Text>
-						</Box>
+
+						{appointmentDetails?.aboutVisit.symptoms.map(symptom => (
+							<Box
+								rounded="xl"
+								bg={"#B0B3C7"}
+								flex={1}
+								alignItems="center"
+								paddingY={2}
+							>
+								<Text color={"white"}>{symptom}</Text>
+							</Box>
+						))}
+
+
 					</HStack>
 
 					<Text bold fontSize="lg">Other Notes</Text>
 					<Text fontSize={13}>
-						I have had a really bad stomach ache for a long time and I
-						am not sure what is happening. I took some medicine but it
-						didn’t help.
+						{appointmentDetails?.aboutVisit.complaint}
 					</Text>
 				</VStack>
 			</VStack>

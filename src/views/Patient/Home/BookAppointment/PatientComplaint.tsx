@@ -33,8 +33,9 @@ import { useAppointmentTempoStore } from "../../../../internals/appointment/cont
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth"
-import { API_ROOT } from "./ConsultantsList";
+
 import axios from "axios";
+import { API_ROOT } from "../../../../api";
 
 
 type PatientComplaintScreenRouteProp = RouteProp<
