@@ -191,6 +191,11 @@ const ShowUserData = () => {
 	const [show, setShow] = useState(false);
 	const [date, setDate] = useState(new Date(1598051730000));
 
+	const { profile } = useAuthStore((state) => ({
+		profile: state.profile,
+	}));
+
+
 	const showDatepicker = () => {
 		setShow(true);
 	};
@@ -222,6 +227,8 @@ const ShowUserData = () => {
 		return () => subscriber();
 	}, [uid]);
 
+	console.log("Profile data: ")
+	console.log(profile)
 	return userDetails.map((data) => {
 		return (
 			<Stack alignItems="center">
