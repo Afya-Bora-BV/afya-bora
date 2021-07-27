@@ -11,7 +11,7 @@ import {
 	HStack,
 	Button,
 } from "native-base";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PicAvatar } from "../../../components/avatar";
 import { Spacer } from "../../../components/Spacer";
 import * as yup from "yup";
@@ -28,6 +28,7 @@ import { useAuthStore } from "../../../internals/auth/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { PatientProfile } from "../../../types";
 
 const regions: { name: string }[] = [
 	"Residency Location",
@@ -102,10 +103,11 @@ interface CompleteProfileInputs {
 	name: string;
 	phone: string;
 	gender: "male" | "female";
+	email: string;
 	dob: Date;
-	height: number;
-	weight: number;
-	bloodGroup: string;
+	height: string;
+	weight: string;
+	bloodGroup: "A+" | "B+" | "AB+" | "O+" | "A-" | "B-" | "AB-" | "O-";
 	residence: string;
 	type: "doctor" | "patient" | "admin";
 }
@@ -123,14 +125,6 @@ export default function EditHealthProfile() {
 	// 	updateProfile: state.updateProfile,
 	// }));
 
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<CompleteProfileInputs>({
-		// resolver: yupResolver(schema),
-	});
-
 	// const onSubmit = (data: CompleteProfileInputs) => {
 	// 	console.log("Form data : ");
 	// 	console.log(data);
@@ -145,12 +139,6 @@ export default function EditHealthProfile() {
 	// to render
 
 	//Date picker attrib
-	const [show, setShow] = useState(false);
-	const [date, setDate] = useState(new Date(1598051730000));
-
-	const showDatepicker = () => {
-		setShow(true);
-	};
 
 	// const { isLoading, mutate: completProfile } = useMutation(
 	// 	createPatientProfile,
@@ -192,479 +180,448 @@ export default function EditHealthProfile() {
 							Edit Health Profile
 						</Text>
 					</View>
-					{/* </Stack> */}
-					<Stack alignItems="center">
-						<Box bg="white" shadow={2} rounded={10} width="90%">
-							<Stack mt={-10}>
-								<PicAvatar />
-							</Stack>
-
-							<Stack>
-								<Stack
-									style={{
-										paddingHorizontal: 20,
-										paddingTop: 20,
-										paddingBottom: 40,
-									}}
-								>
-									<Stack>
-										<Text>First & Last Name</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Input
-													value={value}
-													onBlur={onBlur}
-													onChangeText={(value) =>
-														onChange(value)
-													}
-													outlineColor={
-														errors.name ? "red" : ""
-													}
-													variant="rounded"
-													placeholder="Name"
-													autoCapitalize={"words"}
-												/>
-											)}
-											name="name"
-											defaultValue=""
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Gender</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="Gender"
-													placeholder="Gender"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
-															/>
-														),
-													}}
-												>
-													<Select.Item
-														label="Male"
-														value="male"
-													/>
-													<Select.Item
-														label="Female"
-														value="female"
-													/>
-												</Select>
-											)}
-											name="gender"
-											defaultValue="male"
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Date of Birth</Text>
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<>
-													<Input
-														// keyboardType={""}
-														value={moment(
-															value
-														).format(
-															"DD MMMM YYYY"
-														)}
-														variant="rounded"
-														placeholder="28-10-2021"
-														style={{
-															flex: 1,
-														}}
-														onFocus={showDatepicker}
-														onChangeText={(
-															value
-														) => {}}
-														// outlineColor={
-														// 	errors.dateOfBirth
-														// 		? "red"
-														// 		: colorGrey
-														// }
-														InputRightElement={
-															<Pressable
-																onPress={() => {
-																	showDatepicker;
-																}}
-															>
-																{/* <MaterialCommunityIcons
-																	name="calendar"
-																	size={24}
-																	color={
-																		colors.primary
-																	}
-																	style={{
-																		paddingEnd: 10,
-																	}}
-																/> */}
-															</Pressable>
-														}
-													/>
-													{show && (
-														<DateTimePicker
-															placeholderText="Select date"
-															onChange={(
-																event: Event,
-																selectedDate:
-																	| Date
-																	| undefined
-															) => {
-																const currentDate =
-																	selectedDate ||
-																	date;
-																setShow(
-																	Platform.OS ===
-																		"ios"
-																);
-																onChange(
-																	currentDate
-																);
-															}}
-															value={value}
-															mode="date"
-															display="spinner"
-															maximumDate={
-																new Date()
-															}
-														/>
-													)}
-												</>
-											)}
-											name="dob"
-											defaultValue={date}
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Email</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Input
-													value={value}
-													onBlur={onBlur}
-													onChangeText={(value) =>
-														onChange(value)
-													}
-													outlineColor={
-														errors.name ? "red" : ""
-													}
-													variant="rounded"
-													keyboardType="email-address"
-													placeholder="Email"
-													autoCapitalize={"none"}
-												/>
-											)}
-											name="email"
-											defaultValue=""
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Phone Number</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Input
-													value={value}
-													onBlur={onBlur}
-													onChangeText={(value) =>
-														onChange(value)
-													}
-													outlineColor={
-														errors.name ? "red" : ""
-													}
-													variant="rounded"
-													placeholder="Phone Number"
-													keyboardType="phone-pad"
-													autoCapitalize={"words"}
-												/>
-											)}
-											name="phone"
-											defaultValue=""
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<HStack justifyContent="space-between">
-											<Stack flex={1}>
-												<Text>Height (cm)</Text>
-												<Controller
-													control={control}
-													render={({
-														field: {
-															onChange,
-															onBlur,
-															value,
-														},
-													}) => (
-														<Input
-															value={`${value}`}
-															onBlur={onBlur}
-															keyboardType="name-phone-pad"
-															onChangeText={(
-																value
-															) =>
-																onChange(value)
-															}
-															outlineColor={
-																errors.name
-																	? "red"
-																	: ""
-															}
-															variant="rounded"
-															placeholder="0"
-															autoCapitalize={
-																"words"
-															}
-															InputRightElement={
-																<Text
-																	paddingRight={
-																		2
-																	}
-																>
-																	cm
-																</Text>
-															}
-														/>
-													)}
-													name="height"
-													// rules={{ required: true }}
-													defaultValue={0}
-												/>
-											</Stack>
-
-											<Spacer size={10} horizontal />
-
-											<Stack flex={1}>
-												<Text>Weight (kg)</Text>
-
-												<Controller
-													control={control}
-													render={({
-														field: {
-															onChange,
-															onBlur,
-															value,
-														},
-													}) => (
-														<Input
-															value={`${value}`}
-															onBlur={onBlur}
-															keyboardType="name-phone-pad"
-															onChangeText={(
-																value
-															) =>
-																onChange(value)
-															}
-															outlineColor={
-																errors.name
-																	? "red"
-																	: ""
-															}
-															variant="rounded"
-															placeholder="0"
-															autoCapitalize={
-																"words"
-															}
-															InputRightElement={
-																<Text
-																	paddingRight={
-																		2
-																	}
-																>
-																	kg
-																</Text>
-															}
-														/>
-													)}
-													name="weight"
-													// rules={{ required: true }}
-													defaultValue={0}
-												/>
-											</Stack>
-										</HStack>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Blood Group</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="BloodGroup"
-													placeholder="BloodGroup"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
-															/>
-														),
-													}}
-												>
-													{bloodGroups.map(
-														(bloodGroup) => (
-															<Select.Item
-																label={
-																	bloodGroup.name
-																}
-																value={
-																	bloodGroup.name
-																}
-															/>
-														)
-													)}
-												</Select>
-											)}
-											name="bloodGroup"
-											// rules={{ required: true }}
-											defaultValue=""
-										/>
-									</Stack>
-
-									<Spacer size={20} />
-
-									<Stack>
-										<Text>Location of Residence</Text>
-
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="Location"
-													placeholder="Location"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
-															/>
-														),
-													}}
-												>
-													{regions.map((region) => (
-														<Select.Item
-															label={region.name}
-															value={region.name}
-														/>
-													))}
-												</Select>
-											)}
-											name="residence"
-											// rules={{ required: true }}
-											defaultValue=""
-										/>
-									</Stack>
-								</Stack>
-							</Stack>
-							<Box mb={-6} paddingX={"5%"}>
-								<Button
-									// onPress={handleSubmit(onSubmit)}
-									// testID="button1"
-									// disabled={isLoading}
-									// isLoading={isLoading}
-									borderRadius={20}
-									_disabled={{
-										backgroundColor: "#B0B3C7",
-										color: "white",
-									}}
-									style={{ backgroundColor: colors.primary }}
-									_text={{ color: "white" }}
-								>
-									Save Changes
-								</Button>
-							</Box>
-						</Box>
-					</Stack>
+					<ShowUserData />
 				</Stack>
 			</ScrollView>
 		</Box>
 	);
 }
+
+const ShowUserData = () => {
+	const [show, setShow] = useState(false);
+	const [date, setDate] = useState(new Date(1598051730000));
+
+	const showDatepicker = () => {
+		setShow(true);
+	};
+
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<CompleteProfileInputs>({
+		// resolver: yupResolver(schema),
+	});
+
+	const [userDetails, setUserDetails] = useState<PatientProfile[]>([]);
+
+	const uid = auth().currentUser?.uid;
+
+	useEffect(() => {
+		const subscriber = firestore()
+			.collection("patients")
+			.where("uid", "==", uid)
+			.onSnapshot((documentSnapshot) => {
+				const shots = [
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+				];
+				setUserDetails(shots as PatientProfile[]);
+			});
+
+		// Stop listening for updates when no longer required
+		return () => subscriber();
+	}, [uid]);
+
+	return userDetails.map((data) => {
+		return (
+			<Stack alignItems="center">
+				<Box bg="white" shadow={2} rounded={10} width="90%">
+					<Stack mt={-10}>
+						<PicAvatar />
+					</Stack>
+
+					<Stack>
+						<Stack
+							style={{
+								paddingHorizontal: 20,
+								paddingTop: 20,
+								paddingBottom: 40,
+							}}
+						>
+							<Stack>
+								<Text>First & Last Name</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Input
+											value={value}
+											onBlur={onBlur}
+											onChangeText={(value) =>
+												onChange(value)
+											}
+											outlineColor={
+												errors.name ? "red" : ""
+											}
+											variant="rounded"
+											placeholder={data.name}
+											autoCapitalize={"words"}
+										/>
+									)}
+									name="name"
+									defaultValue=""
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Gender</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Select
+											variant="rounded"
+											selectedValue={value}
+											minWidth={200}
+											accessibilityLabel="Gender"
+											placeholder="Gender"
+											onValueChange={(itemValue) =>
+												onChange(itemValue)
+											}
+											_selectedItem={{
+												bg: "cyan.600",
+												endIcon: <CheckIcon size={4} />,
+											}}
+										>
+											<Select.Item
+												label="Male"
+												value="male"
+											/>
+											<Select.Item
+												label="Female"
+												value="female"
+											/>
+										</Select>
+									)}
+									name="gender"
+									defaultValue={data.gender}
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Date of Birth</Text>
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<>
+											<Input
+												// keyboardType={""}
+												value={moment(data.dob).format(
+													"DD MMMM YYYY"
+												)}
+												variant="rounded"
+												placeholder={moment(data.dob).format("DD MMMM YYYY")}
+												style={{
+													flex: 1,
+												}}
+												onFocus={showDatepicker}
+												onChangeText={(value) => {}}
+												// outlineColor={
+												// 	errors.dateOfBirth
+												// 		? "red"
+												// 		: colorGrey
+												// }
+												InputRightElement={
+													<Pressable
+														onPress={() => {
+															showDatepicker;
+														}}
+													>
+														{/* <MaterialCommunityIcons
+																		name="calendar"
+																		size={24}
+																		color={
+																			colors.primary
+																		}
+																		style={{
+																			paddingEnd: 10,
+																		}}
+																	/> */}
+													</Pressable>
+												}
+											/>
+											{show && (
+												<DateTimePicker
+													placeholderText="Select date"
+													onChange={(
+														event: Event,
+														selectedDate:
+															| Date
+															| undefined
+													) => {
+														const currentDate =
+															selectedDate ||
+															date;
+														setShow(
+															Platform.OS ===
+																"ios"
+														);
+														onChange(currentDate);
+													}}
+													value={value}
+													mode="date"
+													display="spinner"
+													maximumDate={new Date()}
+												/>
+											)}
+										</>
+									)}
+									name="dob"
+									defaultValue={date}
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Email</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Input
+											value={value}
+											onBlur={onBlur}
+											onChangeText={(value) =>
+												onChange(value)
+											}
+											outlineColor={
+												errors.name ? "red" : ""
+											}
+											variant="rounded"
+											keyboardType="email-address"
+											placeholder={data.email}
+											autoCapitalize={"none"}
+										/>
+									)}
+									name="email"
+									defaultValue=""
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Phone Number</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Input
+											value={value}
+											onBlur={onBlur}
+											onChangeText={(value) =>
+												onChange(value)
+											}
+											outlineColor={
+												errors.name ? "red" : ""
+											}
+											variant="rounded"
+											placeholder={data.phoneNumber}
+											keyboardType="phone-pad"
+											autoCapitalize={"words"}
+										/>
+									)}
+									name="phone"
+									defaultValue={data.phoneNumber}
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<HStack justifyContent="space-between">
+									<Stack flex={1}>
+										<Text>Height (cm)</Text>
+										<Controller
+											control={control}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+												},
+											}) => (
+												<Input
+													value={`${value}`}
+													onBlur={onBlur}
+													keyboardType="name-phone-pad"
+													onChangeText={(value) =>
+														onChange(value)
+													}
+													outlineColor={
+														errors.name ? "red" : ""
+													}
+													variant="rounded"
+													placeholder={data.height}
+													InputRightElement={
+														<Text paddingRight={2}>
+															cm
+														</Text>
+													}
+												/>
+											)}
+											name="height"
+											// rules={{ required: true }}
+											defaultValue={data.height}
+										/>
+									</Stack>
+
+									<Spacer size={10} horizontal />
+
+									<Stack flex={1}>
+										<Text>Weight (kg)</Text>
+
+										<Controller
+											control={control}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+												},
+											}) => (
+												<Input
+													value={`${value}`}
+													onBlur={onBlur}
+													keyboardType="name-phone-pad"
+													onChangeText={(value) =>
+														onChange(value)
+													}
+													outlineColor={
+														errors.name ? "red" : ""
+													}
+													variant="rounded"
+													placeholder={data.weight}
+													InputRightElement={
+														<Text paddingRight={2}>
+															kg
+														</Text>
+													}
+												/>
+											)}
+											name="weight"
+											// rules={{ required: true }}
+											defaultValue={data.weight}
+										/>
+									</Stack>
+								</HStack>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Blood Group</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Select
+											variant="rounded"
+											selectedValue={value}
+											minWidth={200}
+											accessibilityLabel="BloodGroup"
+											placeholder={data.bloodGroup}
+											onValueChange={(itemValue) =>
+												onChange(itemValue)
+											}
+											_selectedItem={{
+												bg: "cyan.600",
+												endIcon: <CheckIcon size={4} />,
+											}}
+										>
+											{bloodGroups.map((bloodGroup) => (
+												<Select.Item
+													label={bloodGroup.name}
+													value={bloodGroup.name}
+												/>
+											))}
+										</Select>
+									)}
+									name="bloodGroup"
+									// rules={{ required: true }}
+									defaultValue={data.bloodGroup}
+								/>
+							</Stack>
+
+							<Spacer size={20} />
+
+							<Stack>
+								<Text>Location of Residence</Text>
+
+								<Controller
+									control={control}
+									render={({
+										field: { onChange, onBlur, value },
+									}) => (
+										<Select
+											variant="rounded"
+											selectedValue={value}
+											minWidth={200}
+											accessibilityLabel="Location"
+											placeholder={data.residence}
+											onValueChange={(itemValue) =>
+												onChange(itemValue)
+											}
+											_selectedItem={{
+												bg: "cyan.600",
+												endIcon: <CheckIcon size={4} />,
+											}}
+										>
+											{regions.map((region) => (
+												<Select.Item
+													label={region.name}
+													value={region.name}
+												/>
+											))}
+										</Select>
+									)}
+									name="residence"
+									// rules={{ required: true }}
+									defaultValue={data.residence}
+								/>
+							</Stack>
+						</Stack>
+					</Stack>
+					<Box mb={-6} paddingX={"5%"}>
+						<Button
+							onPress={() => {
+								console.log(userDetails);
+							}}
+							// testID="button1"
+							// disabled={isLoading}
+							// isLoading={isLoading}
+							borderRadius={20}
+							_disabled={{
+								backgroundColor: "#B0B3C7",
+								color: "white",
+							}}
+							style={{
+								backgroundColor: colors.primary,
+							}}
+							_text={{ color: "white" }}
+						>
+							Save Changes
+						</Button>
+					</Box>
+				</Box>
+			</Stack>
+		);
+	});
+};
