@@ -1,7 +1,15 @@
-import { ArrowBackIcon, View, VStack, Button, Text, Box } from "native-base";
-import React from "react";
+import {
+	ArrowBackIcon,
+	View,
+	VStack,
+	Button,
+	Text,
+	Box,
+	Heading,
+} from "native-base";
+import React, { useEffect, useState } from "react";
 import MainContainer from "../../../components/containers/MainContainer";
-import { StatusAppointmentAlert } from "../../../components/core/appointment";
+import { StatusAppointmentAlert, UpcomingAppointmentAlert } from "../../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -9,6 +17,12 @@ import UpcomingAppointmentIllustration from "../../../assets/illustrations/Upcom
 import { typography } from "styled-system";
 import { Spacer } from "../../../components/Spacer";
 import { colors } from "../../../constants/colors";
+import { AppointmentAlert } from "../../../components/core/appointment";
+import { useAuthStore } from "../../../internals/auth/context";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { RealTimeAppointment } from "../../../types";
+import { HomeNavKey } from "../Home/_navigator";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -40,7 +54,8 @@ export default function UpcomingAppointments() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={1627070154} />
+				
+					<UpcomingAppointmentsSection />
 				</View>
 			</VStack>
 		</MainContainer>
@@ -86,3 +101,46 @@ export function NoAppointment() {
 		</View>
 	);
 }
+
+const UpcomingAppointmentsSection = () => {
+	const navigation = useNavigation();
+	const uid = auth().currentUser?.uid;
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
+	useEffect(() => {
+		const subscriber = firestore()
+			.collection("appointments")
+			.where("pid", "==", uid)
+			.onSnapshot((documentSnapshot) => {
+				const shots = [
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+				];
+				setAppointments(shots as RealTimeAppointment[]);
+			});
+
+		// Stop listening for updates when no longer required
+		return () => subscriber();
+	}, [uid]);
+
+	console.log("Appontments : ");
+	console.log(JSON.stringify(appointments, null, 3));
+	return (
+		<VStack space={4} marginTop={8}>
+			<VStack space={3}>
+			{appointments.length===0 && <NoAppointment/>}
+
+				{appointments.map((appointment) => {
+					return (
+						<UpcomingAppointmentAlert
+							appointment={appointment}
+							onPress={() => {
+								navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
+									appointment: appointment
+								})
+							}}
+						/>
+					);
+				})}
+			</VStack>
+		</VStack>
+	);
+};

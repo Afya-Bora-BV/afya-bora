@@ -96,7 +96,7 @@ const NextAppointmentsSection = () => {
 				onPress={() => {
 					navigation.navigate(HomeNavKey.AppointmentInfoScreen)
 				}}>
-				<AppointmentAlert />
+				<AppointmentAlertDoctor />
 			</Pressable>
 		</VStack>
 	);
