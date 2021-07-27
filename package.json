@@ -7,6 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
+    "watch": "jest --watch",
+    "coverage": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
@@ -91,7 +93,7 @@
       "node"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|native-base|@react-native-async-storage)"
+      "node_modules/(?!(jest-)?react-native|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|native-base|@react-native-async-storage|@react-native-firebase/auth|@react-native-firebase/firestore|@react-native-firebase/app|moment|invariant)"
     ]
   }
 }

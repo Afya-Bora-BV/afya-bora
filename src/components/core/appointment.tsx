@@ -43,6 +43,7 @@ import { RealTimeAppointment } from "../../types";
 			rounded={20}
 			shadow={2}
 			bg="white"
+			testID="AppointmentAlertDoctor"
 		>
 			{/* left */}
 			<HStack space={3} flexGrow={1} justifyContent="flex-start">
@@ -120,6 +121,7 @@ export function AppointmentAlert({
 			rounded={20}
 			shadow={2}
 			bg="white"
+			testID="AppointmentAlert"
 		>
 			{/* left */}
 			<HStack space={3} flexGrow={1} justifyContent="flex-start">
@@ -197,6 +199,7 @@ export function UpcomingAppointmentAlert({
 			rounded={20}
 			shadow={2}
 			bg="white"
+			testID="UpcomingAppointmentAlert"
 		>
 			{/* left */}
 			<HStack space={3} flexGrow={1} justifyContent="flex-start">
@@ -248,6 +251,7 @@ export function StatusAppointmentAlert({
 			rounded={20}
 			shadow={2}
 			bg="white"
+			testID="StatusAppointmentAlert"
 		>
 			{/* left */}
 			<HStack space={3} alignSelf="flex-start">

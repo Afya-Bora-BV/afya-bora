@@ -108,7 +108,7 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 
 	return (
 		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
-			<View flexGrow={1} marginTop={10}>
+			<View flexGrow={1} marginTop={10}  testID="PatientLoginScreen">
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
 					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
