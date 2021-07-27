@@ -4,7 +4,7 @@ import { Center } from 'native-base'
 const PatientVideoCall: React.FC = () => {
     return (
         <Center flex={1}>
-            Video Doctor Screen
+            Patient Doctor Screen
         </Center>
     )
 }
