@@ -24,7 +24,6 @@ import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { StatusAppointmentAlert } from "../../../components/core/appointment";
 import { Alert } from "react-native";
-import { DemoConsultant } from "./OnlineConsult/OnlineConsultChooseConsultant";
 import { API_ROOT } from "./BookAppointment/ConsultantsList";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";

@@ -213,6 +213,9 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 		});
 	}, [chosenDate, chosenTimeSlot, navigation]);
 
+	console.log("Hello COnsultant ")
+	console.log(JSON.stringify(consultant, null, 3))
+
 	return (
 		<MainContainer
 			title="Day and Time"

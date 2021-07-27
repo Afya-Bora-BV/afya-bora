@@ -132,7 +132,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						console.log(JSON.stringify(data, null, 3))
 						console.log("create appointment data")
 
-						addAppointment({ data: data, cid: consultant.id, pid: uid || "" })
+						// addAppointment({ data: data, cid: consultant.uid, pid: uid || "" })
 					},
 				},
 			]
@@ -147,7 +147,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
 			console.log("Whats the response : ", data)
-			navigation.navigate(MainNavKey.HomeScreen);
+			// navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
 	});

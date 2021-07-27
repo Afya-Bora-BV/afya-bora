@@ -68,8 +68,8 @@ const ConsultantsList = () => {
 		}
 	}, [error])
 
-	console.log({ ALL: consultants });
-
+	// console.log({ ALL: consultants });
+	console.log(JSON.stringify(consultants,null,4))
 
 	return (
 		<MainContainer
