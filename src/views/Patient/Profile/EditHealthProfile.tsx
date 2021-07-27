@@ -204,6 +204,7 @@ const ShowUserData = () => {
 		control,
 		handleSubmit,
 		formState: { errors },
+		setValue
 	} = useForm<CompleteProfileInputs>({
 		// resolver: yupResolver(schema),
 	});
@@ -227,9 +228,20 @@ const ShowUserData = () => {
 		return () => subscriber();
 	}, [uid]);
 
-	console.log("Profile data: ")
-	console.log(profile)
-	return userDetails.map((data) => {
+	useEffect(() => {
+		if (profile) {
+			setValue("name", profile.name)
+		}
+	}, [])
+
+	const onSumit = (data: any) => {
+		console.log("Data ")
+		console.log(data)
+	}
+
+	// console.log("Profile data: ")
+	// console.log(profile)
+	return [profile].map((data) => {
 		return (
 			<Stack alignItems="center">
 				<Box bg="white" shadow={2} rounded={10} width="90%">
@@ -332,7 +344,7 @@ const ShowUserData = () => {
 													flex: 1,
 												}}
 												onFocus={showDatepicker}
-												onChangeText={(value) => {}}
+												onChangeText={(value) => { }}
 												// outlineColor={
 												// 	errors.dateOfBirth
 												// 		? "red"
@@ -371,7 +383,7 @@ const ShowUserData = () => {
 															date;
 														setShow(
 															Platform.OS ===
-																"ios"
+															"ios"
 														);
 														onChange(currentDate);
 													}}
@@ -608,9 +620,7 @@ const ShowUserData = () => {
 					</Stack>
 					<Box mb={-6} paddingX={"5%"}>
 						<Button
-							onPress={() => {
-								console.log(userDetails);
-							}}
+							onPress={handleSubmit(onSumit)}
 							// testID="button1"
 							// disabled={isLoading}
 							// isLoading={isLoading}
