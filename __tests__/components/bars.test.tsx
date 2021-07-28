@@ -19,6 +19,9 @@ describe("Testing Bars", () => {
 							<AuthProvider>
 								<QueryClientProvider client={queryClient}>
 									<TimeSet time={"12435523412"} />
+									<FBLogo/>
+									<CheckBox item={"item1"}/>
+									<Symptom symptom={"symptom1"}/>
 								</QueryClientProvider>
 							</AuthProvider>
 						</ToastProvider>
@@ -27,20 +30,22 @@ describe("Testing Bars", () => {
 			</SafeAreaProvider>
 		);
 
-		// expect(TimeSet("120847")).toBeDefined();
 		expect(queryByTestId("TimeSet")).toBeTruthy;
+		expect(queryByTestId("FBLogo")).toBeTruthy;
+		expect(queryByTestId("CheckBox")).toBeTruthy;
+		expect(queryByTestId("Symptom")).toBeTruthy;
 	});
 
-	// test("FB Logo", () => {
-	// 	expect(FBLogo()).toBeDefined();
-	// });
+	test("FB Logo", () => {
+		expect(FBLogo()).toBeDefined();
+	});
 
-	// test("CheckBox", () => {
-	// 	expect(CheckBox("item")).toBeDefined();
-	// });
+	test("CheckBox", () => {
+		expect(CheckBox("item")).toBeDefined();
+	});
 
-	// test("Symptom", () => {
-	// 	expect(Symptom("cough")).toBeDefined();
+	test("Symptom", () => {
+		expect(Symptom("cough")).toBeDefined();
 
-	// });
+	});
 });
