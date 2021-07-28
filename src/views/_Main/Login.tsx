@@ -166,29 +166,26 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => {
 	const navigation = useNavigation();
 	const [code, set] = useState<string>("")
-
+	const uid = auth().currentUser?.uid
 	const { phoneNumber, updatePhoneNumber, updateProfile } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber, updateProfile: state.updateProfile }))
 
 	const onConfirmCode = async () => {
 		console.log("Phone ", phoneNumber)
 		await verify(code)
 
-		// after success login we check is the user exists
-
 		const profiles = await checkUserProfiles(phoneNumber)
 		console.log("profiles")
 		console.log(JSON.stringify(profiles, null, 3))
 
-		if (_.isEmpty(profiles.data)) {
-			// directing to complete profile screen
+		if (_.isEmpty(profiles)) {
 			navigation.navigate(_MainAppNavKey.CreateProfileView)
 			console.log("What cant navigate ")
 		} else {
-			updateProfile(profiles.data[0])
+			console.log("updating user profile ", profiles[0])
+			updateProfile({ ...profiles[0], uid: uid, type: "patient" })
 		}
 
 		console.log("The user exists ", profiles)
-		// check if the user exists
 
 	}
 

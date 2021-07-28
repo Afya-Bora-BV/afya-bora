@@ -15,6 +15,7 @@ import { ProfileNavKey } from '../Profile/_navigator'
 import { useAuthStore } from "../../../internals/auth/context";
 import AppointmentInfo from "./AppointmentInfo";
 import EditAppointment from "./EditAppointment";
+import PatientVideoCall from "./PatientVideoCall"
 
 export default function HomeView({ navigation }: any) {
 	const currentProfile = useAuthStore(s => s.currentProfile)

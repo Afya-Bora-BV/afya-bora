@@ -129,12 +129,10 @@ function Main() {
 		SplashScreen.hide();
 	}, [ready]);
 
-	// If not ready... Don't ready anything
-	// if (!ready) return SplashScreen.hide();
 
-	/**
-	 * Loads if there is the user component
-	 */
+	console.log("Main profile data")
+	console.log(JSON.stringify(profile, null, 3))
+	console.log("User ",user)
 
 	if (initializing) return null;
 
