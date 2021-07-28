@@ -76,19 +76,14 @@ interface NewAppointmentRequestBody {
 
 
 const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequestBody, cid: string, pid: string }) => {
-	// await firestore().collection("appointments").add(data)
-	console.log("Data : ", data)
-	console.log("cid : ", cid)
-	console.log("pid : ", pid)
 	console.log(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`)
 	try {
 		const res = await axios.post(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`, {
 			...data
 		})
 	} catch (e) {
-		console.log("Error : ",e)
+		console.log("Error : ", e)
 	}
-	// return res
 }
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
