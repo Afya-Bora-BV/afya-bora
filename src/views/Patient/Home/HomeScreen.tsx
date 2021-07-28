@@ -93,7 +93,7 @@ export default function Home() {
 				</HStack>
 			)}
 		>
-			<ScrollView width="100%">
+			<ScrollView width="100%" testID="Home">
 				{/* Welcome section */}
 				<VStack space={2} paddingTop={2} marginX={5}>
 					<Text color="#B0B3C7" fontSize="md">

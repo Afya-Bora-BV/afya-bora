@@ -23,6 +23,7 @@ export const TimeSet: React.FC<timeProp> = ({ time }) => {
 
 	return (
 		<Pressable
+		testID={"TimeSet"}
 			onPress={() => {
 				state === "checked"
 					? setState("unhecked")
@@ -52,6 +53,7 @@ export const FBLogo = () => {
 	const [state, setState] = useState("unchecked");
 	return (
 		<Pressable
+		testID="FBLogo"
 			onPress={() => {
 				state === "checked"
 					? setState("unhecked")
@@ -86,7 +88,7 @@ type checkBoxProp = {
 
 export const CheckBox: React.FC<checkBoxProp> = ({ item }) => {
 	return (
-		<Stack>
+		<Stack testID="CheckBox">
 			<Checkbox value="one" my={2}>
 				{item}
 			</Checkbox>
@@ -103,6 +105,7 @@ export const Symptom: React.FC<symptomProp> = ({ symptom }) => {
 
 	return (
 		<Pressable
+		testID={"Symptom"}
 			onPress={() => {
 				state === "checked"
 					? setState("unhecked")

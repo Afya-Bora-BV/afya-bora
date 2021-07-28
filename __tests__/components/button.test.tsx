@@ -8,6 +8,7 @@ import Button, {
 } from "../../src/components/button";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import button from "../../src/components/button";
 
 describe("<Button/>", () => {
 	test("is it rendered appropriately", () => {
@@ -33,5 +34,6 @@ describe("<Button/>", () => {
 		expect(PrimaryButton("buttonText")).toBeDefined();
 		expect(OutLineButton()).toBeDefined();
 		expect(SecondaryButton()).toBeDefined();
+		expect(button()).toBeDefined();
 	});
 });

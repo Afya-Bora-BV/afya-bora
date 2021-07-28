@@ -49,6 +49,7 @@ type IconContainer = {};
 export const IconContainer: React.FC<IconContainer> = ({ children }) => {
 	return (
 		<Center
+		testID={"IconContainer"}
 			bg="#E7E5FF"
 			borderRadius={4}
 			_text={{
@@ -74,7 +75,7 @@ type headerProps = {
 
 export const Header: React.FC<headerProps> = ({ text }) => {
 	return (
-		<Stack space={6}>
+		<Stack space={6} testID="Header">
 			<HStack justifyContent="space-between" alignItems="center">
 				<Text color="white" fontSize="2xl">
 					{text}
@@ -91,7 +92,7 @@ const HeaderwithBack: React.FC<headerProps> = ({
 	color = "black",
 }) => {
 	return (
-		<HStack justifyContent="space-evenly">
+		<HStack justifyContent="space-evenly" testID="HeaderwithBack">
 			<Stack
 				style={{
 					flex: 0.5,
@@ -133,7 +134,7 @@ const HeaderwithBack: React.FC<headerProps> = ({
 
 const HeaderWithSearch = () => {
 	return (
-		<Stack space={6}>
+		<Stack space={6} testID="HeaderWithSearch">
 			<HStack justifyContent="space-between" alignItems="center">
 				<IconContainer>
 					<MaterialIcons
