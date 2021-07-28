@@ -23,6 +23,7 @@ export const TimeSet: React.FC<timeProp> = ({ time }) => {
 
 	return (
 		<Pressable
+		testID={"TimeSet"}
 			onPress={() => {
 				state === "checked"
 					? setState("unhecked")
