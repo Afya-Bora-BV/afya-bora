@@ -227,13 +227,14 @@ const UpcomingAppointmentsSection = () => {
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlertDoctor appointment={appointments[0]} onPress={() => {
-					navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
-						appointment: appointments[0]
-					})
-					console.log("Clickinig appointment event")
-				}} />
-
+				{appointments.map((appointment) => (
+					<AppointmentAlertDoctor appointment={appointment} onPress={() => {
+						navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
+							appointment: appointment
+						})
+						console.log("Clickinig appointment event")
+					}} />
+				))}
 
 				<View width="100%" alignItems="flex-end">
 					<Pressable onPress={() => console.log("Something")}>
