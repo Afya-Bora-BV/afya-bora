@@ -10,7 +10,8 @@ import { AuthProvider } from "../../src/internals/auth/context";
 describe("Testing Bars", () => {
     
 	const queryClient = new QueryClient();
-	test("Time Set", () => {
+
+	test("rendering components", () => {
 		const { queryByTestId } = render(
 			<SafeAreaProvider>
 				<NativeBaseProvider>
@@ -36,16 +37,16 @@ describe("Testing Bars", () => {
 		expect(queryByTestId("Symptom")).toBeTruthy;
 	});
 
-	test("FB Logo", () => {
-		expect(FBLogo()).toBeDefined();
-	});
-
 	test("CheckBox", () => {
 		expect(CheckBox("item")).toBeDefined();
 	});
 
-	test("Symptom", () => {
-		expect(Symptom("cough")).toBeDefined();
+	// test("FB Logo", () => {
+	// 	expect(FBLogo()).toBeDefined();
+	// });
 
-	});
+	// test("Symptom", () => {
+	// 	expect(Symptom("cough")).toBeDefined();
+
+	// });
 });

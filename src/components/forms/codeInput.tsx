@@ -53,6 +53,7 @@ export default function CodeInput({
 
 	return (
 		<CodeField
+			testID={"CodeInput"}
 			ref={ref}
 			{...props}
 			value={value}

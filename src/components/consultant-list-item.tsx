@@ -43,7 +43,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 	onPress,
 }) => {
 	return (
-		<Box bg="white" shadow={2} rounded={10}>
+		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
 			<TouchableOpacity onPress={onPress}>
 				<VStack
 					p={4}

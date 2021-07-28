@@ -18,7 +18,7 @@ export function ControllerFormInput({
 	} = useController({ name, control });
 
 	return (
-		<Stack>
+		<Stack testID="ControllerFormInput">
 			<Text>{label}</Text>
 			<Spacer size={2} />
 			<Controller

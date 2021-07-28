@@ -53,6 +53,6 @@ describe("Patient Home Screen Test", () => {
 			</SafeAreaProvider>
 		);
 
-		expect(queryByTestId("PatientLoginScreen")).toBeTruthy();
+		expect(queryByTestId("Home")).toBeDefined();
 	});
 });
