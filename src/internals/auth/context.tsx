@@ -11,6 +11,8 @@ import auth from "@react-native-firebase/auth";
  * User object
  */
 export interface User {
+    uid: string;
+    id: string;
     name: string;
     phone: string;
     email?: string;
@@ -21,10 +23,12 @@ export interface User {
     bloodGroup: string;
     residence: string;
     phoneNumber: string
-    type: "doctor" | "patient" | "admin";
+    type: "patient";
 }
 
 export interface Consultant {
+    uid: string;
+    id: string;
     clinicianType: string
     createdAt: string
     email: string
@@ -36,7 +40,6 @@ export interface Consultant {
     rating: number
     residence: string
     specialities: string
-    uid: string
     type: "doctor"
 }
 

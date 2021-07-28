@@ -36,6 +36,8 @@ import auth from "@react-native-firebase/auth"
 
 import axios from "axios";
 import { API_ROOT } from "../../../../api";
+import { useAuthStore } from "../../../../internals/auth/context";
+import { consultants } from "../../../../data/consultants";
 
 
 type PatientComplaintScreenRouteProp = RouteProp<
@@ -78,15 +80,20 @@ const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequest
 	console.log("Data : ", data)
 	console.log("cid : ", cid)
 	console.log("pid : ", pid)
-	const res = await axios.post(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`, {
-		...data
-	})
-	return res
+	console.log(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`)
+	try {
+		const res = await axios.post(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`, {
+			...data
+		})
+	} catch (e) {
+		console.log("Error : ",e)
+	}
+	// return res
 }
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
 	const navigation = useNavigation();
-
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -98,6 +105,8 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 
 	const { consultant, appointment, appointmentType } = route.params;
 
+	console.log("Consultant")
+	console.log(consultant.id)
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
 		// addAppointment({
@@ -118,7 +127,6 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 				{
 					text: "Confirm",
 					onPress: () => {
-						const uid = auth().currentUser?.uid
 
 						console.log("appointment is undefined why")
 						console.log(consultant)
@@ -133,7 +141,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 						console.log(JSON.stringify(data, null, 3))
 						console.log("create appointment data")
 
-						// addAppointment({ data: data, cid: consultant.uid, pid: uid || "" })
+						addAppointment({ data: data, cid: consultant.id, pid: profile?.id || "" })
 					},
 				},
 			]

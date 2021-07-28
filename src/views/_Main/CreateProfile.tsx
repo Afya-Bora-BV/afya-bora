@@ -28,6 +28,8 @@ import { useAuthStore } from "../../internals/auth/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import axios, { AxiosResponse } from "axios";
+import { API_ROOT } from "../../api";
 
 const regions: { name: string }[] = [
 	"Residency Location",
@@ -80,13 +82,23 @@ type Profile = CompleteProfileInputs & {
 	phoneNumber: string;
 };
 
-const createPatientProfile = async (profile: Profile) => {
-	console.log("Creating a profile");
-	console.log(profile);
-	const profilesRef = firestore().collection("patients");
+interface ServerResponse {
+	data: ServerData
+}
+
+interface ServerData { message: string, patientId: string }
+
+
+const createPatientProfile = async (profile: Profile): Promise<any> => {
 	const uid = await auth().currentUser?.uid;
-	console.log("USER ID 2 : ", uid);
-	await profilesRef.doc(uid).set({ ...profile, uid });
+	const createdProfile = await axios.post<AxiosResponse<ServerResponse>>(
+		`${API_ROOT}/v0/user/${uid}/profile/create/patient`,
+		profile
+	)
+
+	console.log(" created profile ")
+	console.log(createdProfile?.data)
+	return createdProfile?.data
 };
 
 function friendlyFormatDate(timeStamp: Date | string | number) {
@@ -108,7 +120,7 @@ interface CompleteProfileInputs {
 	height: number;
 	weight: number;
 	bloodGroup: string;
-	residence: string;
+	location: string;
 	type: "doctor" | "patient" | "admin";
 }
 
@@ -138,13 +150,19 @@ export default function CreateProfileScreen() {
 		console.log(data);
 		completProfile({ ...data, phoneNumber, type: "patient" });
 
-		// TODO: to reconsider better way to store this server state
-		updateProfile({ ...data, phoneNumber, type: "patient" });
 	};
 
-	//navigation attrib
-	// TODO: on registering instead of navigating just update the global store which in turn will update the stack
-	// to render
+	const handleCreatingProfile = async (data: any) => {
+		const uid = await auth().currentUser?.uid;
+		const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
+		// TODO: to reconsider better way to store this server state
+		if (createdProfile.patientId) {
+			updateProfile({ ...data, uid: uid, id: createdProfile.patientId, phoneNumber, type: "patient" });
+		} else {
+			console.log("Error in creating profile data")
+		}
+
+	}
 
 	//Date picker attrib
 	const [show, setShow] = useState(false);
@@ -155,7 +173,7 @@ export default function CreateProfileScreen() {
 	};
 
 	const { isLoading, mutate: completProfile } = useMutation(
-		createPatientProfile,
+		handleCreatingProfile,
 		{
 			onError: (error, variables, context) => {
 				// An error happened!
@@ -169,6 +187,7 @@ export default function CreateProfileScreen() {
 	);
 
 	console.log("Phone number : 2 ", phoneNumber);
+	console.log("Is loading ", isLoading)
 
 	return (
 		<Box flex={1}>
@@ -567,7 +586,7 @@ export default function CreateProfileScreen() {
 
 												</Select>
 											)}
-											name="residence"
+											name="location"
 											// rules={{ required: true }}
 											defaultValue=""
 										/>
