@@ -64,31 +64,8 @@ export function friendlyFormatDate(timeStamp: Date | string | number) {
 
 const NextAppointmentsSection = () => {
 	const navigation = useNavigation()
-	// const getAppointments = useAppointmentTempoStore(
-	// 	(state) => state.getAppointments
-	// );
-	// const { isLoading, isError, data, error } = useQuery(
-	// 	"appointments",
-	// 	getAppointments,
-	// 	{
-	// 		// TODO: to remove this behaviour
-	// 		// and instead just fetch either from offline or online state
-	// 		refetchInterval: 5000,
-	// 	}
-	// );
-	// if (isLoading) return <Text>Fetching appointement... </Text>;
-	// if (error) return <Text>Something went wrong</Text>;
-	// if (data?.length === 0) return null;
 
-	// console.log("appointment");
-	// console.log(data);
 	return (
-		// <VStack space={4} marginTop={8}>
-		// 	<Heading fontSize="xl">Next Appointment</Heading>
-		// 	{data?.map((appointment) => (
-		// 		<AppointmentAlert appointment={appointment} />
-		// 	))}
-		// </VStack>
 
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Next Appointment</Heading>
@@ -102,36 +79,8 @@ const NextAppointmentsSection = () => {
 	);
 };
 
-// TO DO - CHANGE TO GET APPOINTMENT FOR TODAY ONLY
 const TodayAppointmentsSection = () => {
-	// const getAppointments = useAppointmentTempoStore(
-	// 	(state) => state.getAppointments
-	// );
-	// const { isLoading, isError, data, error } = useQuery(
-	// 	"appointments",
-	// 	getAppointments,
-	// 	{
-	// 		// TODO: to remove this behaviour
-	// 		// and instead just fetch either from offline or online state
-	// 		refetchInterval: 5000,
-	// 	}
-	// );
-	// if (isLoading) return <Text>Fetching appointement... </Text>;
-	// if (error) return <Text>Something went wrong</Text>;
-	// if (data?.length === 0) return null;
-
-	// console.log("appointment");
-	// console.log(data);
 	return (
-		// <VStack space={4} marginTop={8}>
-		// 	<Heading fontSize="xl">Today's Appointments</Heading>
-		// 	{data?.map((appointment) => (
-		// 		<AppointmentAlert appointment={appointment} />
-		// 	))}
-		// 	<Stack alignItems="flex-end">
-		// 		<Text color="#747F9E">See all Today's appointments</Text>
-		// 	</Stack>
-		// </VStack>
 
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Today's Appointments</Heading>
@@ -152,68 +101,6 @@ const TodayAppointmentsSection = () => {
 	);
 };
 
-
-
-// const AppointmentAlert: React.FC<{
-// 	appointment: DemoAppointmentType;
-// }> = ({ appointment }) => {
-// 	const {
-// 		dateTime: { timeSlots, date },
-// 		consultant: { name },
-// 	} = appointment;
-
-// 	return (
-// 		<VStack>
-// 			<HStack
-// 				justifyContent="space-between"
-// 				alignItems="center"
-// 				shadow={2}
-// 				rounded={10}
-// 				bg="white"
-// 				p={4}
-// 			>
-// 				<VStack>
-// 					<HStack
-// 						justifyContent="space-between"
-// 						alignItems="center"
-// 						space={4}
-// 					>
-// 						<MedicalHistoryIcon />
-// 						<VStack>
-// 							<Text bold fontSize={20}>
-// 								Dr {name}
-// 							</Text>
-// 							{/* TODO: specify the correct time for appointment */}
-
-// 							<HStack>
-// 								<Text bold color="#747F9E">
-// 									{friendlyFormatDate(date) + ", "}
-// 								</Text>
-// 								<Text bold color="#747F9E">
-// 									{timeSlots[0]}
-// 								</Text>
-// 							</HStack>
-// 							{/* TO DO - CHANGE TO SHOW STATUS */}
-// 							<Text italic>Online</Text>
-// 						</VStack>
-// 					</HStack>
-// 				</VStack>
-// 				<HStack>
-// 					<Pressable onPress={() => navigation.navigate(HomeNavKey.AppointmentInfoScreen, { appointment })}>
-// 						<HStack alignItems="center">
-// 							<Text fontSize={15} color={"#561BB3"}>
-// 								Join/Edit
-// 							</Text>
-// 							<Icon size={5}>
-// 								<ArrowIcon_Next size={5} />
-// 							</Icon>
-// 						</HStack>
-// 					</Pressable>
-// 				</HStack>
-// 			</HStack>
-// 		</VStack>
-// 	);
-// };
 
 export default function DoctorHome() {
 	const navigation = useNavigation();
@@ -264,7 +151,6 @@ export default function DoctorHome() {
 export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: RealTimeAppointment, onPress: () => void }) {
 	if (!appointment) return null
 	return (
-		// <TouchableOpacity onPress={props.onPress}>
 		<Box
 			flexDirection="row"
 			justifyContent="space-between"
@@ -281,14 +167,14 @@ export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: 
 				</Square>
 				<VStack>
 					<Heading fontSize="lg" color="#000">
-						{appointment.pid}
+						{appointment.patient.name}
 					</Heading>
 					<Text fontSize="sm" color="#333">
 						{moment(appointment.date.seconds).format("DD MMM, H:MM A")}
 					</Text>
 					<Text fontSize="sm" fontStyle="italic" color="#333">
 						{/* TODO: include facility in appointment */}
-						{appointment.type === "online" ? "Online" : appointment.trl_facility?.name}
+						{appointment.type === "online" ? "Online" : appointment.facility?.name}
 					</Text>
 				</VStack>
 			</HStack>
@@ -316,29 +202,27 @@ export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: 
 				</Icon>
 			</View>
 		</Box>
-		// </TouchableOpacity>
 	);
 }
 
 const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 	const uid = auth().currentUser?.uid
 	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection('appointments')
-			.where("cid", "==", uid)
+			.where("cid", "==", profile?.id)
 			.onSnapshot(documentSnapshot => {
 				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
 				setAppointments(shots as RealTimeAppointment[])
 			});
 
-		// Stop listening for updates when no longer required
 		return () => subscriber();
-	}, [uid]);
+	}, [profile?.id]);
 
-	console.log("Appontments : ")
-	console.log(JSON.stringify(appointments, null, 3))
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>

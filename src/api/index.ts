@@ -53,6 +53,11 @@ interface AppointmentDetails {
         }
     }
     consultant?: ConsultantDetails,
+    patient: {
+        name: string,
+        bloodGroup: string,
+        gender: "male" | "female"
+    }
 }
 
 

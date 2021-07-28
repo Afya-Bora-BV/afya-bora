@@ -192,7 +192,7 @@ export default function AppointmentInfo() {
 				</Button>
 
 				<PatientInfo
-					name="No data"
+					name={appointmentDetails?.patient.name || ""}
 					phoneNumber="+No phone"
 					gender="female"
 				/>

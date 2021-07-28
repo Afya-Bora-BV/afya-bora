@@ -48,7 +48,7 @@ interface FormEmailInputs {
 const fetchUserProfile = async (): Promise<Consultant | undefined> => {
     const uid = await auth().currentUser?.uid
     const profile = await firestore().collection("consultants").where("uid", "==", uid).get()
-    const data = profile.docs.map(doc => ({ ...doc.data(), uid: doc.id } as Consultant))
+    const data = profile.docs.map(doc => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant))
     return data[0]
 }
 

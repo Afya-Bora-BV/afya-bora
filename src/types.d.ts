@@ -40,13 +40,18 @@ export interface ConsultantProfile {
 interface RealTimeAppointment {
 	cid: string;
 	consultant: ConsultantProfile;
+	patient: {
+		name: string,
+		gender: "male" | "female",
+		bloodGroup: string
+	}
 	aboutVisit: {
 		complaint: string;
 		symptoms: string[];
 	};
 	facilityId: string;
 	type: "offline" | "online";
-	trl_facility?: {
+	facility?: {
 		geopoint: {
 			lat: number;
 			lng: 39.2807287;

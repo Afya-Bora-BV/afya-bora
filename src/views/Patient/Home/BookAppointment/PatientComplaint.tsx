@@ -82,7 +82,8 @@ const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequest
 			...data
 		})
 	} catch (e) {
-		console.log("Error : ", e)
+		console.log("Error : ", e.response)
+		throw new Error("Error in saving appointment")
 	}
 }
 
@@ -151,7 +152,7 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
 			console.log("Whats the response : ", data)
-			// navigation.navigate(MainNavKey.HomeScreen);
+			navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
 	});
