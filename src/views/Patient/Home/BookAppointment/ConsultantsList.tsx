@@ -37,6 +37,7 @@ interface Consultant {
 
 
 export const getConsultants = async (): Promise<Consultant[]> => {
+	console.log("Get consultant list ", `${API_ROOT}/v0/data/consultants`)
 	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants`)
 	const consultants: Consultant[] = await res.data.data
 	return consultants

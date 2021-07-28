@@ -117,9 +117,9 @@ export default function OnlineConsultChooseConsultant({
 		}
 	}, [error])
 
-	// console.log("Status ", isLoading);
-	// console.log("Error ", error);
-	// console.log("Data ", consultants);
+	console.log("isLoading ", isLoading);
+	console.log("Error ", error);
+	console.log("Data ", consultants);
 
 	return (
 		<MainContainer
@@ -139,7 +139,7 @@ export default function OnlineConsultChooseConsultant({
 		>
 			
 			{
-				isLoading ? (
+				!isLoading ? (
 					consultants !== undefined ?
 					(
 						<ScrollView padding={5}>

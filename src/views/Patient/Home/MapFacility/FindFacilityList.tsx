@@ -5,6 +5,7 @@ import { ArrowBackIcon, Box, Heading, ScrollView, Stack, StatusBar, Text, VStack
 import React, { useCallback } from "react";
 import { Pressable } from "react-native";
 import { useQuery } from "react-query";
+import { API_ROOT } from "../../../../api";
 import { ConsultantListItem } from "../../../../components/consultant-list-item";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { FacilityListItem } from "../../../../components/facilities-list-item";
@@ -12,7 +13,6 @@ import { HeaderWithRText } from "../../../../components/header";
 import { IconContainer } from "../../../../components/misc";
 import { consultants } from "../../../../data/consultants";
 import { facilities } from "../../../../data/facilities";
-import { API_ROOT } from "../BookAppointment/ConsultantsList";
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
 
@@ -33,6 +33,7 @@ export interface Consultant {
 }
 
 export const getConsultantsByFacility = async (facilityId: string): Promise<Consultant[]> => {
+	console.log("Get consultant at ", `${API_ROOT}/v0/data/consultants?fid=${facilityId}`)
 	const res = await axios.get<Consultant[]>(`${API_ROOT}/v0/data/consultants?fid=${facilityId}`)
 	const consultants: Consultant[] = await res.data.data
 	console.log("Data found is ")

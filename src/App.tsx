@@ -130,9 +130,6 @@ function Main() {
 	}, [ready]);
 
 
-	console.log("Main profile data")
-	console.log(JSON.stringify(profile, null, 3))
-	console.log("User ",user)
 
 	if (initializing) return null;
 
