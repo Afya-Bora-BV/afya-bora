@@ -32,25 +32,31 @@ import _ from "lodash";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import CodeInput from "../../components/forms/codeInput";
+import { API_ROOT } from "../../api";
+import axios, { AxiosResponse } from "axios";
 
 
 
 // TODO : logic to be moved somewhere on refactor
 
-const checkUserProfile = async (phoneNumber: string): Promise<User | undefined> => {
-	const uid = await auth().currentUser?.uid
-	console.log("USER ID 1 : ", uid)
-	const profile = await firestore().collection("patients").doc(uid).get()
-	let data = undefined
-	if (profile.exists) {
-		data = { ...profile.data(), pid: profile.id } as User
-	}
-	return data
+type Data = {
+	count: number,
+	data: any[]
+}
+type ProfileResponse = {
+	data: Data,
+	status: any, statusText: any, headers: any, config: any
 }
 
+const checkUserProfiles = async (phoneNumber: string): Promise<ProfileResponse> => {
+	const uid = await auth().currentUser?.uid
+	console.log("Checking user profile data")
+	console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`)
+	const profiles = await axios.get<AxiosResponse<ProfileResponse>>(`${API_ROOT}/v0/user/${uid}/profile/patients`)
+	return profiles.data.data
+}
 
 // let render = 0
-
 const { height } = Dimensions.get("screen");
 
 /**
@@ -108,7 +114,7 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 
 	return (
 		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
-			<View flexGrow={1} marginTop={10}  testID="PatientLoginScreen">
+			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">
 				<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} marginX={5}>
 					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
@@ -165,33 +171,35 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 
 	const onConfirmCode = async () => {
 		console.log("Phone ", phoneNumber)
-		await confirmCode()
+		await verify(code)
 
 		// after success login we check is the user exists
 
-		const profile = await checkUserProfile(phoneNumber)
+		const profiles = await checkUserProfiles(phoneNumber)
+		console.log("profiles")
+		console.log(JSON.stringify(profiles, null, 3))
 
-		if (!profile) {
+		if (_.isEmpty(profiles.data)) {
 			// directing to complete profile screen
 			navigation.navigate(_MainAppNavKey.CreateProfileView)
 			console.log("What cant navigate ")
 		} else {
-			updateProfile(profile)
+			updateProfile(profiles.data[0])
 		}
 
-		console.log("The user exists ", profile)
+		console.log("The user exists ", profiles)
 		// check if the user exists
 
 	}
 
-	const { isLoading, mutate: confirmCode } = useMutation(() => verify(code), {
+	const { isLoading, mutate: confirmCode } = useMutation(() => onConfirmCode(), {
 		onError: (error, variables, context) => {
 			// An error happened!
 			console.log(`rolling back optimistic update with id `, error)
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
-			console.log("Successfully logged on ")
+			// console.log("Successfully logged on ")
 		},
 
 	})
@@ -214,7 +222,7 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 				<Box position="absolute" bottom={-20} left={0} right={0} width="100%" paddingX={10}>
 					{/* COnfirm button */}
 					<Button
-						onPress={onConfirmCode}
+						onPress={async () => { await confirmCode() }}
 						borderRadius={20}
 						isLoading={isLoading}
 						disabled={isLoading}
