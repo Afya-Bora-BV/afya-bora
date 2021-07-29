@@ -87,7 +87,7 @@ export default function DoctorHome() {
 				</VStack>
 
 				<VStack space={3} marginX={5}>
-					<FetchingAppointments/>
+					<Appointments />
 				</VStack>
 			</ScrollView>
 		</MainContainer>
@@ -169,7 +169,7 @@ export function AppointmentAlertDoctor({
 	);
 }
 
-export const FetchingAppointments = () => {
+export const Appointments = () => {
 	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
@@ -188,112 +188,117 @@ export const FetchingAppointments = () => {
 
 		return () => subscriber();
 	}, [profile?.id]);
+
+	const nextAppointments = appointments?.filter(appointment => (
+		moment(appointment.date.seconds).format(
+			"DD MMM YYYY"
+		) === moment(new Date()).format("DD MMM YYYY") &&
+		moment(appointment.date.seconds).format("hh:mm") >
+		moment(new Date()).format("hh:mm"))
+	)
+
+	const todaysAppointments = appointments?.filter(appointment => (
+		moment(appointment.date.seconds).format(
+			"DD MMM YYYY"
+		) === moment(new Date()).format("DD MMM YYYY")
+	))
+
+	const upcomingAppointments = appointments?.filter(appointment => (
+		moment(appointment.date.seconds).format("DD MMM YYYY") >
+		moment(new Date()).format("DD MMM YYYY")
+	))
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Next Appointment</Heading>
 			<VStack space={3}>
-				{appointments.map((appointment) => {
-					if (
-						moment(appointment.date.seconds).format(
-							"DD MMM YYYY"
-						) === moment(new Date()).format("DD MMM YYYY") &&
-						moment(appointment.date.seconds).format("hh:mm") >
-							moment(new Date()).format("hh:mm")
-					)
-						return (
-							<View>
-								<AppointmentAlertDoctor
-									appointment={appointment}
-									onPress={() => {
-										navigation.navigate(
-											HomeNavKey.AppointmentInfoScreen,
-											{
-												appointment: appointment,
-											}
-										);
-										console.log(
-											"Clicking appointment event"
-										);
-									}}
-								/>
-							</View>
-						);
+				{nextAppointments.map((appointment) => {
+					return (
+						<View>
+							<AppointmentAlertDoctor
+								appointment={appointment}
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.AppointmentInfoScreen,
+										{
+											appointment: appointment,
+										}
+									);
+									console.log(
+										"Clicking appointment event"
+									);
+								}}
+							/>
+						</View>
+					);
 				})}
 			</VStack>
 
 			<Heading fontSize="xl">Today's Appointments</Heading>
 			<VStack space={3}>
-				{appointments.map((appointment) => {
-					if (
-						moment(appointment.date.seconds).format(
-							"DD MMM YYYY"
-						) === moment(new Date()).format("DD MMM YYYY")
-					)
-						return (
-							<View>
-								<AppointmentAlertDoctor
-									appointment={appointment}
-									onPress={() => {
-										navigation.navigate(
-											HomeNavKey.AppointmentInfoScreen,
-											{
-												appointment: appointment,
-											}
-										);
-										console.log(
-											"Clicking appointment event"
-										);
-									}}
-								/>
-								<View width="100%" alignItems="flex-end">
-									<Pressable
-										onPress={() => console.log("Something")}
-									>
-										<Text fontStyle="italic">
-											See All Today's Appointments
-										</Text>
-									</Pressable>
-								</View>
-							</View>
-						);
+				{todaysAppointments.map((appointment) => {
+					return (
+						<View>
+							<AppointmentAlertDoctor
+								appointment={appointment}
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.AppointmentInfoScreen,
+										{
+											appointment: appointment,
+										}
+									);
+									console.log(
+										"Clicking appointment event"
+									);
+								}}
+							/>
+						</View>
+					);
 				})}
+				<HStack alignItems="flex-end">
+					<Pressable
+						onPress={() => console.log("Something")}
+					>
+						<Text fontStyle="italic">
+							See All Today's Appointments
+						</Text>
+					</Pressable>
+				</HStack>
 			</VStack>
 
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				{appointments.map((appointment) => {
-					if (
-						moment(appointment.date.seconds).format("DD MMM YYYY") >
-						moment(new Date()).format("DD MMM YYYY")
-					)
-						return (
-							<View>
-								<AppointmentAlertDoctor
-									appointment={appointment}
-									onPress={() => {
-										navigation.navigate(
-											HomeNavKey.AppointmentInfoScreen,
-											{
-												appointment: appointment,
-											}
-										);
-										console.log(
-											"Clicking appointment event"
-										);
-									}}
-								/>
-								<View width="100%" alignItems="flex-end">
-									<Pressable
-										onPress={() => console.log("Something")}
-									>
-										<Text fontStyle="italic">
-											See All Appointments
-										</Text>
-									</Pressable>
-								</View>
-							</View>
-						);
+				{upcomingAppointments.map((appointment) => {
+					return (
+						<View>
+							<AppointmentAlertDoctor
+								appointment={appointment}
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.AppointmentInfoScreen,
+										{
+											appointment: appointment,
+										}
+									);
+									console.log(
+										"Clicking appointment event"
+									);
+								}}
+							/>
+
+						</View>
+					);
 				})}
+				<HStack alignItems="flex-end">
+					<Pressable
+						onPress={() => console.log("Something")}
+					>
+						<Text fontStyle="italic">
+							See All Upcoming Appointments
+						</Text>
+					</Pressable>
+				</HStack>
 			</VStack>
 		</VStack>
 	);
