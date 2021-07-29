@@ -8,9 +8,13 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
 import CreateProfileScreen from "../../../src/views/_Main/CreateProfile";
 
-describe("Login", () => {
-	const Stack = createStackNavigator();
+jest.mock(
+	'../../../node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter',
+  );
 
+describe("Create Profile", () => {
+	const Stack = createStackNavigator();
+	
 	test("does the screen render", () => {
 		const { queryByTestId } = render(
 			<SafeAreaProvider>

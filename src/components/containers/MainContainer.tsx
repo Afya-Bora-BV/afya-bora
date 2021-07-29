@@ -16,7 +16,7 @@ interface MainContainerProps extends ContainerHeaderProps {
 	noScroll?: boolean
 }
 
-function ContainerHeader ({ 
+export function ContainerHeader ({ 
 	title,
 	headerMode,
 	leftSection: LeftSection,
@@ -74,7 +74,7 @@ export default function MainContainer({
 	return (
 		<_BaseContainer>
 			<StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-			<Box width={"100%"} flex={1} position={headerMode === "float" ? "relative" : undefined }>
+			<Box width={"100%"} flex={1} position={headerMode === "float" ? "relative" : undefined } testID="MainContainer">
 				{/* Header */}
 				<ContainerHeader 
 					headerMode={headerMode}
