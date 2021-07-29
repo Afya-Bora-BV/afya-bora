@@ -33,7 +33,7 @@ const NotificationScreen = () => {
 			}
 		>
 			<Spacer size={10}/>
-			<Stack paddingBottom={10} alignItems="center">
+			<Stack paddingBottom={10} alignItems="center" testID="NotificationScreen">
 				<Box bg="white" shadow={2} rounded={10} width="90%">
 					<Box
 						position="absolute"

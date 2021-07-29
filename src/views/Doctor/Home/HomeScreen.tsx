@@ -32,8 +32,8 @@ import { AppointmentAlert } from "../../../components/core/appointment";
 import { TouchableOpacityBase } from "react-native";
 import { useAuthStore } from "../../../internals/auth/context";
 import { RealTimeAppointment } from "../../../types";
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import ArrowIcon_Next from "../../../assets/icons/ArrowIcon_Next";
 
 export const MONTH_NAMES = [
@@ -51,60 +51,9 @@ export const MONTH_NAMES = [
 	"December",
 ];
 
-export function friendlyFormatDate(timeStamp: Date | string | number) {
-	const dateObj = new Date(timeStamp);
-	const d = new Date();
-	const date = dateObj.getDate();
-	const month = dateObj.getMonth();
-	const year = dateObj.getFullYear();
-	const monthName = MONTH_NAMES[d.getMonth()];
-
-	return `${date} ${monthName}`;
-}
-
-const NextAppointmentsSection = () => {
-	const navigation = useNavigation()
-
-	return (
-
-		<VStack space={4} marginTop={8}>
-			<Heading fontSize="xl">Next Appointment</Heading>
-			<Pressable
-				onPress={() => {
-					navigation.navigate(HomeNavKey.AppointmentInfoScreen)
-				}}>
-				<AppointmentAlertDoctor />
-			</Pressable>
-		</VStack>
-	);
-};
-
-const TodayAppointmentsSection = () => {
-	return (
-
-		<VStack space={4} marginTop={8}>
-			<Heading fontSize="xl">Today's Appointments</Heading>
-			<VStack space={3}>
-				{
-					_.times(3).map((_, ix) => (
-						<AppointmentAlert key={ix} />
-					))
-				}
-
-				<View width="100%" alignItems="flex-end">
-					<Pressable onPress={() => console.log("Something")}>
-						<Text fontStyle="italic">See All Today's Appointments</Text>
-					</Pressable>
-				</View>
-			</VStack>
-		</VStack>
-	);
-};
-
-
 export default function DoctorHome() {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
 	return (
 		<MainContainer
@@ -117,7 +66,7 @@ export default function DoctorHome() {
 				<HStack space={4}>
 					<Pressable
 						onPress={() => {
-							navigation.navigate(HomeNavKey.NotificationScreen)
+							navigation.navigate(HomeNavKey.NotificationScreen);
 						}}
 					>
 						<IconContainer>
@@ -132,23 +81,27 @@ export default function DoctorHome() {
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
 					</Text>
-					{profile?.type == "doctor" && <Heading fontSize="3xl">Hi, {profile?.name}</Heading>}
-
+					{profile?.type == "doctor" && (
+						<Heading fontSize="3xl">Hi, {profile?.name}</Heading>
+					)}
 				</VStack>
 
 				<VStack space={3} marginX={5}>
-					<NextAppointmentsSection />
-					<TodayAppointmentsSection />
-					<UpcomingAppointmentsSection />
+					<FetchingAppointments/>
 				</VStack>
 			</ScrollView>
 		</MainContainer>
 	);
-};
+}
 
-
-export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: RealTimeAppointment, onPress: () => void }) {
-	if (!appointment) return null
+export function AppointmentAlertDoctor({
+	appointment,
+	onPress,
+}: {
+	appointment: RealTimeAppointment;
+	onPress: () => void;
+}) {
+	if (!appointment) return null;
 	return (
 		<Box
 			flexDirection="row"
@@ -157,7 +110,8 @@ export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: 
 			padding={5}
 			rounded={20}
 			shadow={2}
-			bg="white">
+			bg="white"
+		>
 			{/* left */}
 			<HStack space={3} flexGrow={1} justifyContent="flex-start">
 				{/* Icon */}
@@ -169,32 +123,43 @@ export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: 
 						{appointment.patient.name}
 					</Heading>
 					<Text fontSize="sm" color="#333">
-						{moment(appointment.date.seconds).format("DD MMM, H:MM A")}
+						{moment(appointment.date.seconds).format(
+							"DD MMM, H:MM A"
+						)}
 					</Text>
 					<Text fontSize="sm" fontStyle="italic" color="#333">
 						{/* TODO: include facility in appointment */}
-						{appointment.type === "online" ? "Online" : appointment.facility?.name}
+						{appointment.type === "online"
+							? "Online"
+							: appointment.facility?.name}
 					</Text>
 				</VStack>
 			</HStack>
 			{/* right */}
 			<View alignItems="center" flexDirection="row">
-				{appointment.type === "offline" ?
-					<Text fontSize={15} color={'#561BB3'} onPress={() => {
-						console.log("Offline facility edit")
-						onPress()
-					}}>
+				{appointment.type === "offline" ? (
+					<Text
+						fontSize={15}
+						color={"#561BB3"}
+						onPress={() => {
+							console.log("Offline facility edit");
+							onPress();
+						}}
+					>
 						Edit
 					</Text>
-					:
-					<Text fontSize={15} color={'#561BB3'} onPress={() => {
-						console.log("Online facility edit")
-						onPress()
-					}}>
+				) : (
+					<Text
+						fontSize={15}
+						color={"#561BB3"}
+						onPress={() => {
+							console.log("Online facility edit");
+							onPress();
+						}}
+					>
 						Join/Edit
 					</Text>
-				}
-
+				)}
 
 				<Icon size={5}>
 					<ArrowIcon_Next size={5} />
@@ -204,42 +169,131 @@ export function AppointmentAlertDoctor({ appointment, onPress }: { appointment: 
 	);
 }
 
-const UpcomingAppointmentsSection = () => {
+export const FetchingAppointments = () => {
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
-	const uid = auth().currentUser?.uid
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
+
+	const uid = auth().currentUser?.uid;
 	useEffect(() => {
 		const subscriber = firestore()
-			.collection('appointments')
+			.collection("appointments")
 			.where("cid", "==", profile?.id)
-			.onSnapshot(documentSnapshot => {
-				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
-				setAppointments(shots as RealTimeAppointment[])
+			.onSnapshot((documentSnapshot) => {
+				const shots = [
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+				];
+				setAppointments(shots as RealTimeAppointment[]);
 			});
 
 		return () => subscriber();
 	}, [profile?.id]);
-
-
 	return (
 		<VStack space={4} marginTop={8}>
+			<Heading fontSize="xl">Next Appointment</Heading>
+			<VStack space={3}>
+				{appointments.map((appointment) => {
+					if (
+						moment(appointment.date.seconds).format(
+							"DD MMM YYYY"
+						) === moment(new Date()).format("DD MMM YYYY") &&
+						moment(appointment.date.seconds).format("hh:mm") >
+							moment(new Date()).format("hh:mm")
+					)
+						return (
+							<View>
+								<AppointmentAlertDoctor
+									appointment={appointment}
+									onPress={() => {
+										navigation.navigate(
+											HomeNavKey.AppointmentInfoScreen,
+											{
+												appointment: appointment,
+											}
+										);
+										console.log(
+											"Clicking appointment event"
+										);
+									}}
+								/>
+							</View>
+						);
+				})}
+			</VStack>
+
+			<Heading fontSize="xl">Today's Appointments</Heading>
+			<VStack space={3}>
+				{appointments.map((appointment) => {
+					if (
+						moment(appointment.date.seconds).format(
+							"DD MMM YYYY"
+						) === moment(new Date()).format("DD MMM YYYY")
+					)
+						return (
+							<View>
+								<AppointmentAlertDoctor
+									appointment={appointment}
+									onPress={() => {
+										navigation.navigate(
+											HomeNavKey.AppointmentInfoScreen,
+											{
+												appointment: appointment,
+											}
+										);
+										console.log(
+											"Clicking appointment event"
+										);
+									}}
+								/>
+								<View width="100%" alignItems="flex-end">
+									<Pressable
+										onPress={() => console.log("Something")}
+									>
+										<Text fontStyle="italic">
+											See All Today's Appointments
+										</Text>
+									</Pressable>
+								</View>
+							</View>
+						);
+				})}
+			</VStack>
+
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				{appointments.map((appointment) => (
-					<AppointmentAlertDoctor appointment={appointment} onPress={() => {
-						navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
-							appointment: appointment
-						})
-						console.log("Clickinig appointment event")
-					}} />
-				))}
-
-				<View width="100%" alignItems="flex-end">
-					<Pressable onPress={() => console.log("Something")}>
-						<Text fontStyle="italic">See All Appointments</Text>
-					</Pressable>
-				</View>
+				{appointments.map((appointment) => {
+					if (
+						moment(appointment.date.seconds).format("DD MMM YYYY") >
+						moment(new Date()).format("DD MMM YYYY")
+					)
+						return (
+							<View>
+								<AppointmentAlertDoctor
+									appointment={appointment}
+									onPress={() => {
+										navigation.navigate(
+											HomeNavKey.AppointmentInfoScreen,
+											{
+												appointment: appointment,
+											}
+										);
+										console.log(
+											"Clicking appointment event"
+										);
+									}}
+								/>
+								<View width="100%" alignItems="flex-end">
+									<Pressable
+										onPress={() => console.log("Something")}
+									>
+										<Text fontStyle="italic">
+											See All Appointments
+										</Text>
+									</Pressable>
+								</View>
+							</View>
+						);
+				})}
 			</VStack>
 		</VStack>
 	);

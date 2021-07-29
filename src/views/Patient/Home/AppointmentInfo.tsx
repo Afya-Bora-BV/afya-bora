@@ -33,7 +33,7 @@ import { HomeNavKey } from "./_navigator";
 import { getAppointmentDetails } from "../../../api";
 
 
-const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
+export const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
 	return (
 		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
 			<Modal.Content>
@@ -118,7 +118,7 @@ export default function AppointmentInfo() {
 			}
 		>
 			<CancelAppointment modalVisible={modalVisible} setModalVisible={setModalVisible} />
-			<VStack
+			<VStack testID="AppointmentInfo"
 				flex={1}
 				width="100%"
 				paddingX={5}

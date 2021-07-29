@@ -31,7 +31,7 @@ export default function PatientAppView () {
 					),
 				}}
 			/>
-			<Tab.Screen
+			{/* <Tab.Screen
 				name={TabNavKey.ScheduleView}
 				component={ScheduleView}
 				options={{
@@ -40,7 +40,7 @@ export default function PatientAppView () {
 						<TabScheduleIcon size={8} color={color} />
 					),
 				}}
-			/>
+			/> */}
 			<Tab.Screen
 				name={TabNavKey.Profile}
 				component={ProfileView}

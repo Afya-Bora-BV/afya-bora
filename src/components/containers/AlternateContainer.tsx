@@ -47,7 +47,7 @@ export default function AlternateContainer({
 				left={0}
 				right={0}
 			></Stack>
-			<Box width={"100%"} flex={1} height={"100%"}>
+			<Box width={"100%"} flex={1} height={"100%"} testID="AlternateContainer">
 				{/* Header */}
 				<HStack
 					flexDirection="row"

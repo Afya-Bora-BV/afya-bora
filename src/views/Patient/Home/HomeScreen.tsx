@@ -250,7 +250,7 @@ export default function Home() {
 // TODO: find a better place to fetch all the data
 
 
-const UpcomingAppointmentsSection = () => {
+export const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
