@@ -7,7 +7,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthProvider } from "../../../src/internals/auth/context";
-require('react-native-mock/mock');
+
+jest.mock(
+	'../../../node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter',
+  );
+
 describe("Login", () => {
 	const Stack = createStackNavigator();
 	const queryClient = new QueryClient();
@@ -32,6 +36,6 @@ describe("Login", () => {
 			</SafeAreaProvider>
 		);
 
-        expect(queryByTestId("PatientLoginScreen")).toBeTruthy();
+        expect(queryByTestId("PatientLoginScreen")).toBeDefined();
 	});
 });

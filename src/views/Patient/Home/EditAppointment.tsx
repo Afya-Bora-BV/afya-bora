@@ -2,7 +2,20 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import _ from "lodash";
 import moment from "moment";
-import { ArrowBackIcon, Box, HStack, Pressable, ScrollView, Text, View, VStack, Button, Menu, ChevronDownIcon, Spacer } from "native-base";
+import {
+	ArrowBackIcon,
+	Box,
+	HStack,
+	Pressable,
+	ScrollView,
+	Text,
+	View,
+	VStack,
+	Button,
+	Menu,
+	ChevronDownIcon,
+	Spacer,
+} from "native-base";
 import React, { useRef, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useQuery } from "react-query";
@@ -12,7 +25,7 @@ import { IconContainer } from "../../../components/misc";
 import { colors } from "../../../constants/colors";
 import { toggleStringFromList } from "../../../utils";
 
-function PickADateSection({ chosenDate, onSelectDate }: any) {
+export function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
 
 	return (
@@ -62,7 +75,7 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 	);
 }
 
-function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
+export function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 	const selectTime = (timeBlock: string) => {
 		const list = toggleStringFromList(timeBlock, chosenTimeSlots);
 		onSelectTimeSlot(list);
@@ -79,10 +92,12 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
 					const t = n + 6;
-					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
-						}`;
-					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
-						}`;
+					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
+					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${
+						t > 11 ? "PM" : "AM"
+					}`;
 					return (
 						<HStack flexWrap="wrap" space="md">
 							<TouchableOpacity
@@ -172,7 +187,7 @@ export default function EditAppointment() {
 	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
 
 	const route = useRoute();
-	const { appointment } = route?.params
+	const { appointment } = route?.params;
 
 	return (
 		<MainContainer
@@ -181,16 +196,17 @@ export default function EditAppointment() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
 			<VStack
+				testID="EditAppointment"
 				flex={1}
 				width="100%"
 				paddingX={5}
@@ -201,7 +217,10 @@ export default function EditAppointment() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={appointment?.date || (Date())} type={"offline"} />
+					<StatusAppointmentAlert
+						time={appointment?.date || Date()}
+						type={"offline"}
+					/>
 				</View>
 			</VStack>
 
@@ -219,9 +238,12 @@ export default function EditAppointment() {
 					/>
 				</VStack>
 				<Spacer size={5} />
-				<Text style={{ color: "#747F9E" }} italic textAlign="center">Your requested change will be reviewed by the doctor. If they acceept your request, you will be notified. </Text>
+				<Text style={{ color: "#747F9E" }} italic textAlign="center">
+					Your requested change will be reviewed by the doctor. If
+					they acceept your request, you will be notified.{" "}
+				</Text>
 				<Spacer size={5} />
-				<Button bg={colors.primary} onPress={() => { }} rounded={20}>
+				<Button bg={colors.primary} onPress={() => {}} rounded={20}>
 					Request Change
 				</Button>
 			</VStack>
@@ -234,7 +256,7 @@ type MonthDropDownProps = {
 	onChangeDate: (date: Date) => void;
 };
 
-const MonthDropDown: React.FC<MonthDropDownProps> = ({
+export const MonthDropDown: React.FC<MonthDropDownProps> = ({
 	date,
 	onChangeDate,
 }) => {
@@ -285,7 +307,7 @@ type CalendarDayProps = {
 	status: "active" | "inactive";
 };
 
-const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
+export const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
 	return (
 		<TouchableOpacity onPress={() => onPress(date)}>
 			<Box
@@ -313,13 +335,13 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
 	);
 };
 
-function nextNMonths(n: number): Date {
+export function nextNMonths(n: number): Date {
 	const d = new Date();
 	d.setMonth(d.getMonth() + n);
 	return d;
 }
 
-function listOfNextNMonths(n: number): Array<Date> {
+export function listOfNextNMonths(n: number): Array<Date> {
 	const d = new Date();
 	const dates = [];
 	for (let i = 0; i < n; i++) {
