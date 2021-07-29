@@ -4,7 +4,7 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "../../../../src/internals/auth/context";
-import Home from "../../../../src/views/Patient/Home/HomeScreen";
+import Home, { UpcomingAppointmentsSection } from "../../../../src/views/Patient/Home/HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { render } from "@testing-library/react-native";
 import {
@@ -59,4 +59,9 @@ describe("Patient Home Screen Test", () => {
 
 		expect(queryByTestId("Home")).toBeDefined();
 	});
+	test("functionality test", ()=>{
+		//FIX ME! - Invalid Hook Call for navigation
+		// expect(Home()).toBeTruthy();
+		expect(UpcomingAppointmentsSection()).toBeTruthy();
+	})
 });

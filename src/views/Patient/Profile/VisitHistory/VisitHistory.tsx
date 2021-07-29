@@ -11,6 +11,7 @@ import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../../../types";
 import { VisitHistoryNavKey } from "./_navigator";
 import { useAuthStore } from "../../../../internals/auth/context";
+import moment from "moment";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
@@ -75,6 +76,8 @@ const VisitHistorySection = () => {
 			<VStack space={3}>
 
 				{appointments.map((appointment) => {
+					if(moment(appointment.date.seconds).format("DD MMM YYYY") <
+					moment(new Date()).format("DD MMM YYYY"))
 					return (
 						<UpcomingAppointmentAlert
 							appointment={appointment}

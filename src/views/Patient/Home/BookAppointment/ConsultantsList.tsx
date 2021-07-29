@@ -91,7 +91,7 @@ const ConsultantsList = () => {
 			{
 				consultants !== undefined ?
 					(
-						<ScrollView padding={5}>
+						<ScrollView padding={5} testID={"ConsultantList"}>
 							<VStack space={2}>
 								{consultants.map((consultant, ix) => {
 									return (

@@ -48,7 +48,8 @@ describe("Patient Home Screen Test", () => {
 		expect(queryByTestId("NotificationScreen")).toBeDefined();
 	});
     test("functionality test", ()=>{
-        expect(NotificationScreen()).toBeTruthy();
+        const navigation = jest.fn();
+        expect(NotificationScreen(navigation)).toBeTruthy();
     })
     
 });

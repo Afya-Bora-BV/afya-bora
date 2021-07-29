@@ -9,7 +9,10 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import MainContainer from "../../../components/containers/MainContainer";
-import { StatusAppointmentAlert, UpcomingAppointmentAlert } from "../../../components/core/appointment";
+import {
+	StatusAppointmentAlert,
+	UpcomingAppointmentAlert,
+} from "../../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -23,6 +26,7 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../../types";
 import { HomeNavKey } from "../Home/_navigator";
+import moment from "moment";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -54,7 +58,6 @@ export default function UpcomingAppointments() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-				
 					<UpcomingAppointmentsSection />
 				</View>
 			</VStack>
@@ -104,7 +107,7 @@ export function NoAppointment() {
 
 const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
 	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	useEffect(() => {
@@ -127,19 +130,31 @@ const UpcomingAppointmentsSection = () => {
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>
-			{appointments.length===0 && <NoAppointment/>}
-
+				{appointments.length === 0 && <NoAppointment />}
+				
 				{appointments.map((appointment) => {
-					return (
-						<UpcomingAppointmentAlert
-							appointment={appointment}
-							onPress={() => {
-								navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
-									appointment: appointment
-								})
-							}}
-						/>
-					);
+					{
+						if(moment(appointment.date.seconds).format("DD MMM YYYY") >
+							moment(new Date()).format("DD MMM YYYY") || moment(appointment.date.seconds).format("DD MMM YYYY") ===
+							moment(new Date()).format("DD MMM YYYY"))
+							return (
+							<UpcomingAppointmentAlert
+								appointment={appointment}
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.AppointmentInfoScreen,
+										{
+											appointment: appointment,
+										}
+									);
+								}}
+							/>
+						)
+
+						else{
+							return(<NoAppointment/>)
+						}
+					}
 				})}
 			</VStack>
 		</VStack>
