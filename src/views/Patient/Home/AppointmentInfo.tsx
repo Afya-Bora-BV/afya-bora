@@ -36,9 +36,11 @@ import axios from "axios";
 
 
 const cancellAppointment = async (id: string) => {
-	console.log("Appointment route ",`${API_ROOT}/v0/appointment/${id}/cancel`)
-	return axios.put(`${API_ROOT}/v0/appointment/${id}/cancel`).then(res => res.json()).catch(e => {
-		console.log("Cancel appointment error ",e)
+	console.log("Appointment route ", `${API_ROOT}/v0/appointment/${id}/cancel`)
+	return axios.put(`${API_ROOT}/v0/appointment/${id}/cancel`, {}).then(res => {
+		console.log("Whats the response ",res)
+	}).catch(e => {
+		console.log("Cancel appointment error ", e.response)
 		throw Error("Something went wrong in cancelling appointment ")
 	})
 }
