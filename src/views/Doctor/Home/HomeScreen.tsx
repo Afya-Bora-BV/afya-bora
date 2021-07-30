@@ -123,7 +123,7 @@ export function AppointmentAlertDoctor({
 						{appointment.patient.name}
 					</Heading>
 					<Text fontSize="sm" color="#333">
-						{moment(appointment.date.seconds).format(
+						{moment.unix(appointment.date.seconds).format(
 							"DD MMM, H:MM A"
 						)}
 					</Text>
@@ -190,26 +190,25 @@ export const Appointments = () => {
 	}, [profile?.id]);
 
 	const nextAppointments = appointments?.filter(appointment => (
-		moment(appointment.date.seconds).format(
+		moment.unix(appointment.date.seconds).format(
 			"DD MMM YYYY"
 		) === moment(new Date()).format("DD MMM YYYY") &&
-		moment(appointment.date.seconds).format("hh:mm") >
+		moment.unix(appointment.date.seconds).format("hh:mm") >
 		moment(new Date()).format("hh:mm"))
+		&& !moment.unix(appointment.date.seconds).isSame(moment(), "day")
 	)
 
-	const todaysAppointments = appointments?.filter(appointment => (
-		moment(appointment.date.seconds).format(
-			"DD MMM YYYY"
-		) === moment(new Date()).format("DD MMM YYYY")
-	))
+	const todaysAppointments = appointments?.filter(appointment => {
+		return moment.unix(appointment.date.seconds).isSame(moment(), "day")
+	})
 
 	const upcomingAppointments = appointments?.filter(appointment => (
-		moment(appointment.date.seconds).format("DD MMM YYYY") >
+		moment.unix(appointment.date.seconds).format("DD MMM YYYY") >
 		moment(new Date()).format("DD MMM YYYY")
 	))
 
 	console.log("Apponintments")
-	console.log(nextAppointments)
+	console.log(JSON.stringify(appointments, null, 3))
 
 	return (
 		<VStack space={4} marginTop={8}>
