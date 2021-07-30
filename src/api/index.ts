@@ -18,6 +18,7 @@ interface AppointmentDetails {
     cid: string,
     pid: string,
     date: string,
+    status:"pending"|"cancelled"|"confirmed"
     type: "offline" | "online",
     aboutVisit: {
         complaint: string[],

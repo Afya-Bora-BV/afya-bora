@@ -38,7 +38,7 @@ import axios from "axios";
 const cancellAppointment = async (id: string) => {
 	console.log("Appointment route ", `${API_ROOT}/v0/appointment/${id}/cancel`)
 	return axios.put(`${API_ROOT}/v0/appointment/${id}/cancel`, {}).then(res => {
-		console.log("Whats the response ",res)
+		console.log("Whats the response ", res)
 	}).catch(e => {
 		console.log("Cancel appointment error ", e.response)
 		throw Error("Something went wrong in cancelling appointment ")
@@ -174,7 +174,7 @@ export default function AppointmentInfo() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} />
+					<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} status={data?.status} />
 				</View>
 
 				<HStack justifyContent="space-between">

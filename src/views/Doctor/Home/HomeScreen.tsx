@@ -195,17 +195,16 @@ export const Appointments = () => {
 		) === moment(new Date()).format("DD MMM YYYY") &&
 		moment.unix(appointment.date.seconds).format("hh:mm") >
 		moment(new Date()).format("hh:mm"))
-		&& !moment.unix(appointment.date.seconds).isSame(moment(), "day")
+		&& !moment.unix(appointment.date.seconds).isSame(moment(), "day") && appointment.status !== "cancelled"
 	)
 
 	const todaysAppointments = appointments?.filter(appointment => {
-		return moment.unix(appointment.date.seconds).isSame(moment(), "day")
+		return moment.unix(appointment.date.seconds).isSame(moment(), "day") && appointment.status !== "cancelled"
 	})
 
-	const upcomingAppointments = appointments?.filter(appointment => (
-		moment.unix(appointment.date.seconds).format("DD MMM YYYY") >
-		moment(new Date()).format("DD MMM YYYY")
-	))
+	const upcomingAppointments = appointments?.filter(appointment => {
+		return moment.unix(appointment.date.seconds).isAfter() && appointment.status !== "cancelled"
+	})
 
 	console.log("Apponintments")
 	console.log(JSON.stringify(appointments, null, 3))

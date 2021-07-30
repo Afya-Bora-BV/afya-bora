@@ -134,7 +134,7 @@ export function AppointmentAlert({
             Dr. {appointment.consultant.name}
           </Heading>
           <Text fontSize="sm" color="#333">
-            {moment(appointment.date.seconds).format(
+            {moment.unix(appointment.date.seconds).format(
               "DD MMM, H:MM A"
             )}
           </Text>
@@ -238,10 +238,13 @@ export function UpcomingAppointmentAlert({
 export function StatusAppointmentAlert({
   time = "",
   type = "offline",
+  status = "pending"
 }: {
   time: string;
   type: "offline" | "online";
+  status?: "pending" | "cancelled" | "confirmed"
 }) {
+  console.log("Whats time ", time)
   return (
     <Box
       flexDirection="row"
@@ -272,7 +275,7 @@ export function StatusAppointmentAlert({
         {/* TODO FIX: "Status positioning" */}
         <Box rounded={10} backgroundColor={"#A9FA0F"} padding={1.5}>
           <Text fontSize="sm" color={"#24D626"}>
-            Confirmed
+            {status}
           </Text>
         </Box>
       </View>

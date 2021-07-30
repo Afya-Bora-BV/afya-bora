@@ -157,6 +157,7 @@ export default function CreateProfileScreen() {
 		const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
 		// TODO: to reconsider better way to store this server state
 		if (createdProfile.patientId) {
+			console.log("Code is reached ",createdProfile)
 			updateProfile({ ...data, uid: uid, id: createdProfile.patientId, phoneNumber, type: "patient" });
 		} else {
 			console.log("Error in creating profile data")
