@@ -18,7 +18,7 @@ interface AppointmentDetails {
     cid: string,
     pid: string,
     date: string,
-    status:"pending"|"cancelled"|"confirmed"
+    status: "pending" | "cancelled" | "confirmed"
     type: "offline" | "online",
     aboutVisit: {
         complaint: string[],
@@ -57,7 +57,9 @@ interface AppointmentDetails {
     patient: {
         name: string,
         bloodGroup: string,
-        gender: "male" | "female"
+        gender: "male" | "female",
+        phoneNumber: string
+        dob: string
     }
 }
 

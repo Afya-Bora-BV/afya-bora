@@ -36,15 +36,15 @@ import { NavStack, HomeNavKey } from './_navigator'
 type PatientInfoProps = {
 	name: string;
 	phoneNumber: string;
-	gender: "male" | "female";
-	dob: Date;
+	gender: "male" | "female" | "unknown";
+	dob: string;
 };
 
 const PatientInfo: React.FC<PatientInfoProps> = ({
 	name,
 	phoneNumber,
-	gender,
-	dob,
+	gender = "unknown",
+	dob = "",
 }) => {
 	return (
 		<Stack shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
@@ -64,7 +64,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
 					<GenderIcon size={5} />
 					<VStack>
 						<Text>Sex: {gender}</Text>
-						<Text>DOB: 01/01/1932 (15 years)</Text>
+						<Text>DOB: {dob}</Text>
 					</VStack>
 				</HStack>
 			</VStack>
@@ -193,8 +193,9 @@ export default function AppointmentInfo() {
 
 				<PatientInfo
 					name={appointmentDetails?.patient.name || ""}
-					phoneNumber="+No phone"
-					gender="female"
+					phoneNumber={appointmentDetails?.patient.phoneNumber || ""}
+					gender={appointmentDetails?.patient.gender || "unknown"}
+					dob={appointmentDetails?.patient.dob || ""}
 				/>
 
 				{/* NOTE: Abstracting away makes difficult to deal with */}
