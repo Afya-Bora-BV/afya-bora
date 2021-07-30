@@ -12,9 +12,10 @@ import {
 	View,
 	Heading,
 	Modal,
+	useToast,
 } from "native-base";
 import React from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import AccountIcon from "../../../assets/icons/AccountIcon";
 import GenderIcon from "../../../assets/icons/GenderIcon";
@@ -30,10 +31,52 @@ import { FacilityListItem } from "../../../components/facilities-list-item";
 import { colors } from "../../../constants/colors";
 
 import { HomeNavKey } from "./_navigator";
-import { getAppointmentDetails } from "../../../api";
+import { API_ROOT, getAppointmentDetails } from "../../../api";
+import axios from "axios";
 
 
-export const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (state: boolean) => void }) => {
+const cancellAppointment = async (id: string) => {
+	console.log("Appointment route ",`${API_ROOT}/v0/appointment/${id}/cancel`)
+	return axios.put(`${API_ROOT}/v0/appointment/${id}/cancel`).then(res => res.json()).catch(e => {
+		console.log("Cancel appointment error ",e)
+		throw Error("Something went wrong in cancelling appointment ")
+	})
+}
+export const CancelAppointment = ({ modalVisible, setModalVisible, appointmentId }: { modalVisible: boolean, setModalVisible: (state: boolean) => void, appointmentId: string }) => {
+	const navigation = useNavigation()
+	const toast = useToast()
+	const { mutate: cancel, error, isLoading } = useMutation(() => cancellAppointment(appointmentId), {
+		onSuccess: (args) => {
+			console.log("Successfuly cancelled appointment")
+			toast.show({
+				title: "Appointment successfully cancelled"
+			})
+			navigation.navigate(HomeNavKey.HomeScreen)
+		},
+		onError: (args) => {
+			console.log("Oops ", args)
+			toast.show({
+				title: "Something went wrong in cancelling the appointment, Please try again after a while"
+			})
+		}
+	})
+
+	const onCancelAppointment = () => {
+		Alert.alert(
+			"Submit Request",
+			"Are you sure you want to cancell this appointment",
+			[
+				{ text: "No", onPress: () => { } },
+				{
+					text: "Yes",
+					onPress: () => {
+						cancel()
+					},
+				},
+			]
+		);
+	}
+	console.log("Appointment id : ", appointmentId)
 	return (
 		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
 			<Modal.Content>
@@ -59,9 +102,9 @@ export const CancelAppointment = ({ modalVisible, setModalVisible }: { modalVisi
 							h={44}
 							w={144}
 							borderRadius={24}
-							onPress={() => {
-								console.log("Cancelling the appointment here ... ")
-							}}
+							isLoading={isLoading}
+							disabled={isLoading}
+							onPress={onCancelAppointment}
 						>
 							Yes
 						</Button>
@@ -117,7 +160,7 @@ export default function AppointmentInfo() {
 					: undefined
 			}
 		>
-			<CancelAppointment modalVisible={modalVisible} setModalVisible={setModalVisible} />
+			<CancelAppointment appointmentId={data?.id || ""} modalVisible={modalVisible} setModalVisible={setModalVisible} />
 			<VStack testID="AppointmentInfo"
 				flex={1}
 				width="100%"
