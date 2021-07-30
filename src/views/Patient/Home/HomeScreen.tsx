@@ -259,6 +259,7 @@ export const UpcomingAppointmentsSection = () => {
 		const subscriber = firestore()
 			.collection('appointments')
 			.where("pid", "==", profile?.id)
+			// .where("status","!=","cancelled")
 			.onSnapshot(documentSnapshot => {
 				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
 				setAppointments(shots as RealTimeAppointment[])
@@ -268,15 +269,22 @@ export const UpcomingAppointmentsSection = () => {
 		return () => subscriber();
 	}, [profile?.id]);
 
-	console.log("Appontments : ")
-	console.log(JSON.stringify(appointments, null, 3))
+	console.log("Appontments :")
+
+	const currentAppointments = appointments.filter(appointment => {
+		console.log("What current appointment : ", appointment.status !== "cancelled")
+		return appointment.status !== "cancelled"
+	})
+
+	console.log(JSON.stringify(currentAppointments, null, 3))
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlert appointment={appointments[0]} onPress={() => {
+				<AppointmentAlert appointment={currentAppointments[0]} onPress={() => {
 					navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
-						appointment: appointments[0]
+						appointment: currentAppointments[0]
 					})
 				}} />
 
