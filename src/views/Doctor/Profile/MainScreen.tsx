@@ -144,9 +144,9 @@ const ProfileMain: React.FC = () => {
 					<Box bg="white" shadow={2} rounded={10} width="45%">
 						<Pressable
 							onPress={() => {
-								// navigation.navigate(
-								// 	ProfileNavKey.VisitHistory
-								// );
+								navigation.navigate(
+									ProfileNavKey.UpdateCalendar
+								);
 							}}
 						>
 							<HStack justifyContent={"center"} marginY={2}>
