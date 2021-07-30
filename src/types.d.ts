@@ -40,6 +40,7 @@ export interface ConsultantProfile {
 interface RealTimeAppointment {
 	cid: string;
 	consultant: ConsultantProfile;
+	status:"pending"|"cancelled";
 	patient: {
 		name: string,
 		gender: "male" | "female",

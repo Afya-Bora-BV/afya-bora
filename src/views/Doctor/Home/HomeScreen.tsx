@@ -208,6 +208,9 @@ export const Appointments = () => {
 		moment(new Date()).format("DD MMM YYYY")
 	))
 
+	console.log("Apponintments")
+	console.log(nextAppointments)
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Next Appointment</Heading>

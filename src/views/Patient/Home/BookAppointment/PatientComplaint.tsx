@@ -12,6 +12,7 @@ import {
 	TextArea,
 	View,
 	VStack,
+	useToast
 } from "native-base";
 import {
 	CommonActions,
@@ -88,6 +89,7 @@ const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequest
 }
 
 export function PatientComplaint({ route }: PatientComplaintProps) {
+	const toast = useToast()
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
@@ -152,6 +154,9 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
 			console.log("Whats the response : ", data)
+			toast.show({
+				title: "Appointed created",
+			})
 			navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
