@@ -13,13 +13,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import PlainAppView from "./views/_Main";
 import PatientAppView from "./views/Patient";
 import DoctorAppView from "./views/Doctor";
-import ProfileSelectorView from "./views/SelectProfile";
 
 import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import auth from '@react-native-firebase/auth';
-import ProfileView from "./views/Profile";
+import ProfileView from "./views/SelectCreateProfile";
 
 const queryClient = new QueryClient();
 
