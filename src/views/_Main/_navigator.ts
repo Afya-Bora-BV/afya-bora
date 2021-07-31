@@ -6,5 +6,6 @@ export const Stack = createStackNavigator()
 export const NavKey = {
     LoginScreen: "LoginScreen",
     CreateProfileView: "CreateProfileView",
-    LoginDoctorScreen: "LoginDoctorView"
+    LoginDoctorScreen: "LoginDoctorView",
+    ChooseProfileScreen: "ChooseProfileScreen"
 }

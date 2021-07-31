@@ -5,10 +5,10 @@ import DoctorHome from "./Home";
 import TabHomeIcon from "../../assets/icons/TabHomeIcon";
 import TabProfileIcon from "../../assets/icons/TabProfileIcon";
 
-import {Tab, NavKey as TabNavKey} from './_navigator';
+import { Tab, NavKey as TabNavKey } from './_navigator';
 
 export default function DoctorAppView() {
-  return (
+	return (
 		<Tab.Navigator
 			lazy
 			tabBarOptions={{
@@ -26,26 +26,6 @@ export default function DoctorAppView() {
 					),
 				}}
 			/>
-			{/* <Tab.Screen
-          name={TabNavKey.ScheduleView}
-          component={ScheduleView}
-          options={{
-            tabBarLabel: "Schedule",
-            tabBarIcon: ({ color, size }) => (
-              <TabScheduleIcon size={8} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name={TabNavKey.ChatView}
-          component={ChatView}
-          options={{
-            tabBarLabel: "Chat",
-            tabBarIcon: ({ color, size }) => (
-              <TabChatIcon size={8} color={color} />
-            ),
-          }}
-        /> */}
 			<Tab.Screen
 				name={TabNavKey.Profile}
 				component={DoctorProfile}

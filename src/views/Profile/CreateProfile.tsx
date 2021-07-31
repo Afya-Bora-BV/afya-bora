@@ -131,9 +131,8 @@ const schema = yup.object().shape({
 export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
-
-	const { phoneNumber, updateProfile } = useAuthStore((state) => ({
-		phoneNumber: state.phone,
+	const phoneNumber = auth().currentUser?.phoneNumber
+	const { updateProfile } = useAuthStore((state) => ({
 		updateProfile: state.updateProfile,
 	}));
 
@@ -157,7 +156,7 @@ export default function CreateProfileScreen() {
 		const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
 		// TODO: to reconsider better way to store this server state
 		if (createdProfile.patientId) {
-			console.log("Code is reached ",createdProfile)
+			console.log("Code is reached ", createdProfile)
 			updateProfile({ ...data, uid: uid, id: createdProfile.patientId, phoneNumber, type: "patient" });
 		} else {
 			console.log("Error in creating profile data")

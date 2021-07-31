@@ -39,22 +39,6 @@ import axios, { AxiosResponse } from "axios";
 
 // TODO : logic to be moved somewhere on refactor
 
-type Data = {
-	count: number,
-	data: any[]
-}
-type ProfileResponse = {
-	data: Data,
-	status: any, statusText: any, headers: any, config: any
-}
-
-const checkUserProfiles = async (phoneNumber: string): Promise<ProfileResponse> => {
-	const uid = await auth().currentUser?.uid
-	console.log("Checking user profile data")
-	console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`)
-	const profiles = await axios.get<AxiosResponse<ProfileResponse>>(`${API_ROOT}/v0/user/${uid}/profile/patients`)
-	return profiles.data.data
-}
 
 // let render = 0
 const { height } = Dimensions.get("screen");
@@ -167,25 +151,18 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 	const navigation = useNavigation();
 	const [code, set] = useState<string>("")
 	const uid = auth().currentUser?.uid
-	const { phoneNumber, updatePhoneNumber, updateProfile } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber, updateProfile: state.updateProfile }))
+	const { phoneNumber, updatePhoneNumber, updateProfileType } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber, updateProfile: state.updateProfile, updateProfileType: state.updateProfileType }))
 
 	const onConfirmCode = async () => {
 		console.log("Phone ", phoneNumber)
-		await verify(code)
-
-		const profiles = await checkUserProfiles(phoneNumber)
-		console.log("profiles")
-		console.log(JSON.stringify(profiles, null, 3))
-
-		if (_.isEmpty(profiles)) {
-			navigation.navigate(_MainAppNavKey.CreateProfileView)
-			console.log("What cant navigate ")
-		} else {
-			console.log("updating user profile ", profiles[0])
-			updateProfile({ ...profiles[0], uid: uid, type: "patient" })
+		try {
+			await verify(code)
+			updateProfileType("patient")
+		}
+		catch (e) {
+			throw new Error(JSON.stringify({ message: "Error in verifiying phone number", error: e }))
 		}
 
-		console.log("The user exists ", profiles)
 
 	}
 
@@ -196,7 +173,7 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
-			// console.log("Successfully logged on ")
+			console.log("Successfully logged on ")
 		},
 
 	})

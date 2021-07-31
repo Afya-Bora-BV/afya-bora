@@ -52,12 +52,12 @@ const fetchUserProfile = async (): Promise<Consultant | undefined> => {
     return data[0]
 }
 
-const loginWithEmailAndPassword = async ({ email, password }: FormEmailInputs): Promise<Consultant | undefined> => {
+const loginWithEmailAndPassword = async ({ email, password }: FormEmailInputs): Promise<undefined> => {
     await auth().signInWithEmailAndPassword(email, password)
-    const profile = await fetchUserProfile()
-    if (profile) {
-        return profile
-    }
+    // const profile = await fetchUserProfile()
+    // if (profile) {
+    //     return profile
+    // }
     return undefined
 }
 
@@ -92,10 +92,10 @@ export default function LoginDoctor() {
         },
         onSuccess: (data: Consultant | undefined, variables, context) => {
             console.log("Logged in successfully ", data)
-            if (data) {
-                console.log("Demo doctor ")
-                updateProfile({ ...data, type: "doctor" } as Consultant)
-            }
+            // if (data) {
+            //     console.log("Demo doctor ")
+            //     updateProfile({ ...data, type: "doctor" } as Consultant)
+            // }
         },
 
     })

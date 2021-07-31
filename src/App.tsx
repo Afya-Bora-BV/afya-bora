@@ -19,6 +19,7 @@ import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import auth from '@react-native-firebase/auth';
+import ProfileView from "./views/Profile";
 
 const queryClient = new QueryClient();
 
@@ -125,7 +126,6 @@ function Main() {
 
 	useEffect(() => {
 		// Remove splash screen if ready
-
 		SplashScreen.hide();
 	}, [ready]);
 
@@ -133,21 +133,29 @@ function Main() {
 
 	if (initializing) return null;
 
-	if (user !== null && profile !== null) {
-		if (profile.type === "patient") {
-			return (
-				<AppointmentTempoStoreProvider>
-					<PatientAppView />
-				</AppointmentTempoStoreProvider>
-			);
-		}
+	console.log("Profile ", profile)
+	if (user !== null) {
+		if (profile !== null) {
+			if (profile.type === "patient") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<PatientAppView />
+					</AppointmentTempoStoreProvider>
+				);
+			}
 
-		if (profile.type === "doctor") {
+			if (profile.type === "doctor") {
+				return (
+					<AppointmentTempoStoreProvider>
+						<DoctorAppView />
+					</AppointmentTempoStoreProvider>
+				);
+
+			}
+		} else {
 			return (
-				<AppointmentTempoStoreProvider>
-					<DoctorAppView />
-				</AppointmentTempoStoreProvider>
-			);
+				<ProfileView />
+			)
 		}
 	}
 

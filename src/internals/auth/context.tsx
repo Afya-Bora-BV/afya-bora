@@ -10,13 +10,15 @@ import auth from "@react-native-firebase/auth";
 /**
  * User object
  */
+
+type Gender = "male" | "female"
 export interface User {
     uid: string;
     id: string;
     name: string;
     phone: string;
     email?: string;
-    gender: "male" | "female";
+    gender: Gender;
     dob: Date; //change to date
     height: number;
     weight: number;
@@ -24,6 +26,16 @@ export interface User {
     residence: string;
     phoneNumber: string
     type: "patient";
+}
+export interface Patient {
+    bloodGroup: string,
+    dob: string,
+    gender: Gender,
+    height: string,
+    id: string,
+    location: string,
+    name: string,
+    weight: string
 }
 
 export interface Consultant {
@@ -54,6 +66,8 @@ interface AuthStore {
     confirm: any;
     phone: string;
     profile: User | Consultant | null;
+    profileType: "patient" | "consultant" | ""
+    updateProfileType: (type: "patient" | "consultant" | "") => void
     updateProfile: (profile: User | Consultant) => void
     clearProfile: () => void
     signInWithEmailAndPassword: (
@@ -83,6 +97,10 @@ const createAuthStore = () =>
                 confirm: null,
                 phone: "",
                 profile: null,
+                profileType: "",
+                updateProfileType: (type: "patient" | "consultant" | "") => {
+                    set({ profileType: type })
+                },
                 updateProfile: (profile: User | Consultant) => {
                     set({ profile: profile })
                 },
