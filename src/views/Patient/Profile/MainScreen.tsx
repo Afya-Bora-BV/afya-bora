@@ -90,10 +90,8 @@ const profileOptions = [
 	{
 		icon: AccountIcon,
 		title: "Switch Profile",
-		onNavigate: (navigation: any) =>
-			navigation.navigate(ProfileNavKey.MainScreen, {
-				screen: ProfileNavKey.ProfileScreen,
-			}),
+		onAction: (action: () => void) =>
+			action()
 	},
 
 	{
@@ -107,7 +105,7 @@ const profileOptions = [
 	},
 ];
 
-export default function ProfileMain () {
+export default function ProfileMain() {
 	const navigation = useNavigation();
 	const { profile, clearProfile } = useAuthStore((state) => ({
 		profile: state.profile,
@@ -156,10 +154,10 @@ export default function ProfileMain () {
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
 					<ProfileCard userProfile={userProfile} onPress={() => {
-							navigation.navigate(
-								ProfileNavKey.EditHealthProfile
-							);
-						}} />
+						navigation.navigate(
+							ProfileNavKey.EditHealthProfile
+						);
+					}} />
 					<HStack
 						space={4}
 						marginTop={3}
@@ -187,9 +185,11 @@ export default function ProfileMain () {
 						</Box>
 
 						<Box bg="white" shadow={2} rounded={10} width="45%">
-							<Pressable onPress={() => {navigation.navigate(
-										ProfileNavKey.UpcomingAppointments
-									);}}>
+							<Pressable onPress={() => {
+								navigation.navigate(
+									ProfileNavKey.UpcomingAppointments
+								);
+							}}>
 								<HStack justifyContent={"center"} paddingY={2}>
 									<Stack flex={1}>
 										<OnlineConsulationIllustration
@@ -217,15 +217,18 @@ export default function ProfileMain () {
 						<VStack space={10}>
 							{profileOptions.map(
 								(
-									{ icon: ActualIcon, title, onNavigate },
+									{ icon: ActualIcon, title, onAction },
 									ix
 								) => (
 									<Pressable
 										key={`profOpt-${ix}`}
 										onPress={
-											onNavigate !== undefined
-												? () => onNavigate(navigation)
-												: undefined
+											onAction !== undefined
+												? () => onAction(() => {
+													clearProfile()
+												})
+												:
+												undefined
 										}
 									>
 										<HStack alignItems="center" space={3}>
