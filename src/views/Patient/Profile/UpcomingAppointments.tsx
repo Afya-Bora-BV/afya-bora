@@ -109,16 +109,15 @@ const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
 	useEffect(() => {
 		const subscriber = firestore()
-			.collection("appointments")
+			.collection('appointments')
 			.where("pid", "==", profile?.id)
-			.onSnapshot((documentSnapshot) => {
-				const shots = [
-					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
-				];
-				setAppointments(shots as RealTimeAppointment[]);
+			// .where("status","!=","cancelled")
+			.onSnapshot(documentSnapshot => {
+				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
+				setAppointments(shots as RealTimeAppointment[])
 			});
 
 		// Stop listening for updates when no longer required
@@ -127,17 +126,23 @@ const UpcomingAppointmentsSection = () => {
 
 	console.log("Appontments : ");
 	console.log(JSON.stringify(appointments, null, 3));
+
+	const upcomingAppointments = appointments?.filter((appointment) => {
+		return (
+			moment.unix(appointment.date.seconds).isAfter() &&
+			appointment.status !== "cancelled"
+		);
+	});
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>
-				{appointments.length === 0 && <NoAppointment />}
-				
-				{appointments.map((appointment) => {
+				{upcomingAppointments.length === 0 && <NoAppointment />}
+
+				{upcomingAppointments.map((appointment) => {
 					{
-						if(moment(appointment.date.seconds).format("DD MMM YYYY") >
-							moment(new Date()).format("DD MMM YYYY") || moment(appointment.date.seconds).format("DD MMM YYYY") ===
-							moment(new Date()).format("DD MMM YYYY"))
-							return (
+						return (
+							<View>
 							<UpcomingAppointmentAlert
 								appointment={appointment}
 								onPress={() => {
@@ -149,11 +154,8 @@ const UpcomingAppointmentsSection = () => {
 									);
 								}}
 							/>
-						)
-
-						else{
-							return(<NoAppointment/>)
-						}
+							</View>
+						);
 					}
 				})}
 			</VStack>

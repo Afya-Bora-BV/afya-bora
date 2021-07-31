@@ -212,7 +212,7 @@ export function UpcomingAppointmentAlert({
             Dr. {appointment.consultant.name}
           </Heading>
           <Text fontSize="sm" color="#333">
-            {moment(appointment.date.seconds).format(
+            {moment.unix(appointment.date.seconds).format(
               "DD MMM, H:MM A"
             )}
           </Text>
