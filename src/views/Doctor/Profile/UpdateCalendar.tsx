@@ -60,7 +60,8 @@ export default function UpdateCalendar() {
 							}}
 						/>
 					</HStack>
-					<CalendarShow/>
+
+					<CalendarShow />
 
 					<Spacer size={10} />
 
@@ -69,6 +70,7 @@ export default function UpdateCalendar() {
 
 						<Switch
 							colorScheme="primary"
+							isChecked={lowLevel}
 							onToggle={() => {
 								lowLevel === false
 									? setLowLevel(true)
@@ -109,8 +111,6 @@ function HighLevelAvailability() {
 			</View>
 
 			<Spacer size={10} />
-
-			
 		</View>
 	);
 }
@@ -370,32 +370,38 @@ function listOfNextNMonths(n: number): Array<Date> {
 }
 
 function CalendarShow() {
-	const { width, height } = Dimensions.get("screen");
-
 	const [startDay, setStartDay] = useState("");
-	const [endDay, setEndDay] = useState(new Date());
+	const [endDay, setEndDay] = useState("");
 
 	return (
 		<View justifyContent={"center"} backgroundColor={"red"}>
 			<Calendar
 				enableSwipeMonths={true}
-				onDayLongPress={(day) => {setStartDay(day)}}
-				markingType={"period"}	
+				onDayPress={(day) => {
+					setEndDay(day.dateString.toString());
+				}}
+				onDayLongPress={(day) => {
+					setStartDay(day.dateString.toString());
+				}}
+				markingType={"period"}
 				markedDates={{
-					"2021-07-1": { textColor: "green" },
-					"2021-07-18": { startingDay: true, color: "green" },
-					"2021-07-20": {
-						selected: true,
-						endingDay: true,
-						color: "green",
-						textColor: "gray",
-					},
-					"2021-07-04": {
-						disabled: true,
-						startingDay: true,
-						color: "green",
-						endingDay: true,
-					},
+					startDay: { startingDay: true, color: "green" },
+					endDay: { endingDay: true, color: "green" },
+				}}
+				dayComponent={({ date, state }) => {
+					return (
+						<View>
+							<Text
+								style={{
+									textAlign: "center",
+									color:
+										state === "disabled" ? "gray" : "green",
+								}}
+							>
+								{date.day}
+							</Text>
+						</View>
+					);
 				}}
 			/>
 		</View>
