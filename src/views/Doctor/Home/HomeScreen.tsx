@@ -195,7 +195,7 @@ export const Appointments = () => {
 		) === moment(new Date()).format("DD MMM YYYY") &&
 		moment.unix(appointment.date.seconds).format("hh:mm") >
 		moment(new Date()).format("hh:mm"))
-		&& !moment.unix(appointment.date.seconds).isSame(moment(), "day") && appointment.status !== "cancelled"
+		&& moment.unix(appointment.date.seconds).isSame(moment(), "day") && appointment.status !== "cancelled"
 	)
 
 	const todaysAppointments = appointments?.filter(appointment => {

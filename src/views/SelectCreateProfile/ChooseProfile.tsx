@@ -14,19 +14,26 @@ import { ProfileNavKeys } from '.'
 
 
 export const checkPatientProfiles = async (): Promise<Patient[]> => {
-    const uid = await auth().currentUser?.uid
-    console.log("Checking user profile data")
-    console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`)
-    const profiles = await axios.get(`${API_ROOT}/v0/user/${uid}/profile/patients`)
-    return profiles.data.data
-}
+	const uid = await auth().currentUser?.uid;
+	console.log("Checking user profile data");
+	console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`);
+	const profiles = await axios.get(
+		`${API_ROOT}/v0/user/${uid}/profile/patients`
+	);
+	return profiles.data.data;
+};
 
 const checkConsultantProfiles = async (): Promise<Consultant[]> => {
-    const uid = await auth().currentUser?.uid
-    const profile = await firestore().collection("consultants").where("uid", "==", uid).get()
-    const data = profile.docs.map(doc => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant))
-    return data
-}
+	const uid = await auth().currentUser?.uid;
+	const profile = await firestore()
+		.collection("consultants")
+		.where("uid", "==", uid)
+		.get();
+	const data = profile.docs.map(
+		(doc) => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant)
+	);
+	return data;
+};
 
 const ChooseProfile = () => {
     const email = auth().currentUser?.email

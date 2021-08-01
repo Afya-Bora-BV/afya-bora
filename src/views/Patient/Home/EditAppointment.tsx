@@ -15,8 +15,9 @@ import {
 	Menu,
 	ChevronDownIcon,
 	Spacer,
+	useToast,
 } from "native-base";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useQuery } from "react-query";
 import MainContainer from "../../../components/containers/MainContainer";
@@ -24,6 +25,129 @@ import { StatusAppointmentAlert } from "../../../components/core/appointment";
 import { IconContainer } from "../../../components/misc";
 import { colors } from "../../../constants/colors";
 import { toggleStringFromList } from "../../../utils";
+import { API_ROOT, getAppointmentDetails } from "../../../api";
+import axios from "axios";
+import { useMutation } from "react-query";
+
+export default function EditAppointment() {
+	const navigation = useNavigation();
+	const toast = useToast();
+
+	const [chosenDate, selectDate] = useState<Date>(new Date());
+	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
+
+	const route = useRoute();
+	const { appointment } = route?.params;
+	const { cid, pid } = appointment;
+	const { status, data, error } = useQuery(
+		["appointmentDetails", cid, pid],
+		() => getAppointmentDetails({ cid, pid })
+	);
+
+	const onSubmit = useCallback(() => {
+		const time = chosenTimeSlots[0]?.split(" ")[0] || "00:00";
+		const dateTime = `${moment(new Date(chosenDate)).format(
+			"YYYY-MM-DD"
+		)}T${time}:00`;
+		const date = new Date(dateTime);
+
+		const data = {
+			utcDate: date.toUTCString(),
+		};
+		editedAppointment({ id: appointment.id , data: data });
+	}, [chosenDate, chosenTimeSlots, navigation]);
+
+	const { mutate: editedAppointment, isLoading } = useMutation(editAppointment,
+		{
+			onMutate: (variables) => {},
+			onError: (error, variables, context) => {
+				console.log("Something went wrong");
+			},
+			onSuccess: (data, variables, context) => {
+				console.log("Data updated ");
+				console.log("Whats the response : ", data);
+				toast.show({
+					title: "Appointment updated",
+				});
+				navigation.goBack();
+				// Boom baby!
+			},
+		}
+	);
+
+	return (
+		<MainContainer
+			title="Edit Appointment"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
+		>
+			<VStack
+				testID="EditAppointment"
+				flex={1}
+				width="100%"
+				paddingX={5}
+				space={5}
+				marginTop={5}
+				marginBottom={10}
+			>
+				{/* NOTE: This is supposed to render.... regardless */}
+				{/* <DateTimeCardRender /> */}
+				<View width="100%">
+					<StatusAppointmentAlert time={data.date} type={data.type} />
+				</View>
+			</VStack>
+
+			<VStack paddingX={5}>
+				{/* Picking appointment times */}
+				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
+					<PickADateSection
+						chosenDate={chosenDate}
+						onSelectDate={selectDate}
+					/>
+					<Spacer size={5} />
+					<PickATimeSection
+						chosenTimeSlots={chosenTimeSlots}
+						onSelectTimeSlot={setTimeSlots}
+					/>
+				</VStack>
+				<Spacer size={5} />
+				<Text style={{ color: "#747F9E" }} italic textAlign="center">
+					Your requested change will be reviewed by the doctor. If
+					they acceept your request, you will be notified.
+				</Text>
+				<Spacer size={5} />
+				<Button bg={colors.primary} onPress={onSubmit} rounded={20}>
+					Request Change
+				</Button>
+			</VStack>
+		</MainContainer>
+	);
+}
+
+const editAppointment = async ({ id, data }: { id: string, data: any}) => {
+	console.log("Appointment route ", `${API_ROOT}/v0/appointment/${id}/edit`);
+	return axios
+		.post(`${API_ROOT}/v0/appointment/${id}/edit`, {
+			...data,
+		})
+		.then((res) => {
+			console.log("Whats the response ", res);
+		})
+		.catch((e) => {
+			console.log("Edit appointment error ", e.response);
+			throw Error("Something went wrong in editing appointment ");
+		});
+};
 
 export function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
@@ -162,95 +286,6 @@ export function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 	);
 }
 
-// export const getAppointmentDetails = async ({
-// 	cid,
-// 	pid,
-// }: {
-// 	cid: string;
-// 	pid: string;
-// }): Promise<AppointmentDetails> => {
-// 	console.log(
-// 		"Link ",
-// 		`${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`
-// 	);
-// 	const res = await axios.get<AppointmentDetails>(
-// 		`${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`
-// 	);
-// 	const consultants: AppointmentDetails = await res.data.data;
-// 	return consultants[0];
-// };
-
-export default function EditAppointment() {
-	const navigation = useNavigation();
-
-	const [chosenDate, selectDate] = useState<Date>(new Date());
-	const [chosenTimeSlots, setTimeSlots] = useState<string[]>([]);
-
-	const route = useRoute();
-	const { appointment } = route?.params;
-
-	return (
-		<MainContainer
-			title="Edit Appointment"
-			leftSection={
-				// Go back if can go back
-				navigation.canGoBack()
-					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
-					: undefined
-			}
-		>
-			<VStack
-				testID="EditAppointment"
-				flex={1}
-				width="100%"
-				paddingX={5}
-				space={5}
-				marginTop={5}
-				marginBottom={10}
-			>
-				{/* NOTE: This is supposed to render.... regardless */}
-				{/* <DateTimeCardRender /> */}
-				<View width="100%">
-					<StatusAppointmentAlert
-						time={appointment?.date || Date()}
-						type={"offline"}
-					/>
-				</View>
-			</VStack>
-
-			<VStack paddingX={5}>
-				{/* Picking appointment times */}
-				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
-					<PickADateSection
-						chosenDate={chosenDate}
-						onSelectDate={selectDate}
-					/>
-					<Spacer size={5} />
-					<PickATimeSection
-						chosenTimeSlots={chosenTimeSlots}
-						onSelectTimeSlot={setTimeSlots}
-					/>
-				</VStack>
-				<Spacer size={5} />
-				<Text style={{ color: "#747F9E" }} italic textAlign="center">
-					Your requested change will be reviewed by the doctor. If
-					they acceept your request, you will be notified.{" "}
-				</Text>
-				<Spacer size={5} />
-				<Button bg={colors.primary} onPress={() => {}} rounded={20}>
-					Request Change
-				</Button>
-			</VStack>
-		</MainContainer>
-	);
-}
-
 type MonthDropDownProps = {
 	date: Date;
 	onChangeDate: (date: Date) => void;
@@ -307,7 +342,11 @@ type CalendarDayProps = {
 	status: "active" | "inactive";
 };
 
-export const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
+export const CalendarDay: React.FC<CalendarDayProps> = ({
+	date,
+	onPress,
+	status,
+}) => {
 	return (
 		<TouchableOpacity onPress={() => onPress(date)}>
 			<Box

@@ -10,6 +10,7 @@ import {
 	Pressable,
 	ScrollView,
 	Square,
+	useToast,
 } from "native-base";
 import UserIcon from "../../../assets/icons/User";
 import BellIcon from "../../../assets/icons/Bell";
@@ -35,40 +36,43 @@ import {
 import { useQuery } from "react-query";
 import { AppointmentAlert } from "../../../components/core/appointment";
 import { useAuthStore } from "../../../internals/auth/context";
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../../types";
+import axios from "axios";
+import { API_ROOT } from "../../../api";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const helpOptions = [
 	{
 		illustration: AppointmentIllustration,
 		title: "Book an Appointment",
 		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.BookAppointmentViewScreen)
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen);
 		},
 	},
 	{
 		illustration: OnlineConsulationIllustration,
 		title: "Online Consultation",
 		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.OnlineConsultViewScreen)
+			navigation.navigate(HomeNavKey.OnlineConsultViewScreen);
 		},
 	},
 	{
 		illustration: FacilityIllustration,
 		title: "Find a Facility",
 		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.MapFaciltyViewScreen)
-		}
+			navigation.navigate(HomeNavKey.MapFaciltyViewScreen);
+		},
 	},
 ];
 
 export default function Home() {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore(state => ({ profile: state.profile }))
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
-	console.log("User profile")
-	console.log(JSON.stringify(profile, null, 2))
+	console.log("User profile");
+	console.log(JSON.stringify(profile, null, 2));
 	return (
 		<MainContainer
 			leftSection={() => (
@@ -150,8 +154,8 @@ export default function Home() {
 												fontWeight="800"
 												marginTop={5}
 												textAlign="center"
-											// wordBreak="break-word"
-											// overflowWrap="break-word"
+												// wordBreak="break-word"
+												// overflowWrap="break-word"
 											>
 												{title}
 											</Text>
@@ -163,131 +167,61 @@ export default function Home() {
 					</ScrollView>
 				</VStack>
 
-				<VStack>
-					<View padding={5}>
-						<Heading fontSize="xl">Top Rated Specialists</Heading>
-					</View>
-
-					<ScrollView
-						horizontal={true}
-						showsHorizontalScrollIndicator={false}
-						alwaysBounceHorizontal
-					>
-						<HStack justifyContent="space-between" marginX={3}>
-							{[
-								{
-									name: "Dr. Maryam Mohamedali",
-									location: "Arusha, Tanzania",
-									specialization:
-										"Immunology, Gynecology, Internal Medicine",
-									color: "#EEE",
-									textColor: colors.primary,
-								},
-								{
-									name: "Dr. Wyckliffe Sango",
-									color: "#258FBE",
-								},
-								{
-									name: "Dr. Ally Salim",
-									color: "#258FBE",
-								},
-							].map(
-								(
-									{
-										color,
-										name,
-										location,
-										specialization,
-										textColor,
-									},
-									ix
-								) => (
-									<Box
-										key={`trspec-${ix}`}
-										paddingX={6}
-										paddingY={8}
-										bgColor={color}
-										rounded="xl"
-										marginX={2}
-										width={200}
-										minHeight={250}
-									>
-										<VStack>
-											<Heading
-												fontSize="md"
-												color={textColor || "#FFFFFF"}
-											>
-												{name}
-											</Heading>
-											<VStack space={1} marginTop={3}>
-												<View>
-													<Text fontSize="sm">
-														{location}
-													</Text>
-												</View>
-												<View>
-													<Text fontSize="sm">
-														{specialization}
-													</Text>
-												</View>
-											</VStack>
-										</VStack>
-									</Box>
-								)
-							)}
-						</HStack>
-					</ScrollView>
-				</VStack>
+				<TopRatedSpecialistsSection />
 			</ScrollView>
 		</MainContainer>
 	);
 }
 
-
 // TODo : to extended as appointment data grows
-
 
 // TODO: find a better place to fetch all the data
 
-
 export const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	useEffect(() => {
 		const subscriber = firestore()
-			.collection('appointments')
+			.collection("appointments")
 			.where("pid", "==", profile?.id)
 			// .where("status","!=","cancelled")
-			.onSnapshot(documentSnapshot => {
-				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
-				setAppointments(shots as RealTimeAppointment[])
+			.onSnapshot((documentSnapshot) => {
+				const shots = [
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+				];
+				setAppointments(shots as RealTimeAppointment[]);
 			});
 
 		// Stop listening for updates when no longer required
 		return () => subscriber();
 	}, [profile?.id]);
 
-	console.log("Appontments :")
+	console.log("Appontments :");
 
-	const currentAppointments = appointments.filter(appointment => {
-		console.log("What current appointment : ", appointment.status !== "cancelled")
-		return appointment.status !== "cancelled"
-	})
+	const currentAppointments = appointments.filter((appointment) => {
+		console.log(
+			"What current appointment : ",
+			appointment.status !== "cancelled"
+		);
+		return appointment.status !== "cancelled";
+	});
 
-	console.log(JSON.stringify(currentAppointments, null, 3))
+	console.log(JSON.stringify(currentAppointments, null, 3));
 
 	return (
 		<VStack space={4} marginTop={8}>
 			<Heading fontSize="xl">Upcoming Appointments</Heading>
 			<VStack space={3}>
-				<AppointmentAlert appointment={currentAppointments[0]} onPress={() => {
-					navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
-						appointment: currentAppointments[0]
-					})
-				}} />
-
+				<AppointmentAlert
+					appointment={currentAppointments[0]}
+					onPress={() => {
+						navigation.navigate(HomeNavKey.AppointmentInfoScreen, {
+							appointment: currentAppointments[0],
+						});
+					}}
+				/>
 
 				<View width="100%" alignItems="flex-end">
 					<Pressable onPress={() => console.log("Something")}>
@@ -295,6 +229,102 @@ export const UpcomingAppointmentsSection = () => {
 					</Pressable>
 				</View>
 			</VStack>
+		</VStack>
+	);
+};
+interface Consultant {
+	id: string;
+	name: string;
+	gender: "male" | "female";
+	facility: { name: string; address: string };
+	clinicianType: string;
+	specialities: string[];
+	rating: number;
+	ratedBy: number;
+}
+
+const getConsultants = async (): Promise<Consultant[]> => {
+	console.log("Get consultant list ", `${API_ROOT}/v0/data/consultants`);
+	const res = await axios.get<Consultant[]>(
+		`${API_ROOT}/v0/data/consultants`
+	);
+	const consultants: Consultant[] = await res.data.data;
+	return consultants;
+};
+
+const TopRatedSpecialistsSection = () => {
+	const Toast = useToast();
+
+	const { data: consultants, error } = useQuery(
+		["consultants"],
+		getConsultants
+	);
+
+	useEffect(() => {
+		if (error !== undefined && error !== null) {
+			console.error(error);
+			// Show message
+			Toast.show({
+				title: "Unable to load results",
+				description: String(error),
+			});
+		}
+	}, [error]);
+
+	console.log(JSON.stringify(consultants, null, 4));
+
+	const topSpecialists = consultants?.filter(consultants => (consultants.rating > 4))
+
+	return (
+		<VStack>
+			<View padding={5}>
+				<Heading fontSize="xl">Top Rated Specialists</Heading>
+			</View>
+			{topSpecialists !== undefined && (
+				<ScrollView
+					horizontal={true}
+					showsHorizontalScrollIndicator={false}
+					alwaysBounceHorizontal
+				>
+					<HStack justifyContent="space-between" marginX={3}>
+						{topSpecialists.map((consultant) => (
+							<Box
+								paddingX={6}
+								paddingY={8}
+								bgColor={"#258FBE"}
+								rounded="xl"
+								marginX={2}
+								width={200}
+								minHeight={250}
+							>
+								<VStack>
+									<Heading fontSize="xl" color={"#FFFFFF"}>
+										Dr. {consultant.name}
+									</Heading>
+									<VStack space={2} marginTop={3}>
+										<View>
+											<Text fontSize="sm" color={"#FFFFFF"}>
+												{consultant.facility.address}
+											</Text>
+										</View>
+										<View>
+											<Text fontSize="sm" color={"#FFFFFF"}>
+												{consultant.specialities}
+											</Text>
+										</View>
+										<View flexDirection="row">
+											<MaterialCommunityIcons name="star" color="yellow"/>
+											<Text fontSize="sm" color={"#FFFFFF"}>
+												{consultant.rating} ({consultant.ratedBy})
+											</Text>
+										</View>
+									</VStack>
+								</VStack>
+							</Box>
+						))}
+					</HStack>
+				</ScrollView>
+			)}
 		</VStack>
 	);
 };
