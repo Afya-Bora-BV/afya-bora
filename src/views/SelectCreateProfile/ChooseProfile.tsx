@@ -9,16 +9,9 @@ import firestore from '@react-native-firebase/firestore';
 import { Pressable } from 'react-native';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
-import { ProfileNavKeys } from './'
+import { ProfileNavKeys } from '.'
 
-type Data = {
-    count: number,
-    data: any[]
-}
-type ProfileResponse = {
-    data: Data,
-    status: any, statusText: any, headers: any, config: any
-}
+
 
 export const checkPatientProfiles = async (): Promise<Patient[]> => {
     const uid = await auth().currentUser?.uid
@@ -71,7 +64,7 @@ const ChooseProfile = () => {
     if (error) {
         return (
             <Center flex={1}>
-                <Text>Something went wrong {JSON.stringify(e)}</Text>
+                <Text>Something went wrong {JSON.stringify(error)}</Text>
             </Center>
         )
     }

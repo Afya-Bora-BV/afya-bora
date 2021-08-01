@@ -573,7 +573,7 @@ const ShowUserData = () => {
 										selectedValue={value}
 										minWidth={200}
 										accessibilityLabel="Location"
-										placeholder={profile.residence}
+										placeholder={profile.location}
 										onValueChange={(itemValue) =>
 											onChange(itemValue)
 										}
