@@ -179,7 +179,7 @@ export default function AppointmentInfo() {
 
 				<HStack justifyContent="space-between">
 					<Pressable onPress={() => {
-						navigation.navigate(HomeNavKey.EditAppointment, { appointment: appointment })
+						navigation.navigate(HomeNavKey.EditAppointment, { appointment: data })
 					}}>
 						<HStack space={2}>
 							<PenEditIcon size={4} />
