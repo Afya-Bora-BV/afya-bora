@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
 	Box,
 	Center,
@@ -42,6 +42,7 @@ import { RealTimeAppointment } from "../../../types";
 import axios from "axios";
 import { API_ROOT } from "../../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { NavKey } from "./BookAppointment/_navigator";
 
 const helpOptions = [
 	{
@@ -253,6 +254,7 @@ const getConsultants = async (): Promise<Consultant[]> => {
 };
 
 const TopRatedSpecialistsSection = () => {
+	const navigation = useNavigation();
 	const Toast = useToast();
 
 	const { data: consultants, error } = useQuery(
@@ -271,9 +273,20 @@ const TopRatedSpecialistsSection = () => {
 		}
 	}, [error]);
 
+	const selectConsultant = useCallback(
+		(consultant: any) => {
+			navigation.navigate(NavKey.SetAppointmentTimeScreen, {
+				consultant,
+			});
+		},
+		[navigation]
+	);
+
 	console.log(JSON.stringify(consultants, null, 4));
 
-	const topSpecialists = consultants?.filter(consultants => (consultants.rating > 4))
+	const topSpecialists = consultants?.filter(
+		(consultants) => consultants.rating > 4
+	);
 
 	return (
 		<VStack>
@@ -288,39 +301,62 @@ const TopRatedSpecialistsSection = () => {
 				>
 					<HStack justifyContent="space-between" marginX={3}>
 						{topSpecialists.map((consultant) => (
-							<Box
-								paddingX={6}
-								paddingY={8}
-								bgColor={"#258FBE"}
-								rounded="xl"
-								marginX={2}
-								width={200}
-								minHeight={250}
+							<Pressable
+								onPress={() => selectConsultant(consultant)}
 							>
-								<VStack>
-									<Heading fontSize="xl" color={"#FFFFFF"}>
-										Dr. {consultant.name}
-									</Heading>
-									<VStack space={2} marginTop={3}>
-										<View>
-											<Text fontSize="sm" color={"#FFFFFF"}>
-												{consultant.facility.address}
-											</Text>
-										</View>
-										<View>
-											<Text fontSize="sm" color={"#FFFFFF"}>
-												{consultant.specialities}
-											</Text>
-										</View>
-										<View flexDirection="row">
-											<MaterialCommunityIcons name="star" color="yellow"/>
-											<Text fontSize="sm" color={"#FFFFFF"}>
-												{consultant.rating} ({consultant.ratedBy})
-											</Text>
-										</View>
+								<Box
+									paddingX={6}
+									paddingY={8}
+									bgColor={"#258FBE"}
+									rounded="xl"
+									marginX={2}
+									width={200}
+									minHeight={250}
+								>
+									<VStack>
+										<Heading
+											fontSize="xl"
+											color={"#FFFFFF"}
+										>
+											Dr. {consultant.name}
+										</Heading>
+										<VStack space={2} marginTop={3}>
+											<View>
+												<Text
+													fontSize="sm"
+													color={"#FFFFFF"}
+												>
+													{
+														consultant.facility
+															.address
+													}
+												</Text>
+											</View>
+											<View>
+												<Text
+													fontSize="sm"
+													color={"#FFFFFF"}
+												>
+													{consultant.specialities}
+												</Text>
+											</View>
+											<View flexDirection="row">
+												<MaterialCommunityIcons
+													name="star"
+													color="yellow"
+												/>
+												<Text
+													fontSize="sm"
+													color={"#FFFFFF"}
+												>
+													{consultant.rating} (
+													{consultant.ratedBy})
+												</Text>
+											</View>
+										</VStack>
 									</VStack>
-								</VStack>
-							</Box>
+								</Box>
+							</Pressable>
 						))}
 					</HStack>
 				</ScrollView>
