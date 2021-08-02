@@ -64,9 +64,9 @@ interface AppointmentDetails {
 }
 
 
-export const getAppointmentDetails = async ({ cid, pid }: { cid: string, pid: string }): Promise<AppointmentDetails> => {
+export const getAppointmentDetails = async ({ cid, pid }: { cid: string, pid: string }): Promise<AppointmentDetails[]> => {
     console.log("Link ", `${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`)
     const res = await axios.get<AppointmentDetails>(`${API_ROOT}/v0/data/appointments?consultantId=${cid}&patientId=${pid}`)
     const consultants: AppointmentDetails = await res.data.data
-    return consultants[0]
+    return consultants
 };

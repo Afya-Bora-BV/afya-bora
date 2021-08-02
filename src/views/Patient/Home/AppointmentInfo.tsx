@@ -125,7 +125,7 @@ export default function AppointmentInfo() {
 
 	const route = useRoute();
 	const { appointment } = route?.params
-	const { cid, pid } = appointment
+	const { cid, pid, id } = appointment
 	const {
 		status,
 		data,
@@ -144,8 +144,15 @@ export default function AppointmentInfo() {
 
 
 
-	console.log("Appointment Data")
-	console.log(JSON.stringify(data, null, 3))
+
+	// assumptation is that the appointment must me in a list of all Appointments, 
+	// to be fixed later on ,
+	// where we might need to fetch single appointment only
+	const currentAppointment = data?.filter(data => data.id === id)[0]
+
+	console.log("Current appointment Data")
+	console.log(JSON.stringify(currentAppointment, null, 3))
+	// return null
 	return (
 		<MainContainer
 			title="Appointment Info"
@@ -162,7 +169,7 @@ export default function AppointmentInfo() {
 					: undefined
 			}
 		>
-			<CancelAppointment appointmentId={data?.id || ""} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+			<CancelAppointment appointmentId={currentAppointment?.id || ""} modalVisible={modalVisible} setModalVisible={setModalVisible} />
 			<VStack testID="AppointmentInfo"
 				flex={1}
 				width="100%"
@@ -174,7 +181,7 @@ export default function AppointmentInfo() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={data?.date || ""} type={data?.type || "offline"} status={data?.status} />
+					<StatusAppointmentAlert time={currentAppointment?.date || ""} type={currentAppointment?.type || "offline"} status={currentAppointment?.status} />
 				</View>
 
 				<HStack justifyContent="space-between">
@@ -198,7 +205,7 @@ export default function AppointmentInfo() {
 					</Pressable>
 				</HStack>
 
-				{data?.type === "online" ?
+				{currentAppointment?.type === "online" ?
 					<Button
 						style={{ backgroundColor: "#24D626" }}
 						borderRadius={20}
@@ -211,25 +218,25 @@ export default function AppointmentInfo() {
 					:
 					<FacilityListItem
 						onPress={() => { }}
-						key={data?.facility.id}
-						facility={data?.facility}
+						key={currentAppointment?.facility.id}
+						facility={currentAppointment?.facility}
 					/>
 				}
 
 
 
 				<ConsultantListItem
-					key={data?.consultant?.id}
+					key={currentAppointment?.consultant?.id}
 					consultant={
 						{
-							clinicianType: data?.consultant?.clinicianType || "",
-							gender: data?.consultant?.gender || "male",
-							id: data?.consultant?.id || "",
-							name: data?.consultant?.name || "",
-							facility: { name: data?.facility?.name || "", address: data?.facility?.address || "" },
-							specialities: data?.consultant?.specialities || [""],
-							rating: data?.consultant?.rating || 0,
-							ratedBy: data?.consultant?.ratedBy || 0,
+							clinicianType: currentAppointment?.consultant?.clinicianType || "",
+							gender: currentAppointment?.consultant?.gender || "male",
+							id: currentAppointment?.consultant?.id || "",
+							name: currentAppointment?.consultant?.name || "",
+							facility: { name: currentAppointment?.facility?.name || "", address: currentAppointment?.facility?.address || "" },
+							specialities: currentAppointment?.consultant?.specialities || [""],
+							rating: currentAppointment?.consultant?.rating || 0,
+							ratedBy: currentAppointment?.consultant?.ratedBy || 0,
 						}
 					}
 					onPress={() => { }}
@@ -247,7 +254,7 @@ export default function AppointmentInfo() {
 						Symptoms
 					</Text>
 					<HStack space={4} flexWrap="wrap">
-						{data?.aboutVisit.symptoms.map(symptom => (
+						{currentAppointment?.aboutVisit.symptoms.map(symptom => (
 							<Box
 								rounded="xl"
 								bg={"#B0B3C7"}
@@ -267,7 +274,7 @@ export default function AppointmentInfo() {
 						Other Notes
 					</Text>
 					<Text fontSize={13}>
-						{data?.aboutVisit.complaint}
+						{currentAppointment?.aboutVisit.complaint}
 					</Text>
 				</VStack>
 			</VStack>

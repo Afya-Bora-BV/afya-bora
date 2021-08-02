@@ -190,7 +190,7 @@ export const UpcomingAppointmentsSection = () => {
 			// .where("status","!=","cancelled")
 			.onSnapshot((documentSnapshot) => {
 				const shots = [
-					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
 				];
 				setAppointments(shots as RealTimeAppointment[]);
 			});
@@ -283,7 +283,7 @@ const TopRatedSpecialistsSection = () => {
 		[navigation]
 	);
 
-	console.log(JSON.stringify(consultants, null, 4));
+	// console.log(JSON.stringify(consultants, null, 4));
 
 	const topSpecialists = consultants?.filter(
 		(consultants) => consultants.rating > 4

@@ -38,6 +38,7 @@ export interface ConsultantProfile {
 }
 
 interface RealTimeAppointment {
+	id:string
 	cid: string;
 	consultant: ConsultantProfile;
 	status:"pending"|"cancelled";
