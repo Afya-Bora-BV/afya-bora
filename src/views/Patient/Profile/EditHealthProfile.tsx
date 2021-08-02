@@ -111,7 +111,7 @@ export default function EditHealthProfile() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 
-	
+
 
 	// const onSubmit = (data: CompleteProfileInputs) => {
 	// 	console.log("Form data : ");
@@ -337,7 +337,7 @@ const ShowUserData = () => {
 												flex: 1,
 											}}
 											onFocus={showDatepicker}
-											onChangeText={(value) => {}}
+											onChangeText={(value) => { }}
 											// outlineColor={
 											// 	errors.dateOfBirth
 											// 		? "red"

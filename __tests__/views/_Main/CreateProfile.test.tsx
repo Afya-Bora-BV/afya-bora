@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
-import CreateProfileScreen from "../../../src/views/_Main/CreateProfile";
+import CreateProfileScreen from "../../../src/views/SelectCreateProfile/CreateProfile";
 
 jest.mock(
 	'../../../node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter',
