@@ -155,8 +155,8 @@ export default function Home() {
 												fontWeight="800"
 												marginTop={5}
 												textAlign="center"
-												// wordBreak="break-word"
-												// overflowWrap="break-word"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
 											>
 												{title}
 											</Text>
@@ -275,8 +275,9 @@ const TopRatedSpecialistsSection = () => {
 
 	const selectConsultant = useCallback(
 		(consultant: any) => {
-			navigation.navigate(NavKey.SetAppointmentTimeScreen, {
-				consultant,
+			navigation.navigate(HomeNavKey.BookAppointmentViewScreen, {
+				screen: NavKey.SetAppointmentTimeScreen,
+				params: { consultant, },
 			});
 		},
 		[navigation]
