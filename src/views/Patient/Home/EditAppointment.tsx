@@ -29,6 +29,21 @@ import { API_ROOT, getAppointmentDetails } from "../../../api";
 import axios from "axios";
 import { useMutation } from "react-query";
 
+const editAppointment = async ({ id, data }: { id: string, data: any}) => {
+	console.log("Appointment route ", `${API_ROOT}/v0/appointment/${id}/edit`);
+	return axios
+		.post(`${API_ROOT}/v0/appointment/${id}/edit`, {
+			...data,
+		})
+		.then((res) => {
+			console.log("Whats the response ", res);
+		})
+		.catch((e) => {
+			console.log("Edit appointment error ", e.response);
+			throw Error("Something went wrong in editing appointment ");
+		});
+};	
+
 export default function EditAppointment() {
 	const navigation = useNavigation();
 	const toast = useToast();
@@ -38,11 +53,13 @@ export default function EditAppointment() {
 
 	const route = useRoute();
 	const { appointment } = route?.params;
-	const { cid, pid } = appointment;
-	const { status, data, error } = useQuery(
-		["appointmentDetails", cid, pid],
-		() => getAppointmentDetails({ cid, pid })
-	);
+	// const { cid, pid } = appointment;
+	// const { status, data, error } = useQuery(
+	// 	["appointmentDetails", cid, pid],
+	// 	() => getAppointmentDetails({ cid, pid })
+	// );
+	
+	// console.log(JSON.stringify(appointment, null, 3))
 
 	const onSubmit = useCallback(() => {
 		const time = chosenTimeSlots[0]?.split(" ")[0] || "00:00";
@@ -103,7 +120,7 @@ export default function EditAppointment() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<StatusAppointmentAlert time={data.date} type={data.type} />
+					<StatusAppointmentAlert time={moment(appointment.date).format("DD MMM, hh:mm")} type={appointment.type} />
 				</View>
 			</VStack>
 
@@ -134,20 +151,6 @@ export default function EditAppointment() {
 	);
 }
 
-const editAppointment = async ({ id, data }: { id: string, data: any}) => {
-	console.log("Appointment route ", `${API_ROOT}/v0/appointment/${id}/edit`);
-	return axios
-		.post(`${API_ROOT}/v0/appointment/${id}/edit`, {
-			...data,
-		})
-		.then((res) => {
-			console.log("Whats the response ", res);
-		})
-		.catch((e) => {
-			console.log("Edit appointment error ", e.response);
-			throw Error("Something went wrong in editing appointment ");
-		});
-};
 
 export function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
