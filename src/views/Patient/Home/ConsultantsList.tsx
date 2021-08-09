@@ -12,20 +12,20 @@ import {
 	Button,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../../components/consultant-list-item";
-import { NavKey } from "./_navigator";
-import MainContainer from "../../../../components/containers/MainContainer";
-import { IconContainer } from "../../../../components/misc";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
+import { NavKey } from "./BookAppointment/_navigator";
+import MainContainer from "../../../components/containers/MainContainer";
+import { IconContainer } from "../../../components/misc";
 import { Pressable, ProgressBarAndroidBase } from "react-native";
 import { useCallback } from "react";
 
-import firestore from "@react-native-firebase/firestore";
 import { useQuery } from "react-query";
 import axios, { AxiosResponse } from "axios";
 import { useEffect } from "react";
-import { API_ROOT } from "../../../../api";
+import { API_ROOT } from "../../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
+import { useAtom } from 'jotai'
 interface Consultant {
 	id: string;
 	name: string;
@@ -85,17 +85,18 @@ const ConsultantsList = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
 			{consultants !== undefined ? (
 				<ScrollView padding={5} testID={"ConsultantList"}>
+					<VStack space={4}>
 					<SelectionDetails />
 					<VStack space={2}>
 						{consultants.map((consultant, ix) => {
@@ -108,6 +109,7 @@ const ConsultantsList = () => {
 							);
 						})}
 					</VStack>
+					</VStack>
 				</ScrollView>
 			) : (
 				<Text>Loading...</Text>
@@ -116,32 +118,41 @@ const ConsultantsList = () => {
 	);
 };
 
+const ModalActions: React.FC = () => {
+	const [info] = useAtom(completeScheduleAtom)
+
+	const viewDetailsAndMore = () => {
+		console.log("Info", info)
+	}
+	return (
+		<HStack space={2}>
+			<Button flex={1} onPress={() => { }}>Cancel</Button>
+			<Button flex={1} onPress={viewDetailsAndMore}>Update</Button>
+		</HStack>
+	)
+}
+
+const AppointmentSearchDetails = () => {
+	const [info] = useAtom(completeScheduleAtom)
+	return (
+		<VStack>
+			<Text>Appointment Type: {info.type}</Text>
+			<Text>Location: {info.location}</Text>
+			<Text>Specialities: {info.speciality}</Text>
+		</VStack>
+	)
+}
 const SelectionDetails = () => {
 	const [showModal, setShowModal] = useState(false);
 	return (
 		<HStack justifyContent="space-between">
-			<VStack>
-				<Text>Appointment Type:</Text>
-				<Text>Location:</Text>
-				<Text>Specialities:</Text>
-			</VStack>
+			<AppointmentSearchDetails />
 			<Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-				<Modal.Content maxWidth="400px">
-					<Modal.CloseButton />
-					<Modal.Header>Modal Title</Modal.Header>
-					<Modal.Body></Modal.Body>
-					<Modal.Footer>
-						<Button.Group variant="ghost" space={2}>
-							<Button>LEARN MORE</Button>
-							<Button
-								onPress={() => {
-									setShowModal(false);
-								}}
-							>
-								ACCEPT
-							</Button>
-						</Button.Group>
-					</Modal.Footer>
+				<Modal.Content maxWidth="400" p={12}>
+					<VStack space={12}>
+						<AppointmentCustomizer />
+						<ModalActions />
+					</VStack>
 				</Modal.Content>
 			</Modal>
 			<Pressable onPress={() => setShowModal(true)}>

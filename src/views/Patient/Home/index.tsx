@@ -9,10 +9,8 @@ import { NavStack, HomeNavKey } from './_navigator'
 import AppointmentInfo from "./AppointmentInfo";
 import EditAppointment from "./EditAppointment";
 
-import ConsultantsList from "./BookAppointment/ConsultantsList";
-
+import ConsultantsList from "./ConsultantsList";
 export default function HomeView({ navigation }: any) {
-
 
 	return (
 		<NavStack.Navigator headerMode="none">
@@ -21,14 +19,10 @@ export default function HomeView({ navigation }: any) {
 				component={HomeScreen}
 			/>
 			<NavStack.Screen
-				name={HomeNavKey.NotificationScreen}
-				component={NotificationScreen}
-			/>
-			<NavStack.Screen
 				name={HomeNavKey.ConsultantList}
 				component={ConsultantsList}
 			/>
-			<NavStack.Screen
+			{/* <NavStack.Screen
 				name={HomeNavKey.OnlineConsultViewScreen}
 				component={OnlineConsultView}
 			/>
@@ -43,7 +37,7 @@ export default function HomeView({ navigation }: any) {
 			<NavStack.Screen
 				name={HomeNavKey.EditAppointment}
 				component={EditAppointment}
-			/>
+			/> */}
 		</NavStack.Navigator>
 	);
 }
