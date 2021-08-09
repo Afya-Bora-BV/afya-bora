@@ -22,51 +22,51 @@ export const theme = extendTheme({
 	fontConfig: {
 		Ubuntu: {
 			100: {
-				normal: 'Ubuntu-Light',
-				italic: 'Ubuntu-LightItalic',
+				normal: "Ubuntu-Light",
+				italic: "Ubuntu-LightItalic",
 			},
 			200: {
-				normal: 'Ubuntu-Light',
-				italic: 'Ubuntu-LightItalic',
+				normal: "Ubuntu-Light",
+				italic: "Ubuntu-LightItalic",
 			},
 			300: {
-				normal: 'Ubuntu-Light',
-				italic: 'Ubuntu-LightItalic',
+				normal: "Ubuntu-Light",
+				italic: "Ubuntu-LightItalic",
 			},
 			400: {
-				normal: 'Ubuntu-Regular',
-				italic: 'Ubuntu-Italic',
+				normal: "Ubuntu-Regular",
+				italic: "Ubuntu-Italic",
 			},
 			500: {
-				normal: 'Ubuntu-Medium',
-				italic: 'Ubuntu-MediumItalic',
+				normal: "Ubuntu-Medium",
+				italic: "Ubuntu-MediumItalic",
 			},
 			600: {
-				normal: 'Ubuntu-Medium',
-				italic: 'Ubuntu-MediumItalic',
+				normal: "Ubuntu-Medium",
+				italic: "Ubuntu-MediumItalic",
 			},
 			700: {
-				normal: 'Ubuntu-Bold',
-				italic: 'Ubuntu-BoldItalic',
+				normal: "Ubuntu-Bold",
+				italic: "Ubuntu-BoldItalic",
 			},
 			800: {
-				normal: 'Ubuntu-Bold',
-				italic: 'Ubuntu-BoldItalic',
+				normal: "Ubuntu-Bold",
+				italic: "Ubuntu-BoldItalic",
 			},
 			900: {
-				normal: 'Ubuntu-Bold',
-				italic: 'Ubuntu-BoldItalic',
+				normal: "Ubuntu-Bold",
+				italic: "Ubuntu-BoldItalic",
 			},
 		},
 	},
 	fonts: {
-		heading: 'Ubuntu',
-		body: 'Ubuntu',
-		mono: 'Ubuntu',
+		heading: "Ubuntu",
+		body: "Ubuntu",
+		mono: "Ubuntu",
 	},
 	config: {
 		// Changing initialColorMode to 'dark'
-		initialColorMode: 'light',
+		initialColorMode: "light",
 	},
 	components: {
 		Button: {
@@ -95,7 +95,6 @@ export const AppTheme = {
 		background: "white",
 	},
 };
-
 
 function Main() {
 	const [ready, setReady] = useState(false);
