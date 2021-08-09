@@ -18,22 +18,7 @@ import EditAppointment from "./EditAppointment";
 import PatientVideoCall from "./PatientVideoCall"
 
 export default function HomeView({ navigation }: any) {
-	const currentProfile = useAuthStore(s => s.currentProfile)
 
-	useEffect(() => {
-		// check if the user profile exists
-		if (currentProfile !== undefined) {
-			if (currentProfile.profile !== undefined) { return; }
-
-			// Navigate if the home screen is missing
-			navigation.navigate(MainTabNavKey.Profile, {
-				screen: ProfileNavKey.ProfileScreen,
-				// params: {
-				// 	screen: ProfileNavKey.CreateProfile
-				// }
-			})
-		}
-	}, [currentProfile])
 
 	return (
 		<NavStack.Navigator headerMode="none">
