@@ -13,7 +13,6 @@ import {
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
-import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { Pressable, ProgressBarAndroidBase } from "react-native";
@@ -26,6 +25,9 @@ import { API_ROOT } from "../../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
 import { useAtom } from 'jotai'
+
+import { HomeNavKey } from '.'
+
 interface Consultant {
 	id: string;
 	name: string;
@@ -52,7 +54,7 @@ const ConsultantsList = () => {
 
 	const selectConsultant = useCallback(
 		(consultant: any) => {
-			navigation.navigate(NavKey.SetAppointmentTimeScreen, {
+			navigation.navigate(HomeNavKey.AppointmentTime, {
 				consultant,
 			});
 		},
@@ -97,18 +99,18 @@ const ConsultantsList = () => {
 			{consultants !== undefined ? (
 				<ScrollView padding={5} testID={"ConsultantList"}>
 					<VStack space={4}>
-					<SelectionDetails />
-					<VStack space={2}>
-						{consultants.map((consultant, ix) => {
-							return (
-								<ConsultantListItem
-									onPress={() => selectConsultant(consultant)}
-									key={consultant.name}
-									consultant={consultant}
-								/>
-							);
-						})}
-					</VStack>
+						<SelectionDetails />
+						<VStack space={2}>
+							{consultants.map((consultant, ix) => {
+								return (
+									<ConsultantListItem
+										onPress={() => selectConsultant(consultant)}
+										key={consultant.name}
+										consultant={consultant}
+									/>
+								);
+							})}
+						</VStack>
 					</VStack>
 				</ScrollView>
 			) : (

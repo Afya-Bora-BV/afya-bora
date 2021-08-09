@@ -1,15 +1,23 @@
 import React from "react";
 
 import HomeScreen from "./HomeScreen";
-import BookAppointmentView from "./BookAppointment";
-import OnlineConsultView from "./OnlineConsult";
-import MapFaciltyView from "./MapFacility";
-import NotificationScreen from "./Notification";
-import { NavStack, HomeNavKey } from './_navigator'
-import AppointmentInfo from "./AppointmentInfo";
-import EditAppointment from "./EditAppointment";
-
 import ConsultantsList from "./ConsultantsList";
+import AppointmentTime from "./AppointmentTime"
+import { createStackNavigator } from "@react-navigation/stack";
+
+export const NavStack = createStackNavigator();
+
+export const HomeNavKey = {
+	HomeScreen: "HomeScreen",
+	ConsultantList: "ConsultantList",
+	AppointmentTime: "AppointmentTime",
+	MapFaciltyViewScreen: "MapFaciltyView",
+	AppointmentInfoScreen: "AppointmentInfo",
+	EditAppointment: "EditAppointment",
+	PatientVideoCallScreen: "PatientVideoCallScreen"
+};
+
+
 export default function HomeView({ navigation }: any) {
 
 	return (
@@ -22,11 +30,11 @@ export default function HomeView({ navigation }: any) {
 				name={HomeNavKey.ConsultantList}
 				component={ConsultantsList}
 			/>
-			{/* <NavStack.Screen
-				name={HomeNavKey.OnlineConsultViewScreen}
-				component={OnlineConsultView}
-			/>
 			<NavStack.Screen
+				name={HomeNavKey.AppointmentTime}
+				component={AppointmentTime}
+			/>
+			{/* <NavStack.Screen
 				name={HomeNavKey.MapFaciltyViewScreen}
 				component={MapFaciltyView}
 			/>

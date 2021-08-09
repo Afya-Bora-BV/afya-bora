@@ -16,21 +16,19 @@ import {
 	ChevronDownIcon,
 	ArrowBackIcon,
 } from "native-base";
-import { Dimensions } from "react-native";
-import { HeaderwithBack } from "../../../../components/header";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../../components/consultant-list-item";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
-import { colors } from "../../../../constants/colors";
+import { colors } from "../../../constants/colors";
 import moment from "moment";
-import { toggleStringFromList } from "../../../../utils";
+import { toggleStringFromList } from "../../../utils";
 
-import { NavKey } from "./_navigator";
-import MainContainer from "../../../../components/containers/MainContainer";
-import { IconContainer } from "../../../../components/misc";
+import { NavKey } from "./BookAppointment/_navigator";
+import MainContainer from "../../../components/containers/MainContainer";
+import { IconContainer } from "../../../components/misc";
 import { useCallback } from "react";
 
 export type BookAppointmentStackParamList = {
