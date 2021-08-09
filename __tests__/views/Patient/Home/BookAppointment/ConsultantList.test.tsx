@@ -9,7 +9,7 @@ import { render } from "@testing-library/react-native";
 import {
 	NavKey,
 } from "../../../../../src/views/Patient/Home/BookAppointment/_navigator";
-import ConsultantsList, { getConsultants } from "../../../../../src/views/Patient/Home/BookAppointment/ConsultantsList";
+import ConsultantsList, { getConsultants } from "../../../../../src/views/Patient/Home/ConsultantsList";
 
 jest.mock(
 	'../../../../../node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter',

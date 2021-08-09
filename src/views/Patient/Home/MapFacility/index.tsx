@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 
-import FindFacilityView from './FindFacility'
+import FindFacilityView from '../FacilityMap'
 import FindFacilityListView from './FindFacilityList'
 
 import { Stack, NavKey } from './_navigator'

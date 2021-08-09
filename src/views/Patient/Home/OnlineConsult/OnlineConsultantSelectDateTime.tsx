@@ -24,7 +24,7 @@ import { getDaysInMonth, isSameDay } from "date-fns";
 import { toggleStringFromList } from "../../../../utils";
 
 import { OnlineNavKey } from "./_navigator";
-import { HomeNavKey as MainNavKey } from "../_navigator";
+// import { HomeNavKey as MainNavKey } from ".";
 import MainContainer from "../../../../components/containers/MainContainer";
 import { Spacer } from "../../../../components/Spacer";
 
@@ -94,7 +94,7 @@ function PickATimeSection({ chosenTimeSlots, onSelectTimeSlot }) {
 
 			<VStack space="sm" mt={4}>
 				{_.times(14, (n) => {
-					const t = n + 6;
+						const t = n + 6;
 					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
 						}`;
 					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
@@ -186,7 +186,7 @@ export default function OnlineConsultantSelectDateTime() {
 	}, [chosenDate, chosenTimeSlots, navigation]);
 
 	const goHome = () => {
-		navigation.navigate(MainNavKey.HomeScreen);
+		// navigation.navigate(MainNavKey.HomeScreen);
 	};
 
 	return (

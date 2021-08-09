@@ -11,7 +11,7 @@ import { IconContainer } from "../../../../components/misc";
 
 import { NavKey as BookAppointmentNavKey } from "../BookAppointment/_navigator";
 import { HomeNavKey as MainNavKey } from "../_navigator";
-import ConsultantsList, { getConsultants } from "../BookAppointment/ConsultantsList";
+import ConsultantsList, { getConsultants } from "../ConsultantsList";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
 

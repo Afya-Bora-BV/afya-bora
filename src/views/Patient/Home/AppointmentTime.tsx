@@ -121,19 +121,20 @@ const specialities: TimeSlots[] = [
 		max: "12",
 	},
 ].map((speciality) => ({ ...speciality }));
+const appointmentTime = atom<string>("");
+
+const setAppointmentTime = atom(
+	(get) => {
+		return get(appointmentTime);
+	},
+	(get, set, update: "offline" | "online") => {
+		// you can do more logic here for the state
+		set(appointmentTime, update);
+	}
+);
 
 function PickATimeSection() {
-	const appointmentTime = atom<string>("");
 
-	const setAppointmentTime = atom(
-		(get) => {
-			return get(appointmentTime);
-		},
-		(get, set, update: "offline" | "online") => {
-			// you can do more logic here for the state
-			set(appointmentTime, update);
-		}
-	);
 	return (
 		<Box>
 			<Text fontSize="2xl" bold>

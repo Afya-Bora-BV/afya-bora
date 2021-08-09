@@ -1,7 +1,7 @@
 import React from "react";
-import ConsultantsList from "./ConsultantsList";
+import ConsultantsList from "../ConsultantsList";
 import { PatientComplaint } from "./PatientComplaint";
-import SetAppointmentTime from "./SetAppointmentTime";
+import SetAppointmentTime from "../AppointmentTime";
 
 import { Stack, NavKey } from './_navigator'
 
