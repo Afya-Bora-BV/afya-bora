@@ -25,8 +25,6 @@ import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
 import { colors } from "../../../constants/colors";
 import moment from "moment";
-import { toggleStringFromList } from "../../../utils";
-
 import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
@@ -109,69 +107,6 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 	);
 }
 
-// function PickATimeSection({ chosenTimeSlot, onSelectTimeSlot }) {
-// 	const selectTime = (timeBlock: string) => {
-// 		const list = toggleStringFromList(timeBlock, chosenTimeSlot);
-// 		onSelectTimeSlot(list);
-// 	};
-
-// 	const appointmentTime = atom<string>("");
-
-// 	const setAppointmentTime = atom(
-// 		(get) => {
-// 			return get(appointmentTime);
-// 		},
-// 		(get, set, update: "offline" | "online") => {
-// 			// you can do more logic here for the state
-// 			set(appointmentTime, update);
-// 		}
-// 	);
-
-// 	return (
-// 		<View>
-// 			<HStack justifyContent="space-between">
-// 				<Text fontSize="2xl" bold>
-// 					Pick a Time
-// 				</Text>
-// 			</HStack>
-
-// 			<VStack space="sm" mt={4}>
-// 			const [type, setType] = useAtom(setAppointmentTypeAtom);
-// 				return (
-// 				<HStack flexWrap="wrap" space="md">
-// 					<TouchableOpacity
-// 						onPress={() => selectTime(appointmentTime)}
-// 						style={{ flex: 1 }}
-// 					>
-// 						<Box
-// 							borderWidth={1}
-// 							borderColor="#ccc"
-// 							rounded={10}
-// 							alignItems="center"
-// 							bg={
-// 								chosenTimeSlot.includes(appointmentTime)
-// 									? "#258FBE"
-// 									: "white"
-// 							}
-// 							p={2}
-// 						>
-// 							<Text
-// 								color={
-// 									!chosenTimeSlot.includes(time1)
-// 										? "black"
-// 										: "white"
-// 								}
-// 							>
-// 								{time1}
-// 							</Text>
-// 						</Box>
-// 					</TouchableOpacity>
-// 				</HStack>
-// 				);
-// 			</VStack>
-// 		</View>
-// 	);
-// }
 
 type TimeSlots = {
 	period: string;
