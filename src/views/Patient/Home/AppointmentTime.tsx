@@ -15,6 +15,7 @@ import {
 	Pressable,
 	ChevronDownIcon,
 	ArrowBackIcon,
+	Center,
 } from "native-base";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
@@ -30,6 +31,8 @@ import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { useCallback } from "react";
+import { atom } from "jotai";
+import { StringLocale } from "yup/lib/locale";
 
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
@@ -63,7 +66,7 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 		<View>
 			<HStack justifyContent="space-between" mb={3}>
 				<Text fontSize="2xl" bold>
-					Pick a Date
+					Preffered Date
 				</Text>
 
 				<MonthDropDown
@@ -106,88 +109,116 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 	);
 }
 
-function PickATimeSection({ chosenTimeSlot, onSelectTimeSlot }) {
-	const selectTime = (timeBlock: string) => {
-		const list = toggleStringFromList(timeBlock, chosenTimeSlot);
-		onSelectTimeSlot(list);
-	};
+// function PickATimeSection({ chosenTimeSlot, onSelectTimeSlot }) {
+// 	const selectTime = (timeBlock: string) => {
+// 		const list = toggleStringFromList(timeBlock, chosenTimeSlot);
+// 		onSelectTimeSlot(list);
+// 	};
 
+// 	const appointmentTime = atom<string>("");
+
+// 	const setAppointmentTime = atom(
+// 		(get) => {
+// 			return get(appointmentTime);
+// 		},
+// 		(get, set, update: "offline" | "online") => {
+// 			// you can do more logic here for the state
+// 			set(appointmentTime, update);
+// 		}
+// 	);
+
+// 	return (
+// 		<View>
+// 			<HStack justifyContent="space-between">
+// 				<Text fontSize="2xl" bold>
+// 					Pick a Time
+// 				</Text>
+// 			</HStack>
+
+// 			<VStack space="sm" mt={4}>
+// 			const [type, setType] = useAtom(setAppointmentTypeAtom);
+// 				return (
+// 				<HStack flexWrap="wrap" space="md">
+// 					<TouchableOpacity
+// 						onPress={() => selectTime(appointmentTime)}
+// 						style={{ flex: 1 }}
+// 					>
+// 						<Box
+// 							borderWidth={1}
+// 							borderColor="#ccc"
+// 							rounded={10}
+// 							alignItems="center"
+// 							bg={
+// 								chosenTimeSlot.includes(appointmentTime)
+// 									? "#258FBE"
+// 									: "white"
+// 							}
+// 							p={2}
+// 						>
+// 							<Text
+// 								color={
+// 									!chosenTimeSlot.includes(time1)
+// 										? "black"
+// 										: "white"
+// 								}
+// 							>
+// 								{time1}
+// 							</Text>
+// 						</Box>
+// 					</TouchableOpacity>
+// 				</HStack>
+// 				);
+// 			</VStack>
+// 		</View>
+// 	);
+// }
+
+type TimeSlots = {
+	period: string;
+	min: string;
+	max: String;
+};
+
+const specialities: TimeSlots[] = [
+	{
+		period: "Morning",
+		min: "9",
+		max: "12",
+	},
+].map((speciality) => ({ ...speciality }));
+
+function PickATimeSection() {
+	const appointmentTime = atom<string>("");
+
+	const setAppointmentTime = atom(
+		(get) => {
+			return get(appointmentTime);
+		},
+		(get, set, update: "offline" | "online") => {
+			// you can do more logic here for the state
+			set(appointmentTime, update);
+		}
+	);
 	return (
-		<View>
-			<HStack justifyContent="space-between">
-				<Text fontSize="2xl" bold>
-					Pick a Time
-				</Text>
-			</HStack>
-
-			<VStack space="sm" mt={4}>
-				{_.times(14, (n) => {
-					const t = n + 6;
-					const time1 = `${_.padStart(t + "", 2, "0") + ":00"} ${t > 11 ? "PM" : "AM"
-						}`;
-					const time2 = `${_.padStart(t + "", 2, "0") + ":30"} ${t > 11 ? "PM" : "AM"
-						}`;
-					return (
-						<HStack flexWrap="wrap" space="md">
-							<TouchableOpacity
-								onPress={() => selectTime(time1)}
-								style={{ flex: 1 }}
-							>
-								<Box
-									borderWidth={1}
-									borderColor="#ccc"
-									rounded={10}
-									alignItems="center"
-									bg={
-										chosenTimeSlot.includes(time1)
-											? "#258FBE"
-											: "white"
-									}
-									p={2}
-								>
-									<Text
-										color={
-											!chosenTimeSlot.includes(time1)
-												? "black"
-												: "white"
-										}
-									>
-										{time1}
-									</Text>
-								</Box>
-							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={() => selectTime(time2)}
-								style={{ flex: 1 }}
-							>
-								<Box
-									borderWidth={1}
-									borderColor="#ccc"
-									rounded={10}
-									alignItems="center"
-									bg={
-										chosenTimeSlot.includes(time2)
-											? "#258FBE"
-											: "white"
-									}
-									p={2}
-								>
-									<Text
-										color={
-											!chosenTimeSlot.includes(time2)
-												? "black"
-												: "white"
-										}
-									>
-										{time2}
-									</Text>
-								</Box>
-							</TouchableOpacity>
-						</HStack>
-					);
-				})}
-			</VStack>
-		</View>
+		<Box>
+			<Text fontSize="2xl" bold>
+				Preferred Time Range
+			</Text>
+			{specialities.map((times) => {
+				return (
+					<Pressable>
+						<Box borderWidth={1} borderColor="#ccc" rounded={10}>
+							<Center>
+								<Text>{times.period}</Text>
+								<Text>
+									{times.min}-{times.max}
+								</Text>
+							</Center>
+						</Box>
+					</Pressable>
+				);
+			})}
+		</Box>
 	);
 }
 
@@ -200,10 +231,11 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 	const { consultant } = route.params;
 
 	const onPressNext = useCallback(() => {
-
-		const time = chosenTimeSlot[0]?.split(" ")[0] || '00:00'
-		const dateTime = `${moment(new Date(chosenDate)).format("YYYY-MM-DD")}T${time}:00`
-		const date = new Date(dateTime)
+		const time = chosenTimeSlot[0]?.split(" ")[0] || "00:00";
+		const dateTime = `${moment(new Date(chosenDate)).format(
+			"YYYY-MM-DD"
+		)}T${time}:00`;
+		const date = new Date(dateTime);
 		navigation.navigate(NavKey.PatientComplaintScreen, {
 			consultant,
 			appointment: date.toUTCString(),
@@ -211,8 +243,8 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 		});
 	}, [chosenDate, chosenTimeSlot, navigation]);
 
-	console.log("Hello COnsultant ")
-	console.log(JSON.stringify(consultant, null, 3))
+	console.log("Hello COnsultant ");
+	console.log(JSON.stringify(consultant, null, 3));
 
 	return (
 		<MainContainer
@@ -221,12 +253,12 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
@@ -245,10 +277,7 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 						chosenDate={chosenDate}
 						onSelectDate={selectDate}
 					/>
-					<PickATimeSection
-						chosenTimeSlot={chosenTimeSlot}
-						onSelectTimeSlot={setTimeSlot}
-					/>
+					<PickATimeSection />
 				</VStack>
 
 				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
