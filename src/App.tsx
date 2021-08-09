@@ -101,67 +101,10 @@ export const AppTheme = {
 	},
 };
 
-// IMPROVEMENT : to not show the login screen completely after user is logged in 
+
 function Main() {
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
-	const [ready, setReady] = useState(false);
-
-	// Set an initializing state whilst Firebase connects
-	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
-
-	// Handle user state changes
-	function onAuthStateChanged(user: any) {
-		setUser(user);
-		if (initializing) setInitializing(false);
-	}
-
-	useEffect(() => {
-		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		return subscriber; // unsubscribe on unmount
-	}, []);
-
-
-
-	useEffect(() => {
-		// Remove splash screen if ready
-		SplashScreen.hide();
-	}, [ready]);
-
-
-
-	if (initializing) return null;
-
-	console.log("Profile ", profile)
-	if (user !== null) {
-		if (profile !== null) {
-			if (profile.type === "patient") {
-				return (
-					<AppointmentTempoStoreProvider>
-						<PatientAppView />
-					</AppointmentTempoStoreProvider>
-				);
-			}
-
-			if (profile.type === "doctor") {
-				return (
-					<AppointmentTempoStoreProvider>
-						<DoctorAppView />
-					</AppointmentTempoStoreProvider>
-				);
-
-			}
-		} else {
-			return (
-				<ProfileView />
-			)
-		}
-	}
-
-
-	// Not authenticated
-	return <HomeView />;
+	return <HomeView/>;
 }
 
 export default function App() {

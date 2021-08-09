@@ -5,10 +5,10 @@ export const NavStack = createStackNavigator();
 export const HomeNavKey = {
 	HomeScreen: "HomeScreen",
 	NotificationScreen: "NotificationScreen",
-	BookAppointmentViewScreen: "BookAppointmentView",
+	ConsultantList: "ConsultantList",
 	OnlineConsultViewScreen: "OnlineConsultView",
 	MapFaciltyViewScreen: "MapFaciltyView",
 	AppointmentInfoScreen: "AppointmentInfo",
 	EditAppointment: "EditAppointment",
-	PatientVideoCallScreen:"PatientVideoCallScreen"
+	PatientVideoCallScreen: "PatientVideoCallScreen"
 };

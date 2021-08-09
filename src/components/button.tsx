@@ -9,7 +9,7 @@ type buttonProps = IButtonComponentType & {
 };
 
 export const PrimaryButton: React.FC<buttonProps> = ({
-	text,
+	children,
 	onPress,
 	...rest
 }) => {
@@ -25,7 +25,7 @@ export const PrimaryButton: React.FC<buttonProps> = ({
 			_text={{ color: "white" }}
 			{...rest}
 		>
-			{text}
+			{children}
 		</Button>
 	);
 };

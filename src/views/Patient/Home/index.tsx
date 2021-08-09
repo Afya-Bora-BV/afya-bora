@@ -5,17 +5,11 @@ import BookAppointmentView from "./BookAppointment";
 import OnlineConsultView from "./OnlineConsult";
 import MapFaciltyView from "./MapFacility";
 import NotificationScreen from "./Notification";
-
 import { NavStack, HomeNavKey } from './_navigator'
-import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
-
-import { TabNavKey as MainTabNavKey } from '../_navigator'
-import { ProfileNavKey } from '../Profile/_navigator'
-import { useAuthStore } from "../../../internals/auth/context";
 import AppointmentInfo from "./AppointmentInfo";
 import EditAppointment from "./EditAppointment";
-import PatientVideoCall from "./PatientVideoCall"
+
+import ConsultantsList from "./BookAppointment/ConsultantsList";
 
 export default function HomeView({ navigation }: any) {
 
@@ -31,8 +25,8 @@ export default function HomeView({ navigation }: any) {
 				component={NotificationScreen}
 			/>
 			<NavStack.Screen
-				name={HomeNavKey.BookAppointmentViewScreen}
-				component={BookAppointmentView}
+				name={HomeNavKey.ConsultantList}
+				component={ConsultantsList}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.OnlineConsultViewScreen}
