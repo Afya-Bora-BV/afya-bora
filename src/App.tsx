@@ -19,6 +19,7 @@ import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 import { QueryClient, QueryClientProvider } from "react-query";
 import auth from '@react-native-firebase/auth';
 import ProfileView from "./views/SelectCreateProfile";
+import HomeView from "./views/Patient/Home";
 
 const queryClient = new QueryClient();
 
@@ -160,7 +161,7 @@ function Main() {
 
 
 	// Not authenticated
-	return <PlainAppView />;
+	return <HomeView />;
 }
 
 export default function App() {
