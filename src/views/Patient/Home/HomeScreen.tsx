@@ -58,6 +58,7 @@ const helpOptions = [
 	{
 		illustration: FacilityIllustration,
 		title: "Map of Facilities near you",
+		heading: "Need quick medical attention?",
 		onNavigate: (navigation: any) => {
 			navigation.navigate(HomeNavKey.MapFaciltyViewScreen);
 		},
@@ -65,6 +66,7 @@ const helpOptions = [
 	{
 		illustration: AppointmentIllustration,
 		title: "Sign in / Create Account",
+		heading: "Your AfyaBora Account",
 		onNavigate: (navigation: any) => {
 			navigation.navigate(HomeNavKey.BookAppointmentViewScreen);
 		},
@@ -109,8 +111,9 @@ export default function Home() {
 					<HomeScreenIllustration flex={3} size={200} />
 				</HStack>
 
-				<Spacer size={30} />
-
+				<Heading py={5} fontSize="lg">
+					Schedule an appointment
+				</Heading>
 				<Stack px={1}>
 					<ScheduleAppointmentSection />
 				</Stack>
@@ -118,7 +121,7 @@ export default function Home() {
 				<Spacer size={30} />
 
 				<VStack
-					space={4}
+					space={10}
 					marginTop={3}
 					justifyContent="space-between"
 					px={1}
@@ -126,31 +129,40 @@ export default function Home() {
 				>
 					{helpOptions.map(
 						(
-							{ illustration: Illustration, onNavigate, title },
+							{
+								illustration: Illustration,
+								onNavigate,
+								title,
+								heading,
+							},
 							ix
 						) => (
-							<Pressable
-								key={`helpOption-${ix}`}
-								onPress={() => onNavigate(navigation)}
-							>
-								{/* Find mean to set relative width: 160 -> 33%?? */}
-								<Center
-									height={100}
-									bgColor="#FFF"
-									rounded="xl"
-									shadow={4}
+							<Stack space={2}>
+								<Heading fontSize="xl">{heading}</Heading>
+								
+
+								<Pressable
+									key={`helpOption-${ix}`}
+									onPress={() => onNavigate(navigation)}
 								>
-									<Illustration size={70} />
-									<Text
-										fontWeight="800"
-										textAlign="center"
-										// wordBreak="break-word"
-										// overflowWrap="break-word"
+									<Center
+										height={100}
+										bgColor="#FFF"
+										rounded="xl"
+										shadow={4}
 									>
-										{title}
-									</Text>
-								</Center>
-							</Pressable>
+										<Illustration size={70} />
+										<Text
+											fontWeight="800"
+											textAlign="center"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
+										>
+											{title}
+										</Text>
+									</Center>
+								</Pressable>
+							</Stack>
 						)
 					)}
 				</VStack>
