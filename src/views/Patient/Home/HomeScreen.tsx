@@ -29,16 +29,18 @@ import { IconContainer } from "../../../components/misc";
 
 import HomeScreenIllustration from "../../../assets/illustrations/HomeScreenIllustration";
 
-
 import { Spacer } from "../../../components/Spacer";
 import { PrimaryButton } from "../../../components/button";
 import { atom, useAtom } from "jotai";
-import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
+import AppointmentCustomizer, {
+	completeScheduleAtom,
+} from "../../../components/appointment-customizer";
 import { HomeNavKey } from ".";
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
 		title: "Map of Facilities near you",
+		heading: "Need quick medical attention?",
 		onNavigate: (navigation: any) => {
 			navigation.navigate(HomeNavKey.FacilityMap);
 		},
@@ -46,6 +48,7 @@ const helpOptions = [
 	{
 		illustration: AppointmentIllustration,
 		title: "Sign in / Create Account",
+		heading: "Your AfyaBora Account",
 		onNavigate: (navigation: any) => {
 			navigation.navigate(NavKey.LoginScreen);
 		},
@@ -68,11 +71,9 @@ export default function Home() {
 			rightSection={() => (
 				<HStack space={4}>
 					<Pressable
-						onPress={() =>
-							{
-								// navigation.navigate(HomeNavKey.NotificationScreen)
-							}
-						}
+						onPress={() => {
+							// navigation.navigate(HomeNavKey.NotificationScreen)
+						}}
 					>
 						<IconContainer>
 							<BellIcon size={6} color="#561BB3" />
@@ -109,31 +110,34 @@ export default function Home() {
 				>
 					{helpOptions.map(
 						(
-							{ illustration: Illustration, onNavigate, title },
+							{ illustration: Illustration, onNavigate, title, heading },
 							ix
 						) => (
-							<Pressable
-								key={`helpOption-${ix}`}
-								onPress={() => onNavigate(navigation)}
-							>
-								{/* Find mean to set relative width: 160 -> 33%?? */}
-								<Center
-									height={100}
-									bgColor="#FFF"
-									rounded="xl"
-									shadow={4}
+							<Stack space={2}>
+								<Heading fontSize="xl">{heading}</Heading>
+								<Pressable
+									key={`helpOption-${ix}`}
+									onPress={() => onNavigate(navigation)}
 								>
-									<Illustration size={70} />
-									<Text
-										fontWeight="800"
-										textAlign="center"
-									// wordBreak="break-word"
-									// overflowWrap="break-word"
+									{/* Find mean to set relative width: 160 -> 33%?? */}
+									<Center
+										height={100}
+										bgColor="#FFF"
+										rounded="xl"
+										shadow={4}
 									>
-										{title}
-									</Text>
-								</Center>
-							</Pressable>
+										<Illustration size={70} />
+										<Text
+											fontWeight="800"
+											textAlign="center"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
+										>
+											{title}
+										</Text>
+									</Center>
+								</Pressable>
+							</Stack>
 						)
 					)}
 				</VStack>
@@ -160,7 +164,6 @@ const ScheduleButton = () => {
 	// TODO: fixing type issue here
 	return <PrimaryButton onPress={handleOnPress}>Schedule</PrimaryButton>;
 };
-
 
 // TOO: move this component and all its atom to component folder
 export const ScheduleAppointmentSection = () => {
