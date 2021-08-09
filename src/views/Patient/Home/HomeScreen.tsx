@@ -21,7 +21,7 @@ import AppointmentIllustration from "../../../assets/illustrations/AppointmentIl
 import FacilityIllustration from "../../../assets/illustrations/FacilityIllustration";
 
 import { useNavigation } from "@react-navigation/native";
-import { HomeNavKey } from "./_navigator";
+
 import { NavKey } from "../../_Main/_navigator";
 import { colors } from "../../../constants/colors";
 import MainContainer from "../../../components/containers/MainContainer";
@@ -34,13 +34,13 @@ import { Spacer } from "../../../components/Spacer";
 import { PrimaryButton } from "../../../components/button";
 import { atom, useAtom } from "jotai";
 import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
-
+import { HomeNavKey } from ".";
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
 		title: "Map of Facilities near you",
 		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.MapFaciltyViewScreen);
+			navigation.navigate(HomeNavKey.FacilityMap);
 		},
 	},
 	{
@@ -69,7 +69,9 @@ export default function Home() {
 				<HStack space={4}>
 					<Pressable
 						onPress={() =>
-							navigation.navigate(HomeNavKey.NotificationScreen)
+							{
+								// navigation.navigate(HomeNavKey.NotificationScreen)
+							}
 						}
 					>
 						<IconContainer>
@@ -165,7 +167,7 @@ export const ScheduleAppointmentSection = () => {
 	return (
 		<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>
 			<Stack space={5} py={2}>
-				<AppointmentCustomizer/>
+				<AppointmentCustomizer />
 				<ScheduleButton />
 			</Stack>
 		</Box>
