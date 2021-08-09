@@ -10,15 +10,10 @@ import { colors } from "./constants/colors";
 import { AuthProvider, useAuthStore } from "./internals/auth/context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import PlainAppView from "./views/_Main";
-import PatientAppView from "./views/Patient";
-import DoctorAppView from "./views/Doctor";
+import { Provider as JotaiProvider } from 'jotai'
 
-import { AppointmentTempoStoreProvider } from "./internals/appointment/context";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import auth from '@react-native-firebase/auth';
-import ProfileView from "./views/SelectCreateProfile";
 import HomeView from "./views/Patient/Home";
 
 const queryClient = new QueryClient();
@@ -103,8 +98,14 @@ export const AppTheme = {
 
 
 function Main() {
+	const [ready, setReady] = useState(false);
 
-	return <HomeView/>;
+	useEffect(() => {
+		// Remove splash screen if ready
+		SplashScreen.hide();
+	}, [ready]);
+	
+	return <HomeView />;
 }
 
 export default function App() {
@@ -115,7 +116,9 @@ export default function App() {
 					<ToastProvider>
 						<AuthProvider>
 							<QueryClientProvider client={queryClient}>
-								<Main />
+								<JotaiProvider>
+									<Main />
+								</JotaiProvider>
 							</QueryClientProvider>
 						</AuthProvider>
 					</ToastProvider>
