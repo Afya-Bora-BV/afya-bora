@@ -24,7 +24,7 @@ import { useEffect } from "react";
 import { API_ROOT } from "../../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
-import { useAtom } from 'jotai'
+import { useAtom, atom } from 'jotai'
 
 import { HomeNavKey } from '.'
 import { Facility } from "../../../types";
@@ -37,15 +37,25 @@ export const getFacilities = async (): Promise<any> => {
 	return facilities
 };
 
+const selectedFacilty = atom<Facility | null>(null)
+
+export const setSelectedFacilityAtom = atom((get) => {
+	return get(selectedFacilty)
+}, (get, set, update: Facility) => {
+
+	set(selectedFacilty, update)
+})
+
+
 const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
+	const [, setSelectedFacility] = useAtom(setSelectedFacilityAtom)
 
 	const selectFacility = useCallback(
-		(consultant: any) => {
-			navigation.navigate(HomeNavKey.AppointmentTime, {
-				consultant,
-			});
+		(facility: Facility) => {
+			setSelectedFacility(facility)
+			navigation.navigate(HomeNavKey.AppointmentTime);
 		},
 		[navigation]
 	);

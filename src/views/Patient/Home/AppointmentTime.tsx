@@ -20,8 +20,6 @@ import {
 	CheckIcon,
 } from "native-base";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../components/consultant-list-item";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
@@ -31,8 +29,10 @@ import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { useCallback } from "react";
-import { atom, useAtom } from "jotai";
-import { StringLocale } from "yup/lib/locale";
+
+import { useAtom, atom } from 'jotai'
+import { setSelectedFacilityAtom } from "./FacilityList";
+import { FacilityListItem } from "../../../components/facilities-list-item";
 
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
@@ -45,19 +45,76 @@ export type BookAppointmentStackParamList = {
 	};
 };
 
-type SetAppointmentTimeScreenRouteProp = RouteProp<
-	BookAppointmentStackParamList,
-	"SetAppointmentTime"
->;
-type SetAppointmentTimeNavigationProp = StackNavigationProp<
-	BookAppointmentStackParamList,
-	"SetAppointmentTime"
->;
+function nextNMonths(n: number): Date {
+	const d = new Date();
+	d.setMonth(d.getMonth() + n);
+	return d;
+}
 
-type SetAppointmentTimeProps = {
-	route: SetAppointmentTimeScreenRouteProp;
-	navigation: SetAppointmentTimeNavigationProp;
+function listOfNextNMonths(n: number): Array<Date> {
+	const d = new Date();
+	const dates = [];
+	for (let i = 0; i < n; i++) {
+		dates.push(nextNMonths(i));
+	}
+	return dates;
+}
+
+const dateAtom = atom<Date>(new Date())
+
+const setSelectedDateAtom = atom((get) => {
+	return get(dateAtom)
+}, (get, set, update: Date) => {
+	// console.log("UPdate nay : ",update)
+	set(dateAtom, update)
+})
+
+const SelectMonth: React.FC = ({
+}) => {
+	const [date, setDate] = useAtom(setSelectedDateAtom)
+
+	console.log("Date : ", date)
+	return (
+		<Menu
+			closeOnSelect={true}
+			trigger={(triggerProps) => {
+				console.log("here");
+				console.log(_.keys(triggerProps));
+				console.log(triggerProps.onPress);
+				return (
+					<Pressable
+						accessibilityLabel="More options menu"
+						{...triggerProps}
+					>
+						<HStack>
+							{/* <HamburgerIcon /> */}
+							<Text>{moment(date).format("MMMM YYYY")}</Text>
+							<ChevronDownIcon />
+						</HStack>
+					</Pressable>
+				);
+			}}
+		>
+			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
+			{listOfNextNMonths(3).map((date, i, arr) => (
+				<TouchableOpacity
+					style={{
+						padding: 10,
+						paddingHorizontal: 15,
+						borderBottomWidth: i === arr.length - 1 ? 0 : 1,
+						borderBottomColor: "#ccc",
+					}}
+					onPress={() => setDate(date)}
+				>
+					{/* <Menu.Item key={String(date)}> */}
+					<Text>{moment(date).format("MMMM YYYY")}</Text>
+					{/* </Menu.Item> */}
+				</TouchableOpacity>
+			))}
+		</Menu>
+	);
 };
+
 
 function PickADateSection({ chosenDate, onSelectDate }: any) {
 	const daysListRef = useRef(null);
@@ -69,10 +126,7 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 					Preffered Date
 				</Text>
 
-				<MonthDropDown
-					onChangeDate={(date) => onSelectDate(date)}
-					date={chosenDate}
-				/>
+				<SelectMonth />
 			</HStack>
 			<ScrollView
 				snapToInterval={2}
@@ -123,6 +177,7 @@ const specialities: TimeSlots[] = [
 		max: "12",
 	},
 ].map((speciality) => ({ ...speciality }));
+
 const appointmentTime = atom<string>("");
 
 const setAppointmentTime = atom(
@@ -160,87 +215,17 @@ function PickATimeSection() {
 	);
 }
 
-export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
-	const navigation = useNavigation();
-
-	const [chosenDate, selectDate] = useState<Date>(new Date());
-	const [chosenTimeSlot, setTimeSlot] = useState("");
-
-	const { consultant } = route.params;
-
-	const onPressNext = useCallback(() => {
-		const time = chosenTimeSlot[0]?.split(" ")[0] || "00:00";
-		const dateTime = `${moment(new Date(chosenDate)).format(
-			"YYYY-MM-DD"
-		)}T${time}:00`;
-		const date = new Date(dateTime);
-		navigation.navigate(NavKey.PatientComplaintScreen, {
-			consultant,
-			appointment: date.toUTCString(),
-			appointmentType: "offline",
-		});
-	}, [chosenDate, chosenTimeSlot, navigation]);
-
-	console.log("Hello COnsultant ");
-	console.log(JSON.stringify(consultant, null, 3));
-
+const FacilityInfo = () => {
+	const [facility] = useAtom(setSelectedFacilityAtom)
+	if (!facility) return null
 	return (
-		<MainContainer
-			title="Day and Time"
-			leftSection={
-				// Go back if can go back
-				navigation.canGoBack()
-					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
-					: undefined
-			}
-		>
-			<VStack paddingX={10} space={10}>
-				{/* Consultant Preview */}
-				<Box>
-					<ConsultantListItem
-						onPress={console.log}
-						consultant={consultant}
-					/>
-				</Box>
-
-				{/* Picking appointment times */}
-				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
-					<PickADateSection
-						chosenDate={chosenDate}
-						onSelectDate={selectDate}
-					/>
-					<PickATimeSection />
-				</VStack>
-
-				<VStack
-					bg="white"
-					p={4}
-					shadow={2}
-					rounded={10}
-					mb={1}
-					space={4}
-				>
-					<Text fontSize="2xl" bold>
-						Preferred Doctor
-					</Text>
-					<PreferedDoctor />
-				</VStack>
-				<Text fontSize={"md"} color={"#B0B3C7"}>
-					*Your exact appointment day, time, and doctor will be
-					confirmed by the facility administrator.
-				</Text>
-				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
-					Next
-				</Button>
-			</VStack>
-		</MainContainer>
-	);
+		<FacilityListItem
+			facility={facility}
+			onPress={() => {
+				console.log("Facility : ", facility)
+			}}
+		/>
+	)
 }
 
 const doctors: { name: string }[] = ["Dentist", "Dermatologist"].map(
@@ -273,55 +258,8 @@ const PreferedDoctor = () => {
 	);
 };
 
-type MonthDropDownProps = {
-	date: Date;
-	onChangeDate: (date: Date) => void;
-};
 
-const MonthDropDown: React.FC<MonthDropDownProps> = ({
-	date,
-	onChangeDate,
-}) => {
-	return (
-		<Menu
-			// closeOnSelect={true}
-			trigger={(triggerProps) => {
-				console.log("here");
-				console.log(_.keys(triggerProps));
-				console.log(triggerProps.onPress);
-				return (
-					<Pressable
-						accessibilityLabel="More options menu"
-						{...triggerProps}
-					>
-						<HStack>
-							{/* <HamburgerIcon /> */}
-							<Text>{moment(date).format("MMMM YYYY")}</Text>
-							<ChevronDownIcon />
-						</HStack>
-					</Pressable>
-				);
-			}}
-		>
-			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
-			{listOfNextNMonths(3).map((date, i, arr) => (
-				<TouchableOpacity
-					style={{
-						padding: 10,
-						paddingHorizontal: 15,
-						borderBottomWidth: i === arr.length - 1 ? 0 : 1,
-						borderBottomColor: "#ccc",
-					}}
-					onPress={() => onChangeDate(date)}
-				>
-					{/* <Menu.Item key={String(date)}> */}
-					<Text>{moment(date).format("MMMM YYYY")}</Text>
-					{/* </Menu.Item> */}
-				</TouchableOpacity>
-			))}
-		</Menu>
-	);
-};
+
 
 type CalendarDayProps = {
 	date: Date;
@@ -357,17 +295,79 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
 	);
 };
 
-function nextNMonths(n: number): Date {
-	const d = new Date();
-	d.setMonth(d.getMonth() + n);
-	return d;
+
+
+export default function SetAppointmentTime() {
+	const navigation = useNavigation();
+
+	const [chosenDate, selectDate] = useState<Date>(new Date());
+	const [chosenTimeSlot, setTimeSlot] = useState("");
+
+
+	const onPressNext = useCallback(() => {
+		const time = chosenTimeSlot[0]?.split(" ")[0] || "00:00";
+		const dateTime = `${moment(new Date(chosenDate)).format(
+			"YYYY-MM-DD"
+		)}T${time}:00`;
+		const date = new Date(dateTime);
+		navigation.navigate(NavKey.PatientComplaintScreen, {
+			appointment: date.toUTCString(),
+			appointmentType: "offline",
+		});
+	}, [chosenDate, chosenTimeSlot, navigation]);
+
+
+	return (
+		<MainContainer
+			title="Day and Time"
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
+					: undefined
+			}
+		>
+			<VStack paddingX={10} space={10}>
+				<Box>
+					<FacilityInfo />
+				</Box>
+				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
+					<PickADateSection
+						chosenDate={chosenDate}
+						onSelectDate={selectDate}
+					/>
+					<PickATimeSection />
+				</VStack>
+
+				<VStack
+					bg="white"
+					p={4}
+					shadow={2}
+					rounded={10}
+					mb={1}
+					space={4}
+				>
+					<Text fontSize="2xl" bold>
+						Preferred Doctor
+					</Text>
+					<PreferedDoctor />
+				</VStack>
+				<Text fontSize={"md"} color={"#B0B3C7"}>
+					*Your exact appointment day, time, and doctor will be
+					confirmed by the facility administrator.
+				</Text>
+				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
+					Next
+				</Button>
+			</VStack>
+		</MainContainer>
+	);
 }
 
-function listOfNextNMonths(n: number): Array<Date> {
-	const d = new Date();
-	const dates = [];
-	for (let i = 0; i < n; i++) {
-		dates.push(nextNMonths(i));
-	}
-	return dates;
-}
+
