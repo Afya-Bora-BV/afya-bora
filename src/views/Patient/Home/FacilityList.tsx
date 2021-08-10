@@ -10,12 +10,15 @@ import {
 	useToast,
 	Modal,
 	Button,
+	Spacer,
+	Stack,
+	Box,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
-import { Pressable, ProgressBarAndroidBase } from "react-native";
+import { Pressable, Dimensions, View } from "react-native";
 import { useCallback } from "react";
 
 import { useQuery } from "react-query";
@@ -29,6 +32,7 @@ import { useAtom, atom } from 'jotai'
 import { HomeNavKey } from '.'
 import { Facility } from "../../../types";
 import { FacilityListItem } from "../../../components/facilities-list-item";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 
 export const getFacilities = async (): Promise<any> => {
@@ -46,7 +50,44 @@ export const setSelectedFacilityAtom = atom((get) => {
 	set(selectedFacilty, update)
 })
 
+const FacilitySkelton = () => {
+	return (
+		<SkeletonPlaceholder speed={500}>
+			<View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
+				<View style={{ width: 120, height: 120, borderRadius: 10 }} />
+				<View style={{ marginLeft: 20, flex: 1 }}>
+					<View style={{ flex: 1 }}>
+						<View style={{ width: "100%", height: 20, borderRadius: 4 }} />
+						<View
+							style={{ marginTop: 6, width: "100%", height: 20, borderRadius: 4 }}
+						/>
+					</View>
 
+					<View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 6, flex: 1 }}>
+						<View
+							style={{ width: 60, height: 20, borderRadius: 4 }}
+						/>
+						<View
+							style={{ width: 60, height: 20, borderRadius: 4 }}
+						/>
+
+					</View>
+				</View>
+			</View>
+		</SkeletonPlaceholder>
+	)
+}
+
+const FacilityLoader = () => {
+	return (
+		<VStack space={6}>
+			<FacilitySkelton/>
+			<FacilitySkelton/>
+		</VStack>
+
+
+	)
+}
 const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
@@ -60,7 +101,7 @@ const FacilityList = () => {
 		[navigation]
 	);
 
-	const { data: facilities, error } = useQuery<Facility[]>(
+	const { data: facilities, error, isLoading } = useQuery<Facility[]>(
 		["facilities"],
 		getFacilities
 	);
@@ -95,10 +136,12 @@ const FacilityList = () => {
 					: undefined
 			}
 		>
-			{facilities !== undefined ? (
-				<ScrollView padding={5} testID={"ConsultantList"}>
+			<ScrollView padding={5} testID={"ConsultantList"}>
+				<SelectionDetails />
+				<Spacer size={4} />
+				{isLoading && <FacilityLoader />}
+				{facilities && (
 					<VStack space={4}>
-						<SelectionDetails />
 						<VStack space={2}>
 							{facilities.map((facility, ix) => {
 								return (
@@ -110,10 +153,9 @@ const FacilityList = () => {
 							})}
 						</VStack>
 					</VStack>
-				</ScrollView>
-			) : (
-				<Text>Loading...</Text>
-			)}
+
+				)}
+			</ScrollView>
 		</MainContainer>
 	);
 };
