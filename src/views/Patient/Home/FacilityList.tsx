@@ -27,32 +27,21 @@ import AppointmentCustomizer, { completeScheduleAtom } from "../../../components
 import { useAtom } from 'jotai'
 
 import { HomeNavKey } from '.'
+import { Facility } from "../../../types";
+import { FacilityListItem } from "../../../components/facilities-list-item";
 
-interface Consultant {
-	id: string;
-	name: string;
-	gender: "male" | "female";
-	facility: { name: string; address: string };
-	clinicianType: string;
-	specialities: string[];
-	rating: number;
-	ratedBy: number;
-}
 
-export const getConsultants = async (): Promise<Consultant[]> => {
-	console.log("Get consultant list ", `${API_ROOT}/v0/data/consultants`);
-	const res = await axios.get<Consultant[]>(
-		`${API_ROOT}/v0/data/consultants`
-	);
-	const consultants: Consultant[] = await res.data.data;
-	return consultants;
+export const getFacilities = async (): Promise<any> => {
+	const res = await axios.get(`${API_ROOT}/v0/data/facilities`)
+	const facilities = await res.data.data
+	return facilities
 };
 
-const ConsultantsList = () => {
+const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
 
-	const selectConsultant = useCallback(
+	const selectFacility = useCallback(
 		(consultant: any) => {
 			navigation.navigate(HomeNavKey.AppointmentTime, {
 				consultant,
@@ -61,9 +50,9 @@ const ConsultantsList = () => {
 		[navigation]
 	);
 
-	const { data: consultants, error } = useQuery(
-		["consultants"],
-		getConsultants
+	const { data: facilities, error } = useQuery<Facility[]>(
+		["facilities"],
+		getFacilities
 	);
 
 	useEffect(() => {
@@ -77,8 +66,8 @@ const ConsultantsList = () => {
 		}
 	}, [error]);
 
-	// console.log({ ALL: consultants });
-	console.log(JSON.stringify(consultants, null, 4));
+	// console.log({ ALL: facilities });
+	console.log(JSON.stringify(facilities, null, 4));
 
 	return (
 		<MainContainer
@@ -96,17 +85,16 @@ const ConsultantsList = () => {
 					: undefined
 			}
 		>
-			{consultants !== undefined ? (
+			{facilities !== undefined ? (
 				<ScrollView padding={5} testID={"ConsultantList"}>
 					<VStack space={4}>
 						<SelectionDetails />
 						<VStack space={2}>
-							{consultants.map((consultant, ix) => {
+							{facilities.map((facility, ix) => {
 								return (
-									<ConsultantListItem
-										onPress={() => selectConsultant(consultant)}
-										key={consultant.name}
-										consultant={consultant}
+									<FacilityListItem
+										facility={facility}
+										onPress={() => selectFacility(facility)}
 									/>
 								);
 							})}
@@ -167,4 +155,4 @@ const SelectionDetails = () => {
 	);
 };
 
-export default ConsultantsList;
+export default FacilityList;

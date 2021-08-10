@@ -1,7 +1,7 @@
 import React from "react";
 
 import HomeScreen from "./HomeScreen";
-import ConsultantsList from "./ConsultantsList";
+import FacilityList from "./FacilityList";
 import AppointmentTime from "./AppointmentTime"
 import FacilityMap from './FacilityMap'
 import FacilityInfo from "./FacilityInfo";
@@ -30,7 +30,7 @@ export default function HomeView({ navigation }: any) {
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.ConsultantList}
-				component={ConsultantsList}
+				component={FacilityList}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.AppointmentTime}
