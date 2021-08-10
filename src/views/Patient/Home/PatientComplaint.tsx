@@ -12,7 +12,7 @@ import {
 	TextArea,
 	View,
 	VStack,
-	useToast
+	useToast,
 } from "native-base";
 import {
 	CommonActions,
@@ -20,40 +20,24 @@ import {
 	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
-import { colors } from "../../../../constants/colors";
+import { colors } from "../../../constants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
-import { toggleStringFromList } from "../../../../utils";
+import { toggleStringFromList } from "../../../utils";
 
-import { HomeNavKey as MainNavKey } from "../_navigator";
+import { HomeNavKey as MainNavKey } from "./_navigator";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { BookAppointmentStackParamList } from ".";
-import MainContainer from "../../../../components/containers/MainContainer";
-import { IconContainer } from "../../../../components/misc";
-import { useAppointmentTempoStore } from "../../../../internals/appointment/context";
+import MainContainer from "../../../components/containers/MainContainer";
+import { IconContainer } from "../../../components/misc";
+import { useAppointmentTempoStore } from "../../../internals/appointment/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
-import auth from "@react-native-firebase/auth"
+import auth from "@react-native-firebase/auth";
 
 import axios from "axios";
-import { API_ROOT } from "../../../../api";
-import { useAuthStore } from "../../../../internals/auth/context";
-import { consultants } from "../../../../data/consultants";
-
-
-type PatientComplaintScreenRouteProp = RouteProp<
-	BookAppointmentStackParamList,
-	"PatientComplaint"
->;
-type PatientComplaintNavigationProp = StackNavigationProp<
-	BookAppointmentStackParamList,
-	"PatientComplaint"
->;
-
-type PatientComplaintProps = {
-	route: PatientComplaintScreenRouteProp;
-	navigation: PatientComplaintNavigationProp;
-};
+import { API_ROOT } from "../../../api";
+import { useAuthStore } from "../../../internals/auth/context";
+import { consultants } from "../../../data/consultants";
 
 const keySymptoms = [
 	"Fever",
@@ -66,32 +50,42 @@ const keySymptoms = [
 
 // to be extended
 interface NewAppointmentRequestBody {
-	utcDate: string // Date UTCString
-	type: "online" | "offline"
-	facilityId?: string
+	utcDate: string; // Date UTCString
+	type: "online" | "offline";
+	facilityId?: string;
 	aboutVisit: {
-		symptoms: string[]
-		complaint: string
-	}
+		symptoms: string[];
+		complaint: string;
+	};
 }
 
-
-const saveAppointment = async ({ data, cid, pid }: { data: NewAppointmentRequestBody, cid: string, pid: string }) => {
-	console.log(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`)
+const saveAppointment = async ({
+	data,
+	cid,
+	pid,
+}: {
+	data: NewAppointmentRequestBody;
+	cid: string;
+	pid: string;
+}) => {
+	console.log(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`);
 	try {
-		const res = await axios.post(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`, {
-			...data
-		})
+		const res = await axios.post(
+			`${API_ROOT}/v0/create/appointment/${cid}/${pid}`,
+			{
+				...data,
+			}
+		);
 	} catch (e) {
-		console.log("Error : ", e.response)
-		throw new Error("Error in saving appointment")
+		console.log("Error : ", e.response);
+		throw new Error("Error in saving appointment");
 	}
-}
+};
 
-export function PatientComplaint({ route }: PatientComplaintProps) {
+export function PatientComplaint() {
 	const toast = useToast()
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }))
+	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -101,10 +95,6 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 		setSymptoms(sy);
 	};
 
-	const { consultant, appointment, appointmentType } = route.params;
-
-	console.log("Consultant")
-	console.log(consultant.id)
 	const onSubmit = () => {
 		// adding this here to fake the flow on the patient appointments
 		// addAppointment({
@@ -121,42 +111,26 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => { } },
+				{ text: "Cancel", onPress: () => {} },
 				{
 					text: "Confirm",
-					onPress: () => {
-
-						console.log("appointment is undefined why")
-						console.log(consultant)
-
-						const data = {
-							aboutVisit: { complaint, symptoms },
-							utcDate: appointment,
-							type: appointmentType,
-							facilityId: appointmentType === "offline" ? consultant.facility.id : null
-
-						}
-						console.log(JSON.stringify(data, null, 3))
-						console.log("create appointment data")
-
-						addAppointment({ data: data, cid: consultant.id, pid: profile?.id || "" })
-					},
+					onPress: () => {},
 				},
 			]
 		);
 	};
 
 	const { mutate: addAppointment, isLoading } = useMutation(saveAppointment, {
-		onMutate: (variables) => { },
+		onMutate: (variables) => {},
 		onError: (error, variables, context) => {
 			console.log("Something went wrong");
 		},
 		onSuccess: (data, variables, context) => {
 			console.log("Data already saved ");
-			console.log("Whats the response : ", data)
+			console.log("Whats the response : ", data);
 			toast.show({
 				title: "Appointed created",
-			})
+			});
 			navigation.navigate(MainNavKey.HomeScreen);
 			// Boom baby!
 		},
@@ -169,12 +143,12 @@ export function PatientComplaint({ route }: PatientComplaintProps) {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>

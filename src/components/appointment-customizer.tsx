@@ -50,7 +50,6 @@ const regions: { name: string }[] = [
 const appointmentTypeAtom = atom<"offline" | "online" | "">("");
 const locationAtom = atom<string>("");
 const specialityAtom = atom<string>("");
-const scheduleAtom = atom<string>("");
 
 const setAppointmentTypeAtom = atom(
 	(get) => {

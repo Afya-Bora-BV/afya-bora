@@ -20,6 +20,8 @@ import {
 	CheckIcon,
 } from "native-base";
 import { RouteProp, useNavigation } from "@react-navigation/native";
+import { ConsultantListItem } from "../../../components/consultant-list-item";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
@@ -29,10 +31,12 @@ import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { useCallback } from "react";
-
-import { useAtom, atom } from 'jotai'
-import { setSelectedFacilityAtom } from "./FacilityList";
+import { atom, useAtom } from "jotai";
+import { StringLocale } from "yup/lib/locale";
 import { FacilityListItem } from "../../../components/facilities-list-item";
+import { setSelectedFacilityAtom } from "./FacilityList";
+import { PatientComplaint } from "./PatientComplaint";
+import { HomeNavKey } from ".";
 
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
@@ -60,63 +64,21 @@ function listOfNextNMonths(n: number): Array<Date> {
 	return dates;
 }
 
-const dateAtom = atom<Date>(new Date())
+const appointmentDateAtom = atom<Date>(new Date());
 
-const setSelectedDateAtom = atom((get) => {
-	return get(dateAtom)
-}, (get, set, update: Date) => {
-	// console.log("UPdate nay : ",update)
-	set(dateAtom, update)
-})
+const setAppointmentDateAtom = atom(
+	(get) => {
+		return get(appointmentDateAtom);
+	},
+	(get, set, update: Date) => {
+		// you can do more logic here for the state
 
-const SelectMonth: React.FC = ({
-}) => {
-	const [date, setDate] = useAtom(setSelectedDateAtom)
+		set(appointmentDateAtom, update);
+	}
+);
 
-	console.log("Date : ", date)
-	return (
-		<Menu
-			closeOnSelect={true}
-			trigger={(triggerProps) => {
-				console.log("here");
-				console.log(_.keys(triggerProps));
-				console.log(triggerProps.onPress);
-				return (
-					<Pressable
-						accessibilityLabel="More options menu"
-						{...triggerProps}
-					>
-						<HStack>
-							{/* <HamburgerIcon /> */}
-							<Text>{moment(date).format("MMMM YYYY")}</Text>
-							<ChevronDownIcon />
-						</HStack>
-					</Pressable>
-				);
-			}}
-		>
-			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
-			{listOfNextNMonths(3).map((date, i, arr) => (
-				<TouchableOpacity
-					style={{
-						padding: 10,
-						paddingHorizontal: 15,
-						borderBottomWidth: i === arr.length - 1 ? 0 : 1,
-						borderBottomColor: "#ccc",
-					}}
-					onPress={() => setDate(date)}
-				>
-					{/* <Menu.Item key={String(date)}> */}
-					<Text>{moment(date).format("MMMM YYYY")}</Text>
-					{/* </Menu.Item> */}
-				</TouchableOpacity>
-			))}
-		</Menu>
-	);
-};
-
-
-function PickADateSection({ chosenDate, onSelectDate }: any) {
+function PickADateSection() {
+	const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
 	const daysListRef = useRef(null);
 
 	return (
@@ -126,7 +88,10 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 					Preffered Date
 				</Text>
 
-				<SelectMonth />
+				<MonthDropDown
+					onChangeDate={(date) => onSelectDate(date)}
+					date={chosenDate}
+				/>
 			</HStack>
 			<ScrollView
 				snapToInterval={2}
@@ -163,76 +128,114 @@ function PickADateSection({ chosenDate, onSelectDate }: any) {
 	);
 }
 
-
 type TimeSlots = {
 	period: string;
 	min: string;
 	max: String;
 };
 
-const specialities: TimeSlots[] = [
+const time: TimeSlots[] = [
 	{
 		period: "Morning",
 		min: "9",
 		max: "12",
 	},
-].map((speciality) => ({ ...speciality }));
-
-const appointmentTime = atom<string>("");
-
-const setAppointmentTime = atom(
-	(get) => {
-		return get(appointmentTime);
+	{
+		period: "Afternoon",
+		min: "12",
+		max: "16",
 	},
-	(get, set, update: "offline" | "online") => {
+	{
+		period: "Evening",
+		min: "16",
+		max: "20",
+	},
+].map((time) => ({ ...time }));
+const appointmentTimeAtom = atom<string>("");
+
+const setAppointmentTimeAtom = atom(
+	(get) => {
+		return get(appointmentTimeAtom);
+	},
+	(get, set, update: string) => {
 		// you can do more logic here for the state
-		set(appointmentTime, update);
+
+		set(appointmentTimeAtom, update);
 	}
 );
 
-function PickATimeSection() {
-
+const PickATimeSection: React.FC = ({}) => {
+	const [appTime, setAppTime] = useAtom(setAppointmentTimeAtom);
 	return (
-		<Box>
+		<VStack space={5}>
 			<Text fontSize="2xl" bold>
 				Preferred Time Range
 			</Text>
-			{specialities.map((times) => {
-				return (
-					<Pressable>
-						<Box borderWidth={1} borderColor="#ccc" rounded={10}>
-							<Center>
-								<Text>{times.period}</Text>
-								<Text>
-									{times.min}-{times.max}
-								</Text>
-							</Center>
-						</Box>
-					</Pressable>
-				);
-			})}
-		</Box>
+			<HStack justifyContent={"space-between"}>
+				{time.map((time) => {
+					return (
+						<Pressable
+							onPress={() => {
+								setAppTime(time.period);
+							}}
+						>
+							<Box
+								borderWidth={1}
+								borderColor="#ccc"
+								rounded={10}
+								width={100}
+								py={2}
+								backgroundColor={
+									appTime === time.period
+										? "#258FBE"
+										: "white"
+								}
+							>
+								<Center>
+									<Text
+										style={{
+											color:
+												appTime === time.period
+													? "white"
+													: "grey",
+										}}
+									>
+										{time.period}
+									</Text>
+									<Text
+										style={{
+											color:
+												appTime === time.period
+													? "white"
+													: "grey",
+										}}
+									>
+										{time.min}-{time.max}
+									</Text>
+								</Center>
+							</Box>
+						</Pressable>
+					);
+				})}
+			</HStack>
+		</VStack>
 	);
-}
-
-const FacilityInfo = () => {
-	const [facility] = useAtom(setSelectedFacilityAtom)
-	if (!facility) return null
-	return (
-		<FacilityListItem
-			facility={facility}
-			onPress={() => {
-				console.log("Facility : ", facility)
-			}}
-		/>
-	)
-}
+};
 
 const doctors: { name: string }[] = ["Dentist", "Dermatologist"].map(
 	(speciality) => ({ name: speciality })
 );
 
-const setPreferedDoctorAtom = atom<string>("");
+const PreferedDoctorAtom = atom<string>("");
+
+const setPreferedDoctorAtom = atom(
+	(get) => {
+		return get(PreferedDoctorAtom);
+	},
+	(get, set, update: string) => {
+		set(PreferedDoctorAtom, update);
+	}
+);
 
 const PreferedDoctor = () => {
 	const [preferedDoctor, setPreferedDoctor] = useAtom(setPreferedDoctorAtom);
@@ -258,8 +261,55 @@ const PreferedDoctor = () => {
 	);
 };
 
+type MonthDropDownProps = {
+	date: Date;
+	onChangeDate: (date: Date) => void;
+};
 
-
+const MonthDropDown: React.FC<MonthDropDownProps> = ({
+	date,
+	onChangeDate,
+}) => {
+	return (
+		<Menu
+			// closeOnSelect={true}
+			trigger={(triggerProps) => {
+				console.log("here");
+				console.log(_.keys(triggerProps));
+				console.log(triggerProps.onPress);
+				return (
+					<Pressable
+						accessibilityLabel="More options menu"
+						{...triggerProps}
+					>
+						<HStack>
+							{/* <HamburgerIcon /> */}
+							<Text>{moment(date).format("MMMM YYYY")}</Text>
+							<ChevronDownIcon />
+						</HStack>
+					</Pressable>
+				);
+			}}
+		>
+			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
+			{listOfNextNMonths(3).map((date, i, arr) => (
+				<TouchableOpacity
+					style={{
+						padding: 10,
+						paddingHorizontal: 15,
+						borderBottomWidth: i === arr.length - 1 ? 0 : 1,
+						borderBottomColor: "#ccc",
+					}}
+					onPress={() => onChangeDate(date)}
+				>
+					{/* <Menu.Item key={String(date)}> */}
+					<Text>{moment(date).format("MMMM YYYY")}</Text>
+					{/* </Menu.Item> */}
+				</TouchableOpacity>
+			))}
+		</Menu>
+	);
+};
 
 type CalendarDayProps = {
 	date: Date;
@@ -295,27 +345,25 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
 	);
 };
 
+const FacilityDetails = () => {
+	const [facility, setFacility] = useAtom(setSelectedFacilityAtom);
+	return <FacilityListItem facility={facility} onPress={() => {}} />;
+};
 
+const NextButton = () => {
+	const navigation = useNavigation();
+	const onPressNext = useCallback(() => {
+		navigation.navigate(HomeNavKey.PatientComplaint);
+	}, []);
+	return (
+		<Button mb={3} bg={colors.primary} onPress={onPressNext} rounded={20}>
+			Next
+		</Button>
+	);
+};
 
 export default function SetAppointmentTime() {
 	const navigation = useNavigation();
-
-	const [chosenDate, selectDate] = useState<Date>(new Date());
-	const [chosenTimeSlot, setTimeSlot] = useState("");
-
-
-	const onPressNext = useCallback(() => {
-		const time = chosenTimeSlot[0]?.split(" ")[0] || "00:00";
-		const dateTime = `${moment(new Date(chosenDate)).format(
-			"YYYY-MM-DD"
-		)}T${time}:00`;
-		const date = new Date(dateTime);
-		navigation.navigate(NavKey.PatientComplaintScreen, {
-			appointment: date.toUTCString(),
-			appointmentType: "offline",
-		});
-	}, [chosenDate, chosenTimeSlot, navigation]);
-
 
 	return (
 		<MainContainer
@@ -324,24 +372,25 @@ export default function SetAppointmentTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
 			<VStack paddingX={10} space={10}>
+				{/* Consultant Preview */}
 				<Box>
-					<FacilityInfo />
+					<FacilityDetails />
 				</Box>
+
+				{/* Picking appointment times */}
 				<VStack bg="white" p={2} shadow={2} rounded={10} mb={1}>
-					<PickADateSection
-						chosenDate={chosenDate}
-						onSelectDate={selectDate}
-					/>
+					<PickADateSection />
+
 					<PickATimeSection />
 				</VStack>
 
@@ -358,16 +407,12 @@ export default function SetAppointmentTime() {
 					</Text>
 					<PreferedDoctor />
 				</VStack>
-				<Text fontSize={"md"} color={"#B0B3C7"}>
+				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
 				</Text>
-				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
-					Next
-				</Button>
+				<NextButton/>
 			</VStack>
 		</MainContainer>
 	);
 }
-
-
