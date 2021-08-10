@@ -40,7 +40,7 @@ type ConsultantListItemProps = {
 
 const { width, height } = Dimensions.get("screen");
 
-const FacilityInfo = () => {
+const FacilityInfo: React.FC = () => {
 	return (
 		<MainContainer
 			title={"Selected Facility"}
@@ -56,16 +56,25 @@ const FacilityInfo = () => {
 				</Stack>
 
 				<Stack px={10}>
-					<PrimaryButton children={"Schedule Appointment"} />
+					<PrimaryButton onPress={() => {
+
+					}}>
+						Schedule Appointment
+					</PrimaryButton>
 				</Stack>
 			</ScrollView>
 		</MainContainer>
 	);
 };
 
-const FacilityComponent = () => {
+const FacilityComponent: React.FC = () => {
 	const route = useRoute();
+
+	// TODO : considering not passing object in navigation object
+	// use Atoms instead to pass info between screen
 	const { facility } = route?.params;
+
+
 	return (
 		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
 			<VStack p={4} borderRadius={12} bg={"white"} space={5}>
