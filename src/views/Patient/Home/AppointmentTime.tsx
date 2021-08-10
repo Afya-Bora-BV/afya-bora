@@ -16,6 +16,8 @@ import {
 	ChevronDownIcon,
 	ArrowBackIcon,
 	Center,
+	Select,
+	CheckIcon,
 } from "native-base";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../../components/consultant-list-item";
@@ -29,7 +31,7 @@ import { NavKey } from "./BookAppointment/_navigator";
 import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 import { useCallback } from "react";
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { StringLocale } from "yup/lib/locale";
 
 export type BookAppointmentStackParamList = {
@@ -216,6 +218,23 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 					<PickATimeSection />
 				</VStack>
 
+				<VStack
+					bg="white"
+					p={4}
+					shadow={2}
+					rounded={10}
+					mb={1}
+					space={4}
+				>
+					<Text fontSize="2xl" bold>
+						Preferred Doctor
+					</Text>
+					<PreferedDoctor />
+				</VStack>
+				<Text fontSize={"md"} color={"#B0B3C7"}>
+					*Your exact appointment day, time, and doctor will be
+					confirmed by the facility administrator.
+				</Text>
 				<Button bg={colors.primary} onPress={onPressNext} rounded={20}>
 					Next
 				</Button>
@@ -223,6 +242,36 @@ export default function SetAppointmentTime({ route }: SetAppointmentTimeProps) {
 		</MainContainer>
 	);
 }
+
+const doctors: { name: string }[] = ["Dentist", "Dermatologist"].map(
+	(speciality) => ({ name: speciality })
+);
+
+const setPreferedDoctorAtom = atom<string>("");
+
+const PreferedDoctor = () => {
+	const [preferedDoctor, setPreferedDoctor] = useAtom(setPreferedDoctorAtom);
+	return (
+		<Select
+			variant="rounded"
+			selectedValue={preferedDoctor}
+			minWidth={200}
+			accessibilityLabel="PreferedDoctor"
+			placeholder="PreferedDoctor"
+			onValueChange={(itemValue) => {
+				setPreferedDoctor(itemValue);
+			}}
+			_selectedItem={{
+				bg: "cyan.600",
+				endIcon: <CheckIcon size={4} />,
+			}}
+		>
+			{doctors.map((doctor) => (
+				<Select.Item label={doctor.name} value={doctor.name} />
+			))}
+		</Select>
+	);
+};
 
 type MonthDropDownProps = {
 	date: Date;
