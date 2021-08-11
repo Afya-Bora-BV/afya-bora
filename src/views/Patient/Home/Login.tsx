@@ -28,6 +28,7 @@ import _ from "lodash";
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import CodeInput from "../../../components/forms/codeInput";
+import { HomeNavKey } from ".";
 
 // TODO : logic to be moved somewhere on refactor
 
@@ -58,16 +59,12 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 		// resolver: yupResolver(formPhoneSchema),
 	});
 
-	const { phoneNumber, updatePhoneNumber } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber }))
-
 	const onLogin = handleSubmit(
 		// When successfull
 		async ({ phoneNumber }) => {
 			// do somthign with phone #
 			console.log("Usee phone number ", phoneNumber)
 			await login(phoneNumber)
-			console.log("Phone to be updated ", phoneNumber)
-			updatePhoneNumber(phoneNumber)
 
 		},
 		// when invalid
@@ -144,15 +141,13 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 
 const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => {
 	const navigation = useNavigation();
+	const Toast = useToast()
 	const [code, set] = useState<string>("")
 	const uid = auth().currentUser?.uid
-	const { phoneNumber, updatePhoneNumber, updateProfileType } = useAuthStore((state) => ({ phoneNumber: state.phone, updatePhoneNumber: state.updatePhoneNumber, updateProfile: state.updateProfile, updateProfileType: state.updateProfileType }))
 
 	const onConfirmCode = async () => {
-		console.log("Phone ", phoneNumber)
 		try {
 			await verify(code)
-			updateProfileType("patient")
 		}
 		catch (e) {
 			throw new Error(JSON.stringify({ message: "Error in verifiying phone number", error: e }))
@@ -164,11 +159,16 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 	const { isLoading, mutate: confirmCode } = useMutation(() => onConfirmCode(), {
 		onError: (error, variables, context) => {
 			// An error happened!
-			console.log(`rolling back optimistic update with id `, error)
+			console.log(`Error in verifying code `, error)
+			Toast.show({
+				title: "Invalid verification code"
+			})
+
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
-			console.log("Successfully logged on ")
+			console.log("Successfuly verified code ")
+			navigation.navigate(HomeNavKey.ChooseProfile)
 		},
 
 	})
@@ -180,7 +180,7 @@ const VerifyCode = ({ verify }: { verify: (code: string) => Promise<void> }) => 
 			<Box bg="white" position="relative" shadow={2} rounded="xl" padding={5} paddingBottom={10} marginX={5} marginBottom={10}>
 				<VStack space={5} marginBottom={15} alignContent="center">
 					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
-						Enter the verification number {phoneNumber}
+						Verification Code Sent
 					</Text>
 					<CodeInput
 						value={code}
@@ -235,7 +235,7 @@ export default function Login() {
 		try {
 			await confirm?.confirm(code);
 		} catch (error) {
-			console.log('Invalid code.');
+			throw new Error("Invalid verification code : ")
 		}
 	}
 

@@ -33,9 +33,10 @@ import { useAppointmentTempoStore } from "../../../internals/appointment/context
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth";
-
+import { atom, useAtom } from 'jotai'
 import axios from "axios";
 import { API_ROOT } from "../../../api";
+import { HomeNavKey } from ".";
 
 const keySymptoms = [
 	"Fever",
@@ -80,15 +81,28 @@ const saveAppointment = async ({
 	}
 };
 
+// TODO: to find a batter place for these atoms
+const isAppointmentInProgressAtom = atom<boolean>(false)
+export const updateAppointmentInProgressAtom = atom((get) => {
+	return get(isAppointmentInProgressAtom)
+}, (get, set, update: boolean) => {
+	set(isAppointmentInProgressAtom, update)
+})
+
 const RequestAppointmentButton = () => {
+	const navigation = useNavigation()
 	const currentUser = auth().currentUser
+	const [isAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
 	const onSubmit = () => {
+		console.log("IS Appointment in progress : ", isAppointmentInProgress)
 		if (currentUser !== null) {
 			// navigate to login page
-			console.log("No user")
+			console.log("User found")
+			navigation.navigate(HomeNavKey.AppointmentInvoice)
 		} else {
 			// navigate to invoice page
-			console.log("User found ")
+			console.log("No user found ")
+			navigation.navigate(HomeNavKey.Login)
 		}
 	}
 	return (
@@ -102,9 +116,18 @@ const RequestAppointmentButton = () => {
 		</Button>
 	)
 }
+
+// TODO: breakdown the component to smaller as possible 
+// and create atom for the data needed for the invoice page
+
 export function PatientComplaint() {
 	const toast = useToast()
 	const navigation = useNavigation();
+	const [isAppointmentInProgress, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
+
+	React.useEffect(() => {
+		setIsAppointmentInProgress(true)
+	}, [isAppointmentInProgress])
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");

@@ -1,47 +1,77 @@
 import React from 'react'
 import { Box, Center, Heading, HStack, Spinner, Text, VStack } from 'native-base'
 import auth from '@react-native-firebase/auth';
-import { Consultant, Patient, useAuthStore } from '../../internals/auth/context'
-import { API_ROOT } from '../../api';
+import { Consultant, Patient, useAuthStore } from '../../../internals/auth/context'
+import { API_ROOT } from "../../../api";
 import axios, { AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import firestore from '@react-native-firebase/firestore';
 import { Pressable } from 'react-native';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
-import { ProfileNavKeys } from '.'
-
-
+import { HomeNavKey } from '.';
+import { atom, useAtom } from "jotai"
+import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const checkPatientProfiles = async (): Promise<Patient[]> => {
-	const uid = await auth().currentUser?.uid;
-	console.log("Checking user profile data");
-	console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`);
-	const profiles = await axios.get(
-		`${API_ROOT}/v0/user/${uid}/profile/patients`
-	);
-	return profiles.data.data;
+    const uid = await auth().currentUser?.uid;
+    console.log("Checking user profile data");
+    console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`);
+    const profiles = await axios.get(
+        `${API_ROOT}/v0/user/${uid}/profile/patients`
+    );
+    return profiles.data.data;
 };
 
 const checkConsultantProfiles = async (): Promise<Consultant[]> => {
-	const uid = await auth().currentUser?.uid;
-	const profile = await firestore()
-		.collection("consultants")
-		.where("uid", "==", uid)
-		.get();
-	const data = profile.docs.map(
-		(doc) => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant)
-	);
-	return data;
+    const uid = await auth().currentUser?.uid;
+    const profile = await firestore()
+        .collection("consultants")
+        .where("uid", "==", uid)
+        .get();
+    const data = profile.docs.map(
+        (doc) => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant)
+    );
+    return data;
 };
 
+type Profile = {
+    name: string
+}
+// type Unsubscribe = () => void
+
+// type Storage<Value> = {
+//     getItem: (key: string) => Value | Promise<Value>
+//     setItem: (key: string, newValue: Value) => void | Promise<void>
+//     delayInit?: boolean
+//     subscribe?: (key: string, callback: (value: Value) => void) => Unsubscribe
+// }
+
+// const profileStorage = createJSONStorage(() => AsyncStorage) as Storage<Profile>
+// const profileAtom = atomWithStorage<Profile>("profile", {
+//     name: ""
+// }, profileStorage)
+
+
+// TODOS
+// 1. to update profile info for more data
+// 2. to persist the store in async storage
+
+const profileAtom = atom<Profile>({
+    name: ""
+})
+
+const updateProfileAtom = atom((get) => {
+    return get(profileAtom)
+}, (get, set, update: Profile) => {
+    set(profileAtom, update)
+})
 const ChooseProfile = () => {
     const email = auth().currentUser?.email
     const phone = auth().currentUser?.phoneNumber
-    const uid = auth().currentUser?.uid
-
+    const [profile, updateProfile] = useAtom(updateProfileAtom)
     const navigation = useNavigation()
-    const { profileType, updateProfile } = useAuthStore((state) => ({ profileType: state.profileType, updateProfile: state.updateProfile }))
 
     const {
         status,
@@ -54,7 +84,7 @@ const ChooseProfile = () => {
 
     });
 
-    console.log("Profile type : ", profileType)
+
     console.log("Email : ", email, " Phone : ", phone)
 
     console.log("User profiles : ", profiles)
@@ -62,10 +92,11 @@ const ChooseProfile = () => {
     const updateProfileDetails = (profile: any) => {
         console.log("Setting profile to ", profile)
         if (phone) {
-            updateProfile({ ...profile, uid: uid, type: "patient" })
+            // update patient active profile
+
         }
         if (email) {
-            updateProfile({ ...profile, uid: uid, type: "doctor" })
+            // update doctor active profile
         }
     }
     if (error) {
@@ -88,7 +119,10 @@ const ChooseProfile = () => {
     }
 
     const handleCreateNewProfile = () => {
-        navigation.navigate(ProfileNavKeys.CreateProfileScreen)
+        console.log("Create Profile Page")
+        // update profile and go home
+
+        navigation.navigate(HomeNavKey.CreateProfile)
     }
 
     return (
