@@ -220,11 +220,11 @@ const ShowUserData = () => {
 	// 	return () => subscriber();
 	// }, [uid]);
 
-	useEffect(() => {
-		if (profile) {
-			setValue("name", profile.name);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (profile) {
+	// 		setValue("name", "name);
+	// 	}
+	// }, []);
 
 	const onSumit = (data: any) => {
 		console.log("Data ");
@@ -266,12 +266,12 @@ const ShowUserData = () => {
 										}
 										outlineColor={errors.name ? "red" : ""}
 										variant="rounded"
-										placeholder={profile.name}
+										placeholder={"name"}
 										autoCapitalize={"words"}
 									/>
 								)}
 								name="name"
-								defaultValue={profile.name}
+								defaultValue={"name"}
 							/>
 						</Stack>
 
@@ -310,7 +310,7 @@ const ShowUserData = () => {
 									</Select>
 								)}
 								name="gender"
-								defaultValue={profile.gender}
+								defaultValue={"male"}
 							/>
 						</Stack>
 
@@ -326,13 +326,13 @@ const ShowUserData = () => {
 									<>
 										<Input
 											// keyboardType={""}
-											value={moment(profile.dob).format(
+											value={
 												"DD MMMM YYYY"
-											)}
+											}
 											variant="rounded"
-											placeholder={moment(
-												profile.dob
-											).format("DD MMMM YYYY")}
+											placeholder={
+												"dob"
+											}
 											style={{
 												flex: 1,
 											}}
@@ -387,7 +387,7 @@ const ShowUserData = () => {
 									</>
 								)}
 								name="dob"
-								defaultValue={profile.dob}
+								defaultValue={new Date()}
 							/>
 						</Stack>
 
@@ -410,12 +410,12 @@ const ShowUserData = () => {
 										outlineColor={errors.name ? "red" : ""}
 										variant="rounded"
 										keyboardType="email-address"
-										placeholder={profile.email}
+										placeholder={"email"}
 										autoCapitalize={"none"}
 									/>
 								)}
 								name="email"
-								defaultValue={profile.email}
+								defaultValue={"email"}
 							/>
 						</Stack>
 
@@ -437,13 +437,13 @@ const ShowUserData = () => {
 										}
 										outlineColor={errors.name ? "red" : ""}
 										variant="rounded"
-										placeholder={profile.phoneNumber}
+										placeholder={"phoneNumber"}
 										keyboardType="phone-pad"
 										autoCapitalize={"words"}
 									/>
 								)}
 								name="phone"
-								defaultValue={profile.phoneNumber}
+								defaultValue={"phoneNumber"}
 							/>
 						</Stack>
 
@@ -469,7 +469,7 @@ const ShowUserData = () => {
 													errors.name ? "red" : ""
 												}
 												variant="rounded"
-												placeholder={profile.height}
+												placeholder={"height"}
 												InputRightElement={
 													<Text paddingRight={2}>
 														cm
@@ -479,7 +479,7 @@ const ShowUserData = () => {
 										)}
 										name="height"
 										// rules={{ required: true }}
-										defaultValue={profile.height}
+										defaultValue={"height"}
 									/>
 								</Stack>
 
@@ -504,7 +504,7 @@ const ShowUserData = () => {
 													errors.name ? "red" : ""
 												}
 												variant="rounded"
-												placeholder={profile.weight}
+												placeholder={"weight"}
 												InputRightElement={
 													<Text paddingRight={2}>
 														kg
@@ -514,7 +514,7 @@ const ShowUserData = () => {
 										)}
 										name="weight"
 										// rules={{ required: true }}
-										defaultValue={profile.weight}
+										defaultValue={"weight"}
 									/>
 								</Stack>
 							</HStack>
@@ -535,7 +535,7 @@ const ShowUserData = () => {
 										selectedValue={value}
 										minWidth={200}
 										accessibilityLabel="BloodGroup"
-										placeholder={profile.bloodGroup}
+										placeholder={"bloodGroup"}
 										onValueChange={(itemValue) =>
 											onChange(itemValue)
 										}
@@ -554,7 +554,7 @@ const ShowUserData = () => {
 								)}
 								name="bloodGroup"
 								// rules={{ required: true }}
-								defaultValue={profile.bloodGroup}
+								defaultValue={"A+"}
 							/>
 						</Stack>
 
@@ -573,7 +573,7 @@ const ShowUserData = () => {
 										selectedValue={value}
 										minWidth={200}
 										accessibilityLabel="Location"
-										placeholder={profile.location}
+										placeholder={"location"}
 										onValueChange={(itemValue) =>
 											onChange(itemValue)
 										}
@@ -592,7 +592,7 @@ const ShowUserData = () => {
 								)}
 								name="residence"
 								// rules={{ required: true }}
-								defaultValue={profile.residence}
+								defaultValue={"residence"}
 							/>
 						</Stack>
 					</Stack>
