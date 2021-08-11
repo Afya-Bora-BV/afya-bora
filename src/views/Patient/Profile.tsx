@@ -150,7 +150,7 @@ export default function ProfileMain() {
 					}} onPress={() => {
 						// TODO: tranfer the edit profile page to route stack and navigate to that screen
 						// HomeNavKey
-						// navigation.navigate(
+						navigation.navigate(HomeNavKey.EditHealthProfile)
 
 						// );
 					}} />
