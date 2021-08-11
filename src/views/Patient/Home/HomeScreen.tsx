@@ -50,7 +50,7 @@ const helpOptions = [
 		title: "Sign in / Create Account",
 		heading: "Your AfyaBora Account",
 		onNavigate: (navigation: any) => {
-			navigation.navigate(NavKey.LoginScreen);
+			navigation.navigate(HomeNavKey.Login);
 		},
 	},
 ];
@@ -130,8 +130,8 @@ export default function Home() {
 										<Text
 											fontWeight="800"
 											textAlign="center"
-											// wordBreak="break-word"
-											// overflowWrap="break-word"
+										// wordBreak="break-word"
+										// overflowWrap="break-word"
 										>
 											{title}
 										</Text>

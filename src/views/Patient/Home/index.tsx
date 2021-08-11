@@ -5,6 +5,9 @@ import FacilityList from "./FacilityList";
 import AppointmentTime from "./AppointmentTime"
 import FacilityMap from './FacilityMap'
 import FacilityInfo from "./FacilityInfo";
+import AppointmentInvoice from "./AppointmentInvoice"
+import Login from "./Login"
+
 import { PatientComplaint } from "./PatientComplaint";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -18,7 +21,8 @@ export const HomeNavKey = {
 	FacilityInfo: "FacilityInfo",
 	EditAppointment: "EditAppointment",
 	PatientComplaint: "PatientComplaint",
-	PatientVideoCallScreen: "PatientVideoCallScreen"
+	AppointmentInvoice: "AppointmentInvoice",
+	Login: "Login"
 };
 
 
@@ -50,10 +54,15 @@ export default function HomeView({ navigation }: any) {
 				name={HomeNavKey.PatientComplaint}
 				component={PatientComplaint}
 			/>
-			{/* <NavStack.Screen
-				name={HomeNavKey.EditAppointment}
-				component={EditAppointment}
-			/> */}
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentInvoice}
+				component={AppointmentInvoice}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.Login}
+				component={Login}
+			/>
 		</NavStack.Navigator>
 	);
 }

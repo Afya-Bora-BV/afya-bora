@@ -14,28 +14,20 @@ import {
 	useToast,
 } from "native-base";
 import React, { useState, useCallback } from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { colors } from "../../constants/colors";
+import { colors } from "../../../constants/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
-import { NavKey as _MainAppNavKey } from './_navigator'
-import { useAuthStore } from "../../internals/auth/context";
-import AltContainer from "../../components/containers/AltContainer";
-import { ControllerFormInput } from "../../components/forms/inputs";
+import { useAuthStore } from "../../../internals/auth/context";
+import AltContainer from "../../../components/containers/AltContainer";
+import { ControllerFormInput } from "../../../components/forms/inputs";
 import { useMutation } from "react-query";
 import _ from "lodash";
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import CodeInput from "../../components/forms/codeInput";
-import { API_ROOT } from "../../api";
-import axios, { AxiosResponse } from "axios";
-
-
+import CodeInput from "../../../components/forms/codeInput";
 
 // TODO : logic to be moved somewhere on refactor
 
@@ -56,6 +48,7 @@ interface FormPhoneInputs {
 
 const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber: (phoneNumber: string) => Promise<void> }) => {
 	const navigation = useNavigation();
+	const Toast = useToast()
 	const {
 		control,
 		handleSubmit,
@@ -134,7 +127,9 @@ const SendConfirmationCode = ({ signInWithPhoneNumber }: { signInWithPhoneNumber
 						// using Platform api in RN
 						// cursor="pointer"
 						onPress={() => {
-							navigation.navigate(_MainAppNavKey.LoginDoctorScreen);
+							Toast.show({
+								title: "Work in progress"
+							})
 						}}
 					>
 						<Text bold color={colors.primary}>

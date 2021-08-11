@@ -36,8 +36,6 @@ import auth from "@react-native-firebase/auth";
 
 import axios from "axios";
 import { API_ROOT } from "../../../api";
-import { useAuthStore } from "../../../internals/auth/context";
-import { consultants } from "../../../data/consultants";
 
 const keySymptoms = [
 	"Fever",
@@ -82,10 +80,31 @@ const saveAppointment = async ({
 	}
 };
 
+const RequestAppointmentButton = () => {
+	const currentUser = auth().currentUser
+	const onSubmit = () => {
+		if (currentUser !== null) {
+			// navigate to login page
+			console.log("No user")
+		} else {
+			// navigate to invoice page
+			console.log("User found ")
+		}
+	}
+	return (
+		<Button
+			width="100%"
+			bg={colors.primary}
+			onPress={onSubmit}
+			rounded={20}
+		>
+			Book Appointment
+		</Button>
+	)
+}
 export function PatientComplaint() {
 	const toast = useToast()
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
 	const [symptoms, setSymptoms] = useState<Array<string>>([]);
 	const [complaint, setComplaint] = useState("");
@@ -96,32 +115,21 @@ export function PatientComplaint() {
 	};
 
 	const onSubmit = () => {
-		// adding this here to fake the flow on the patient appointments
-		// addAppointment({
-		// 	symptoms,
-		// 	consultant,
-		// 	complaint,
-		// 	dateTime: appointment,
-		// });
-
-		// FIXME (ghmecc): This is platform-centric code, right? to mean
-		//  that this code won't render on the web sio? any way to help with that?
-		// ----------------------------------------
 		Alert.alert(
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
-					onPress: () => {},
+					onPress: () => { },
 				},
 			]
 		);
 	};
 
 	const { mutate: addAppointment, isLoading } = useMutation(saveAppointment, {
-		onMutate: (variables) => {},
+		onMutate: (variables) => { },
 		onError: (error, variables, context) => {
 			console.log("Something went wrong");
 		},
@@ -143,12 +151,12 @@ export function PatientComplaint() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -274,16 +282,7 @@ export function PatientComplaint() {
 						/>
 					</VStack>
 				</Box>
-				<Button
-					width="100%"
-					bg={colors.primary}
-					onPress={onSubmit}
-					isLoading={isLoading}
-					disabled={isLoading}
-					rounded={20}
-				>
-					Book Appointment
-				</Button>
+				<RequestAppointmentButton />
 			</VStack>
 		</MainContainer>
 	);
