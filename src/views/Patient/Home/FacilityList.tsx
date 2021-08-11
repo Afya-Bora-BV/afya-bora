@@ -81,8 +81,8 @@ const FacilitySkelton = () => {
 const FacilityLoader = () => {
 	return (
 		<VStack space={6}>
-			<FacilitySkelton/>
-			<FacilitySkelton/>
+			<FacilitySkelton />
+			<FacilitySkelton />
 		</VStack>
 
 
@@ -93,13 +93,11 @@ const FacilityList = () => {
 	const Toast = useToast();
 	const [, setSelectedFacility] = useAtom(setSelectedFacilityAtom)
 
-	const selectFacility = useCallback(
-		(facility: Facility) => {
-			setSelectedFacility(facility)
-			navigation.navigate(HomeNavKey.AppointmentTime);
-		},
-		[navigation]
-	);
+	const selectFacility = (facility: Facility) => {
+		setSelectedFacility(facility)
+		navigation.navigate(HomeNavKey.AppointmentTime);
+	}
+
 
 	const { data: facilities, error, isLoading } = useQuery<Facility[]>(
 		["facilities"],

@@ -164,7 +164,7 @@ const setAppointmentTimeAtom = atom(
 	}
 );
 
-const PickATimeSection: React.FC = ({}) => {
+const PickATimeSection: React.FC = ({ }) => {
 	const [appTime, setAppTime] = useAtom(setAppointmentTimeAtom);
 	return (
 		<VStack space={5}>
@@ -347,7 +347,8 @@ const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
 
 const FacilityDetails = () => {
 	const [facility, setFacility] = useAtom(setSelectedFacilityAtom);
-	return <FacilityListItem facility={facility} onPress={() => {}} />;
+	if (!facility) return null
+	return <FacilityListItem facility={facility} onPress={() => { }} />;
 };
 
 const NextButton = () => {
@@ -372,12 +373,12 @@ export default function SetAppointmentTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -411,7 +412,7 @@ export default function SetAppointmentTime() {
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
 				</Text>
-				<NextButton/>
+				<NextButton />
 			</VStack>
 		</MainContainer>
 	);
