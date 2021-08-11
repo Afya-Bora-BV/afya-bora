@@ -14,20 +14,20 @@ import {
 	useToast,
 } from "native-base";
 import React, { useState, useCallback } from "react";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
-import { useAuthStore } from "../../../internals/auth/context";
-import AltContainer from "../../../components/containers/AltContainer";
-import { ControllerFormInput } from "../../../components/forms/inputs";
+import { useAuthStore } from "../../internals/auth/context";
+import AltContainer from "../../components/containers/AltContainer";
+import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";
 import _ from "lodash";
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import CodeInput from "../../../components/forms/codeInput";
+import CodeInput from "../../components/forms/codeInput";
 import { HomeNavKey } from ".";
 
 // TODO : logic to be moved somewhere on refactor

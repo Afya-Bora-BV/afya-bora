@@ -17,22 +17,22 @@ import {
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 
-import AccountIcon from "../../../assets/icons/AccountIcon";
-import GenderIcon from "../../../assets/icons/GenderIcon";
-import PenEditIcon from "../../../assets/icons/PenEditIcon";
-import WhatsAppLogo from "../../../assets/icons/WhatsAppLogo";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
-import { StatusAppointmentAlert } from "../../../components/core/appointment";
+import AccountIcon from "../../assets/icons/AccountIcon";
+import GenderIcon from "../../assets/icons/GenderIcon";
+import PenEditIcon from "../../assets/icons/PenEditIcon";
+import WhatsAppLogo from "../../assets/icons/WhatsAppLogo";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
+import { StatusAppointmentAlert } from "../../components/core/appointment";
 import { Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../components/consultant-list-item";
-import { FacilityListItem } from "../../../components/facilities-list-item";
-import { colors } from "../../../constants/colors";
+import { ConsultantListItem } from "../../components/consultant-list-item";
+import { FacilityListItem } from "../../components/facilities-list-item";
+import { colors } from "../../constants/colors";
 
-import { HomeNavKey } from "./_navigator";
-import { API_ROOT, getAppointmentDetails } from "../../../api";
+import { API_ROOT, getAppointmentDetails } from "../../api";
 import axios from "axios";
+import { HomeNavKey } from ".";
 
 
 const cancellAppointment = async (id: string) => {
@@ -210,7 +210,7 @@ export default function AppointmentInfo() {
 						style={{ backgroundColor: "#24D626" }}
 						borderRadius={20}
 						onPress={() => {
-							navigation.navigate(HomeNavKey.PatientVideoCallScreen)
+							// navigation.navigate(HomeNavKey.PatientVideoCallScreen)
 						}}
 					>
 						Join Consultation

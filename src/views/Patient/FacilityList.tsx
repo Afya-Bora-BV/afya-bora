@@ -15,23 +15,23 @@ import {
 	Box,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../components/consultant-list-item";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
+import { ConsultantListItem } from "../../components/consultant-list-item";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
 import { Pressable, Dimensions, View } from "react-native";
 import { useCallback } from "react";
 
 import { useQuery } from "react-query";
 import axios, { AxiosResponse } from "axios";
 import { useEffect } from "react";
-import { API_ROOT } from "../../../api";
+import { API_ROOT } from "../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import AppointmentCustomizer, { completeScheduleAtom } from "../../../components/appointment-customizer";
+import AppointmentCustomizer, { completeScheduleAtom } from "../../components/appointment-customizer";
 import { useAtom, atom } from 'jotai'
 
 import { HomeNavKey } from '.'
-import { Facility } from "../../../types";
-import { FacilityListItem } from "../../../components/facilities-list-item";
+import { Facility } from "../../types";
+import { FacilityListItem } from "../../components/facilities-list-item";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 

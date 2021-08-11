@@ -20,20 +20,19 @@ import {
 	CheckIcon,
 } from "native-base";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../../components/consultant-list-item";
+import { ConsultantListItem } from "../../components/consultant-list-item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
 import { TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import moment from "moment";
-import { NavKey } from "./BookAppointment/_navigator";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
 import { useCallback } from "react";
 import { atom, useAtom } from "jotai";
 import { StringLocale } from "yup/lib/locale";
-import { FacilityListItem } from "../../../components/facilities-list-item";
+import { FacilityListItem } from "../../components/facilities-list-item";
 import { setSelectedFacilityAtom } from "./FacilityList";
 import { PatientComplaint } from "./PatientComplaint";
 import { HomeNavKey } from ".";

@@ -13,24 +13,24 @@ import {
 	useToast,
 } from "native-base";
 import React, { useState } from "react";
-import { PicAvatar } from "../../../components/avatar";
-import { Spacer } from "../../../components/Spacer";
+import { PicAvatar } from "../../components/avatar";
+import { Spacer } from "../../components/Spacer";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { PrimaryButton } from "../../../components/button";
+import { PrimaryButton } from "../../components/button";
 import moment from "moment";
-import { useAuthStore } from "../../../internals/auth/context";
+import { useAuthStore } from "../../internals/auth/context";
 
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import axios, { AxiosResponse } from "axios";
-import { API_ROOT } from "../../../api";
+import { API_ROOT } from "../../api";
 import { useAtom } from 'jotai'
 import { updateProfileAtom } from "./ChooseProfile";
 import { HomeNavKey } from ".";

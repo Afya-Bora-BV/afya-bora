@@ -8,15 +8,15 @@ import {
 	VStack,
 } from "native-base";
 import React from "react";
-import MainContainer from "../../../components/containers/MainContainer";
-import { StatusAppointmentAlert } from "../../../components/core/appointment";
+import MainContainer from "../../components/containers/MainContainer";
+import { StatusAppointmentAlert } from "../../components/core/appointment";
 import { Pressable } from "react-native";
-import { IconContainer } from "../../../components/misc";
+import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { API_ROOT, getAppointmentDetails } from "../../../api";
+import { API_ROOT, getAppointmentDetails } from "../../api";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Spacer } from "../../../components/Spacer";
+import { Spacer } from "../../components/Spacer";
 
 export default function AppointmentSpecifics() {
 	const navigation = useNavigation();

@@ -1,46 +1,113 @@
-import React from 'react';
+import React from "react";
 
-import HomeView from './Home';
-import ScheduleView from './Schedule';
-import ProfileView from './Profile';
+import HomeScreen from "./HomeScreen";
+import FacilityList from "./FacilityList";
+import AppointmentTime from "./AppointmentTime";
+import FacilityMap from "./FacilityMap";
+import FacilityInfo from "./FacilityInfo";
+import AppointmentInvoice from "./AppointmentInvoice";
+import Login from "./Login";
+import CreateProfile from "./CreateProfile";
+import ChooseProfile from "./ChooseProfile";
+import Profile from "./Profile";
+import Notification from "./Notification";
+import EditHealthProfile from "./EditHealthProfile";
+import AppointmentSpecifics from "./AppointmentSpecifics";
 
-import TabHomeIcon from '../../assets/icons/TabHomeIcon';
-import TabScheduleIcon from '../../assets/icons/TabScheduleIcon';
-import TabChatIcon from '../../assets/icons/TabChatIcon';
-import TabProfileIcon from '../../assets/icons/TabProfileIcon';
+import { PatientComplaint } from "./PatientComplaint";
+import { createStackNavigator } from "@react-navigation/stack";
+import VisitHistory from "./VisitHistory";
+import UpcomingAppointments from "./UpcomingAppointments";
 
-import {Tab, TabNavKey} from './_navigator';
+export const NavStack = createStackNavigator();
 
-export default function PatientAppView () {
+export const HomeNavKey = {
+	HomeScreen: "HomeScreen",
+	ConsultantList: "ConsultantList",
+	AppointmentTime: "AppointmentTime",
+	FacilityMap: "FacilityMap",
+	FacilityInfo: "FacilityInfo",
+	EditAppointment: "EditAppointment",
+	PatientComplaint: "PatientComplaint",
+	AppointmentInvoice: "AppointmentInvoice",
+	Login: "Login",
+	CreateProfile: "CreateProfile",
+	ChooseProfile: "ChooseProfile",
+	Profile: "Profile",
+	Notification: "Notification",
+	VisitHistory: "VisitHistory",
+	EditHealthProfile: "EditHealthProfile",
+	UpcomingAppointments: "UpcomingAppointments",
+	AppointmentSpecifics: "AppointmentSpecifics"
+};
+
+export default function HomeView({ navigation }: any) {
 	return (
-		<Tab.Navigator
-			lazy
-			initialRouteName={TabNavKey.HomeView}
-			tabBarOptions={{
-				activeTintColor: "#561BB3",
-				inactiveTintColor: "#B0B3C7",
-			}}
+		<NavStack.Navigator headerMode="none"
+			initialRouteName={HomeNavKey.HomeScreen}
 		>
-			<Tab.Screen
-				name={TabNavKey.HomeView}
-				component={HomeView}
-				options={{
-					tabBarLabel: "Home",
-					tabBarIcon: ({ color, size }) => (
-						<TabHomeIcon size={8} color={color} />
-					),
-				}}
+			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
+			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
+			<NavStack.Screen
+				name={HomeNavKey.HomeScreen}
+				component={HomeScreen}
 			/>
-			<Tab.Screen
-				name={TabNavKey.Profile}
-				component={ProfileView}
-				options={{
-					tabBarLabel: "Profile",
-					tabBarIcon: ({ color, size }) => (
-						<TabProfileIcon size={8} color={color} />
-					),
-				}}
+			<NavStack.Screen
+				name={HomeNavKey.ConsultantList}
+				component={FacilityList}
 			/>
-		</Tab.Navigator>
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentTime}
+				component={AppointmentTime}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.FacilityMap}
+				component={FacilityMap}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.FacilityInfo}
+				component={FacilityInfo}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.PatientComplaint}
+				component={PatientComplaint}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentInvoice}
+				component={AppointmentInvoice}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.ChooseProfile}
+				component={ChooseProfile}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.CreateProfile}
+				component={CreateProfile}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.Notification}
+				component={Notification}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.VisitHistory}
+				component={VisitHistory}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.UpcomingAppointments}
+				component={UpcomingAppointments}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.EditHealthProfile}
+				component={EditHealthProfile}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentSpecifics}
+				component={AppointmentSpecifics}
+			/>
+		</NavStack.Navigator>
 	);
 }

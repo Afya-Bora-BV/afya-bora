@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Center, Heading, HStack, Spinner, Text, VStack } from 'native-base'
 import auth from '@react-native-firebase/auth';
-import { Consultant, Patient, useAuthStore } from '../../../internals/auth/context'
-import { API_ROOT } from "../../../api";
+import { Consultant, Patient, useAuthStore } from '../../internals/auth/context'
+import { API_ROOT } from "../../api";
 import axios, { AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import firestore from '@react-native-firebase/firestore';

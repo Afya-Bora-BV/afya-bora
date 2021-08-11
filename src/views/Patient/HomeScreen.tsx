@@ -15,27 +15,25 @@ import {
 	Stack,
 	CheckIcon,
 } from "native-base";
-import UserIcon from "../../../assets/icons/User";
-import BellIcon from "../../../assets/icons/Bell";
-import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
-import FacilityIllustration from "../../../assets/illustrations/FacilityIllustration";
+import UserIcon from "../../assets/icons/User";
+import BellIcon from "../../assets/icons/Bell";
+import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
+import FacilityIllustration from "../../assets/illustrations/FacilityIllustration";
 
 import { useNavigation } from "@react-navigation/native";
+import { colors } from "../../constants/colors";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
 
-import { NavKey } from "../../_Main/_navigator";
-import { colors } from "../../../constants/colors";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
-
-import HomeScreenIllustration from "../../../assets/illustrations/HomeScreenIllustration";
+import HomeScreenIllustration from "../../assets/illustrations/HomeScreenIllustration";
 import auth from "@react-native-firebase/auth";
 
-import { Spacer } from "../../../components/Spacer";
-import { PrimaryButton } from "../../../components/button";
+import { Spacer } from "../../components/Spacer";
+import { PrimaryButton } from "../../components/button";
 import { atom, useAtom } from "jotai";
 import AppointmentCustomizer, {
 	completeScheduleAtom,
-} from "../../../components/appointment-customizer";
+} from "../../components/appointment-customizer";
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 const helpOptions = [
@@ -71,8 +69,8 @@ const AccountDetails = () => {
 					<Text
 						fontWeight="800"
 						textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
 					>
 						{user
 							? "View Profile and Visits"
@@ -188,8 +186,8 @@ export default function Home() {
 										<Text
 											fontWeight="800"
 											textAlign="center"
-											// wordBreak="break-word"
-											// overflowWrap="break-word"
+										// wordBreak="break-word"
+										// overflowWrap="break-word"
 										>
 											{title}
 										</Text>

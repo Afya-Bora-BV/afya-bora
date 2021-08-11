@@ -13,18 +13,18 @@ import {
 import React from "react";
 import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ClipboardPulseIcon from "../../../assets/icons/ClipboardPulseIcon";
-import HeartPulseIcon from "../../../assets/icons/HeartPulseIcon";
-import WalletIcon from "../../../assets/icons/WalletIcon";
-import MainContainer from "../../../components/containers/MainContainer";
-import { Spacer } from "../../../components/Spacer";
-import { IconContainer } from "../../../components/misc";
-import BackIcon from "../../../assets/icons/BackIcon";
-import { PrimaryButton } from "../../../components/button";
+import ClipboardPulseIcon from "../../assets/icons/ClipboardPulseIcon";
+import HeartPulseIcon from "../../assets/icons/HeartPulseIcon";
+import WalletIcon from "../../assets/icons/WalletIcon";
+import MainContainer from "../../components/containers/MainContainer";
+import { Spacer } from "../../components/Spacer";
+import { IconContainer } from "../../components/misc";
+import BackIcon from "../../assets/icons/BackIcon";
+import { PrimaryButton } from "../../components/button";
 import { useAtom } from "jotai";
 import { setSelectedFacilityAtom } from "./FacilityList";
-import { FacilityListItem } from "../../../components/facilities-list-item";
-import { FacilityDetails } from "../../../components/facilities-details";
+import { FacilityListItem } from "../../components/facilities-list-item";
+import { FacilityDetails } from "../../components/facilities-details";
 import { HomeNavKey } from ".";
 
 const FacilityComponent = () => {

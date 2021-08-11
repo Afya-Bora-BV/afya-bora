@@ -20,22 +20,20 @@ import {
 	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
-import { colors } from "../../../constants/colors";
+import { colors } from "../../constants/colors";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
-import { toggleStringFromList } from "../../../utils";
-
-import { HomeNavKey as MainNavKey } from "./_navigator";
+import { toggleStringFromList } from "../../utils";
 import { StackNavigationProp } from "@react-navigation/stack";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
-import { useAppointmentTempoStore } from "../../../internals/appointment/context";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
+import { useAppointmentTempoStore } from "../../internals/appointment/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth";
 import { atom, useAtom } from 'jotai'
 import axios from "axios";
-import { API_ROOT } from "../../../api";
+import { API_ROOT } from "../../api";
 import { HomeNavKey } from ".";
 
 const keySymptoms = [
@@ -162,7 +160,7 @@ export function PatientComplaint() {
 			toast.show({
 				title: "Appointed created",
 			});
-			navigation.navigate(MainNavKey.HomeScreen);
+			navigation.navigate(HomeNavKey.HomeScreen);
 			// Boom baby!
 		},
 	});

@@ -8,25 +8,25 @@ import {
 	Heading,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import MainContainer from "../../../components/containers/MainContainer";
+import MainContainer from "../../components/containers/MainContainer";
 import {
 	StatusAppointmentAlert,
 	UpcomingAppointmentAlert,
-} from "../../../components/core/appointment";
+} from "../../components/core/appointment";
 import { Pressable } from "react-native";
-import { IconContainer } from "../../../components/misc";
+import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import UpcomingAppointmentIllustration from "../../../assets/illustrations/UpcomingAppointmentIllustration";
+import UpcomingAppointmentIllustration from "../../assets/illustrations/UpcomingAppointmentIllustration";
 import { typography } from "styled-system";
-import { Spacer } from "../../../components/Spacer";
-import { colors } from "../../../constants/colors";
-import { AppointmentAlert } from "../../../components/core/appointment";
-import { useAuthStore } from "../../../internals/auth/context";
+import { Spacer } from "../../components/Spacer";
+import { colors } from "../../constants/colors";
+import { AppointmentAlert } from "../../components/core/appointment";
+import { useAuthStore } from "../../internals/auth/context";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { RealTimeAppointment } from "../../../types";
-import { HomeNavKey } from "./_navigator";
+import { RealTimeAppointment } from "../../types";
 import moment from "moment";
+import { HomeNavKey } from ".";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -38,12 +38,12 @@ export default function UpcomingAppointments() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -149,12 +149,14 @@ const UpcomingAppointmentsSection = () => {
 								<UpcomingAppointmentAlert
 									appointment={appointment}
 									onPress={() => {
-										navigation.navigate(
-											HomeNavKey.AppointmentInfoScreen,
-											{
-												appointment: appointment,
-											}
-										);
+										console.log("To appointment info screen")
+										// navigation.navigate(
+
+										// 	// HomeNavKey.Appo,
+										// 	// {
+										// 	// 	appointment: appointment,
+										// 	// }
+										// );
 									}}
 								/>
 							</View>

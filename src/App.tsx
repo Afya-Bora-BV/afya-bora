@@ -14,7 +14,7 @@ import { Provider as JotaiProvider } from 'jotai'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import HomeView from "./views/Patient/Home";
+import HomeView from "./views/Patient";
 
 const queryClient = new QueryClient();
 
@@ -113,7 +113,7 @@ function Main() {
 		return subscriber; // unsubscribe on unmount
 	}, []);
 
-	
+
 
 	useEffect(() => {
 		// Remove splash screen if ready
@@ -121,7 +121,7 @@ function Main() {
 	}, [ready]);
 
 	if (initializing) return null;
-	
+
 	return <HomeView />;
 }
 

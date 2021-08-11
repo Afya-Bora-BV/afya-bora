@@ -1,18 +1,18 @@
 import { ArrowBackIcon, View, VStack } from "native-base";
 import { Text } from "react-native-svg";
 import React, { useEffect, useState } from "react";
-import MainContainer from "../../../components/containers/MainContainer";
+import MainContainer from "../../components/containers/MainContainer";
 import {
 	StatusAppointmentAlert,
 	UpcomingAppointmentAlert,
-} from "../../../components/core/appointment";
+} from "../../components/core/appointment";
 import { Pressable } from "react-native";
-import { IconContainer } from "../../../components/misc";
+import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { RealTimeAppointment } from "../../../types";
-import { useAuthStore } from "../../../internals/auth/context";
+import { RealTimeAppointment } from "../../types";
+import { useAuthStore } from "../../internals/auth/context";
 import moment from "moment";
 import { HomeNavKey } from ".";
 

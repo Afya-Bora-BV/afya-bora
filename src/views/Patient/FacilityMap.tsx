@@ -2,15 +2,15 @@ import * as React from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, Dimensions, Animated, Platform, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
 import { ArrowBackIcon, Avatar, Heading, VStack, HStack, Text, Box } from "native-base";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { HomeNavKey } from '.'
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Facility } from "../../../types";
-import { API_ROOT } from "../../../api";
+import { Facility } from "../../types";
+import { API_ROOT } from "../../api";
 
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;

@@ -26,7 +26,6 @@ import {
 import { useQuery } from "react-query";
 import MedicalHistoryIcon from "../../../assets/icons/MedicalHistory";
 import moment from "moment";
-import { HomeNavKey } from "./_navigator";
 import _ from "lodash";
 import { AppointmentAlert } from "../../../components/core/appointment";
 import { TouchableOpacityBase } from "react-native";

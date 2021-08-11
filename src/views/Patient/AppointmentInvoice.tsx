@@ -9,9 +9,9 @@ import {
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { HomeNavKey } from ".";
-import { colors } from "../../../constants/colors";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
+import { colors } from "../../constants/colors";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
 
 const ConfirmButton = () => {
 	const navigation = useNavigation();

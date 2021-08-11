@@ -19,18 +19,18 @@ import {
 } from "native-base";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AccountIcon from "../../../assets/icons/AccountIcon";
-import HeadphoneIcon from "../../../assets/icons/HeadphoneIcon";
-import InfoIcon from "../../../assets/icons/InfoIcon";
-import LogoutIcon from "../../../assets/icons/LogoutIcon";
-import AlternateContainer from "../../../components/containers/AlternateContainer";
-import { IconContainer } from "../../../components/misc";
-import NextIcon from "../../../assets/icons/NextIcon";
-import { useAuthStore } from "../../../internals/auth/context";
+import AccountIcon from "../../assets/icons/AccountIcon";
+import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
+import InfoIcon from "../../assets/icons/InfoIcon";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
+import AlternateContainer from "../../components/containers/AlternateContainer";
+import { IconContainer } from "../../components/misc";
+import NextIcon from "../../assets/icons/NextIcon";
+import { useAuthStore } from "../../internals/auth/context";
 import auth from "@react-native-firebase/auth";
 import { useMutation } from "react-query";
-import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineConsulationIllustration";
-import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
+import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
+import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
 import { useAtom } from 'jotai'
 import { clearProfileAtom } from "./ChooseProfile";
 import HomeView, { HomeNavKey } from ".";
