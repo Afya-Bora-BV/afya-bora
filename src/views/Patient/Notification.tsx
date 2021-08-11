@@ -9,9 +9,9 @@ import {
 	Text,
 } from "native-base";
 import React from "react";
-import MainContainer from "../../../components/containers/MainContainer";
-import { IconContainer } from "../../../components/misc";
-import BellIcon_Red from "../../../assets/icons/BellIcon_Red";
+import MainContainer from "../../components/containers/MainContainer";
+import { IconContainer } from "../../components/misc";
+import BellIcon_Red from "../../assets/icons/BellIcon_Red";
 
 const NotificationScreen = () => {
 	const navigation = useNavigation();
