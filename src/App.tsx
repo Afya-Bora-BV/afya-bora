@@ -11,7 +11,7 @@ import { AuthProvider, useAuthStore } from "./internals/auth/context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Provider as JotaiProvider } from 'jotai'
-
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView from "./views/Patient/Home";
@@ -98,11 +98,29 @@ export const AppTheme = {
 
 function Main() {
 	const [ready, setReady] = useState(false);
+	// Set an initializing state whilst Firebase connects
+	const [initializing, setInitializing] = useState(true);
+	const [user, setUser] = useState();
+
+	// Handle user state changes
+	function onAuthStateChanged(user: any) {
+		setUser(user);
+		if (initializing) setInitializing(false);
+	}
+
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber; // unsubscribe on unmount
+	}, []);
+
+	
 
 	useEffect(() => {
 		// Remove splash screen if ready
 		SplashScreen.hide();
 	}, [ready]);
+
+	if (initializing) return null;
 	
 	return <HomeView />;
 }

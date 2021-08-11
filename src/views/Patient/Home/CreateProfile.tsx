@@ -10,6 +10,7 @@ import {
 	Pressable,
 	HStack,
 	Button,
+	useToast,
 } from "native-base";
 import React, { useState } from "react";
 import { PicAvatar } from "../../../components/avatar";
@@ -30,7 +31,10 @@ import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import axios, { AxiosResponse } from "axios";
 import { API_ROOT } from "../../../api";
-
+import { useAtom } from 'jotai'
+import { updateProfileAtom } from "./ChooseProfile";
+import { HomeNavKey } from ".";
+import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 const regions: { name: string }[] = [
 	"Residency Location",
 	"Arusha",
@@ -101,15 +105,6 @@ const createPatientProfile = async (profile: Profile): Promise<any> => {
 	return createdProfile?.data
 };
 
-function friendlyFormatDate(timeStamp: Date | string | number) {
-	const dateObj = new Date(timeStamp);
-
-	const date = dateObj.getDate();
-	const month = dateObj.getMonth();
-	const year = dateObj.getFullYear();
-
-	return `${date}-${month + 1}-${year}`;
-}
 
 //yup form control attrib
 interface CompleteProfileInputs {
@@ -124,17 +119,17 @@ interface CompleteProfileInputs {
 	type: "doctor" | "patient" | "admin";
 }
 
-const schema = yup.object().shape({
-	email: yup.string().required(),
-});
+
 
 export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const phoneNumber = auth().currentUser?.phoneNumber
-	const { updateProfile } = useAuthStore((state) => ({
-		updateProfile: state.updateProfile,
-	}));
+	const [, updateProfile] = useAtom(updateProfileAtom)
+	const [isAppointmentInProgress,] = useAtom(updateAppointmentInProgressAtom)
+
+	const Toast = useToast()
+
 
 	const {
 		control,
@@ -152,15 +147,25 @@ export default function CreateProfileScreen() {
 	};
 
 	const handleCreatingProfile = async (data: any) => {
-		const uid = await auth().currentUser?.uid;
-		const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
-		// TODO: to reconsider better way to store this server state
-		if (createdProfile.patientId) {
-			console.log("Code is reached ", createdProfile)
-			updateProfile({ ...data, uid: uid, id: createdProfile.patientId, phoneNumber, type: "patient" });
-		} else {
-			console.log("Error in creating profile data")
+
+		try {
+			const uid = await auth().currentUser?.uid;
+			const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
+			// TODO: to reconsider better way to store this server state
+			if (createdProfile.patientId) {
+				console.log("Code is reached ", createdProfile)
+				updateProfile({
+					name: data.name
+				});
+
+			} else {
+				console.log("Error in creating profile data")
+			}
 		}
+		catch (e) {
+			throw new Error("Error in creating profile")
+		}
+
 
 	}
 
@@ -178,10 +183,17 @@ export default function CreateProfileScreen() {
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`rolling back optimistic update with id `, error);
+				Toast.show({ title: "Error in creating profile" })
+
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
+				Toast.show({ title: "Successfuly created prifle" })
+				if (isAppointmentInProgress) {
+					navigation.navigate(HomeNavKey.AppointmentInvoice)
+				}
+				navigation.navigate(HomeNavKey.HomeScreen)
 			},
 		}
 	);
