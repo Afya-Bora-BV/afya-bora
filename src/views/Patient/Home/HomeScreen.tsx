@@ -28,7 +28,7 @@ import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 
 import HomeScreenIllustration from "../../../assets/illustrations/HomeScreenIllustration";
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 
 import { Spacer } from "../../../components/Spacer";
 import { PrimaryButton } from "../../../components/button";
@@ -47,98 +47,94 @@ const helpOptions = [
 			navigation.navigate(HomeNavKey.FacilityMap);
 		},
 	},
-
 ];
 
-
 const AccountDetails = () => {
-
-	const navigation = useNavigation()
-	const user = auth().currentUser
+	const navigation = useNavigation();
+	const user = auth().currentUser;
 	const handlPress = () => {
 		if (user) {
 			// navigate to seeing details
-			navigation.navigate(HomeNavKey.Profile)
+			navigation.navigate(HomeNavKey.Profile);
 		} else {
 			navigation.navigate(HomeNavKey.Login);
 		}
-	}
-	console.log("Whats uer : ",user)
+	};
+	console.log("Whats uer : ", user);
 	return (
 		<Stack space={2}>
 			<Heading fontSize="xl">Your AfyaBora Account</Heading>
-			<Pressable
-				onPress={handlPress}
-			>
+			<Pressable onPress={handlPress}>
 				{/* Find mean to set relative width: 160 -> 33%?? */}
-				<Center
-					height={100}
-					bgColor="#FFF"
-					rounded="xl"
-					shadow={4}
-				>
+				<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
 					<AppointmentIllustration size={70} />
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
 					>
-						{user ? "View Profile and Visits" : "Sign in / Create Account"}
+						{user
+							? "View Profile and Visits"
+							: "Sign in / Create Account"}
 					</Text>
 				</Center>
 			</Pressable>
 		</Stack>
-	)
-}
+	);
+};
 
 const ProfileInformation = () => {
-	const user = auth().currentUser
+	const user = auth().currentUser;
 	if (user) {
 		return (
 			<VStack flex={1}>
 				<Text>{Date()}</Text>
-				<Heading fontSize="3xl">
-					Hi, {user.phoneNumber}
-				</Heading>
+				<Heading fontSize="3xl">Hi, {user.phoneNumber}</Heading>
 			</VStack>
-		)
+		);
 	}
 	return (
 		<HStack flexWrap="wrap">
 			<VStack flex={1} justifyContent="center">
-				<Heading fontSize="3xl">
-					How can we help you today?
-				</Heading>
+				<Heading fontSize="3xl">How can we help you today?</Heading>
 			</VStack>
 
 			<HomeScreenIllustration flex={3} size={200} />
 		</HStack>
-	)
-}
+	);
+};
 
 export default function Home() {
 	const navigation = useNavigation();
-	const [isInProgree, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
+	const [isInProgree, setIsAppointmentInProgress] = useAtom(
+		updateAppointmentInProgressAtom
+	);
 
 	React.useEffect(() => {
-		setIsAppointmentInProgress(false)
-	}, [])
+		setIsAppointmentInProgress(false);
+	}, []);
 
 	console.log("User profile", isInProgree);
 	// console.log(JSON.stringify(profile, null, 2));
 	return (
 		<MainContainer
 			leftSection={() => (
-				<IconContainer>
-					<UserIcon size={6} color="#561BB3" />
-				</IconContainer>
+				<Pressable
+					onPress={() => {
+						navigation.navigate(HomeNavKey.Profile);
+					}}
+				>
+					<IconContainer>
+						<UserIcon size={6} color="#561BB3" />
+					</IconContainer>
+				</Pressable>
 			)}
 			rightSection={() => (
 				<HStack space={4}>
 					<Pressable
 						onPress={() => {
-							// navigation.navigate(HomeNavKey.NotificationScreen)
+							navigation.navigate(HomeNavKey.Notification);
 						}}
 					>
 						<IconContainer>
@@ -167,7 +163,12 @@ export default function Home() {
 				>
 					{helpOptions.map(
 						(
-							{ illustration: Illustration, onNavigate, title, heading },
+							{
+								illustration: Illustration,
+								onNavigate,
+								title,
+								heading,
+							},
 							ix
 						) => (
 							<Stack space={2}>
@@ -187,8 +188,8 @@ export default function Home() {
 										<Text
 											fontWeight="800"
 											textAlign="center"
-										// wordBreak="break-word"
-										// overflowWrap="break-word"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
 										>
 											{title}
 										</Text>

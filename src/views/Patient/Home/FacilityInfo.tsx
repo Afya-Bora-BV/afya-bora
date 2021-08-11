@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
 	Text,
 	Avatar,
@@ -8,6 +8,7 @@ import {
 	VStack,
 	Pressable,
 	Stack,
+	ArrowBackIcon,
 } from "native-base";
 import React from "react";
 import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
@@ -20,35 +21,36 @@ import { Spacer } from "../../../components/Spacer";
 import { IconContainer } from "../../../components/misc";
 import BackIcon from "../../../assets/icons/BackIcon";
 import { PrimaryButton } from "../../../components/button";
+import { useAtom } from "jotai";
+import { setSelectedFacilityAtom } from "./FacilityList";
+import { FacilityListItem } from "../../../components/facilities-list-item";
+import { FacilityDetails } from "../../../components/facilities-details";
+import { HomeNavKey } from ".";
 
-export interface Consultant {
-	id: string;
-	name: string;
-	gender: "male" | "female";
-	facility?: { name: string; address: string };
-	clinicianType: string;
-	specialities: string[];
-	rating: number;
-	ratedBy: number;
-	status?: "offline" | "online";
-}
-
-type ConsultantListItemProps = {
-	consultant: Consultant;
-	onPress: () => void;
+const FacilityComponent = () => {
+	const navigation = useNavigation();
+	const [facility, setFacility] = useAtom(setSelectedFacilityAtom);
+	if (!facility) return null;
+	return <FacilityDetails facility={facility}/>;
 };
 
-const { width, height } = Dimensions.get("screen");
-
 const FacilityInfo: React.FC = () => {
+	const navigation = useNavigation();
 	return (
 		<MainContainer
 			title={"Selected Facility"}
-			leftSection={() => (
-				<IconContainer>
-					<BackIcon size={6} color="#561BB3" />
-				</IconContainer>
-			)}
+			leftSection={
+				// Go back if can go back
+				navigation.canGoBack()
+					? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
+					: undefined
+			}
 		>
 			<ScrollView>
 				<Stack p={5}>
@@ -56,106 +58,16 @@ const FacilityInfo: React.FC = () => {
 				</Stack>
 
 				<Stack px={10}>
-					<PrimaryButton onPress={() => {
-
-					}}>
+					<PrimaryButton
+						onPress={() => {
+							navigation.navigate(HomeNavKey.AppointmentTime);
+						}}
+					>
 						Schedule Appointment
 					</PrimaryButton>
 				</Stack>
 			</ScrollView>
 		</MainContainer>
-	);
-};
-
-const FacilityComponent: React.FC = () => {
-	const route = useRoute();
-
-	// TODO : considering not passing object in navigation object
-	// use Atoms instead to pass info between screen
-	const { facility } = route?.params;
-
-
-	return (
-		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
-			<VStack p={4} borderRadius={12} bg={"white"} space={5}>
-				<VStack space={5}>
-					<VStack alignItems="center" justifyContent="center">
-						<Avatar
-							width={width / 1.2}
-							height={120}
-							borderRadius={6}
-							source={{
-								uri: "https://wallpaperaccess.com/full/317501.jpg",
-							}}
-						>
-							SS
-						</Avatar>
-					</VStack>
-					<VStack space={5}>
-						<VStack space={1}>
-							<Heading fontSize="lg">{facility.name} </Heading>
-							<Text fontSize="md" bold color="#747F9E">
-								{facility.address}
-							</Text>
-						</VStack>
-
-						<VStack space={5}>
-							<VStack>
-								<HStack alignItems={"center"} space={2}>
-									<VStack>
-										<ClipboardPulseIcon size={5} />
-									</VStack>
-
-									<VStack>
-										<Text bold fontSize="md">
-											Specialities
-										</Text>
-									</VStack>
-								</HStack>
-								<Text pl={7} color={"#747F9E"}>
-									{facility.specialities}
-								</Text>
-							</VStack>
-
-							<VStack>
-								<HStack alignItems={"center"} space={2}>
-									<VStack>
-										<HeartPulseIcon size={5} />
-									</VStack>
-
-									<VStack>
-										<Text bold fontSize="md">
-											Services
-										</Text>
-									</VStack>
-								</HStack>
-								<Text pl={7} color={"#747F9E"}>
-									Imaging, medical investigations, primary
-									care services, cancer treatment
-								</Text>
-							</VStack>
-
-							<VStack>
-								<HStack alignItems={"center"} space={2}>
-									<VStack>
-										<WalletIcon size={5} />
-									</VStack>
-
-									<VStack>
-										<Text bold fontSize="md">
-											Price Range
-										</Text>
-									</VStack>
-								</HStack>
-								<Text color={"#747F9E"} pl={7}>
-									Tsh 5,000 - Tsh 400,000
-								</Text>
-							</VStack>
-						</VStack>
-					</VStack>
-				</VStack>
-			</VStack>
-		</Box>
 	);
 };
 

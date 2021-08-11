@@ -95,7 +95,7 @@ const FacilityList = () => {
 
 	const selectFacility = (facility: Facility) => {
 		setSelectedFacility(facility)
-		navigation.navigate(HomeNavKey.AppointmentTime);
+		navigation.navigate(HomeNavKey.FacilityInfo);
 	}
 
 

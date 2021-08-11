@@ -25,7 +25,7 @@ import { useAuthStore } from "../../../internals/auth/context";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../../types";
-import { HomeNavKey } from "../Home/_navigator";
+import { HomeNavKey } from "./_navigator";
 import moment from "moment";
 
 export default function UpcomingAppointments() {
@@ -58,7 +58,8 @@ export default function UpcomingAppointments() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					<UpcomingAppointmentsSection />
+					{/* <UpcomingAppointmentsSection /> */}
+					<NoAppointment />
 				</View>
 			</VStack>
 		</MainContainer>
@@ -109,15 +110,17 @@ const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([])
+	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	useEffect(() => {
 		const subscriber = firestore()
-			.collection('appointments')
+			.collection("appointments")
 			.where("pid", "==", profile?.id)
 			// .where("status","!=","cancelled")
-			.onSnapshot(documentSnapshot => {
-				const shots = [...documentSnapshot.docs.map(doc => ({ ...doc.data() }))]
-				setAppointments(shots as RealTimeAppointment[])
+			.onSnapshot((documentSnapshot) => {
+				const shots = [
+					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
+				];
+				setAppointments(shots as RealTimeAppointment[]);
 			});
 
 		// Stop listening for updates when no longer required
@@ -143,17 +146,17 @@ const UpcomingAppointmentsSection = () => {
 					{
 						return (
 							<View>
-							<UpcomingAppointmentAlert
-								appointment={appointment}
-								onPress={() => {
-									navigation.navigate(
-										HomeNavKey.AppointmentInfoScreen,
-										{
-											appointment: appointment,
-										}
-									);
-								}}
-							/>
+								<UpcomingAppointmentAlert
+									appointment={appointment}
+									onPress={() => {
+										navigation.navigate(
+											HomeNavKey.AppointmentInfoScreen,
+											{
+												appointment: appointment,
+											}
+										);
+									}}
+								/>
 							</View>
 						);
 					}

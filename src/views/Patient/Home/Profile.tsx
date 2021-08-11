@@ -34,7 +34,7 @@ import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineC
 import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
 import { useAtom } from 'jotai'
 import { clearProfileAtom } from "./ChooseProfile";
-import { HomeNavKey } from ".";
+import HomeView, { HomeNavKey } from ".";
 
 function ProfileCard({ userProfile, onPress, ...props }) {
 	return (
@@ -162,7 +162,7 @@ export default function ProfileMain() {
 							<Pressable
 								onPress={() => {
 									navigation.navigate(
-										ProfileNavKey.VisitHistory
+										HomeNavKey.VisitHistory
 									);
 								}}
 							>
@@ -182,7 +182,7 @@ export default function ProfileMain() {
 						<Box bg="white" shadow={2} rounded={10} width="45%">
 							<Pressable onPress={() => {
 								navigation.navigate(
-									ProfileNavKey.UpcomingAppointments
+									HomeNavKey.UpcomingAppointments
 								);
 							}}>
 								<HStack justifyContent={"center"} paddingY={2}>
@@ -219,9 +219,7 @@ export default function ProfileMain() {
 										key={`profOpt-${ix}`}
 										onPress={
 											onAction !== undefined
-												? () => onAction(() => {
-													clearProfile()
-												})
+												?	()=>navigation.navigate(HomeNavKey.ChooseProfile)
 												:
 												undefined
 										}

@@ -2,17 +2,20 @@ import React from "react";
 
 import HomeScreen from "./HomeScreen";
 import FacilityList from "./FacilityList";
-import AppointmentTime from "./AppointmentTime"
-import FacilityMap from './FacilityMap'
+import AppointmentTime from "./AppointmentTime";
+import FacilityMap from "./FacilityMap";
 import FacilityInfo from "./FacilityInfo";
-import AppointmentInvoice from "./AppointmentInvoice"
-import Login from "./Login"
-import CreateProfile from "./CreateProfile"
-import ChooseProfile from "./ChooseProfile"
-import Profile from "./Profile"
+import AppointmentInvoice from "./AppointmentInvoice";
+import Login from "./Login";
+import CreateProfile from "./CreateProfile";
+import ChooseProfile from "./ChooseProfile";
+import Profile from "./Profile";
+import Notification from "./Notification";
 
 import { PatientComplaint } from "./PatientComplaint";
 import { createStackNavigator } from "@react-navigation/stack";
+import VisitHistory from "./VisitHistory";
+import UpcomingAppointments from "./UpcomingAppointments";
 
 export const NavStack = createStackNavigator();
 
@@ -28,14 +31,19 @@ export const HomeNavKey = {
 	Login: "Login",
 	CreateProfile: "CreateProfile",
 	ChooseProfile: "ChooseProfile",
-	Profile: "Profile"
+	Profile: "Profile",
+	Notification: "Notification",
+	VisitHistory: "VisitHistory",
+	UpcomingAppointments: "UpcomingAppointments",
 };
 
-
 export default function HomeView({ navigation }: any) {
-
 	return (
 		<NavStack.Navigator headerMode="none">
+			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
+
+			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
+
 			<NavStack.Screen
 				name={HomeNavKey.HomeScreen}
 				component={HomeScreen}
@@ -66,10 +74,6 @@ export default function HomeView({ navigation }: any) {
 			/>
 
 			<NavStack.Screen
-				name={HomeNavKey.Login}
-				component={Login}
-			/>
-			<NavStack.Screen
 				name={HomeNavKey.ChooseProfile}
 				component={ChooseProfile}
 			/>
@@ -79,8 +83,17 @@ export default function HomeView({ navigation }: any) {
 			/>
 
 			<NavStack.Screen
-				name={HomeNavKey.Profile}
-				component={Profile}
+				name={HomeNavKey.Notification}
+				component={Notification}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.VisitHistory}
+				component={VisitHistory}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.UpcomingAppointments}
+				component={UpcomingAppointments}
 			/>
 		</NavStack.Navigator>
 	);
