@@ -19,16 +19,15 @@ import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineC
 import { useNavigation } from "@react-navigation/native";
 import CalendarIllustration from "../../../assets/illustrations/CalendarIllustration";
 import NewspaperIllustration from "../../../assets/illustrations/NewspaperIllustration";
+const { width, height } = Dimensions.get("screen");
 
 const Profile: React.FC = () => {
 	const navigation = useNavigation();
 
-	const { width, height } = Dimensions.get("screen");
+	const nav = () => { };
 
-	const nav = () => {};
 	return (
 		<Box flex={1}>
-			{/* <StatusBar barStyle="dark-content" backgroundColor={"#fff"} /> */}
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}
@@ -99,7 +98,7 @@ const Profile: React.FC = () => {
 							</Box>
 
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}
@@ -129,7 +128,7 @@ const Profile: React.FC = () => {
 							justifyContent="space-between"
 						>
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}
@@ -150,7 +149,7 @@ const Profile: React.FC = () => {
 							</Box>
 
 							<Box bg="white" shadow={2} rounded={10} width="45%">
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => { }}>
 									<HStack
 										justifyContent={"center"}
 										paddingY={2}

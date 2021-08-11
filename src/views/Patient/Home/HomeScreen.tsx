@@ -28,6 +28,7 @@ import MainContainer from "../../../components/containers/MainContainer";
 import { IconContainer } from "../../../components/misc";
 
 import HomeScreenIllustration from "../../../assets/illustrations/HomeScreenIllustration";
+import auth from '@react-native-firebase/auth';
 
 import { Spacer } from "../../../components/Spacer";
 import { PrimaryButton } from "../../../components/button";
@@ -36,6 +37,7 @@ import AppointmentCustomizer, {
 	completeScheduleAtom,
 } from "../../../components/appointment-customizer";
 import { HomeNavKey } from ".";
+import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
@@ -45,21 +47,85 @@ const helpOptions = [
 			navigation.navigate(HomeNavKey.FacilityMap);
 		},
 	},
-	{
-		illustration: AppointmentIllustration,
-		title: "Sign in / Create Account",
-		heading: "Your AfyaBora Account",
-		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.Login);
-		},
-	},
+
 ];
+
+
+const AccountDetails = () => {
+
+	const navigation = useNavigation()
+	const user = auth().currentUser
+	const handlPress = () => {
+		if (user) {
+			// navigate to seeing details
+			navigation.navigate(HomeNavKey.Profile)
+		} else {
+			navigation.navigate(HomeNavKey.Login);
+		}
+	}
+	console.log("Whats uer : ",user)
+	return (
+		<Stack space={2}>
+			<Heading fontSize="xl">Your AfyaBora Account</Heading>
+			<Pressable
+				onPress={handlPress}
+			>
+				{/* Find mean to set relative width: 160 -> 33%?? */}
+				<Center
+					height={100}
+					bgColor="#FFF"
+					rounded="xl"
+					shadow={4}
+				>
+					<AppointmentIllustration size={70} />
+					<Text
+						fontWeight="800"
+						textAlign="center"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
+					>
+						{user ? "View Profile and Visits" : "Sign in / Create Account"}
+					</Text>
+				</Center>
+			</Pressable>
+		</Stack>
+	)
+}
+
+const ProfileInformation = () => {
+	const user = auth().currentUser
+	if (user) {
+		return (
+			<VStack flex={1}>
+				<Text>{Date()}</Text>
+				<Heading fontSize="3xl">
+					Hi, {user.phoneNumber}
+				</Heading>
+			</VStack>
+		)
+	}
+	return (
+		<HStack flexWrap="wrap">
+			<VStack flex={1} justifyContent="center">
+				<Heading fontSize="3xl">
+					How can we help you today?
+				</Heading>
+			</VStack>
+
+			<HomeScreenIllustration flex={3} size={200} />
+		</HStack>
+	)
+}
 
 export default function Home() {
 	const navigation = useNavigation();
-	// const { profile } = useAuthStore((state) => ({ profile: state.profile }));
+	const [isInProgree, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
 
-	console.log("User profile");
+	React.useEffect(() => {
+		setIsAppointmentInProgress(false)
+	}, [])
+
+	console.log("User profile", isInProgree);
 	// console.log(JSON.stringify(profile, null, 2));
 	return (
 		<MainContainer
@@ -83,16 +149,7 @@ export default function Home() {
 			)}
 		>
 			<ScrollView width="100%" testID="Home" p={5} pb={10}>
-				<HStack flexWrap="wrap">
-					<VStack flex={1} justifyContent="center">
-						<Heading fontSize="3xl">
-							How can we help you today?
-						</Heading>
-					</VStack>
-
-					<HomeScreenIllustration flex={3} size={200} />
-				</HStack>
-
+				<ProfileInformation />
 				<Spacer size={30} />
 
 				<Stack px={1}>
@@ -140,6 +197,7 @@ export default function Home() {
 							</Stack>
 						)
 					)}
+					<AccountDetails />
 				</VStack>
 			</ScrollView>
 		</MainContainer>

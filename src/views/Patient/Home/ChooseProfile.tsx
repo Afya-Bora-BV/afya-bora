@@ -13,6 +13,7 @@ import { HomeNavKey } from '.';
 import { atom, useAtom } from "jotai"
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updateAppointmentInProgressAtom } from './PatientComplaint';
 
 export const checkPatientProfiles = async (): Promise<Patient[]> => {
     const uid = await auth().currentUser?.uid;
@@ -58,19 +59,25 @@ type Profile = {
 // 1. to update profile info for more data
 // 2. to persist the store in async storage
 
-const profileAtom = atom<Profile>({
-    name: ""
-})
+const profileAtom = atom<Profile | null>(null)
 
-const updateProfileAtom = atom((get) => {
+export const updateProfileAtom = atom((get) => {
     return get(profileAtom)
 }, (get, set, update: Profile) => {
     set(profileAtom, update)
 })
+
+export const clearProfileAtom = atom(null, (get, set) => {
+    set(profileAtom, null)
+})
+
+
 const ChooseProfile = () => {
     const email = auth().currentUser?.email
     const phone = auth().currentUser?.phoneNumber
-    const [profile, updateProfile] = useAtom(updateProfileAtom)
+    const [, updateProfile] = useAtom(updateProfileAtom)
+    const [isAppointmentInProgress, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
+
     const navigation = useNavigation()
 
     const {
@@ -89,10 +96,18 @@ const ChooseProfile = () => {
 
     console.log("User profiles : ", profiles)
 
-    const updateProfileDetails = (profile: any) => {
+    const updateProfileDetails = (profile: { name: string }) => {
         console.log("Setting profile to ", profile)
         if (phone) {
             // update patient active profile
+            updateProfile({
+                name: profile.name
+            })
+            if (isAppointmentInProgress) {
+                navigation.navigate(HomeNavKey.AppointmentInvoice)
+            } else {
+                navigation.navigate(HomeNavKey.HomeScreen)
+            }
 
         }
         if (email) {

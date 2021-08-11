@@ -15,18 +15,15 @@ import {
 	Icon,
 	Avatar,
 	Square,
+	useToast,
 } from "native-base";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AccountIcon from "../../../assets/icons/AccountIcon";
-import UpdateClock from "../../../assets/icons/UpdateClock";
-import MapPinIcon from "../../../assets/icons/MapPinIcon";
-import CardIcon from "../../../assets/icons/CardIcon";
 import HeadphoneIcon from "../../../assets/icons/HeadphoneIcon";
-import PhoneIcon from "../../../assets/icons/PhoneIcon";
 import InfoIcon from "../../../assets/icons/InfoIcon";
 import LogoutIcon from "../../../assets/icons/LogoutIcon";
-import { ProfileNavKey } from "./_navigator";
+import { ProfileNavKey } from "../Profile/_navigator";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
@@ -35,14 +32,9 @@ import auth from "@react-native-firebase/auth";
 import { useMutation } from "react-query";
 import OnlineConsulationIllustration from "../../../assets/illustrations/OnlineConsulationIllustration";
 import AppointmentIllustration from "../../../assets/illustrations/AppointmentIllustration";
-import { NoAppointment } from "./UpcomingAppointments";
-
-// import auth from '@react-native-firebase/auth';
-
-// const signOut = async () => {
-// 	// await auth().signOut()
-// 	console.log("Sign Out");
-// };
+import { useAtom } from 'jotai'
+import { clearProfileAtom } from "./ChooseProfile";
+import { HomeNavKey } from ".";
 
 function ProfileCard({ userProfile, onPress, ...props }) {
 	return (
@@ -67,9 +59,9 @@ function ProfileCard({ userProfile, onPress, ...props }) {
 				</Avatar>
 				<VStack space={1} justifyContent="center">
 					<Text fontWeight="600" fontSize="xl">
-						{userProfile.name}
+						{userProfile?.name}
 					</Text>
-					<Text color="#747F9E">{userProfile.subText}</Text>
+					<Text color="#747F9E">{userProfile?.subText}</Text>
 				</VStack>
 			</HStack>
 
@@ -107,24 +99,21 @@ const profileOptions = [
 
 export default function ProfileMain() {
 	const navigation = useNavigation();
-	const { profile, clearProfile } = useAuthStore((state) => ({
-		profile: state.profile,
-		clearProfile: state.clearProfile,
-	}));
+	const Toast = useToast()
+	const [, clearProfile] = useAtom(clearProfileAtom)
 
 	const { height } = Dimensions.get("screen");
-
-	const userProfile = {
-		name: profile?.name,
-		subText: profile?.phoneNumber || profile?.email || "Patient",
-	};
 
 	// TODO : considering moving the logic out
 	// currently kept here so as to update the global store
 	// possibly codes for cleaning the global store can be kept in onSuccess of useMutation()
 	const signOutAndClearStore = async () => {
-		await auth().signOut();
-		clearProfile();
+		try {
+			await auth().signOut();
+			clearProfile();
+		} catch (e) {
+			throw new Error("Something went wrong in signing out")
+		}
 	};
 
 	const signOut = () => {
@@ -135,14 +124,18 @@ export default function ProfileMain() {
 		onError: (error, variables, context) => {
 			// An error happened!
 			console.log(`error on signing out  `, error);
+			Toast.show({
+				title: "Something went wrong in signing out"
+			})
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			console.log("Signned out successuly ");
+			navigation.navigate(HomeNavKey.HomeScreen)
 		},
 	});
 
-	console.log("Profile ", profile);
+
 	return (
 		<AlternateContainer
 			title="Profile"
@@ -153,7 +146,9 @@ export default function ProfileMain() {
 		>
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-					<ProfileCard userProfile={userProfile} onPress={() => {
+					<ProfileCard userProfile={{
+
+					}} onPress={() => {
 						navigation.navigate(
 							ProfileNavKey.EditHealthProfile
 						);
