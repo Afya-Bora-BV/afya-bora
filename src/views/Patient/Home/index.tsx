@@ -11,6 +11,8 @@ import CreateProfile from "./CreateProfile";
 import ChooseProfile from "./ChooseProfile";
 import Profile from "./Profile";
 import Notification from "./Notification";
+import EditHealthProfile from "./EditHealthProfile";
+import AppointmentSpecifics from "./AppointmentSpecifics";
 
 import { PatientComplaint } from "./PatientComplaint";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -34,16 +36,18 @@ export const HomeNavKey = {
 	Profile: "Profile",
 	Notification: "Notification",
 	VisitHistory: "VisitHistory",
+	EditHealthProfile: "EditHealthProfile",
 	UpcomingAppointments: "UpcomingAppointments",
+	AppointmentSpecifics: "AppointmentSpecifics"
 };
 
 export default function HomeView({ navigation }: any) {
 	return (
-		<NavStack.Navigator headerMode="none">
+		<NavStack.Navigator headerMode="none"
+			initialRouteName={HomeNavKey.HomeScreen}
+		>
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
-
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
-
 			<NavStack.Screen
 				name={HomeNavKey.HomeScreen}
 				component={HomeScreen}
@@ -94,6 +98,15 @@ export default function HomeView({ navigation }: any) {
 			<NavStack.Screen
 				name={HomeNavKey.UpcomingAppointments}
 				component={UpcomingAppointments}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.EditHealthProfile}
+				component={EditHealthProfile}
+			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentSpecifics}
+				component={AppointmentSpecifics}
 			/>
 		</NavStack.Navigator>
 	);

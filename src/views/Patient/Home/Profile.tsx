@@ -23,7 +23,6 @@ import AccountIcon from "../../../assets/icons/AccountIcon";
 import HeadphoneIcon from "../../../assets/icons/HeadphoneIcon";
 import InfoIcon from "../../../assets/icons/InfoIcon";
 import LogoutIcon from "../../../assets/icons/LogoutIcon";
-import { ProfileNavKey } from "../Profile/_navigator";
 import AlternateContainer from "../../../components/containers/AlternateContainer";
 import { IconContainer } from "../../../components/misc";
 import NextIcon from "../../../assets/icons/NextIcon";
@@ -149,9 +148,11 @@ export default function ProfileMain() {
 					<ProfileCard userProfile={{
 
 					}} onPress={() => {
-						navigation.navigate(
-							ProfileNavKey.EditHealthProfile
-						);
+						// TODO: tranfer the edit profile page to route stack and navigate to that screen
+						// HomeNavKey
+						// navigation.navigate(
+
+						// );
 					}} />
 					<HStack
 						space={4}
@@ -219,7 +220,7 @@ export default function ProfileMain() {
 										key={`profOpt-${ix}`}
 										onPress={
 											onAction !== undefined
-												?	()=>navigation.navigate(HomeNavKey.ChooseProfile)
+												? () => navigation.navigate(HomeNavKey.ChooseProfile)
 												:
 												undefined
 										}

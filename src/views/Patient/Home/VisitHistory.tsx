@@ -12,9 +12,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../../types";
-import { VisitHistoryNavKey } from "../Profile/VisitHistory/_navigator";
 import { useAuthStore } from "../../../internals/auth/context";
 import moment from "moment";
+import { HomeNavKey } from ".";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
@@ -26,12 +26,12 @@ export default function VisitHistory() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -88,17 +88,17 @@ const VisitHistorySection = () => {
 				{visitHistory.map((appointment) => {
 					return (
 						<View>
-						<UpcomingAppointmentAlert
-							appointment={appointment}
-							onPress={() => {
-								navigation.navigate(
-									VisitHistoryNavKey.AppointmentSpecifics,
-									{
-										appointment: appointment,
-									}
-								);
-							}}
-						/>
+							<UpcomingAppointmentAlert
+								appointment={appointment}
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.AppointmentSpecifics,
+										{
+											appointment: appointment,
+										}
+									);
+								}}
+							/>
 						</View>
 					);
 				})}
