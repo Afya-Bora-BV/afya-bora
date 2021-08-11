@@ -130,6 +130,7 @@ export default function CreateProfileScreen() {
 
 	const Toast = useToast()
 
+	console.log("Appointment in profess ", isAppointmentInProgress)
 
 	const {
 		control,
@@ -192,8 +193,10 @@ export default function CreateProfileScreen() {
 				Toast.show({ title: "Successfuly created prifle" })
 				if (isAppointmentInProgress) {
 					navigation.navigate(HomeNavKey.AppointmentInvoice)
+				} else {
+					navigation.navigate(HomeNavKey.HomeScreen)
 				}
-				navigation.navigate(HomeNavKey.HomeScreen)
+
 			},
 		}
 	);
