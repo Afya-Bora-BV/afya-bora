@@ -73,8 +73,8 @@ const AccountDetails = () => {
 					<Text
 						fontWeight="800"
 						textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
 					>
 						{user
 							? "View Profile and Visits"
@@ -218,10 +218,10 @@ export default function Home() {
 								See All Appointments
 							</Text>
 						</View>
-						<ScheduleAppointmentSection />
+
 					</Stack>
 				)}
-
+				<ScheduleAppointmentSection />
 				<Spacer size={30} />
 
 				<VStack
@@ -259,8 +259,8 @@ export default function Home() {
 										<Text
 											fontWeight="800"
 											textAlign="center"
-											// wordBreak="break-word"
-											// overflowWrap="break-word"
+										// wordBreak="break-word"
+										// overflowWrap="break-word"
 										>
 											{title}
 										</Text>
@@ -285,6 +285,8 @@ export const ScheduleAppointmentSection = () => {
 		navigate(HomeNavKey.ConsultantList);
 		// navigate on click
 	};
+
+
 	return (
 		<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>
 			<Stack space={5} py={2}>

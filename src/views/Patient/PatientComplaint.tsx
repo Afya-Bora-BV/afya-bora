@@ -96,6 +96,7 @@ export function PatientComplaint() {
 	const submit = () => {
 		if (currentUser !== null || !profile) {
 			const fid = appointment.facility?.id;
+	
 			// FIXME: Move function to API file
 			functions()
 				.httpsCallable("makeAppointment")({
@@ -131,7 +132,7 @@ export function PatientComplaint() {
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
 					onPress: (setIsLoading(true), submit),
@@ -147,12 +148,12 @@ export function PatientComplaint() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>

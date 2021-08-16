@@ -75,8 +75,15 @@ export const clearProfileAtom = atom(null, (get, set) => {
 const ChooseProfile = () => {
     const email = auth().currentUser?.email
     const phone = auth().currentUser?.phoneNumber
-    const [, updateProfile] = useAtom(updateProfileAtom)
+
+    // FIXME: these two atoms to be reconsidered
+    // const [, updateProfile] = useAtom(updateProfileAtom)
     const [isAppointmentInProgress, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
+
+    const { updateProfile } = useAuthStore((state) => ({
+        updateProfile: state.updateProfile,
+    }));
+
 
     const navigation = useNavigation()
 
@@ -96,12 +103,13 @@ const ChooseProfile = () => {
 
     console.log("User profiles : ", profiles)
 
-    const updateProfileDetails = (profile: { name: string }) => {
+    const updateProfileDetails = (profile: any) => {
         console.log("Setting profile to ", profile)
         if (phone) {
             // update patient active profile
             updateProfile({
-                name: profile.name
+                ...profile,
+                type: "patient"
             })
             if (isAppointmentInProgress) {
                 navigation.navigate(HomeNavKey.AppointmentInvoice)

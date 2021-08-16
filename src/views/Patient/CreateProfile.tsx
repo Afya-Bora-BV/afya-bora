@@ -125,8 +125,15 @@ export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const phoneNumber = auth().currentUser?.phoneNumber
-	const [, updateProfile] = useAtom(updateProfileAtom)
+
+
+	// FIXME: these two atoms to be reconsidered
+	// const [, updateProfile] = useAtom(updateProfileAtom)
 	const [isAppointmentInProgress,] = useAtom(updateAppointmentInProgressAtom)
+
+	const { updateProfile } = useAuthStore((state) => ({
+		updateProfile: state.updateProfile,
+	}));
 
 	const Toast = useToast()
 
@@ -156,7 +163,8 @@ export default function CreateProfileScreen() {
 			if (createdProfile.patientId) {
 				console.log("Code is reached ", createdProfile)
 				updateProfile({
-					name: data.name
+					pid: createdProfile.patientId,
+					...data, phoneNumber, type: "patient"
 				});
 
 			} else {

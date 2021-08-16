@@ -41,7 +41,7 @@ import { setFacility } from "../../store/slices/appointment";
 
 const FacilitySkelton = () => {
 	return (
-		<SkeletonPlaceholder speed={500}>
+		<SkeletonPlaceholder speed={1000}>
 			<View
 				style={{
 					flexDirection: "row",
