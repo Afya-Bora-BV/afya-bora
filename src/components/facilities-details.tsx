@@ -14,6 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import ClipboardPulseIcon from "../assets/icons/ClipboardPulseIcon";
 import HeartPulseIcon from "../assets/icons/HeartPulseIcon";
 import WalletIcon from "../assets/icons/WalletIcon";
+import { Facility } from "../types";
 
 const { width, height } = Dimensions.get("screen");
 

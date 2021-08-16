@@ -21,6 +21,7 @@ import {
 	useNavigation,
 } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
+import functions from "@react-native-firebase/functions";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
 import { toggleStringFromList } from "../../utils";
@@ -31,10 +32,18 @@ import { useAppointmentTempoStore } from "../../internals/appointment/context";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth";
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom } from "jotai";
 import axios from "axios";
 import { API_ROOT } from "../../api";
 import { HomeNavKey } from ".";
+import { useAuthStore } from "../../internals/auth/context";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import {
+	resetAppointmentState,
+	setComplaint,
+	toggleSymptom,
+} from "../../store/slices/appointment";
 
 const keySymptoms = [
 	"Fever",
@@ -56,114 +65,80 @@ interface NewAppointmentRequestBody {
 	};
 }
 
-const saveAppointment = async ({
-	data,
-	cid,
-	pid,
-}: {
-	data: NewAppointmentRequestBody;
-	cid: string;
-	pid: string;
-}) => {
-	console.log(`${API_ROOT}/v0/create/appointment/${cid}/${pid}`);
-	try {
-		const res = await axios.post(
-			`${API_ROOT}/v0/create/appointment/${cid}/${pid}`,
-			{
-				...data,
-			}
-		);
-	} catch (e) {
-		console.log("Error : ", e.response);
-		throw new Error("Error in saving appointment");
-	}
-};
-
 // TODO: to find a batter place for these atoms
-const isAppointmentInProgressAtom = atom<boolean>(false)
-export const updateAppointmentInProgressAtom = atom((get) => {
-	return get(isAppointmentInProgressAtom)
-}, (get, set, update: boolean) => {
-	set(isAppointmentInProgressAtom, update)
-})
-
-const RequestAppointmentButton = () => {
-	const navigation = useNavigation()
-	const currentUser = auth().currentUser
-	const [isAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
-	const onSubmit = () => {
-		console.log("IS Appointment in progress : ", isAppointmentInProgress)
-		if (currentUser !== null) {
-			// navigate to login page
-			console.log("User found")
-			navigation.navigate(HomeNavKey.AppointmentInvoice)
-		} else {
-			// navigate to invoice page
-			console.log("No user found ")
-			navigation.navigate(HomeNavKey.Login)
-		}
+const isAppointmentInProgressAtom = atom<boolean>(false);
+export const updateAppointmentInProgressAtom = atom(
+	(get) => {
+		return get(isAppointmentInProgressAtom);
+	},
+	(get, set, update: boolean) => {
+		set(isAppointmentInProgressAtom, update);
 	}
-	return (
-		<Button
-			width="100%"
-			bg={colors.primary}
-			onPress={onSubmit}
-			rounded={20}
-		>
-			Book Appointment
-		</Button>
-	)
-}
+);
 
-// TODO: breakdown the component to smaller as possible 
+// TODO: breakdown the component to smaller as possible
 // and create atom for the data needed for the invoice page
 
 export function PatientComplaint() {
-	const toast = useToast()
+	const toast = useToast();
 	const navigation = useNavigation();
-	const [isAppointmentInProgress, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
 
-	React.useEffect(() => {
-		setIsAppointmentInProgress(true)
-	}, [isAppointmentInProgress])
+	const [isLoading, setIsLoading] = useState(false);
 
-	const [symptoms, setSymptoms] = useState<Array<string>>([]);
-	const [complaint, setComplaint] = useState("");
+	const currentUser = auth().currentUser;
+	const profile = useAuthStore((state) => state.profile);
 
-	const toggleKeySymptom = (symptom: string) => {
-		const sy = toggleStringFromList(symptom, symptoms);
-		setSymptoms(sy);
+	const appointment = useSelector(
+		({ appointment }: RootState) => appointment
+	);
+	const dispatch = useDispatch();
+
+	const submit = () => {
+		if (currentUser !== null || !profile) {
+			const fid = appointment.facility?.id;
+			// FIXME: Move function to API file
+			functions()
+				.httpsCallable("makeAppointment")({
+					// FIXME: Add a checker for fid being present
+					fid,
+					aboutVisit: appointment.aboutVisit,
+					pid: profile?.id,
+					timeRange: appointment.timeRange,
+					type: appointment.type,
+					utcDate: new Date(appointment.date).toUTCString(),
+				})
+				.then((res) => {
+					ToastAndroid.show(
+						"Success! Your appointment request has been made.",
+						3000
+					);
+					dispatch(resetAppointmentState());
+					navigation.navigate(HomeNavKey.HomeScreen);
+				})
+				.catch((err) => {
+					console.log(err);
+					setIsLoading(false);
+					ToastAndroid.show("Error. Please try again.", 3000);
+				});
+		}
 	};
 
-	const onSubmit = () => {
+	const confirmSubmit = () => {
+		if (isLoading) {
+			return ToastAndroid.show("Please wait while loading ...", 3000);
+		}
 		Alert.alert(
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => { } },
+				{ text: "Cancel", onPress: () => {} },
 				{
 					text: "Confirm",
-					onPress: () => { },
+					onPress: (setIsLoading(true), submit),
 				},
 			]
 		);
 	};
-
-	const { mutate: addAppointment, isLoading } = useMutation(saveAppointment, {
-		onMutate: (variables) => { },
-		onError: (error, variables, context) => {
-			console.log("Something went wrong");
-		},
-		onSuccess: (data, variables, context) => {
-			console.log("Data already saved ");
-			console.log("Whats the response : ", data);
-			toast.show({
-				title: "Appointed created",
-			});
-			navigation.navigate(HomeNavKey.HomeScreen);
-			// Boom baby!
-		},
-	});
 
 	return (
 		<MainContainer
@@ -172,12 +147,12 @@ export function PatientComplaint() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
@@ -199,6 +174,7 @@ export function PatientComplaint() {
 						</View>
 
 						<Stack space={2}>
+							{/* FIXME: This smells bad. Needs refactor */}
 							{_.chunk(keySymptoms, 2).map(
 								([symptomA, symptomB], index) => (
 									<HStack space={3}>
@@ -206,7 +182,9 @@ export function PatientComplaint() {
 											rounded="xl"
 											borderColor="#ccc"
 											bg={
-												symptoms.includes(symptomA)
+												appointment.aboutVisit.symptoms.includes(
+													symptomA
+												)
 													? "#258FBE"
 													: "#fff"
 											}
@@ -220,12 +198,14 @@ export function PatientComplaint() {
 													justifyContent: "center",
 												}}
 												onPress={() =>
-													toggleKeySymptom(symptomA)
+													dispatch(
+														toggleSymptom(symptomA)
+													)
 												}
 											>
 												<Text
 													color={
-														symptoms.includes(
+														appointment.aboutVisit.symptoms.includes(
 															symptomA
 														)
 															? "#fff"
@@ -240,7 +220,9 @@ export function PatientComplaint() {
 											rounded="xl"
 											borderColor="#ccc"
 											bg={
-												symptoms.includes(symptomB)
+												appointment.aboutVisit.symptoms.includes(
+													symptomB
+												)
 													? "#258FBE"
 													: "#fff"
 											}
@@ -254,12 +236,14 @@ export function PatientComplaint() {
 													justifyContent: "center",
 												}}
 												onPress={() =>
-													toggleKeySymptom(symptomB)
+													dispatch(
+														toggleSymptom(symptomB)
+													)
 												}
 											>
 												<Text
 													color={
-														symptoms.includes(
+														appointment.aboutVisit.symptoms.includes(
 															symptomB
 														)
 															? "#fff"
@@ -291,19 +275,28 @@ export function PatientComplaint() {
 						</Text>
 
 						<TextArea
-							value={complaint}
+							value={appointment.aboutVisit.complaint}
 							autoCorrect={false}
 							multiline
 							textAlignVertical="top"
 							borderColor="#FFF"
 							placeholder="Describe how you are feeling ..."
 							onChangeText={(complaint) => {
-								setComplaint(complaint);
+								dispatch(setComplaint(complaint));
 							}}
 						/>
 					</VStack>
 				</Box>
-				<RequestAppointmentButton />
+
+				<Button
+					width="100%"
+					bg={colors.primary}
+					onPress={confirmSubmit}
+					isLoading={isLoading}
+					rounded={20}
+				>
+					{isLoading ? "Loading ..." : "Book Appointment"}
+				</Button>
 			</VStack>
 		</MainContainer>
 	);
