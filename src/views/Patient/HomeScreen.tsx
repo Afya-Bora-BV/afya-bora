@@ -167,10 +167,8 @@ export default function Home() {
 							</Text>
 
 							{/* FIXME: Extract out to new component */}
-							<TouchableOpacity
+							<View
 								style={{ marginTop: 16 }}
-								activeOpacity={0.5}
-								onPress={() => openAppointment(appointment)}
 							>
 								<Box
 									bgColor="#FFF"
@@ -204,19 +202,32 @@ export default function Home() {
 										</Text>
 									</VStack>
 									<View flex={2.2} justifyContent="center">
-										<Text
-											color={colors.primary}
-											fontSize="lg"
+										<TouchableOpacity
+											onPress={() => openAppointment(appointment)}
 										>
-											Join/Edit
-										</Text>
+
+											<Text
+												color={colors.primary}
+												fontSize="lg"
+											>
+												Join/Edit
+											</Text>
+										</TouchableOpacity>
+
 									</View>
 								</Box>
+							</View>
+
+							<TouchableOpacity
+								style={{ marginTop: 8 }}
+								onPress={() => {
+									console.log("To all the appointment pages")
+								}}>
+								<Text textAlign="right" my={2} color="gray.500">
+									See All Appointments
+								</Text>
 							</TouchableOpacity>
 
-							<Text textAlign="right" my={2} color="gray.500">
-								See All Appointments
-							</Text>
 						</View>
 
 					</Stack>
