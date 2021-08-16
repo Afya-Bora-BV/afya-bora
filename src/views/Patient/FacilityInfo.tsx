@@ -1,40 +1,27 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-	Text,
-	Avatar,
-	Box,
-	Heading,
-	HStack,
-	VStack,
 	Pressable,
 	Stack,
 	ArrowBackIcon,
 } from "native-base";
 import React from "react";
 import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ClipboardPulseIcon from "../../assets/icons/ClipboardPulseIcon";
-import HeartPulseIcon from "../../assets/icons/HeartPulseIcon";
-import WalletIcon from "../../assets/icons/WalletIcon";
 import MainContainer from "../../components/containers/MainContainer";
 import { Spacer } from "../../components/Spacer";
 import { IconContainer } from "../../components/misc";
 import BackIcon from "../../assets/icons/BackIcon";
 import { PrimaryButton } from "../../components/button";
-import { useAtom } from "jotai";
-import { setSelectedFacilityAtom } from "./FacilityList";
-import { FacilityListItem } from "../../components/facilities-list-item";
 import { FacilityDetails } from "../../components/facilities-details";
 import { HomeNavKey } from ".";
-
-const FacilityComponent = () => {
-	const navigation = useNavigation();
-	const [facility, setFacility] = useAtom(setSelectedFacilityAtom);
-	if (!facility) return null;
-	return <FacilityDetails facility={facility}/>;
-};
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 const FacilityInfo: React.FC = () => {
+	const facility = useSelector(
+		({ appointment }: RootState) => appointment.facility
+	);
+
+	console.log(facility);
 	const navigation = useNavigation();
 	return (
 		<MainContainer
@@ -54,7 +41,7 @@ const FacilityInfo: React.FC = () => {
 		>
 			<ScrollView>
 				<Stack p={5}>
-					<FacilityComponent />
+					{facility && <FacilityDetails facility={facility} />}
 				</Stack>
 
 				<Stack px={10}>

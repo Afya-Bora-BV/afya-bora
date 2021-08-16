@@ -17,6 +17,7 @@ import {
 } from "native-base";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
 import FacilityIllustration from "../../assets/illustrations/FacilityIllustration";
 
@@ -31,11 +32,14 @@ import auth from "@react-native-firebase/auth";
 import { Spacer } from "../../components/Spacer";
 import { PrimaryButton } from "../../components/button";
 import { atom, useAtom } from "jotai";
-import AppointmentCustomizer, {
-	completeScheduleAtom,
-} from "../../components/appointment-customizer";
+import AppointmentCustomizer from "../../components/appointment-customizer";
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
+import { getFacilities } from "../../api";
+import { TouchableOpacity } from "react-native";
+import _ from "lodash";
+import { usePatientAppointments } from "../../hooks/usePatientAppointments";
+import moment from "moment";
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
@@ -69,8 +73,8 @@ const AccountDetails = () => {
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
 					>
 						{user
 							? "View Profile and Visits"
@@ -82,6 +86,7 @@ const AccountDetails = () => {
 	);
 };
 
+// FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
 	if (user) {
@@ -105,16 +110,24 @@ const ProfileInformation = () => {
 
 export default function Home() {
 	const navigation = useNavigation();
-	const [isInProgree, setIsAppointmentInProgress] = useAtom(
-		updateAppointmentInProgressAtom
-	);
+	// const [isInProgree, setIsAppointmentInProgress] = useAtom(
+	// 	updateAppointmentInProgressAtom
+	// );
 
-	React.useEffect(() => {
-		setIsAppointmentInProgress(false);
-	}, []);
+	// React.useEffect(() => {
+	// 	setIsAppointmentInProgress(false);
+	// }, []);
 
-	console.log("User profile", isInProgree);
-	// console.log(JSON.stringify(profile, null, 2));
+	const user = auth().currentUser;
+
+	const { appointments } = usePatientAppointments(user?.uid);
+
+	const appointment = appointments[0];
+
+	const openAppointment = (appointment) => {
+		navigation.navigate(HomeNavKey.AppointmentSpecifics, { appointment });
+	};
+
 	return (
 		<MainContainer
 			leftSection={() => (
@@ -146,9 +159,68 @@ export default function Home() {
 				<ProfileInformation />
 				<Spacer size={30} />
 
-				<Stack px={1}>
-					<ScheduleAppointmentSection />
-				</Stack>
+				{appointment && (
+					<Stack px={1}>
+						<View marginBottom={6}>
+							<Text fontSize="lg" fontWeight="bold">
+								Upcoming Appointments
+							</Text>
+
+							{/* FIXME: Extract out to new component */}
+							<TouchableOpacity
+								style={{ marginTop: 16 }}
+								activeOpacity={0.5}
+								onPress={() => openAppointment(appointment)}
+							>
+								<Box
+									bgColor="#FFF"
+									p={4}
+									flexDirection="row"
+									rounded={6}
+									shadow={3}
+								>
+									<View flex={1.4}>
+										<Icon
+											size={40}
+											name="calendar-month-outline"
+										/>
+									</View>
+									<VStack flex={5} space={1}>
+										<Text fontSize="md" fontWeight="bold">
+											{appointment?.facility?.name}
+										</Text>
+										<Text
+											fontWeight="bold"
+											color="gray.400"
+										>
+											{moment(appointment.utcDate).format(
+												"DD MMMM YYYY"
+											)}
+										</Text>
+										<Text italic>
+											{appointment.timeRange === "online"
+												? "Online"
+												: "At Facility"}
+										</Text>
+									</VStack>
+									<View flex={2.2} justifyContent="center">
+										<Text
+											color={colors.primary}
+											fontSize="lg"
+										>
+											Join/Edit
+										</Text>
+									</View>
+								</Box>
+							</TouchableOpacity>
+
+							<Text textAlign="right" my={2} color="gray.500">
+								See All Appointments
+							</Text>
+						</View>
+						<ScheduleAppointmentSection />
+					</Stack>
+				)}
 
 				<Spacer size={30} />
 
@@ -169,7 +241,7 @@ export default function Home() {
 							},
 							ix
 						) => (
-							<Stack space={2}>
+							<Stack key={title} space={2}>
 								<Heading fontSize="xl">{heading}</Heading>
 								<Pressable
 									key={`helpOption-${ix}`}
@@ -177,17 +249,18 @@ export default function Home() {
 								>
 									{/* Find mean to set relative width: 160 -> 33%?? */}
 									<Center
-										height={100}
+										// height={100}
 										bgColor="#FFF"
 										rounded="xl"
 										shadow={4}
+										padding={6}
 									>
 										<Illustration size={70} />
 										<Text
 											fontWeight="800"
 											textAlign="center"
-										// wordBreak="break-word"
-										// overflowWrap="break-word"
+											// wordBreak="break-word"
+											// overflowWrap="break-word"
 										>
 											{title}
 										</Text>
@@ -203,32 +276,20 @@ export default function Home() {
 	);
 }
 
-interface CompleteProfileInputs {
-	location: string;
-	speciality: string;
-}
-
-const ScheduleButton = () => {
-	const [schedule] = useAtom(completeScheduleAtom);
+// TOO: move this component and all its atom to component folder
+export const ScheduleAppointmentSection = () => {
 	const { navigate } = useNavigation();
+
 	const handleOnPress = () => {
 		// just logging the data here which can be accessed in other components as well
-		console.log("Currently schedule value", schedule);
 		navigate(HomeNavKey.ConsultantList);
 		// navigate on click
 	};
-
-	// TODO: fixing type issue here
-	return <PrimaryButton onPress={handleOnPress}>Schedule</PrimaryButton>;
-};
-
-// TOO: move this component and all its atom to component folder
-export const ScheduleAppointmentSection = () => {
 	return (
 		<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>
 			<Stack space={5} py={2}>
 				<AppointmentCustomizer />
-				<ScheduleButton />
+				<PrimaryButton onPress={handleOnPress}>Schedule</PrimaryButton>
 			</Stack>
 		</Box>
 	);

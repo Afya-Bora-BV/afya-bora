@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
+import { Provider } from "react-redux";
+import { store } from "./store";
 // import { Text } from 'react-native'
 
 import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base";
@@ -10,8 +12,8 @@ import { colors } from "./constants/colors";
 import { AuthProvider, useAuthStore } from "./internals/auth/context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { Provider as JotaiProvider } from 'jotai'
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { Provider as JotaiProvider } from "jotai";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView from "./views/Patient";
@@ -113,8 +115,6 @@ function Main() {
 		return subscriber; // unsubscribe on unmount
 	}, []);
 
-
-
 	useEffect(() => {
 		// Remove splash screen if ready
 		SplashScreen.hide();
@@ -128,19 +128,21 @@ function Main() {
 export default function App() {
 	return (
 		<SafeAreaProvider>
-			<NativeBaseProvider theme={theme}>
-				<NavigationContainer theme={AppTheme}>
-					<ToastProvider>
-						<AuthProvider>
-							<QueryClientProvider client={queryClient}>
-								<JotaiProvider>
-									<Main />
-								</JotaiProvider>
-							</QueryClientProvider>
-						</AuthProvider>
-					</ToastProvider>
-				</NavigationContainer>
-			</NativeBaseProvider>
+			<Provider store={store}>
+				<NativeBaseProvider theme={theme}>
+					<NavigationContainer theme={AppTheme}>
+						<ToastProvider>
+							<AuthProvider>
+								<QueryClientProvider client={queryClient}>
+									<JotaiProvider>
+										<Main />
+									</JotaiProvider>
+								</QueryClientProvider>
+							</AuthProvider>
+						</ToastProvider>
+					</NavigationContainer>
+				</NativeBaseProvider>
+			</Provider>
 		</SafeAreaProvider>
 	);
 }

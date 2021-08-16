@@ -12,21 +12,31 @@ import { HomeNavKey } from ".";
 import { colors } from "../../constants/colors";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
+import { requestAppointment } from "../../api";
 
-const ConfirmButton = () => {
-	const navigation = useNavigation();
-	const onPressNext = useCallback(() => {
-		navigation.navigate(HomeNavKey.HomeScreen);
-	}, []);
-	return (
-		<Button mb={3} bg={colors.primary} onPress={onPressNext} rounded={20}>
-			Confirm Appointment Request
-		</Button>
-	);
-};
+// const ConfirmButton = () => {
+// 	const navigation = useNavigation();
+
+// 	return (
+
+// 	);
+// };
 
 const AppointmentInvoice = () => {
 	const navigation = useNavigation();
+
+	const onPressNext = useCallback(() => {
+		const req = requestAppointment({
+			aboutVisit: { complaint: "here", symptoms: ["fever"] },
+			fid: "WOm1DbyIpAzzW8FV6ipw",
+			pid: "0AXHzG9KcseAa9e02GWS",
+			timeRange: "morning",
+			type: "in-person",
+		});
+
+		console.log(req);
+		// navigation.navigate(HomeNavKey.HomeScreen);
+	}, []);
 	return (
 		<MainContainer
 			title="Invoice"
@@ -49,7 +59,14 @@ const AppointmentInvoice = () => {
 					*By confirming this appointment request, you agree to pay
 					the above amount prior to your appointment.
 				</Text>
-				<ConfirmButton />
+				<Button
+					mb={3}
+					bg={colors.primary}
+					onPress={onPressNext}
+					rounded={20}
+				>
+					Confirm Appointment Request
+				</Button>
 			</ScrollView>
 		</MainContainer>
 	);

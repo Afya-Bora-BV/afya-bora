@@ -89,3 +89,5 @@ interface PatientProfile {
 	weight: string;
 	email: string;
 }
+
+type TimeRange = "morning" | "afternoon" | "evening";

@@ -59,3 +59,6 @@ buck-out/
 /ios/Pods/
 
 /coverage
+
+# Ignore massive profile files in android
+*.hprof
