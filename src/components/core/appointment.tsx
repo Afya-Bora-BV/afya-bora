@@ -10,228 +10,77 @@ import {
   View,
   Heading,
   Text,
-  Icon,
 } from "native-base";
 import { TextPropTypes, TouchableOpacity } from "react-native";
 import moment from "moment";
 import { RealTimeAppointment } from "../../types";
+import { useNavigation } from "@react-navigation/core";
+import { HomeNavKey } from "../../views/Patient";
+import { colors } from "../../constants/colors";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-/**
- * TODO: Upgrade this:
- *
- * Should:
- * - Know offline / online
- * - Render stuff only
- *   | Date, Name, Facility + Location (if offline, otherwise say Online),
- */
-
-export function AppointmentAlertDoctor({
-  appointment,
-  onPress,
-}: {
-  appointment: RealTimeAppointment;
-  onPress: () => void;
-}) {
-  if (!appointment) return null;
-  return (
-    // <TouchableOpacity onPress={props.onPress}>
-    <Box
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      padding={5}
-      rounded={20}
-      shadow={2}
-      bg="white"
-      testID="AppointmentAlertDoctor"
-    >
-      {/* left */}
-      <HStack space={3} flexGrow={1} justifyContent="flex-start">
-        {/* Icon */}
-        <Square size={8}>
-          <MedicalHistoryIcon size={6} />
-        </Square>
-        <VStack>
-          <Heading fontSize="lg" color="#000">
-            {appointment.consultant.name}
-          </Heading>
-          <Text fontSize="sm" color="#333">
-            {moment(appointment.date.seconds).format(
-              "DD MMM, H:MM A"
-            )}
-          </Text>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            {/* TODO: include facility in appointment */}
-            {appointment.type === "online"
-              ? "Online"
-              : appointment.facility?.name}
-          </Text>
-        </VStack>
-      </HStack>
-      {/* right */}
-      <View alignItems="center" flexDirection="row">
-        {appointment.type === "offline" ? (
-          <Text
-            fontSize={15}
-            color={"#561BB3"}
-            onPress={() => {
-              console.log("Offline facility edit");
-              onPress();
-            }}
-          >
-            Edit
-          </Text>
-        ) : (
-          <Text
-            fontSize={15}
-            color={"#561BB3"}
-            onPress={() => {
-              console.log("Online facility edit");
-              onPress();
-            }}
-          >
-            Join/Edit
-          </Text>
-        )}
-
-        <Icon size={5}>
-          <ArrowIcon_Next size={5} />
-        </Icon>
-      </View>
-    </Box>
-    // </TouchableOpacity>
-  );
-}
 
 export function AppointmentAlert({
   appointment,
-  onPress,
 }: {
-  appointment: RealTimeAppointment;
-  onPress: () => void;
+  appointment: any
 }) {
+  const navigation = useNavigation()
+  const openAppointment = (appointment: any) => {
+    navigation.navigate(HomeNavKey.AppointmentSpecifics, { appointment });
+  };
+
   if (!appointment) return null;
   return (
-    // <TouchableOpacity onPress={props.onPress}>
-    <Box
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      padding={5}
-      rounded={20}
-      shadow={2}
-      bg="white"
-      testID="AppointmentAlert"
+    <View
     >
-      {/* left */}
-      <HStack space={3} flexGrow={1} justifyContent="flex-start">
-        {/* Icon */}
-        <Square size={8}>
-          <MedicalHistoryIcon size={6} />
-        </Square>
-        <VStack>
-          <Heading fontSize="lg" color="#000">
-            Dr. {appointment.consultant.name}
-          </Heading>
-          <Text fontSize="sm" color="#333">
-            {moment.unix(appointment.date.seconds).format(
-              "DD MMM, H:MM A"
+      <Box
+        bgColor="#FFF"
+        p={4}
+        flexDirection="row"
+        rounded={6}
+        shadow={3}
+      >
+        <View flex={1.4}>
+          <Icon
+            size={40}
+            name="calendar-month-outline"
+          />
+        </View>
+        <VStack flex={5} space={1}>
+          <Text fontSize="md" fontWeight="bold">
+            {appointment?.facility?.name}
+          </Text>
+          <Text
+            fontWeight="bold"
+            color="gray.400"
+          >
+            {moment(appointment.utcDate).format(
+              "DD MMMM YYYY"
             )}
           </Text>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            {/* TODO: include facility in appointment */}
-            {appointment.type === "online"
+          <Text italic>
+            {appointment.timeRange === "online"
               ? "Online"
-              : appointment.facility?.name}
+              : "At Facility"}
           </Text>
         </VStack>
-      </HStack>
-      {/* right */}
-      <View alignItems="center" flexDirection="row">
-        {appointment.type === "offline" ? (
-          <Text
-            fontSize={15}
-            color={"#561BB3"}
-            onPress={() => {
-              console.log("Offline facility edit");
-              onPress();
-            }}
+        <View flex={2.2} justifyContent="center">
+          <TouchableOpacity
+            onPress={() => openAppointment(appointment)}
           >
-            Edit
-          </Text>
-        ) : (
-          <Text
-            fontSize={15}
-            color={"#561BB3"}
-            onPress={() => {
-              console.log("Online facility edit");
-              onPress();
-            }}
-          >
-            Join/Edit
-          </Text>
-        )}
 
-        <Icon size={5}>
-          <ArrowIcon_Next size={5} />
-        </Icon>
-      </View>
-    </Box>
-    // </TouchableOpacity>
-  );
-}
+            <Text
+              color={colors.primary}
+              fontSize="lg"
+            >
+              Join/Edit
+            </Text>
+          </TouchableOpacity>
 
-export function UpcomingAppointmentAlert({
-  appointment,
-  onPress,
-}: {
-  appointment: RealTimeAppointment;
-  onPress: () => void;
-}) {
-  if (!appointment) return null;
-  return (
-    // <TouchableOpacity onPress={props.onPress}>
-    <Box
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      padding={5}
-      rounded={20}
-      shadow={2}
-      bg="white"
-      testID="UpcomingAppointmentAlert"
-    >
-      {/* left */}
-      <HStack space={3} flexGrow={1} justifyContent="flex-start">
-        {/* Icon */}
-        <Square size={8}>
-          <MedicalHistoryIcon size={6} />
-        </Square>
-        <VStack>
-          <Heading fontSize="lg" color="#000">
-            Dr. {appointment.consultant.name}
-          </Heading>
-          <Text fontSize="sm" color="#333">
-            {moment.unix(appointment.date.seconds).format(
-              "DD MMM, H:MM A"
-            )}
-          </Text>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            {/* TODO: include facility in appointment */}
-            {appointment.type === "online"
-              ? "Online"
-              : appointment.facility?.name}
-          </Text>
-        </VStack>
-      </HStack>
-      {/* right */}
-      <View alignItems="center" flexDirection="row">
-        <Icon size={5} onPress={onPress}>
-          <ArrowIcon_Next size={5} />
-        </Icon>
-      </View>
-    </Box>
-    // </TouchableOpacity>
+        </View>
+      </Box>
+    </View>
   );
 }
 
@@ -273,8 +122,8 @@ export function StatusAppointmentAlert({
       {/* right */}
       <View alignSelf="flex-end" justifyContent="center">
         {/* TODO FIX: "Status positioning" */}
-        <Box rounded={10} backgroundColor={status==="confirmed"? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
-          <Text fontSize="sm" color={status==="confirmed"? "#24D626" : "black"}>
+        <Box rounded={10} backgroundColor={status === "confirmed" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
+          <Text fontSize="sm" color={status === "confirmed" ? "#24D626" : "black"}>
             {status}
           </Text>
         </Box>

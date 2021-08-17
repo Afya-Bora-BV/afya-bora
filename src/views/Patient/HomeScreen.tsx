@@ -40,6 +40,7 @@ import { TouchableOpacity } from "react-native";
 import _ from "lodash";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
+import { AppointmentAlert } from "../../components/core/appointment";
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
@@ -167,61 +168,11 @@ export default function Home() {
 							</Text>
 
 							{/* FIXME: Extract out to new component */}
-							<View
-								style={{ marginTop: 16 }}
-							>
-								<Box
-									bgColor="#FFF"
-									p={4}
-									flexDirection="row"
-									rounded={6}
-									shadow={3}
-								>
-									<View flex={1.4}>
-										<Icon
-											size={40}
-											name="calendar-month-outline"
-										/>
-									</View>
-									<VStack flex={5} space={1}>
-										<Text fontSize="md" fontWeight="bold">
-											{appointment?.facility?.name}
-										</Text>
-										<Text
-											fontWeight="bold"
-											color="gray.400"
-										>
-											{moment(appointment.utcDate).format(
-												"DD MMMM YYYY"
-											)}
-										</Text>
-										<Text italic>
-											{appointment.timeRange === "online"
-												? "Online"
-												: "At Facility"}
-										</Text>
-									</VStack>
-									<View flex={2.2} justifyContent="center">
-										<TouchableOpacity
-											onPress={() => openAppointment(appointment)}
-										>
-
-											<Text
-												color={colors.primary}
-												fontSize="lg"
-											>
-												Join/Edit
-											</Text>
-										</TouchableOpacity>
-
-									</View>
-								</Box>
-							</View>
-
+							<AppointmentAlert appointment={appointment} />
 							<TouchableOpacity
 								style={{ marginTop: 8 }}
 								onPress={() => {
-									console.log("To all the appointment pages")
+									navigation.navigate(HomeNavKey.UpcomingAppointments)
 								}}>
 								<Text textAlign="right" my={2} color="gray.500">
 									See All Appointments

@@ -10,8 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import MainContainer from "../../components/containers/MainContainer";
 import {
-	StatusAppointmentAlert,
-	UpcomingAppointmentAlert,
+	AppointmentAlert,
 } from "../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../components/misc";
@@ -20,13 +19,13 @@ import UpcomingAppointmentIllustration from "../../assets/illustrations/Upcoming
 import { typography } from "styled-system";
 import { Spacer } from "../../components/Spacer";
 import { colors } from "../../constants/colors";
-import { AppointmentAlert } from "../../components/core/appointment";
 import { useAuthStore } from "../../internals/auth/context";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../types";
 import moment from "moment";
 import { HomeNavKey } from ".";
+import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -58,8 +57,7 @@ export default function UpcomingAppointments() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					{/* <UpcomingAppointmentsSection /> */}
-					<NoAppointment />
+					<UpcomingAppointmentsSection />
 				</View>
 			</VStack>
 		</MainContainer>
@@ -110,54 +108,29 @@ const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
-	useEffect(() => {
-		const subscriber = firestore()
-			.collection("appointments")
-			.where("pid", "==", profile?.id)
-			// .where("status","!=","cancelled")
-			.onSnapshot((documentSnapshot) => {
-				const shots = [
-					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
-				];
-				setAppointments(shots as RealTimeAppointment[]);
-			});
+	const user = auth().currentUser;
 
-		// Stop listening for updates when no longer required
-		return () => subscriber();
-	}, [profile?.id]);
+	const { appointments } = usePatientAppointments(user?.uid);
 
-	console.log("Appontments : ");
-	console.log(JSON.stringify(appointments, null, 3));
 
-	const upcomingAppointments = appointments?.filter((appointment) => {
-		return (
-			moment.unix(appointment.date.seconds).isAfter() &&
-			appointment.status !== "cancelled"
-		);
-	});
+	// const upcomingAppointments = appointments?.filter((appointment: any) => {
+	// 	return (
+	// 		moment.unix(appointment.date.seconds).isAfter()
+	// 	);
+	// });
 
+	// console.log("appointments", appointments)
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>
-				{upcomingAppointments.length === 0 && <NoAppointment />}
+				{appointments.length === 0 && <NoAppointment />}
 
-				{upcomingAppointments.map((appointment) => {
+				{appointments.map((appointment) => {
 					{
 						return (
 							<View>
-								<UpcomingAppointmentAlert
+								<AppointmentAlert
 									appointment={appointment}
-									onPress={() => {
-										console.log("To appointment info screen")
-										// navigation.navigate(
-
-										// 	// HomeNavKey.Appo,
-										// 	// {
-										// 	// 	appointment: appointment,
-										// 	// }
-										// );
-									}}
 								/>
 							</View>
 						);
