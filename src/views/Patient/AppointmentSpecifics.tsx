@@ -9,11 +9,12 @@ import {
 	useToast,
 	View,
 	VStack,
+	Spinner
 } from "native-base";
 import React from "react";
 import MainContainer from "../../components/containers/MainContainer";
 import { StatusAppointmentAlert } from "../../components/core/appointment";
-import { Alert, Pressable } from "react-native";
+import { Alert, Pressable, ToastAndroid } from "react-native";
 import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { API_ROOT, getAppointmentDetails } from "../../api";
@@ -22,20 +23,29 @@ import { useMutation, useQuery } from "react-query";
 import { Spacer } from "../../components/Spacer";
 import { HomeNavKey } from ".";
 import PenEditIcon from "../../assets/icons/PenEditIcon";
+import firestore from '@react-native-firebase/firestore';
 
+// TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
 	// logic for cancelling the appointment here
 	console.log("Ready to cancel the appointment")
+	try {
+		await firestore().collection("appointments").doc(id).update({
+			status: "cancelled"
+		})
+	}
+	catch (e) {
+		throw new Error("Failed to cancel the appointment")
+	}
+
 }
-export const CancelAppointment = ({ modalVisible, setModalVisible, appointmentId }: { modalVisible: boolean, setModalVisible: (state: boolean) => void, appointmentId: string }) => {
+export const CancelAppointmentButton = ({ appointmentId }: { appointmentId: string }) => {
 	const navigation = useNavigation()
 	const toast = useToast()
 	const { mutate: cancel, error, isLoading } = useMutation(() => cancellAppointment(appointmentId), {
 		onSuccess: (args) => {
 			console.log("Successfuly cancelled appointment")
-			toast.show({
-				title: "Appointment successfully cancelled"
-			})
+			ToastAndroid.show("Appointment successfully cancelled", ToastAndroid.SHORT);
 			navigation.navigate(HomeNavKey.HomeScreen)
 		},
 		onError: (args) => {
@@ -63,44 +73,19 @@ export const CancelAppointment = ({ modalVisible, setModalVisible, appointmentId
 	}
 	console.log("Appointment id : ", appointmentId)
 	return (
-		<Modal isOpen={modalVisible} onClose={setModalVisible} size="lg">
-			<Modal.Content>
-				<Modal.CloseButton />
-				<Modal.Header>Cancellation of appointment</Modal.Header>
-				<Modal.Body >
-					<Text textAlign="center">
-						Are you sure you want to cancel this appointment?
-					</Text>
+		<Pressable
+			onPress={() => {
+				onCancelAppointment()
+			}}
+		>
+			{isLoading ?
+				<Spinner />
+				:
+				<Text style={{ color: "red" }} fontSize="sm">
+					Cancel Appointment
+				</Text>}
 
-
-					<HStack mt={6} justifyContent="space-between">
-						<Button
-							h={44}
-							w={144}
-							borderRadius={24}
-							variant="outline"
-							onPress={() => {
-								setModalVisible(!modalVisible)
-							}}
-						>No</Button>
-						<Button
-							h={44}
-							w={144}
-							borderRadius={24}
-							isLoading={isLoading}
-							disabled={isLoading}
-							onPress={onCancelAppointment}
-						>
-							Yes
-						</Button>
-					</HStack>
-				</Modal.Body>
-				<Modal.Footer>
-
-
-				</Modal.Footer>
-			</Modal.Content>
-		</Modal>
+		</Pressable>
 	)
 }
 
@@ -141,7 +126,7 @@ export default function AppointmentSpecifics() {
 					: undefined
 			}
 		>
-			<CancelAppointment appointmentId={data?.id || ""} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+
 			<VStack
 				flex={1}
 				width="100%"
@@ -170,15 +155,7 @@ export default function AppointmentSpecifics() {
 						</HStack>
 					</Pressable>
 
-					<Pressable
-						onPress={() => {
-							handleCancelAppointment()
-						}}
-					>
-						<Text style={{ color: "red" }} fontSize="sm">
-							Cancel Appointment
-						</Text>
-					</Pressable>
+					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<View bg="white" borderRadius={10} mt={8} shadow={2} p={5}>
 					<Text fontSize={"2xl"}>Symptoms</Text>

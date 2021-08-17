@@ -11,7 +11,6 @@ import {
 	Avatar,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { consultants } from "../data/consultants";
 
 export interface Consultant {
 	id: string

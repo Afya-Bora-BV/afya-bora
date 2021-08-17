@@ -273,7 +273,7 @@ export function StatusAppointmentAlert({
       {/* right */}
       <View alignSelf="flex-end" justifyContent="center">
         {/* TODO FIX: "Status positioning" */}
-        <Box rounded={10} backgroundColor={status==="confirmed"? "#A9FA0F" : "#FF5A5B"} padding={1.5}>
+        <Box rounded={10} backgroundColor={status==="confirmed"? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
           <Text fontSize="sm" color={status==="confirmed"? "#24D626" : "black"}>
             {status}
           </Text>

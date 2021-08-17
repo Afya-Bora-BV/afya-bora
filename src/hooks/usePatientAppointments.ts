@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
+import appointment from "../store/slices/appointment";
 
 // FIXME: Add type annotation
 function usePatientAppointments(patientId: string | undefined) {
-	const [appointments, setAppointments] = useState([]);
+	const [allAppointments, setAllAppointments] = useState([]);
 
 	useEffect(() => {
 		if (patientId) {
@@ -13,7 +14,7 @@ function usePatientAppointments(patientId: string | undefined) {
 				.orderBy("date", "desc")
 				.onSnapshot(
 					(snap) => {
-						setAppointments(
+						setAllAppointments(
 							snap?.docs.map((doc) => ({
 								...doc.data(),
 								id: doc.id,
@@ -29,6 +30,7 @@ function usePatientAppointments(patientId: string | undefined) {
 		}
 	}, [patientId]);
 
+	const appointments = allAppointments.filter((appointment: any) => appointment.status !== "cancelled")
 	return { appointments };
 }
 
