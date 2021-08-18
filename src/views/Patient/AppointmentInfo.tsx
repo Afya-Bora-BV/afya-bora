@@ -115,13 +115,7 @@ export default function AppointmentInfo() {
 	// 	["appointmentDetails", cid, pid],
 	// 	() => getAppointmentDetails({ cid, pid })
 	// );
-
-	const [modalVisible, setModalVisible] = React.useState(false)
-
-	const handleCancelAppointment = () => {
-		setModalVisible(!modalVisible)
-	}
-
+	
 	console.log("Appointment : ")
 	console.log(JSON.stringify(data, null, 3))
 	return (

@@ -36,11 +36,13 @@ import AppointmentCustomizer from "../../components/appointment-customizer";
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 import { getFacilities } from "../../api";
-import { TouchableOpacity } from "react-native";
+import { Alert, PermissionsAndroid, Platform, ToastAndroid, TouchableOpacity } from "react-native";
 import _ from "lodash";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
+import Geolocation from 'react-native-geolocation-service';
+
 const helpOptions = [
 	{
 		illustration: FacilityIllustration,
@@ -63,7 +65,7 @@ const AccountDetails = () => {
 			navigation.navigate(HomeNavKey.Login);
 		}
 	};
-	console.log("Whats uer : ", user);
+
 	return (
 		<Stack space={2}>
 			<Heading fontSize="xl">Your AfyaBora Account</Heading>
@@ -111,13 +113,7 @@ const ProfileInformation = () => {
 
 export default function Home() {
 	const navigation = useNavigation();
-	// const [isInProgree, setIsAppointmentInProgress] = useAtom(
-	// 	updateAppointmentInProgressAtom
-	// );
-
-	// React.useEffect(() => {
-	// 	setIsAppointmentInProgress(false);
-	// }, []);
+	const [location, setLocation] = useState(null);
 
 	const user = auth().currentUser;
 
@@ -128,6 +124,79 @@ export default function Home() {
 	const openAppointment = (appointment: any) => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
+
+	const hasLocationPermission = async () => {
+		if (Platform.OS === 'android' && Platform.Version < 23) {
+			return true;
+		}
+
+		const hasPermission = await PermissionsAndroid.check(
+			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+		);
+
+		if (hasPermission) {
+			return true;
+		}
+
+		const status = await PermissionsAndroid.request(
+			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+		);
+
+		if (status === PermissionsAndroid.RESULTS.GRANTED) {
+			return true;
+		}
+
+		if (status === PermissionsAndroid.RESULTS.DENIED) {
+			ToastAndroid.show(
+				'Location permission denied by user.',
+				ToastAndroid.LONG,
+			);
+		} else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+			ToastAndroid.show(
+				'Location permission revoked by user.',
+				ToastAndroid.LONG,
+			);
+		}
+
+		return false;
+	};
+
+	const getLocation = async () => {
+		const hasPermission = await hasLocationPermission();
+
+		if (!hasPermission) {
+			return;
+		}
+
+		Geolocation.getCurrentPosition(
+			(position) => {
+				setLocation(position);
+				console.log(position);
+			},
+			(error) => {
+				Alert.alert(`Code ${error.code}`, error.message);
+				setLocation(null);
+				console.log(error);
+			},
+			{
+				accuracy: {
+					android: 'high',
+					ios: 'best',
+				},
+				enableHighAccuracy: true,
+				timeout: 15000,
+				maximumAge: 10000,
+				distanceFilter: 0,
+				forceRequestLocation: true,
+				forceLocationManager: false,
+				showLocationDialog: true,
+			},
+		);
+	};
+
+	React.useEffect(() => {
+		getLocation()
+	}, [])
 
 	return (
 		<MainContainer
@@ -193,44 +262,35 @@ export default function Home() {
 					px={1}
 					py={2}
 				>
-					{helpOptions.map(
-						(
-							{
-								illustration: Illustration,
-								onNavigate,
-								title,
-								heading,
-							},
-							ix
-						) => (
-							<Stack key={title} space={2}>
-								<Heading fontSize="xl">{heading}</Heading>
-								<Pressable
-									key={`helpOption-${ix}`}
-									onPress={() => onNavigate(navigation)}
+
+					<Stack space={2}>
+						<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
+						<Pressable
+							onPress={() => {
+								navigation.navigate(HomeNavKey.FacilityMap, { location });
+							}}
+						>
+							{/* Find mean to set relative width: 160 -> 33%?? */}
+							<Center
+								// height={100}
+								bgColor="#FFF"
+								rounded="xl"
+								shadow={4}
+								padding={6}
+							>
+								<FacilityIllustration size={70} />
+								<Text
+									fontWeight="800"
+									textAlign="center"
+								// wordBreak="break-word"
+								// overflowWrap="break-word"
 								>
-									{/* Find mean to set relative width: 160 -> 33%?? */}
-									<Center
-										// height={100}
-										bgColor="#FFF"
-										rounded="xl"
-										shadow={4}
-										padding={6}
-									>
-										<Illustration size={70} />
-										<Text
-											fontWeight="800"
-											textAlign="center"
-										// wordBreak="break-word"
-										// overflowWrap="break-word"
-										>
-											{title}
-										</Text>
-									</Center>
-								</Pressable>
-							</Stack>
-						)
-					)}
+									Map of Facilities near you
+								</Text>
+							</Center>
+						</Pressable>
+					</Stack>
+
 					<AccountDetails />
 				</VStack>
 			</ScrollView>

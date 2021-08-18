@@ -8,7 +8,7 @@ import {
 	Platform,
 	Pressable,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 import {
@@ -28,7 +28,7 @@ import { Facility } from "../../types";
 import { API_ROOT, getFacilities } from "../../api";
 import { useDispatch } from "react-redux";
 import { setFacility } from "../../store/slices/appointment";
-
+import functions from "@react-native-firebase/functions";
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
@@ -62,10 +62,15 @@ const region = {
 };
 
 const FindFacility: React.FC = () => {
+	const route = useRoute<any>();
 	const navigation = useNavigation();
 	let mapIndex = 0;
 	let mapAnimation = new Animated.Value(0);
 	const [state, setState] = React.useState<Facility[]>([]);
+
+	const { location } = route?.params;
+
+	const requestLocation = [location?.coords?.latitude || null, location?.coords?.longitude || null]
 
 	const _map = React.useRef(null);
 	const _scrollView = React.useRef(null);
@@ -133,19 +138,37 @@ const FindFacility: React.FC = () => {
 		// navigation.navigate(HomeNavKey.FacilityInfo)
 	};
 
+
+
+
+
+	const getNearByFacilities = async () => {
+		const res = await functions().httpsCallable("getNearByFacilities")({
+			location: requestLocation
+		})
+
+		return res.data.data
+	}
+
 	const {
 		status,
 		data: facilityList,
 		error,
 		isLoading,
-	} = useQuery(["facilities"], getFacilities);
-
-	const facilities = facilityList?.data || [];
+	} = useQuery(["facilities"], getNearByFacilities, {
+		onError: (e) => {
+			console.log("Something went wrong ",)
+			console.log(e)
+		}
+	});
+	const facilities = facilityList || [];
 
 	React.useEffect(() => {
 		console.log(facilities);
 		setTimeout(() => setState(facilities), 1000);
 	}, [facilities]);
+
+	console.log("Current location : ", requestLocation)
 
 	return (
 		<MainContainer
@@ -156,17 +179,17 @@ const FindFacility: React.FC = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
 			<MapView ref={_map} style={styles.map} initialRegion={region}>
-				{state.map((marker, index) => {
+				{facilityList.map((marker, index) => {
 					return (
 						<Marker
 							key={index}
