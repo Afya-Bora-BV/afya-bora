@@ -42,6 +42,7 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from 'react-native-geolocation-service';
+import { useAuthStore } from "../../internals/auth/context";
 
 
 const AccountDetails = () => {
@@ -82,6 +83,11 @@ const AccountDetails = () => {
 // FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
+	// const { profile } = useAuthStore((state) => ({
+	// 	updateProfile: state.profile,
+	// }));
+
+	// console.log("Profile : ",profile)
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -187,7 +193,7 @@ const LocationHelper = () => {
 	return (
 		<Stack space={2}>
 			<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
-			{isLocationLoading &&!location &&
+			{isLocationLoading && !location &&
 				<Text>Acquiring user location</Text>
 			}
 			{location &&
@@ -216,7 +222,7 @@ const LocationHelper = () => {
 					</Center>
 				</Pressable>
 			}
-			{location && !isLocationLoading &&
+			{!location && !isLocationLoading &&
 				<Text>here was an error in Acquiring Your Location</Text>}
 
 		</Stack>
