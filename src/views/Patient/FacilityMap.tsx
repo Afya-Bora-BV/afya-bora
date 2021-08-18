@@ -140,8 +140,6 @@ const FindFacility: React.FC = () => {
 
 
 
-
-
 	const getNearByFacilities = async () => {
 		const res = await functions().httpsCallable("getNearByFacilities")({
 			location: requestLocation
@@ -189,7 +187,7 @@ const FindFacility: React.FC = () => {
 			}
 		>
 			<MapView ref={_map} style={styles.map} initialRegion={region}>
-				{facilityList.map((marker, index) => {
+				{state.map((marker, index) => {
 					return (
 						<Marker
 							key={index}

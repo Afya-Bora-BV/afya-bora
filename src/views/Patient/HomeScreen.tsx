@@ -43,16 +43,6 @@ import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from 'react-native-geolocation-service';
 
-const helpOptions = [
-	{
-		illustration: FacilityIllustration,
-		title: "Map of Facilities near you",
-		heading: "Need quick medical attention?",
-		onNavigate: (navigation: any) => {
-			navigation.navigate(HomeNavKey.FacilityMap);
-		},
-	},
-];
 
 const AccountDetails = () => {
 	const navigation = useNavigation();
@@ -172,6 +162,7 @@ export default function Home() {
 			(position) => {
 				setLocation(position);
 				console.log(position);
+				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
 			},
 			(error) => {
 				Alert.alert(`Code ${error.code}`, error.message);
