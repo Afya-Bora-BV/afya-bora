@@ -125,8 +125,8 @@ export default function Home() {
 
 	const appointment = appointments[0];
 
-	const openAppointment = (appointment) => {
-		navigation.navigate(HomeNavKey.AppointmentSpecifics, { appointment });
+	const openAppointment = (appointment: any) => {
+		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
 
 	return (

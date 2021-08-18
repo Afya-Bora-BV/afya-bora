@@ -3,8 +3,7 @@ import { Text } from "react-native-svg";
 import React, { useEffect, useState } from "react";
 import MainContainer from "../../components/containers/MainContainer";
 import {
-	StatusAppointmentAlert,
-	UpcomingAppointmentAlert,
+	AppointmentAlert,
 } from "../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../components/misc";
@@ -88,16 +87,8 @@ const VisitHistorySection = () => {
 				{visitHistory.map((appointment) => {
 					return (
 						<View>
-							<UpcomingAppointmentAlert
+							<AppointmentAlert
 								appointment={appointment}
-								onPress={() => {
-									navigation.navigate(
-										HomeNavKey.AppointmentSpecifics,
-										{
-											appointment: appointment,
-										}
-									);
-								}}
 							/>
 						</View>
 					);

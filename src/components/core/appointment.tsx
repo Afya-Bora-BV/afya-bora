@@ -27,7 +27,7 @@ export function AppointmentAlert({
 }) {
   const navigation = useNavigation()
   const openAppointment = (appointment: any) => {
-    navigation.navigate(HomeNavKey.AppointmentSpecifics, { appointment });
+    navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
   };
 
   if (!appointment) return null;
