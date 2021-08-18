@@ -101,19 +101,10 @@ const ProfileInformation = () => {
 	);
 };
 
-export default function Home() {
+const LocationHelper = () => {
 	const navigation = useNavigation();
 	const [location, setLocation] = useState(null);
-
-	const user = auth().currentUser;
-
-	const { appointments } = usePatientAppointments(user?.uid);
-
-	const appointment = appointments[0];
-
-	const openAppointment = (appointment: any) => {
-		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
-	};
+	const [isLocationLoading, setIsLocationLoading] = useState(false)
 
 	const hasLocationPermission = async () => {
 		if (Platform.OS === 'android' && Platform.Version < 23) {
@@ -152,22 +143,27 @@ export default function Home() {
 	};
 
 	const getLocation = async () => {
+		setIsLocationLoading(true)
 		const hasPermission = await hasLocationPermission();
 
 		if (!hasPermission) {
+			setIsLocationLoading(false)
 			return;
 		}
 
 		Geolocation.getCurrentPosition(
 			(position) => {
+
 				setLocation(position);
 				console.log(position);
 				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
+				setIsLocationLoading(false)
 			},
 			(error) => {
 				Alert.alert(`Code ${error.code}`, error.message);
 				setLocation(null);
 				console.log(error);
+				setIsLocationLoading(false)
 			},
 			{
 				accuracy: {
@@ -188,6 +184,59 @@ export default function Home() {
 	React.useEffect(() => {
 		getLocation()
 	}, [])
+	return (
+		<Stack space={2}>
+			<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
+			{isLocationLoading &&!location &&
+				<Text>Acquiring user location</Text>
+			}
+			{location &&
+				<Pressable
+					onPress={() => {
+						navigation.navigate(HomeNavKey.FacilityMap, { location });
+					}}
+				>
+					{/* Find mean to set relative width: 160 -> 33%?? */}
+					<Center
+						// height={100}
+						bgColor="#FFF"
+						rounded="xl"
+						shadow={4}
+						padding={6}
+					>
+						<FacilityIllustration size={70} />
+						<Text
+							fontWeight="800"
+							textAlign="center"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
+						>
+							Map of Facilities near you
+						</Text>
+					</Center>
+				</Pressable>
+			}
+			{location && !isLocationLoading &&
+				<Text>here was an error in Acquiring Your Location</Text>}
+
+		</Stack>
+	)
+}
+export default function Home() {
+	const navigation = useNavigation();
+	const [location, setLocation] = useState(null);
+
+	const user = auth().currentUser;
+
+	const { appointments } = usePatientAppointments(user?.uid);
+
+	const appointment = appointments[0];
+
+	const openAppointment = (appointment: any) => {
+		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
+	};
+
+
 
 	return (
 		<MainContainer
@@ -253,35 +302,7 @@ export default function Home() {
 					px={1}
 					py={2}
 				>
-
-					<Stack space={2}>
-						<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
-						<Pressable
-							onPress={() => {
-								navigation.navigate(HomeNavKey.FacilityMap, { location });
-							}}
-						>
-							{/* Find mean to set relative width: 160 -> 33%?? */}
-							<Center
-								// height={100}
-								bgColor="#FFF"
-								rounded="xl"
-								shadow={4}
-								padding={6}
-							>
-								<FacilityIllustration size={70} />
-								<Text
-									fontWeight="800"
-									textAlign="center"
-								// wordBreak="break-word"
-								// overflowWrap="break-word"
-								>
-									Map of Facilities near you
-								</Text>
-							</Center>
-						</Pressable>
-					</Stack>
-
+					<LocationHelper />
 					<AccountDetails />
 				</VStack>
 			</ScrollView>
