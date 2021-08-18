@@ -111,10 +111,12 @@ export function StatusAppointmentAlert({
         <MedicalHistoryIcon size={6} />
         <VStack space={2}>
           <Heading fontSize="lg" color="#000">
-            {moment(time).format("DD MMM, H:MM A")}
+            {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
-          <Text fontSize="sm" fontStyle="italic" color="#333">
-            {TextPropTypes} Consultation
+          <Text italic>
+            {type === "online"
+              ? "Online"
+              : "At Facility"}
           </Text>
         </VStack>
       </HStack>

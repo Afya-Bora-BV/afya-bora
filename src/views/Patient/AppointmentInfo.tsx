@@ -24,6 +24,7 @@ import { Spacer } from "../../components/Spacer";
 import { HomeNavKey } from ".";
 import PenEditIcon from "../../assets/icons/PenEditIcon";
 import firestore from '@react-native-firebase/firestore';
+import { FacilityListItem } from "../../components/facilities-list-item";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -89,6 +90,19 @@ export const CancelAppointmentButton = ({ appointmentId }: { appointmentId: stri
 	)
 }
 
+
+const EditAppointmentButton = ({ appointmentId }: { appointmentId: string }) => {
+	return (
+		<Pressable onPress={() => {
+			ToastAndroid.show(`Under construction ${appointmentId} !!!`, ToastAndroid.SHORT)
+		}}>
+			<HStack space={2}>
+				<PenEditIcon size={4} />
+				<Text fontSize="sm">Edit Appointment</Text>
+			</HStack>
+		</Pressable>
+	)
+}
 export default function AppointmentInfo() {
 	const navigation = useNavigation();
 
@@ -137,25 +151,23 @@ export default function AppointmentInfo() {
 			>
 				<View width="100%">
 					<StatusAppointmentAlert
-						time={data?.date || ""}
+						time={data?.utcDate || ""}
 						type={data?.type || "offline"}
 						status={data?.status}
 					/>
 				</View>
 
 				<HStack justifyContent="space-between">
-					<Pressable onPress={() => {
-						console.log("To edit appointment info : ")
-					}}>
-						<HStack space={2}>
-							<PenEditIcon size={4} />
-							<Text fontSize="sm">Edit Appointment</Text>
-						</HStack>
-					</Pressable>
-
+					<EditAppointmentButton appointmentId={data?.id || ""} />
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
-				<View bg="white" borderRadius={10} mt={8} shadow={2} p={5}>
+				<VStack mt={2}>
+					<FacilityListItem
+						facility={data?.facility}
+						onPress={() => null}
+					/>
+				</VStack>
+				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text fontSize={"2xl"}>Symptoms</Text>
 					<Spacer size={10} />
 					<HStack space={4} flexWrap="wrap">

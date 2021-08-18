@@ -11,6 +11,7 @@ import {
 	Avatar,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Facility } from "../types";
 
 type FacilityListItemProps = {
 	facility: Facility
@@ -23,7 +24,7 @@ const getDistance = (geopoint: { lat: number, lng: number }) => {
 }
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
-	facility: { name, address, rating: { count, stars }, geopoint },
+	facility: { name, address,},
 	onPress,
 }) => {
 	return (
@@ -70,7 +71,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 										size={24}
 									/>
 									<Text fontSize="md" color="#B0B3C7">
-										{stars} ({count})
+										0
 									</Text>
 								</HStack>
 								<HStack
@@ -89,7 +90,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 										size={18}
 										color="#258FBE"
 									/>
-									<Text color="#258FBE">{getDistance(geopoint)}</Text>
+									<Text color="#258FBE">{0}</Text>
 								</HStack>
 							</HStack>
 						</VStack>

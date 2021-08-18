@@ -141,6 +141,9 @@ export function PatientComplaint() {
 		);
 	};
 
+	console.log("Root state ")
+	console.log(JSON.stringify(appointment,null,3))
+
 	return (
 		<MainContainer
 			title="About your Visit"
