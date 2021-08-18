@@ -13,6 +13,7 @@ import Profile from "./Profile";
 import Notification from "./Notification";
 import EditHealthProfile from "./EditHealthProfile";
 import AppointmentInfo from "./AppointmentInfo";
+import EditAppointment from "./EditAppointment"
 
 import { PatientComplaint } from "./PatientComplaint";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -107,6 +108,10 @@ export default function HomeView({ navigation }: any) {
 			<NavStack.Screen
 				name={HomeNavKey.AppointmentInfo}
 				component={AppointmentInfo}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.EditAppointment}
+				component={EditAppointment}
 			/>
 		</NavStack.Navigator>
 	);

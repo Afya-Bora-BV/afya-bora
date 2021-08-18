@@ -25,6 +25,9 @@ import { HomeNavKey } from ".";
 import PenEditIcon from "../../assets/icons/PenEditIcon";
 import firestore from '@react-native-firebase/firestore';
 import { FacilityListItem } from "../../components/facilities-list-item";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { setDate, setTimeRange } from "../../store/slices/appointment";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -91,10 +94,27 @@ export const CancelAppointmentButton = ({ appointmentId }: { appointmentId: stri
 }
 
 
-const EditAppointmentButton = ({ appointmentId }: { appointmentId: string }) => {
+const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: string, appointment: any }) => {
+	const navigation = useNavigation()
+
+	const goToEditAppointment = () => {
+		setFormDefaultValues()
+		navigation.navigate(HomeNavKey.EditAppointment, {
+			appointment: appointment
+		})
+	}
+	
+	const dispatch = useDispatch();
+
+	const setFormDefaultValues = () => {
+		dispatch(setTimeRange(appointment.timeRange))
+		dispatch(setDate(new Date(appointment.utcDate)))
+	}
+
+
 	return (
 		<Pressable onPress={() => {
-			ToastAndroid.show(`Under construction ${appointmentId} !!!`, ToastAndroid.SHORT)
+			goToEditAppointment()
 		}}>
 			<HStack space={2}>
 				<PenEditIcon size={4} />
@@ -115,7 +135,7 @@ export default function AppointmentInfo() {
 	// 	["appointmentDetails", cid, pid],
 	// 	() => getAppointmentDetails({ cid, pid })
 	// );
-	
+
 	console.log("Appointment : ")
 	console.log(JSON.stringify(data, null, 3))
 	return (
@@ -152,7 +172,7 @@ export default function AppointmentInfo() {
 				</View>
 
 				<HStack justifyContent="space-between">
-					<EditAppointmentButton appointmentId={data?.id || ""} />
+					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || {}} />
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<VStack mt={2}>
