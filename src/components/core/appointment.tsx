@@ -59,6 +59,14 @@ export function AppointmentAlert({
               "DD MMMM YYYY"
             )}
           </Text>
+          <Text
+            color={
+              appointment?.status === "accepted" ? "#24D626" :
+                null
+            }
+          >
+            {appointment?.status}
+          </Text>
           <Text italic>
             {appointment.timeRange === "online"
               ? "Online"
