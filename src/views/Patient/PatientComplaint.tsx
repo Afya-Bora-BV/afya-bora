@@ -28,15 +28,11 @@ import { toggleStringFromList } from "../../utils";
 import { StackNavigationProp } from "@react-navigation/stack";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
-import { useAppointmentTempoStore } from "../../internals/appointment/context";
-import firestore from "@react-native-firebase/firestore";
-import { useMutation } from "react-query";
 import auth from "@react-native-firebase/auth";
 import { atom, useAtom } from "jotai";
 import axios from "axios";
 import { API_ROOT } from "../../api";
 import { HomeNavKey } from ".";
-import { useAuthStore } from "../../internals/auth/context";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
@@ -86,24 +82,23 @@ export function PatientComplaint() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const currentUser = auth().currentUser;
-	const profile = useAuthStore((state) => state.profile);
 
-	const appointment = useSelector(
-		({ appointment }: RootState) => appointment
+	const { profile, appointment } = useSelector(
+		(state: RootState) => ({ profile: state.profile, appointment: state.appointment })
 	);
 	const dispatch = useDispatch();
 
 	const submit = () => {
 		if (currentUser !== null || !profile) {
 			const fid = appointment.facility?.id;
-	
+
 			// FIXME: Move function to API file
 			functions()
 				.httpsCallable("makeAppointment")({
 					// FIXME: Add a checker for fid being present
 					fid,
 					aboutVisit: appointment.aboutVisit,
-					pid: profile?.id,
+					pid: profile?.profile?.id,
 					timeRange: appointment.timeRange,
 					type: appointment.type,
 					utcDate: new Date(appointment.date).toUTCString(),
@@ -142,7 +137,7 @@ export function PatientComplaint() {
 	};
 
 	console.log("Root state ")
-	console.log(JSON.stringify(appointment,null,3))
+	console.log(JSON.stringify(appointment, null, 3))
 
 	return (
 		<MainContainer

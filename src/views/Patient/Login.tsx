@@ -19,8 +19,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
-import { useAuthStore } from "../../internals/auth/context";
 import AltContainer from "../../components/containers/AltContainer";
 import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";

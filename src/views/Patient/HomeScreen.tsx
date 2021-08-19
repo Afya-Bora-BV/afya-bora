@@ -42,7 +42,8 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from 'react-native-geolocation-service';
-import { useAuthStore } from "../../internals/auth/context";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 
 const AccountDetails = () => {
@@ -83,16 +84,15 @@ const AccountDetails = () => {
 // FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
-	// const { profile } = useAuthStore((state) => ({
-	// 	updateProfile: state.profile,
-	// }));
-
-	// console.log("Profile : ",profile)
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
+	console.log("Profile : ", currentProfile.profile)
 	if (user) {
 		return (
 			<VStack flex={1}>
 				<Text>{Date()}</Text>
-				<Heading fontSize="3xl">Hi, {user.phoneNumber}</Heading>
+				<Heading fontSize="3xl">Hi, {currentProfile?.profile?.name}</Heading>
 			</VStack>
 		);
 	}

@@ -9,7 +9,6 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { colors } from "./constants/colors";
 
-import { AuthProvider, useAuthStore } from "./internals/auth/context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Provider as JotaiProvider } from "jotai";
@@ -132,13 +131,11 @@ export default function App() {
 				<NativeBaseProvider theme={theme}>
 					<NavigationContainer theme={AppTheme}>
 						<ToastProvider>
-							<AuthProvider>
 								<QueryClientProvider client={queryClient}>
 									<JotaiProvider>
 										<Main />
 									</JotaiProvider>
 								</QueryClientProvider>
-							</AuthProvider>
 						</ToastProvider>
 					</NavigationContainer>
 				</NativeBaseProvider>

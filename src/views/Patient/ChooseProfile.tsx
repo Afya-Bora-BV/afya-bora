@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Center, Heading, HStack, Spinner, Text, VStack } from 'native-base'
 import auth from '@react-native-firebase/auth';
-import { Consultant, Patient, useAuthStore } from '../../internals/auth/context'
 import { API_ROOT } from "../../api";
 import axios, { AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
@@ -14,8 +13,12 @@ import { atom, useAtom } from "jotai"
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateAppointmentInProgressAtom } from './PatientComplaint';
+import { useDispatch, useSelector } from 'react-redux';
+import appointment from '../../store/slices/appointment';
+import { RootState } from '../../store';
+import profile, { Profile, updateProfile as updateReduxProfile } from '../../store/slices/profile';
 
-export const checkPatientProfiles = async (): Promise<Patient[]> => {
+export const checkPatientProfiles = async () => {
     const uid = await auth().currentUser?.uid;
     console.log("Checking user profile data");
     console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`);
@@ -25,51 +28,7 @@ export const checkPatientProfiles = async (): Promise<Patient[]> => {
     return profiles.data.data;
 };
 
-const checkConsultantProfiles = async (): Promise<Consultant[]> => {
-    const uid = await auth().currentUser?.uid;
-    const profile = await firestore()
-        .collection("consultants")
-        .where("uid", "==", uid)
-        .get();
-    const data = profile.docs.map(
-        (doc) => ({ ...doc.data(), id: doc.id, uid: uid } as Consultant)
-    );
-    return data;
-};
 
-type Profile = {
-    name: string
-}
-// type Unsubscribe = () => void
-
-// type Storage<Value> = {
-//     getItem: (key: string) => Value | Promise<Value>
-//     setItem: (key: string, newValue: Value) => void | Promise<void>
-//     delayInit?: boolean
-//     subscribe?: (key: string, callback: (value: Value) => void) => Unsubscribe
-// }
-
-// const profileStorage = createJSONStorage(() => AsyncStorage) as Storage<Profile>
-// const profileAtom = atomWithStorage<Profile>("profile", {
-//     name: ""
-// }, profileStorage)
-
-
-// TODOS
-// 1. to update profile info for more data
-// 2. to persist the store in async storage
-
-const profileAtom = atom<Profile | null>(null)
-
-export const updateProfileAtom = atom((get) => {
-    return get(profileAtom)
-}, (get, set, update: Profile) => {
-    set(profileAtom, update)
-})
-
-export const clearProfileAtom = atom(null, (get, set) => {
-    set(profileAtom, null)
-})
 
 
 const ChooseProfile = () => {
@@ -77,13 +36,12 @@ const ChooseProfile = () => {
     const phone = auth().currentUser?.phoneNumber
 
     // FIXME: these two atoms to be reconsidered
-    // const [, updateProfile] = useAtom(updateProfileAtom)
-    const [isAppointmentInProgress, setIsAppointmentInProgress] = useAtom(updateAppointmentInProgressAtom)
+    const dispatch = useDispatch()
 
-    const { updateProfile } = useAuthStore((state) => ({
-        updateProfile: state.updateProfile,
-    }));
 
+    const currentProfile = useSelector(
+        ({ profile }: RootState) => profile
+    );
 
     const navigation = useNavigation()
 
@@ -92,30 +50,22 @@ const ChooseProfile = () => {
         data: profiles,
         error,
         isLoading,
-    } = useQuery<Consultant[] | Patient[] | undefined>(["chooseProfile", email, phone], () => {
-        if (phone) return checkPatientProfiles()
-        if (email) return checkConsultantProfiles()
-
+    } = useQuery<Profile[]>(["chooseProfile", email, phone], () => {
+        return checkPatientProfiles()
     });
 
 
-    console.log("Email : ", email, " Phone : ", phone)
 
-    console.log("User profiles : ", profiles)
-
-    const updateProfileDetails = (profile: any) => {
+    const updateProfileDetails = (profile: Profile) => {
         console.log("Setting profile to ", profile)
         if (phone) {
             // update patient active profile
-            updateProfile({
+            dispatch(updateReduxProfile({
                 ...profile,
                 type: "patient"
-            })
-            if (isAppointmentInProgress) {
-                navigation.navigate(HomeNavKey.AppointmentInvoice)
-            } else {
-                navigation.navigate(HomeNavKey.HomeScreen)
-            }
+            }))
+
+            navigation.navigate(HomeNavKey.HomeScreen)
 
         }
         if (email) {
@@ -147,6 +97,9 @@ const ChooseProfile = () => {
 
         navigation.navigate(HomeNavKey.CreateProfile)
     }
+
+    console.log("currentProfile : ")
+    console.log(JSON.stringify(currentProfile, null, 3))
 
     return (
         <VStack p={12} flex={1}>

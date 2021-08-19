@@ -24,7 +24,6 @@ import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { PrimaryButton } from "../../components/button";
 import moment from "moment";
-import { useAuthStore } from "../../internals/auth/context";
 
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
@@ -32,9 +31,11 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import axios, { AxiosResponse } from "axios";
 import { API_ROOT } from "../../api";
 import { useAtom } from 'jotai'
-import { updateProfileAtom } from "./ChooseProfile";
+import profile, { updateProfile as updateReduxProfile } from '../../store/slices/profile';
+
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
+import { useDispatch } from "react-redux";
 const regions: { name: string }[] = [
 	"Residency Location",
 	"Arusha",
@@ -125,19 +126,9 @@ export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const phoneNumber = auth().currentUser?.phoneNumber
-
-
-	// FIXME: these two atoms to be reconsidered
-	// const [, updateProfile] = useAtom(updateProfileAtom)
-	const [isAppointmentInProgress,] = useAtom(updateAppointmentInProgressAtom)
-
-	const { updateProfile } = useAuthStore((state) => ({
-		updateProfile: state.updateProfile,
-	}));
+	const dispatch = useDispatch()
 
 	const Toast = useToast()
-
-	console.log("Appointment in profess ", isAppointmentInProgress)
 
 	const {
 		control,
@@ -161,11 +152,12 @@ export default function CreateProfileScreen() {
 			const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
 			// TODO: to reconsider better way to store this server state
 			if (createdProfile.patientId) {
-				console.log("Code is reached ", createdProfile)
-				updateProfile({
-					pid: createdProfile.patientId,
-					...data, phoneNumber, type: "patient"
-				});
+
+				dispatch(updateReduxProfile({
+					id: createdProfile.patientId,
+					...data,
+					type: "patient"
+				}))
 
 			} else {
 				console.log("Error in creating profile data")
@@ -199,11 +191,9 @@ export default function CreateProfileScreen() {
 				// Boom baby!
 				console.log("created successfully ");
 				Toast.show({ title: "Successfuly created prifle" })
-				if (isAppointmentInProgress) {
-					navigation.navigate(HomeNavKey.AppointmentInvoice)
-				} else {
-					navigation.navigate(HomeNavKey.HomeScreen)
-				}
+
+				navigation.navigate(HomeNavKey.HomeScreen)
+
 
 			},
 		}

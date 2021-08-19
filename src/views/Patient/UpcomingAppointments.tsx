@@ -19,12 +19,7 @@ import UpcomingAppointmentIllustration from "../../assets/illustrations/Upcoming
 import { typography } from "styled-system";
 import { Spacer } from "../../components/Spacer";
 import { colors } from "../../constants/colors";
-import { useAuthStore } from "../../internals/auth/context";
-import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { RealTimeAppointment } from "../../types";
-import moment from "moment";
-import { HomeNavKey } from ".";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 
 export default function UpcomingAppointments() {
@@ -106,7 +101,6 @@ export function NoAppointment() {
 
 const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
 
 	const user = auth().currentUser;
 

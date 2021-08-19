@@ -21,14 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
 import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { PrimaryButton } from "../../components/button";
-import moment from "moment";
-import { useAuthStore } from "../../internals/auth/context";
 
-import firestore from "@react-native-firebase/firestore";
-import { useMutation } from "react-query";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { PatientProfile } from "../../types";
 
 const regions: { name: string }[] = [
 	"Residency Location",
@@ -179,14 +172,7 @@ const ShowUserData = () => {
 	const [show, setShow] = useState(false);
 	const [date, setDate] = useState(new Date(1598051730000));
 
-	const { profile } = useAuthStore((state) => ({
-		profile: state.profile,
-	}));
 
-	const { phoneNumber, updateProfile } = useAuthStore((state) => ({
-		phoneNumber: state.phone,
-		updateProfile: state.updateProfile,
-	}));
 
 	const showDatepicker = () => {
 		setShow(true);
@@ -229,7 +215,7 @@ const ShowUserData = () => {
 	const onSumit = (data: any) => {
 		console.log("Data ");
 		console.log(data);
-		updateProfile(data)
+
 	};
 
 	// console.log("Profile data: ")

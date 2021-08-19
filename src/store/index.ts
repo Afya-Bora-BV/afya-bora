@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appointmetReducer from "./slices/appointment";
+import profileReducer from "./slices/profile"
 
 export const store = configureStore({
 	reducer: {
 		appointment: appointmetReducer,
+		profile: profileReducer
 	},
 });
 
