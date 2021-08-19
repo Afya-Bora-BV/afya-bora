@@ -91,7 +91,7 @@ export function StatusAppointmentAlert({
 }: {
   time: string;
   type: "offline" | "online";
-  status?: "pending" | "cancelled" | "confirmed"
+  status?: "pending" | "cancelled" | "accepted"
 }) {
   console.log("Whats time ", time)
   return (
@@ -124,8 +124,8 @@ export function StatusAppointmentAlert({
       {/* right */}
       <View alignSelf="flex-end" justifyContent="center">
         {/* TODO FIX: "Status positioning" */}
-        <Box rounded={10} backgroundColor={status === "confirmed" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
-          <Text fontSize="sm" color={status === "confirmed" ? "#24D626" : "black"}>
+        <Box rounded={10} backgroundColor={status === "accepted" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
+          <Text fontSize="sm" color={status === "accepted" ? "#24D626" : "black"}>
             {status}
           </Text>
         </Box>

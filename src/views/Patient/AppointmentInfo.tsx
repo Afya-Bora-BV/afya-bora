@@ -103,7 +103,7 @@ const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: 
 			appointment: appointment
 		})
 	}
-	
+
 	const dispatch = useDispatch();
 
 	const setFormDefaultValues = () => {
@@ -111,6 +111,9 @@ const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: 
 		dispatch(setDate(new Date(appointment.utcDate)))
 	}
 
+	if (appointment?.status === "accepted") {
+		return null
+	}
 
 	return (
 		<Pressable onPress={() => {
