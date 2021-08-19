@@ -168,6 +168,7 @@ export default function AppointmentInfo() {
 			>
 				<View width="100%">
 					<StatusAppointmentAlert
+						hours={data?.time || ""}
 						time={data?.utcDate || ""}
 						type={data?.type || "offline"}
 						status={data?.status}

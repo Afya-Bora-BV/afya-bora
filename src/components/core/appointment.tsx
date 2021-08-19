@@ -86,12 +86,14 @@ export function AppointmentAlert({
 
 export function StatusAppointmentAlert({
   time = "",
+  hours = "",
   type = "offline",
   status = "pending"
 }: {
   time: string;
   type: "offline" | "online";
-  status?: "pending" | "cancelled" | "accepted"
+  status?: "pending" | "cancelled" | "accepted";
+  hours: string
 }) {
   console.log("Whats time ", time)
   return (
@@ -113,11 +115,13 @@ export function StatusAppointmentAlert({
           <Heading fontSize="lg" color="#000">
             {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
+          {status === "accepted" && <Text italic>Time : {hours}</Text>}
           <Text italic>
             {type === "online"
               ? "Online"
               : "At Facility"}
           </Text>
+
         </VStack>
       </HStack>
 
