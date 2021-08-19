@@ -32,17 +32,22 @@ import OnlineConsulationIllustration from "../../assets/illustrations/OnlineCons
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
 import { useAtom } from 'jotai'
 import HomeView, { HomeNavKey } from ".";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearProfile } from "../../store/slices/profile";
+import { RootState } from "../../store";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-function ProfileCard({ userProfile, onPress, ...props }) {
+function ProfileCard({ }) {
+	const navigation=useNavigation()
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
 	return (
 		<HStack
 			bg="white"
 			shadow={2}
 			rounded={10}
 			width="100%"
-			{...props}
 			padding={3}
 			maxHeight={100}
 		>
@@ -58,16 +63,18 @@ function ProfileCard({ userProfile, onPress, ...props }) {
 				</Avatar>
 				<VStack space={1} justifyContent="center">
 					<Text fontWeight="600" fontSize="xl">
-						{userProfile?.name}
+						{currentProfile?.profile?.name}
 					</Text>
-					<Text color="#747F9E">{userProfile?.subText}</Text>
+					<Text color="#747F9E">{currentProfile?.profile?.id}</Text>
 				</VStack>
 			</HStack>
 
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
 					<Pressable
-						onPress={onPress}
+						onPress={()=>{
+							navigation.navigate(HomeNavKey.EditHealthProfile)
+						}}
 					>
 						<NextIcon color="#7065E4" />
 					</Pressable>
@@ -142,15 +149,8 @@ export default function ProfileMain() {
 		>
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-					<ProfileCard userProfile={{
+						<ProfileCard />
 
-					}} onPress={() => {
-						// TODO: tranfer the edit profile page to route stack and navigate to that screen
-						// HomeNavKey
-						navigation.navigate(HomeNavKey.EditHealthProfile)
-
-						// );
-					}} />
 					<HStack
 						space={4}
 						marginTop={3}
