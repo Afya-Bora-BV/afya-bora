@@ -96,7 +96,7 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 			<HStack justifyContent="space-between" mb={3}>
 				<Text fontSize="2xl" bold>
 					Preferred Date 
-				</Text>
+  				</Text>
 
 				<MonthDropDown
 					onChangeDate={(date) => onChangeDate(date)}

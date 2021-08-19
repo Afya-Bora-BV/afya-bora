@@ -11,9 +11,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { RealTimeAppointment } from "../../types";
-import { useAuthStore } from "../../internals/auth/context";
 import moment from "moment";
 import { HomeNavKey } from ".";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
@@ -54,12 +55,15 @@ export default function VisitHistory() {
 
 const VisitHistorySection = () => {
 	const navigation = useNavigation();
-	const { profile } = useAuthStore((state) => ({ profile: state.profile }));
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
+
 	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection("appointments")
-			.where("pid", "==", profile?.id)
+			.where("pid", "==", currentProfile?.profile?.id)
 			// .where("status","!=","cancelled")
 			.onSnapshot((documentSnapshot) => {
 				const shots = [
@@ -70,7 +74,7 @@ const VisitHistorySection = () => {
 
 		// Stop listening for updates when no longer required
 		return () => subscriber();
-	}, [profile?.id]);
+	}, [currentProfile?.profile?.id]);
 
 	const visitHistory = appointments?.filter((appointment) => {
 		return (

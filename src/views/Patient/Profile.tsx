@@ -26,14 +26,15 @@ import LogoutIcon from "../../assets/icons/LogoutIcon";
 import AlternateContainer from "../../components/containers/AlternateContainer";
 import { IconContainer } from "../../components/misc";
 import NextIcon from "../../assets/icons/NextIcon";
-import { useAuthStore } from "../../internals/auth/context";
 import auth from "@react-native-firebase/auth";
 import { useMutation } from "react-query";
 import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
-import { useAtom } from "jotai";
 import { clearProfileAtom } from "./ChooseProfile";
+import { useAtom } from "jotai";
 import HomeView, { HomeNavKey } from ".";
+import { useDispatch } from "react-redux";
+import { clearProfile } from "../../store/slices/profile";
 
 function ProfileCard({ userProfile, onPress, ...props }) {
 	return (
@@ -97,17 +98,14 @@ const profileOptions = [
 export default function ProfileMain() {
 	const navigation = useNavigation();
 	const Toast = useToast();
-	const [, clearProfile] = useAtom(clearProfileAtom);
+	const dispatch = useDispatch();
 
 	const { height } = Dimensions.get("screen");
 
-	// TODO : considering moving the logic out
-	// currently kept here so as to update the global store
-	// possibly codes for cleaning the global store can be kept in onSuccess of useMutation()
 	const signOutAndClearStore = async () => {
 		try {
 			await auth().signOut();
-			clearProfile();
+			dispatch(clearProfile());
 		} catch (e) {
 			throw new Error("Something went wrong in signing out");
 		}

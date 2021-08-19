@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store, persistor } from "./store";
 // import { Text } from 'react-native'
 
 import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base";
@@ -9,7 +9,6 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { colors } from "./constants/colors";
 
-import { AuthProvider, useAuthStore } from "./internals/auth/context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Provider as JotaiProvider } from "jotai";
@@ -17,6 +16,8 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView from "./views/Patient";
+import { PersistGate } from 'redux-persist/integration/react'
+
 
 const queryClient = new QueryClient();
 
@@ -129,19 +130,19 @@ export default function App() {
 	return (
 		<SafeAreaProvider>
 			<Provider store={store}>
-				<NativeBaseProvider theme={theme}>
-					<NavigationContainer theme={AppTheme}>
-						<ToastProvider>
-							<AuthProvider>
+				<PersistGate loading={null} persistor={persistor}>
+					<NativeBaseProvider theme={theme}>
+						<NavigationContainer theme={AppTheme}>
+							<ToastProvider>
 								<QueryClientProvider client={queryClient}>
 									<JotaiProvider>
 										<Main />
 									</JotaiProvider>
 								</QueryClientProvider>
-							</AuthProvider>
-						</ToastProvider>
-					</NavigationContainer>
-				</NativeBaseProvider>
+							</ToastProvider>
+						</NavigationContainer>
+					</NativeBaseProvider>
+				</PersistGate>
 			</Provider>
 		</SafeAreaProvider>
 	);
