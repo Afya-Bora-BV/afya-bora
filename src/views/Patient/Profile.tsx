@@ -31,7 +31,7 @@ import auth from "@react-native-firebase/auth";
 import { useMutation } from "react-query";
 import OnlineConsulationIllustration from "../../assets/illustrations/OnlineConsulationIllustration";
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
-import { useAtom } from 'jotai'
+import { useAtom } from "jotai";
 import { clearProfileAtom } from "./ChooseProfile";
 import HomeView, { HomeNavKey } from ".";
 
@@ -66,9 +66,7 @@ function ProfileCard({ userProfile, onPress, ...props }) {
 
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
-					<Pressable
-						onPress={onPress}
-					>
+					<Pressable onPress={onPress}>
 						<NextIcon color="#7065E4" />
 					</Pressable>
 				</IconContainer>
@@ -81,8 +79,7 @@ const profileOptions = [
 	{
 		icon: AccountIcon,
 		title: "Switch Profile",
-		onAction: (action: () => void) =>
-			action()
+		onAction: (action: () => void) => action(),
 	},
 
 	{
@@ -96,10 +93,11 @@ const profileOptions = [
 	},
 ];
 
+// FIXME: Need to clear out the clearProfileAtom
 export default function ProfileMain() {
 	const navigation = useNavigation();
-	const Toast = useToast()
-	const [, clearProfile] = useAtom(clearProfileAtom)
+	const Toast = useToast();
+	const [, clearProfile] = useAtom(clearProfileAtom);
 
 	const { height } = Dimensions.get("screen");
 
@@ -111,12 +109,25 @@ export default function ProfileMain() {
 			await auth().signOut();
 			clearProfile();
 		} catch (e) {
-			throw new Error("Something went wrong in signing out")
+			throw new Error("Something went wrong in signing out");
 		}
 	};
 
 	const signOut = () => {
-		logout();
+		auth()
+			.signOut()
+			.then((res) => {
+				Toast.show({
+					title: "Signed out successuly.",
+				});
+				navigation.navigate(HomeNavKey.HomeScreen);
+			})
+			.catch((err) => {
+				console.log(err);
+				Toast.show({
+					title: "Something went wrong in signing out",
+				});
+			});
 	};
 
 	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
@@ -124,16 +135,15 @@ export default function ProfileMain() {
 			// An error happened!
 			console.log(`error on signing out  `, error);
 			Toast.show({
-				title: "Something went wrong in signing out"
-			})
+				title: "Something went wrong in signing out",
+			});
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			console.log("Signned out successuly ");
-			navigation.navigate(HomeNavKey.HomeScreen)
+			navigation.navigate(HomeNavKey.HomeScreen);
 		},
 	});
-
 
 	return (
 		<AlternateContainer
@@ -145,15 +155,16 @@ export default function ProfileMain() {
 		>
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-					<ProfileCard userProfile={{
+					<ProfileCard
+						userProfile={{}}
+						onPress={() => {
+							// TODO: tranfer the edit profile page to route stack and navigate to that screen
+							// HomeNavKey
+							navigation.navigate(HomeNavKey.EditHealthProfile);
 
-					}} onPress={() => {
-						// TODO: tranfer the edit profile page to route stack and navigate to that screen
-						// HomeNavKey
-						navigation.navigate(HomeNavKey.EditHealthProfile)
-
-						// );
-					}} />
+							// );
+						}}
+					/>
 					<HStack
 						space={4}
 						marginTop={3}
@@ -181,11 +192,13 @@ export default function ProfileMain() {
 						</Box>
 
 						<Box bg="white" shadow={2} rounded={10} width="45%">
-							<Pressable onPress={() => {
-								navigation.navigate(
-									HomeNavKey.UpcomingAppointments
-								);
-							}}>
+							<Pressable
+								onPress={() => {
+									navigation.navigate(
+										HomeNavKey.UpcomingAppointments
+									);
+								}}
+							>
 								<HStack justifyContent={"center"} paddingY={2}>
 									<Stack flex={1}>
 										<OnlineConsulationIllustration
@@ -212,17 +225,16 @@ export default function ProfileMain() {
 					>
 						<VStack space={10}>
 							{profileOptions.map(
-								(
-									{ icon: ActualIcon, title, onAction },
-									ix
-								) => (
+								({ icon: ActualIcon, title, onAction }, ix) => (
 									<Pressable
 										key={`profOpt-${ix}`}
 										onPress={
 											onAction !== undefined
-												? () => navigation.navigate(HomeNavKey.ChooseProfile)
-												:
-												undefined
+												? () =>
+														navigation.navigate(
+															HomeNavKey.ChooseProfile
+														)
+												: undefined
 										}
 									>
 										<HStack alignItems="center" space={3}>
@@ -252,4 +264,4 @@ export default function ProfileMain() {
 			</ScrollView>
 		</AlternateContainer>
 	);
-};
+}
