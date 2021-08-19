@@ -243,7 +243,8 @@ export default function Home() {
 	};
 
 
-
+	console.log("All appointment")
+	console.log(JSON.stringify(appointments,null,3))
 	return (
 		<MainContainer
 			leftSection={() => (

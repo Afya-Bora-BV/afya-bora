@@ -30,7 +30,7 @@ function usePatientAppointments(patientId: string | undefined) {
 		}
 	}, [patientId]);
 
-	const appointments = allAppointments.filter((appointment: any) => appointment.status !== "cancelled")
+	const appointments = allAppointments.filter((appointment: any) => (appointment.status !== "rejected")).filter((appointment:any)=>(appointment.status!=="cancelled"))
 	return { appointments };
 }
 
