@@ -1,28 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
 	Box,
 	Center,
 	HStack,
 	VStack,
-	Text,
 	View,
 	Heading,
 	Pressable,
 	ScrollView,
-	Square,
-	useToast,
-	Select,
 	Stack,
-	CheckIcon,
 } from "native-base";
+import { Text } from "../../components/text";
 import UserIcon from "../../assets/icons/User";
 import BellIcon from "../../assets/icons/Bell";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AppointmentIllustration from "../../assets/illustrations/AppointmentIllustration";
 import FacilityIllustration from "../../assets/illustrations/FacilityIllustration";
 
 import { useNavigation } from "@react-navigation/native";
-import { colors } from "../../constants/colors";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 
@@ -31,11 +25,8 @@ import auth from "@react-native-firebase/auth";
 
 import { Spacer } from "../../components/Spacer";
 import { PrimaryButton } from "../../components/button";
-import { atom, useAtom } from "jotai";
 import AppointmentCustomizer from "../../components/appointment-customizer";
 import { HomeNavKey } from ".";
-import { updateAppointmentInProgressAtom } from "./PatientComplaint";
-import { getFacilities } from "../../api";
 import {
 	Alert,
 	PermissionsAndroid,
@@ -74,23 +65,19 @@ const AccountDetails = () => {
 						<Text
 							fontWeight="800"
 							textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+							// wordBreak="break-word"
+							// overflowWrap="break-word"
 						>
-
 							View Profile and Visits
 						</Text>
 					</Center>
 				</Pressable>
 			</Stack>
-
-		)
-
+		);
 	}
 
-	console.log("user : ", user)
+	console.log("user : ", user);
 	return (
-
 		<Stack space={2}>
 			<Heading fontSize="xl">Your AfyaBora Account</Heading>
 			<Pressable onPress={handlPress}>
@@ -103,25 +90,18 @@ const AccountDetails = () => {
 						// wordBreak="break-word"
 						// overflowWrap="break-word"
 					>
-
 						Sign in / Create Account
 					</Text>
 				</Center>
 			</Pressable>
 		</Stack>
-
-
-	)
-
-
+	);
 };
 
 // FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
+	const currentProfile = useSelector(({ profile }: RootState) => profile);
 
 	if (user) {
 		return (
@@ -198,8 +178,8 @@ const LocationHelper = () => {
 			(position) => {
 				setLocation(position);
 				// console.log(position);
-				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
-				setIsLocationLoading(false)
+				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT);
+				setIsLocationLoading(false);
 			},
 			(error) => {
 				Alert.alert(`Code ${error.code}`, error.message);
@@ -264,15 +244,13 @@ const LocationHelper = () => {
 				<Text>here was an error in Acquiring Your Location</Text>
 			)}
 		</Stack>
-	)
-}
+	);
+};
 
 const UpcomingAppointments = () => {
 	const user = auth().currentUser;
 
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
+	const currentProfile = useSelector(({ profile }: RootState) => profile);
 
 	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
 	const navigation = useNavigation();
@@ -282,10 +260,9 @@ const UpcomingAppointments = () => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
 
+	if (!user) return null;
 
-	if (!user) return null
-
-	console.log("All appointment : ",appointments)
+	console.log("All appointment : ", appointments);
 	return (
 		<View>
 			{user && appointment && (
@@ -300,21 +277,21 @@ const UpcomingAppointments = () => {
 						<TouchableOpacity
 							style={{ marginTop: 8 }}
 							onPress={() => {
-								navigation.navigate(HomeNavKey.UpcomingAppointments)
-							}}>
+								navigation.navigate(
+									HomeNavKey.UpcomingAppointments
+								);
+							}}
+						>
 							<Text textAlign="right" my={2} color="gray.500">
 								See All Appointments
 							</Text>
 						</TouchableOpacity>
-
 					</View>
-
 				</Stack>
 			)}
 		</View>
-	)
-
-}
+	);
+};
 export default function Home() {
 	const navigation = useNavigation();
 
@@ -407,7 +384,12 @@ export const ScheduleAppointmentSection = () => {
 
 	return (
 		<>
-			<Text fontSize="lg" marginBottom={1} fontWeight="bold">
+			<Text
+				tx="home.scheduleAnAppointment"
+				fontSize="lg"
+				marginBottom={1}
+				fontWeight="bold"
+			>
 				Schedule an appointment
 			</Text>
 			<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>

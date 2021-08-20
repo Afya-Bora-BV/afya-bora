@@ -1,0 +1,19 @@
+{
+	"test": "Testing",
+	"common": {
+		"ok": "OK!",
+		"cancel": "Cancel",
+		"back": "Back",
+		"switchLanguage": "Badilisha Lugha"
+	},
+	"errors": {
+		"invalidEmail": "Invalid email address."
+	},
+	"home": {
+		"scheduleAnAppointment": "Schedule an Appointment"
+	},
+	"profile": {
+		"visitHistory": "Visit History",
+		"upcomingVisits": "Upcoming Visit"
+	}
+}

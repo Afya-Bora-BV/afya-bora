@@ -1,0 +1,19 @@
+{
+	"test": "Majaribio",
+	"common": {
+		"ok": "OK!",
+		"cancel": "Sitisha",
+		"back": "Rudi",
+		"switchLanguage": "Switch Language"
+	},
+	"errors": {
+		"invalidEmail": "Anuani ya barua pepe sio sahihi."
+	},
+	"home": {
+		"scheduleAnAppointment": "Weka apointmenti"
+	},
+	"profile": {
+		"visitHistory": "Historia yako",
+		"upcomingVisits": "Apointmenti zijazo"
+	}
+}

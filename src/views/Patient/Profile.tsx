@@ -4,14 +4,16 @@ import {
 	ScrollView,
 	Stack,
 	VStack,
-	Text,
 	HStack,
 	Pressable,
 	Avatar,
 	Square,
 	useToast,
 } from "native-base";
+import { Text } from "../../components/text";
 import { Dimensions } from "react-native";
+import { useAtom } from "jotai";
+import i18n from "i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AccountIcon from "../../assets/icons/AccountIcon";
 import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
@@ -29,11 +31,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearProfile } from "../../store/slices/profile";
 import { RootState } from "../../store";
 
-function ProfileCard({ }) {
-	const navigation = useNavigation()
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
+import { languageAtom } from "../../store/atoms";
+
+function ProfileCard({}) {
+	const navigation = useNavigation();
+	const currentProfile = useSelector(({ profile }: RootState) => profile);
 	return (
 		<HStack
 			bg="white"
@@ -65,7 +67,7 @@ function ProfileCard({ }) {
 				<IconContainer>
 					<Pressable
 						onPress={() => {
-							navigation.navigate(HomeNavKey.EditHealthProfile)
+							navigation.navigate(HomeNavKey.EditHealthProfile);
 						}}
 					>
 						<NextIcon color="#7065E4" />
@@ -100,6 +102,8 @@ export default function ProfileMain() {
 	const Toast = useToast();
 	const dispatch = useDispatch();
 
+	const [language, setLanguage] = useAtom(languageAtom);
+
 	const { height } = Dimensions.get("screen");
 
 	const signOutAndClearStore = async () => {
@@ -128,6 +132,19 @@ export default function ProfileMain() {
 			});
 	};
 
+	const toggleLanguage = () => {
+		const lng = language === "sw" ? "en" : "sw";
+
+		i18n.changeLanguage(lng)
+			.then((res) => {
+				setLanguage(lng);
+				Toast.show({ title: "Language changed." });
+			})
+			.catch((error) =>
+				Toast.show({ title: "Error changing the language" })
+			);
+	};
+
 	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
 		onError: (error, variables, context) => {
 			// An error happened!
@@ -142,8 +159,9 @@ export default function ProfileMain() {
 			navigation.dispatch(
 				CommonActions.reset({
 					index: 0,
-					routes: [{ name: HomeNavKey.HomeScreen }]
-				}));
+					routes: [{ name: HomeNavKey.HomeScreen }],
+				})
+			);
 		},
 	});
 
@@ -177,7 +195,10 @@ export default function ProfileMain() {
 										<AppointmentIllustration size={60} />
 									</Stack>
 									<Stack flex={1.5} justifyContent="center">
-										<Text textAlign="center">
+										<Text
+											tx="profile.visitHistory"
+											textAlign="center"
+										>
 											Visit History
 										</Text>
 									</Stack>
@@ -201,7 +222,10 @@ export default function ProfileMain() {
 										/>
 									</Stack>
 									<Stack flex={1.5} justifyContent="center">
-										<Text textAlign="center">
+										<Text
+											textAlign="center"
+											tx="profile.upcomingVisits"
+										>
 											Upcoming Visits
 										</Text>
 									</Stack>
@@ -218,6 +242,19 @@ export default function ProfileMain() {
 						paddingY={5}
 					>
 						<VStack space={10}>
+							<Pressable onPress={toggleLanguage}>
+								<HStack alignItems="center" space={3}>
+									<Square size={6}>
+										<AccountIcon />
+									</Square>
+									<Text
+										fontSize={18}
+										tx="common.switchLanguage"
+									>
+										Switch Language
+									</Text>
+								</HStack>
+							</Pressable>
 							{profileOptions.map(
 								({ icon: ActualIcon, title, onAction }, ix) => (
 									<Pressable

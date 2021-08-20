@@ -1,3 +1,4 @@
+import "./i18n"
 import React, { useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
 import { Provider } from "react-redux";
@@ -17,6 +18,9 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView from "./views/Patient";
 import { PersistGate } from 'redux-persist/integration/react'
+
+import { Constants } from 'react-native-unimodules';
+console.log(Constants.systemFonts);
 
 
 const queryClient = new QueryClient();
