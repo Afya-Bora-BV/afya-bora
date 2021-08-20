@@ -5,7 +5,9 @@
 		"cancel": "Cancel",
 		"back": "Back",
 		"switchLanguage": "Badilisha Lugha",
-		"hi":"Hi"
+		"hi":"Hi",
+		"next":"Next",
+		"logout":"Logout"
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
@@ -25,6 +27,14 @@
 	},
 	"facilitiList":{
 		"selectFacility":"Select Facility"
+	},
+
+
+	"facilityInfo":{
+		"scheduleAppointment":"Schedule Appointment"
+	},
+	"appointmentTime":{
+		"dayAndTime":"Day and Time"
 	},
 	"profile": {
 		"visitHistory": "Visit History",

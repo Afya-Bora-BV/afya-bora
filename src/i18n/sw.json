@@ -5,7 +5,9 @@
 		"cancel": "Sitisha",
 		"back": "Rudi",
 		"switchLanguage": "Switch Language",
-		"hi":"Habari"
+		"hi":"Habari",
+		"next":"Endelea",
+		"logout":"Ondoka"
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
@@ -25,6 +27,13 @@
 	"facilitiList":{
 		"selectFacility":"Chagua Kito cha Huduma"
 	},
+	"facilityInfo":{
+		"scheduleAppointment":"Weka mihadi"
+	},
+	"appointmentTime":{
+		"dayAndTime":"Siku na Saa"
+	},
+
 	"profile": {
 		"visitHistory": "Historia yako",
 		"upcomingVisits": "miadi ijayo"

@@ -15,6 +15,7 @@ import { FacilityDetails } from "../../components/facilities-details";
 import { HomeNavKey } from ".";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
+import { Text } from "../../components/text";
 
 const FacilityInfo: React.FC = () => {
 	const facility = useSelector(
@@ -25,17 +26,17 @@ const FacilityInfo: React.FC = () => {
 	const navigation = useNavigation();
 	return (
 		<MainContainer
-			title={"Selected Facility"}
+			title="facilitiList.selectFacility"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -50,7 +51,7 @@ const FacilityInfo: React.FC = () => {
 							navigation.navigate(HomeNavKey.AppointmentTime);
 						}}
 					>
-						Schedule Appointment
+						<Text tx="facilityInfo.scheduleAppointment" color="white">Schedule Appointment</Text>
 					</PrimaryButton>
 				</Stack>
 			</ScrollView>

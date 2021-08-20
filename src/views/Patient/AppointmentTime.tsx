@@ -381,7 +381,7 @@ export default function SetAppointmentTime() {
 
 	return (
 		<MainContainer
-			title="Day and Time"
+			title="appointmentTime.dayAndTime"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()

@@ -165,7 +165,7 @@ export default function ProfileMain() {
 		},
 	});
 
-	console.log("Language : ",language)
+	// console.log("Language : ",langu)
 	return (
 		<AlternateContainer
 			title="Profile"
