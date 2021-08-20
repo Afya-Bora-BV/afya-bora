@@ -22,6 +22,9 @@
 		"chooseLocation":"Chagua mahali",
 		"schedule":"Weka kwenye ratiba"
 	},
+	"facilitiList":{
+		"selectFacility":"Chagua Kito cha Huduma"
+	},
 	"profile": {
 		"visitHistory": "Historia yako",
 		"upcomingVisits": "miadi ijayo"

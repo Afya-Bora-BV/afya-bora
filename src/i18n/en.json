@@ -23,6 +23,9 @@
 		"schedule":"Schedule"
 	
 	},
+	"facilitiList":{
+		"selectFacility":"Select Facility"
+	},
 	"profile": {
 		"visitHistory": "Visit History",
 		"upcomingVisits": "Upcoming Visit"

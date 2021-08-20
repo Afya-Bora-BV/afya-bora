@@ -141,7 +141,7 @@ const FacilityList = () => {
 
 	return (
 		<MainContainer
-			title="Select Facility"
+			title="facilitiList.selectFacility"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
@@ -156,7 +156,7 @@ const FacilityList = () => {
 			}
 		>
 			<ScrollView padding={5} testID={"ConsultantList"}>
-				<SelectionDetails />
+				{/* <SelectionDetails /> */}
 				<Spacer size={4} />
 				{isLoading && <FacilityLoader />}
 				{facilities && (

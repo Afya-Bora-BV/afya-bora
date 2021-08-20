@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, StatusBar, View, Text, ScrollView, HStack } from "native-base";
+import { Box, StatusBar, View, ScrollView, HStack } from "native-base";
 import _BaseContainer from "./_BaseContainer";
+import { Text } from "../text";
 
 interface ContainerHeaderProps {
 	title?: string;
@@ -44,7 +45,7 @@ export function ContainerHeader({
 				justifyContent="center"
 			>
 				{title !== undefined ? (
-					<Text fontSize="xl" fontWeight="600">
+					<Text fontSize="xl" fontWeight="600" tx={title}>
 						{title}
 					</Text>
 				) : null}
