@@ -468,10 +468,7 @@ export default function SetAppointmentTime() {
 					mb={1}
 					space={4}
 				>
-					<Text fontSize="2xl" bold>
-						Preferred Doctor
-					</Text>
-					<PreferedDoctor />
+				
 				</VStack>
 				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your requested change will be reviewed by the doctor. If they acceept your request, you will be notified.
