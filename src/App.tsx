@@ -1,5 +1,5 @@
 import "./i18n"
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store";
@@ -140,7 +140,9 @@ export default function App() {
 							<ToastProvider>
 								<QueryClientProvider client={queryClient}>
 									<JotaiProvider>
-										<Main />
+										<Suspense fallback={null}>
+											<Main />
+										</Suspense>
 									</JotaiProvider>
 								</QueryClientProvider>
 							</ToastProvider>
