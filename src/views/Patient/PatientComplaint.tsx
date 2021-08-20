@@ -109,7 +109,11 @@ export function PatientComplaint() {
 						3000
 					);
 					dispatch(resetAppointmentState());
-					navigation.navigate(HomeNavKey.HomeScreen);
+					navigation.dispatch(
+						CommonActions.reset({
+							index: 0,
+							routes: [{ name: HomeNavKey.HomeScreen }]
+						}));
 				})
 				.catch((err) => {
 					console.log(err);

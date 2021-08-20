@@ -6,11 +6,12 @@ import appointment from "../store/slices/appointment";
 function usePatientAppointments(patientId: string | undefined) {
 	const [allAppointments, setAllAppointments] = useState([]);
 
+	console.log("PID : ",patientId)
 	useEffect(() => {
 		if (patientId) {
 			const subscription = firestore()
 				.collection("appointments")
-				.where("patient.uid", "==", patientId)
+				.where("patient.id", "==", patientId)
 				.orderBy("date", "desc")
 				.onSnapshot(
 					(snap) => {

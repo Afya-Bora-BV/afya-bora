@@ -414,17 +414,7 @@ export default function SetAppointmentTime() {
 					/>
 				</VStack>
 
-				<VStack
-					bg="white"
-					p={4}
-					shadow={2}
-					rounded={10}
-					mb={1}
-					space={4}
-				>
-					
-
-				</VStack>
+				
 				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.

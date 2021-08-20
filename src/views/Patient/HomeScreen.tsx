@@ -261,7 +261,12 @@ const LocationHelper = () => {
 
 const UpcomingAppointments = () => {
 	const user = auth().currentUser;
-	const { appointments } = usePatientAppointments(user?.uid);
+
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
+
+	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
 	const navigation = useNavigation();
 	const appointment = appointments[0];
 
@@ -269,8 +274,10 @@ const UpcomingAppointments = () => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
 
-	console.log("Upcomming appointment user : ",user)
+
 	if (!user) return null
+
+	console.log("All appointment : ",appointments)
 	return (
 		<View>
 			{user && appointment && (
@@ -302,7 +309,7 @@ const UpcomingAppointments = () => {
 }
 export default function Home() {
 	const navigation = useNavigation();
-	
+
 	return (
 		<MainContainer
 			leftSection={() => (
@@ -333,7 +340,7 @@ export default function Home() {
 			<ScrollView width="100%" testID="Home" p={5} pb={10}>
 				<ProfileInformation />
 				<Spacer size={30} />
-				<UpcomingAppointments/>
+				<UpcomingAppointments />
 
 				<ScheduleAppointmentSection />
 				<Spacer size={30} />
