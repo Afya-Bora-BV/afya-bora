@@ -18,7 +18,7 @@ import {
 	useToast,
 } from "native-base";
 import { Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import AccountIcon from "../../assets/icons/AccountIcon";
 import HeadphoneIcon from "../../assets/icons/HeadphoneIcon";
 import InfoIcon from "../../assets/icons/InfoIcon";
@@ -38,7 +38,7 @@ import { RootState } from "../../store";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 function ProfileCard({ }) {
-	const navigation=useNavigation()
+	const navigation = useNavigation()
 	const currentProfile = useSelector(
 		({ profile }: RootState) => profile
 	);
@@ -72,7 +72,7 @@ function ProfileCard({ }) {
 			<Pressable flex={1} alignItems="flex-end" justifyContent="center">
 				<IconContainer>
 					<Pressable
-						onPress={()=>{
+						onPress={() => {
 							navigation.navigate(HomeNavKey.EditHealthProfile)
 						}}
 					>
@@ -134,7 +134,11 @@ export default function ProfileMain() {
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			console.log("Signned out successuly ");
-			navigation.navigate(HomeNavKey.HomeScreen)
+			navigation.dispatch(
+				CommonActions.reset({
+					index: 0,
+					routes: [{ name: HomeNavKey.HomeScreen }]
+				}));
 		},
 	});
 
@@ -149,7 +153,7 @@ export default function ProfileMain() {
 		>
 			<ScrollView>
 				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
-						<ProfileCard />
+					<ProfileCard />
 
 					<HStack
 						space={4}

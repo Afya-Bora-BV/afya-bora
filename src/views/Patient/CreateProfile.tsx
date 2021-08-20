@@ -18,7 +18,7 @@ import { Spacer } from "../../components/Spacer";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
 import { Dimensions, StatusBar, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -192,15 +192,18 @@ export default function CreateProfileScreen() {
 				console.log("created successfully ");
 				Toast.show({ title: "Successfuly created prifle" })
 
-				navigation.navigate(HomeNavKey.HomeScreen)
+				navigation.dispatch(
+					CommonActions.reset({
+						index: 0,
+						routes: [{ name: HomeNavKey.HomeScreen }]
+					}));
 
 
 			},
 		}
 	);
 
-	console.log("Phone number : 2 ", phoneNumber);
-	console.log("Is loading ", isLoading)
+
 
 	return (
 		<Box flex={1}>

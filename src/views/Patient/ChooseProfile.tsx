@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import firestore from '@react-native-firebase/firestore';
 import { Pressable } from 'react-native';
 import _ from 'lodash';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation, CommonActions } from '@react-navigation/native';
 import { HomeNavKey } from '.';
 import { atom, useAtom } from "jotai"
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -65,8 +65,13 @@ const ChooseProfile = () => {
                 type: "patient"
             }))
 
-            navigation.navigate(HomeNavKey.HomeScreen)
-
+            // navigation.navigate(HomeNavKey.HomeScreen)
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: HomeNavKey.HomeScreen }]
+                }));
+                
         }
         if (email) {
             // update doctor active profile

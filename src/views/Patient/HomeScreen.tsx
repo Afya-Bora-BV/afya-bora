@@ -58,7 +58,34 @@ const AccountDetails = () => {
 		}
 	};
 
+	if (user) {
+		return (
+			<Stack space={2}>
+				<Heading fontSize="xl">Your AfyaBora Account</Heading>
+				<Pressable onPress={handlPress}>
+					{/* Find mean to set relative width: 160 -> 33%?? */}
+					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
+						<AppointmentIllustration size={70} />
+						<Text
+							fontWeight="800"
+							textAlign="center"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
+						>
+
+							View Profile and Visits
+						</Text>
+					</Center>
+				</Pressable>
+			</Stack>
+
+		)
+
+	}
+
+	console.log("user : ", user)
 	return (
+
 		<Stack space={2}>
 			<Heading fontSize="xl">Your AfyaBora Account</Heading>
 			<Pressable onPress={handlPress}>
@@ -71,14 +98,17 @@ const AccountDetails = () => {
 					// wordBreak="break-word"
 					// overflowWrap="break-word"
 					>
-						{user
-							? "View Profile and Visits"
-							: "Sign in / Create Account"}
+
+						Sign in / Create Account
 					</Text>
 				</Center>
 			</Pressable>
 		</Stack>
-	);
+
+
+	)
+
+
 };
 
 // FIXME: Update user information with information from the profile store.
@@ -87,7 +117,7 @@ const ProfileInformation = () => {
 	const currentProfile = useSelector(
 		({ profile }: RootState) => profile
 	);
-	console.log("Profile : ", currentProfile.profile)
+
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -161,7 +191,7 @@ const LocationHelper = () => {
 			(position) => {
 
 				setLocation(position);
-				console.log(position);
+				// console.log(position);
 				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
 				setIsLocationLoading(false)
 			},
@@ -228,23 +258,51 @@ const LocationHelper = () => {
 		</Stack>
 	)
 }
-export default function Home() {
-	const navigation = useNavigation();
-	const [location, setLocation] = useState(null);
 
+const UpcomingAppointments = () => {
 	const user = auth().currentUser;
-
 	const { appointments } = usePatientAppointments(user?.uid);
-
+	const navigation = useNavigation();
 	const appointment = appointments[0];
 
 	const openAppointment = (appointment: any) => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
 
+	console.log("Upcomming appointment user : ",user)
+	if (!user) return null
+	return (
+		<View>
+			{user && appointment && (
+				<Stack px={1}>
+					<View marginBottom={6}>
+						<Text fontSize="lg" fontWeight="bold">
+							Upcoming Appointments
+						</Text>
 
-	console.log("All appointment")
-	console.log(JSON.stringify(appointments,null,3))
+						{/* FIXME: Extract out to new component */}
+						<AppointmentAlert appointment={appointment} />
+						<TouchableOpacity
+							style={{ marginTop: 8 }}
+							onPress={() => {
+								navigation.navigate(HomeNavKey.UpcomingAppointments)
+							}}>
+							<Text textAlign="right" my={2} color="gray.500">
+								See All Appointments
+							</Text>
+						</TouchableOpacity>
+
+					</View>
+
+				</Stack>
+			)}
+		</View>
+	)
+
+}
+export default function Home() {
+	const navigation = useNavigation();
+	
 	return (
 		<MainContainer
 			leftSection={() => (
@@ -275,30 +333,8 @@ export default function Home() {
 			<ScrollView width="100%" testID="Home" p={5} pb={10}>
 				<ProfileInformation />
 				<Spacer size={30} />
+				<UpcomingAppointments/>
 
-				{appointment && (
-					<Stack px={1}>
-						<View marginBottom={6}>
-							<Text fontSize="lg" fontWeight="bold">
-								Upcoming Appointments
-							</Text>
-
-							{/* FIXME: Extract out to new component */}
-							<AppointmentAlert appointment={appointment} />
-							<TouchableOpacity
-								style={{ marginTop: 8 }}
-								onPress={() => {
-									navigation.navigate(HomeNavKey.UpcomingAppointments)
-								}}>
-								<Text textAlign="right" my={2} color="gray.500">
-									See All Appointments
-								</Text>
-							</TouchableOpacity>
-
-						</View>
-
-					</Stack>
-				)}
 				<ScheduleAppointmentSection />
 				<Spacer size={30} />
 
