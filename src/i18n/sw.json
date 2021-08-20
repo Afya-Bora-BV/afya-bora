@@ -4,16 +4,26 @@
 		"ok": "OK!",
 		"cancel": "Sitisha",
 		"back": "Rudi",
-		"switchLanguage": "Switch Language"
+		"switchLanguage": "Switch Language",
+		"hi":"Habari"
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
 	},
 	"home": {
-		"scheduleAnAppointment": "Weka apointmenti"
+		"scheduleAnAppointment": "Weka miadi",
+		"seeAllAppointments": "Ona miadi yote",
+		"upcomingAppointments":"Miadi ijayo",
+		"quickMedicalAttention":"Je unahitaji huduma ya haraka?",
+		"facilitiesNearYou":"Vituo vya karibu",
+		"yourAfyaBoraAccout":"Akaunti yako ya AfyaBora",
+		"profileAndVisits":"Taarifa zako na Mahundurio",
+		"chooseTypeOfAppointment":"Chagua aina ya mihadi",
+		"chooseLocation":"Chagua mahali",
+		"schedule":"Weka kwenye ratiba"
 	},
 	"profile": {
 		"visitHistory": "Historia yako",
-		"upcomingVisits": "Apointmenti zijazo"
+		"upcomingVisits": "miadi ijayo"
 	}
 }

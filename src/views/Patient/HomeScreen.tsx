@@ -57,18 +57,20 @@ const AccountDetails = () => {
 	if (user) {
 		return (
 			<Stack space={2}>
-				<Heading fontSize="xl">Your AfyaBora Account</Heading>
+				<Text fontSize="xl"
+					fontWeight="bold"
+					tx="home.yourAfyaBoraAccout"
+				>Your AfyaBora Account</Text>
 				<Pressable onPress={handlPress}>
-					{/* Find mean to set relative width: 160 -> 33%?? */}
 					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
 						<AppointmentIllustration size={70} />
 						<Text
 							fontWeight="800"
 							textAlign="center"
-							// wordBreak="break-word"
-							// overflowWrap="break-word"
+							tx="home.profileAndVisits"
+
 						>
-							View Profile and Visits
+							Profile and Visits
 						</Text>
 					</Center>
 				</Pressable>
@@ -79,7 +81,10 @@ const AccountDetails = () => {
 	console.log("user : ", user);
 	return (
 		<Stack space={2}>
-			<Heading fontSize="xl">Your AfyaBora Account</Heading>
+			<Text fontSize="xl"
+				fontWeight="bold"
+				tx="home.yourAfyaBoraAccout"
+			>Your AfyaBora Account</Text>
 			<Pressable onPress={handlPress}>
 				{/* Find mean to set relative width: 160 -> 33%?? */}
 				<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
@@ -87,8 +92,8 @@ const AccountDetails = () => {
 					<Text
 						fontWeight="800"
 						textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
 					>
 						Sign in / Create Account
 					</Text>
@@ -108,7 +113,7 @@ const ProfileInformation = () => {
 			<VStack flex={1}>
 				<Text>{moment().format("DD MMMM YYYY")}</Text>
 				<Heading fontSize="3xl">
-					Hi, {currentProfile?.profile?.name}
+					<Text fontSize="3xl" tx="common.hi">Hi</Text>, {currentProfile?.profile?.name}
 				</Heading>
 			</VStack>
 		);
@@ -208,7 +213,11 @@ const LocationHelper = () => {
 	}, []);
 	return (
 		<Stack space={2}>
-			<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
+			<Text tx={"home.quickMedicalAttention"} fontSize="xl"
+				fontWeight="bold"
+			>
+				Need quick medical attention?
+			</Text>
 			{isLocationLoading && !location && (
 				<Text>Acquiring user location</Text>
 			)}
@@ -232,10 +241,10 @@ const LocationHelper = () => {
 						<Text
 							fontWeight="800"
 							textAlign="center"
-							// wordBreak="break-word"
-							// overflowWrap="break-word"
+							tx="home.facilitiesNearYou"
+
 						>
-							Map of Facilities near you
+							Facilities near you
 						</Text>
 					</Center>
 				</Pressable>
@@ -268,7 +277,9 @@ const UpcomingAppointments = () => {
 			{user && appointment && (
 				<Stack px={1}>
 					<View marginBottom={6}>
-						<Text fontSize="lg" fontWeight="bold">
+						<Text
+							tx="home.upcomingAppointments"
+							fontSize="lg" fontWeight="bold">
 							Upcoming Appointments
 						</Text>
 
@@ -282,7 +293,9 @@ const UpcomingAppointments = () => {
 								);
 							}}
 						>
-							<Text textAlign="right" my={2} color="gray.500">
+							<Text textAlign="right" my={2} color="gray.500"
+								tx="home.seeAllAppointments"
+							>
 								See All Appointments
 							</Text>
 						</TouchableOpacity>
@@ -396,7 +409,12 @@ export const ScheduleAppointmentSection = () => {
 				<Stack space={5} py={2}>
 					<AppointmentCustomizer />
 					<PrimaryButton onPress={handleOnPress}>
-						Schedule
+						<Text tx="home.schedule"
+							color="white"
+						>
+							Schedule
+						</Text>
+
 					</PrimaryButton>
 				</Stack>
 			</Box>

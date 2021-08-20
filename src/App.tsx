@@ -12,7 +12,7 @@ import { colors } from "./constants/colors";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { Provider as JotaiProvider } from "jotai";
+import { Provider as JotaiProvider, useAtom } from "jotai";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -20,6 +20,7 @@ import HomeView from "./views/Patient";
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { Constants } from 'react-native-unimodules';
+import { languageAtom } from "./store/atoms";
 console.log(Constants.systemFonts);
 
 
@@ -104,6 +105,7 @@ export const AppTheme = {
 };
 
 function Main() {
+	const [language, setLanguage] = useAtom(languageAtom);
 	const [ready, setReady] = useState(false);
 	// Set an initializing state whilst Firebase connects
 	const [initializing, setInitializing] = useState(true);

@@ -4,13 +4,24 @@
 		"ok": "OK!",
 		"cancel": "Cancel",
 		"back": "Back",
-		"switchLanguage": "Badilisha Lugha"
+		"switchLanguage": "Badilisha Lugha",
+		"hi":"Hi"
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
 	},
 	"home": {
-		"scheduleAnAppointment": "Schedule an Appointment"
+		"scheduleAnAppointment": "Schedule an Appointment",
+		"seeAllAppointments": "See All Appointments",
+		"upcomingAppointments":"Upcoming Appointments",
+		"quickMedicalAttention":"Need quick medical attention?",
+		"facilitiesNearYou":"Facilities near you",
+		"yourAfyaBoraAccout":"Your AfyaBora account",
+		"profileAndVisits":"Profile and Visits",
+		"chooseTypeOfAppointment":"Choose Type of Appointment",
+		"chooseLocation":"Choose Location",
+		"schedule":"Schedule"
+	
 	},
 	"profile": {
 		"visitHistory": "Visit History",

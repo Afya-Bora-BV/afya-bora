@@ -1,7 +1,7 @@
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { TouchableOpacity } from "react-native";
-import { CheckIcon, HStack, Select, Spacer, Stack, Text } from "native-base";
+import { CheckIcon, HStack, Select, Spacer, Stack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "./button";
 import { colors } from "../constants/colors";
@@ -12,6 +12,7 @@ import {
 	setLocation,
 	setSpeciality,
 } from "../store/slices/appointment";
+import { Text } from "./text";
 // these attoms to be moved since the state might be needed somewhere
 
 const specialities: { name: string }[] = [
@@ -69,7 +70,7 @@ export const completeScheduleAtom = atom(
 			speciality: get(specialityAtom),
 		};
 	},
-	(get, set) => {}
+	(get, set) => { }
 );
 type AppointmentType = {
 	title: string;
@@ -124,7 +125,9 @@ const AppointmentCustomizer: React.FC = () => {
 	return (
 		<Stack space={7}>
 			<Stack space={2}>
-				<Text>Choose Type of Appointment</Text>
+				<Text
+					tx="home.chooseTypeOfAppointment"
+				>Choose Type of Appointment</Text>
 				<HStack space={2}>
 					<AppointmentTypeButton
 						title={"At Facility"}
@@ -142,7 +145,9 @@ const AppointmentCustomizer: React.FC = () => {
 			</Stack>
 
 			<Stack space={2}>
-				<Text>Choose Location</Text>
+				<Text
+					tx="home.chooseLocation"
+				>Choose Location</Text>
 				<Select
 					variant="rounded"
 					selectedValue={location}
@@ -167,32 +172,6 @@ const AppointmentCustomizer: React.FC = () => {
 				</Select>
 			</Stack>
 
-			<Stack space={2}>
-				<Text>Choose Speciality</Text>
-
-				<Select
-					variant="rounded"
-					selectedValue={speciality}
-					minWidth={200}
-					accessibilityLabel="Speciality"
-					placeholder="Speciality"
-					onValueChange={(itemValue) =>
-						dispatch(setSpeciality(itemValue))
-					}
-					_selectedItem={{
-						bg: "cyan.600",
-						endIcon: <CheckIcon size={4} />,
-					}}
-				>
-					{specialities.map((speciality) => (
-						<Select.Item
-							key={speciality.name}
-							label={speciality.name}
-							value={speciality.name}
-						/>
-					))}
-				</Select>
-			</Stack>
 		</Stack>
 	);
 };
