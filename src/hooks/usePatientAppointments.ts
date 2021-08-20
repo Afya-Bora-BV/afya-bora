@@ -6,7 +6,6 @@ import appointment from "../store/slices/appointment";
 function usePatientAppointments(patientId: string | undefined) {
 	const [allAppointments, setAllAppointments] = useState([]);
 
-	console.log("PID : ",patientId)
 	useEffect(() => {
 		if (patientId) {
 			const subscription = firestore()
