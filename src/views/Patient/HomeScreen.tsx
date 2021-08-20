@@ -36,15 +36,20 @@ import AppointmentCustomizer from "../../components/appointment-customizer";
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 import { getFacilities } from "../../api";
-import { Alert, PermissionsAndroid, Platform, ToastAndroid, TouchableOpacity } from "react-native";
+import {
+	Alert,
+	PermissionsAndroid,
+	Platform,
+	ToastAndroid,
+	TouchableOpacity,
+} from "react-native";
 import _ from "lodash";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from "react-native-geolocation-service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-
 
 const AccountDetails = () => {
 	const navigation = useNavigation();
@@ -68,8 +73,8 @@ const AccountDetails = () => {
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
 					>
 						{user
 							? "View Profile and Visits"
@@ -84,15 +89,15 @@ const AccountDetails = () => {
 // FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
-	console.log("Profile : ", currentProfile.profile)
+	const currentProfile = useSelector(({ profile }: RootState) => profile);
+	console.log("Profile : ", currentProfile.profile);
 	if (user) {
 		return (
 			<VStack flex={1}>
-				<Text>{Date()}</Text>
-				<Heading fontSize="3xl">Hi, {currentProfile?.profile?.name}</Heading>
+				<Text>{moment().format("DD MMMM YYYY")}</Text>
+				<Heading fontSize="3xl">
+					Hi, {currentProfile?.profile?.name}
+				</Heading>
 			</VStack>
 		);
 	}
@@ -110,15 +115,15 @@ const ProfileInformation = () => {
 const LocationHelper = () => {
 	const navigation = useNavigation();
 	const [location, setLocation] = useState(null);
-	const [isLocationLoading, setIsLocationLoading] = useState(false)
+	const [isLocationLoading, setIsLocationLoading] = useState(false);
 
 	const hasLocationPermission = async () => {
-		if (Platform.OS === 'android' && Platform.Version < 23) {
+		if (Platform.OS === "android" && Platform.Version < 23) {
 			return true;
 		}
 
 		const hasPermission = await PermissionsAndroid.check(
-			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
 		);
 
 		if (hasPermission) {
@@ -126,7 +131,7 @@ const LocationHelper = () => {
 		}
 
 		const status = await PermissionsAndroid.request(
-			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
 		);
 
 		if (status === PermissionsAndroid.RESULTS.GRANTED) {
@@ -135,13 +140,13 @@ const LocationHelper = () => {
 
 		if (status === PermissionsAndroid.RESULTS.DENIED) {
 			ToastAndroid.show(
-				'Location permission denied by user.',
-				ToastAndroid.LONG,
+				"Location permission denied by user.",
+				ToastAndroid.LONG
 			);
 		} else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
 			ToastAndroid.show(
-				'Location permission revoked by user.',
-				ToastAndroid.LONG,
+				"Location permission revoked by user.",
+				ToastAndroid.LONG
 			);
 		}
 
@@ -149,32 +154,31 @@ const LocationHelper = () => {
 	};
 
 	const getLocation = async () => {
-		setIsLocationLoading(true)
+		setIsLocationLoading(true);
 		const hasPermission = await hasLocationPermission();
 
 		if (!hasPermission) {
-			setIsLocationLoading(false)
+			setIsLocationLoading(false);
 			return;
 		}
 
 		Geolocation.getCurrentPosition(
 			(position) => {
-
 				setLocation(position);
 				console.log(position);
-				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
-				setIsLocationLoading(false)
+				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT);
+				setIsLocationLoading(false);
 			},
 			(error) => {
 				Alert.alert(`Code ${error.code}`, error.message);
 				setLocation(null);
 				console.log(error);
-				setIsLocationLoading(false)
+				setIsLocationLoading(false);
 			},
 			{
 				accuracy: {
-					android: 'high',
-					ios: 'best',
+					android: "high",
+					ios: "best",
 				},
 				enableHighAccuracy: true,
 				timeout: 15000,
@@ -183,23 +187,25 @@ const LocationHelper = () => {
 				forceRequestLocation: true,
 				forceLocationManager: false,
 				showLocationDialog: true,
-			},
+			}
 		);
 	};
 
 	React.useEffect(() => {
-		getLocation()
-	}, [])
+		getLocation();
+	}, []);
 	return (
 		<Stack space={2}>
 			<Heading fontSize="xl">{"Need quick medical attention?"}</Heading>
-			{isLocationLoading && !location &&
+			{isLocationLoading && !location && (
 				<Text>Acquiring user location</Text>
-			}
-			{location &&
+			)}
+			{location && (
 				<Pressable
 					onPress={() => {
-						navigation.navigate(HomeNavKey.FacilityMap, { location });
+						navigation.navigate(HomeNavKey.FacilityMap, {
+							location,
+						});
 					}}
 				>
 					{/* Find mean to set relative width: 160 -> 33%?? */}
@@ -214,20 +220,20 @@ const LocationHelper = () => {
 						<Text
 							fontWeight="800"
 							textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+							// wordBreak="break-word"
+							// overflowWrap="break-word"
 						>
 							Map of Facilities near you
 						</Text>
 					</Center>
 				</Pressable>
-			}
-			{!location && !isLocationLoading &&
-				<Text>here was an error in Acquiring Your Location</Text>}
-
+			)}
+			{!location && !isLocationLoading && (
+				<Text>here was an error in Acquiring Your Location</Text>
+			)}
 		</Stack>
-	)
-}
+	);
+};
 export default function Home() {
 	const navigation = useNavigation();
 	const [location, setLocation] = useState(null);
@@ -241,8 +247,6 @@ export default function Home() {
 	const openAppointment = (appointment: any) => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
-
-
 
 	return (
 		<MainContainer
@@ -278,7 +282,11 @@ export default function Home() {
 				{appointment && (
 					<Stack px={1}>
 						<View marginBottom={6}>
-							<Text fontSize="lg" fontWeight="bold">
+							<Text
+								fontSize="lg"
+								marginBottom={1}
+								fontWeight="bold"
+							>
 								Upcoming Appointments
 							</Text>
 
@@ -287,15 +295,16 @@ export default function Home() {
 							<TouchableOpacity
 								style={{ marginTop: 8 }}
 								onPress={() => {
-									navigation.navigate(HomeNavKey.UpcomingAppointments)
-								}}>
+									navigation.navigate(
+										HomeNavKey.UpcomingAppointments
+									);
+								}}
+							>
 								<Text textAlign="right" my={2} color="gray.500">
 									See All Appointments
 								</Text>
 							</TouchableOpacity>
-
 						</View>
-
 					</Stack>
 				)}
 				<ScheduleAppointmentSection />
@@ -326,13 +335,19 @@ export const ScheduleAppointmentSection = () => {
 		// navigate on click
 	};
 
-
 	return (
-		<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>
-			<Stack space={5} py={2}>
-				<AppointmentCustomizer />
-				<PrimaryButton onPress={handleOnPress}>Schedule</PrimaryButton>
-			</Stack>
-		</Box>
+		<>
+			<Text fontSize="lg" marginBottom={1} fontWeight="bold">
+				Schedule an appointment
+			</Text>
+			<Box bgColor="#FFF" rounded="xl" shadow={4} p={3}>
+				<Stack space={5} py={2}>
+					<AppointmentCustomizer />
+					<PrimaryButton onPress={handleOnPress}>
+						Schedule
+					</PrimaryButton>
+				</Stack>
+			</Box>
+		</>
 	);
 };
