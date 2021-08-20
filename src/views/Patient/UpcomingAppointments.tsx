@@ -21,6 +21,8 @@ import { Spacer } from "../../components/Spacer";
 import { colors } from "../../constants/colors";
 import auth from "@react-native-firebase/auth";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -104,16 +106,13 @@ const UpcomingAppointmentsSection = () => {
 
 	const user = auth().currentUser;
 
-	const { appointments } = usePatientAppointments(user?.uid);
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
+
+	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
 
 
-	// const upcomingAppointments = appointments?.filter((appointment: any) => {
-	// 	return (
-	// 		moment.unix(appointment.date.seconds).isAfter()
-	// 	);
-	// });
-
-	// console.log("appointments", appointments)
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>

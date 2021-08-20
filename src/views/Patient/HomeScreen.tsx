@@ -63,7 +63,34 @@ const AccountDetails = () => {
 		}
 	};
 
+	if (user) {
+		return (
+			<Stack space={2}>
+				<Heading fontSize="xl">Your AfyaBora Account</Heading>
+				<Pressable onPress={handlPress}>
+					{/* Find mean to set relative width: 160 -> 33%?? */}
+					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
+						<AppointmentIllustration size={70} />
+						<Text
+							fontWeight="800"
+							textAlign="center"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
+						>
+
+							View Profile and Visits
+						</Text>
+					</Center>
+				</Pressable>
+			</Stack>
+
+		)
+
+	}
+
+	console.log("user : ", user)
 	return (
+
 		<Stack space={2}>
 			<Heading fontSize="xl">Your AfyaBora Account</Heading>
 			<Pressable onPress={handlPress}>
@@ -76,21 +103,26 @@ const AccountDetails = () => {
 						// wordBreak="break-word"
 						// overflowWrap="break-word"
 					>
-						{user
-							? "View Profile and Visits"
-							: "Sign in / Create Account"}
+
+						Sign in / Create Account
 					</Text>
 				</Center>
 			</Pressable>
 		</Stack>
-	);
+
+
+	)
+
+
 };
 
 // FIXME: Update user information with information from the profile store.
 const ProfileInformation = () => {
 	const user = auth().currentUser;
-	const currentProfile = useSelector(({ profile }: RootState) => profile);
-	console.log("Profile : ", currentProfile.profile);
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
+
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -165,9 +197,9 @@ const LocationHelper = () => {
 		Geolocation.getCurrentPosition(
 			(position) => {
 				setLocation(position);
-				console.log(position);
-				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT);
-				setIsLocationLoading(false);
+				// console.log(position);
+				ToastAndroid.show("Location acquired : ", ToastAndroid.SHORT)
+				setIsLocationLoading(false)
 			},
 			(error) => {
 				Alert.alert(`Code ${error.code}`, error.message);
@@ -232,21 +264,59 @@ const LocationHelper = () => {
 				<Text>here was an error in Acquiring Your Location</Text>
 			)}
 		</Stack>
-	);
-};
-export default function Home() {
-	const navigation = useNavigation();
-	const [location, setLocation] = useState(null);
+	)
+}
 
+const UpcomingAppointments = () => {
 	const user = auth().currentUser;
 
-	const { appointments } = usePatientAppointments(user?.uid);
+	const currentProfile = useSelector(
+		({ profile }: RootState) => profile
+	);
 
+	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
+	const navigation = useNavigation();
 	const appointment = appointments[0];
 
 	const openAppointment = (appointment: any) => {
 		navigation.navigate(HomeNavKey.AppointmentInfo, { appointment });
 	};
+
+
+	if (!user) return null
+
+	console.log("All appointment : ",appointments)
+	return (
+		<View>
+			{user && appointment && (
+				<Stack px={1}>
+					<View marginBottom={6}>
+						<Text fontSize="lg" fontWeight="bold">
+							Upcoming Appointments
+						</Text>
+
+						{/* FIXME: Extract out to new component */}
+						<AppointmentAlert appointment={appointment} />
+						<TouchableOpacity
+							style={{ marginTop: 8 }}
+							onPress={() => {
+								navigation.navigate(HomeNavKey.UpcomingAppointments)
+							}}>
+							<Text textAlign="right" my={2} color="gray.500">
+								See All Appointments
+							</Text>
+						</TouchableOpacity>
+
+					</View>
+
+				</Stack>
+			)}
+		</View>
+	)
+
+}
+export default function Home() {
+	const navigation = useNavigation();
 
 	return (
 		<MainContainer
@@ -278,8 +348,9 @@ export default function Home() {
 			<ScrollView width="100%" testID="Home" p={5} pb={10}>
 				<ProfileInformation />
 				<Spacer size={30} />
+				<UpcomingAppointments />
 
-				{appointment && (
+				{/* {appointment && (
 					<Stack px={1}>
 						<View marginBottom={6}>
 							<Text
@@ -290,7 +361,6 @@ export default function Home() {
 								Upcoming Appointments
 							</Text>
 
-							{/* FIXME: Extract out to new component */}
 							<AppointmentAlert appointment={appointment} />
 							<TouchableOpacity
 								style={{ marginTop: 8 }}
@@ -306,7 +376,7 @@ export default function Home() {
 							</TouchableOpacity>
 						</View>
 					</Stack>
-				)}
+				)} */}
 				<ScheduleAppointmentSection />
 				<Spacer size={30} />
 

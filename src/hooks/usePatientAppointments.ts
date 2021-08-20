@@ -10,7 +10,7 @@ function usePatientAppointments(patientId: string | undefined) {
 		if (patientId) {
 			const subscription = firestore()
 				.collection("appointments")
-				.where("patient.uid", "==", patientId)
+				.where("patient.id", "==", patientId)
 				.orderBy("date", "desc")
 				.onSnapshot(
 					(snap) => {
@@ -30,7 +30,7 @@ function usePatientAppointments(patientId: string | undefined) {
 		}
 	}, [patientId]);
 
-	const appointments = allAppointments.filter((appointment: any) => appointment.status !== "cancelled")
+	const appointments = allAppointments.filter((appointment: any) => (appointment.status !== "rejected")).filter((appointment:any)=>(appointment.status!=="cancelled"))
 	return { appointments };
 }
 
