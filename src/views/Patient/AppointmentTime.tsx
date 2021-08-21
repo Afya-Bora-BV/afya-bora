@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
 	View,
-	Text,
 	StatusBar,
 	ScrollView,
 	Box,
@@ -39,6 +38,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setDate, setTimeRange } from "../../store/slices/appointment";
 import { TimeRange } from "../../types";
+import { Text } from "../../components/text";
+import { languageAtom } from "../../store/atoms";
 
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
@@ -94,9 +95,11 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 	return (
 		<View>
 			<HStack justifyContent="space-between" mb={3}>
-				<Text fontSize="2xl" bold>
-					Preferred Date 
-  				</Text>
+				<Text fontSize="2xl" bold
+					tx="appointmentTime.preferredDate"
+				>
+					Preferred Date
+				</Text>
 
 				<MonthDropDown
 					onChangeDate={(date) => onChangeDate(date)}
@@ -160,18 +163,25 @@ const timeSlots: Array<TimeSlot> = [
 	},
 ];
 
-const appointmentTimeAtom = atom<string>("");
-
-const setAppointmentTimeAtom = atom(
-	(get) => {
-		return get(appointmentTimeAtom);
+const timeSlotsSwahili: Array<TimeSlot> = [
+	{
+		period: "asubuhi",
+		max: "12",
+		min: "9",
 	},
-	(get, set, update: string) => {
-		// you can do more logic here for the state
+	{
+		period: "mchana",
+		min: "12",
+		max: "16",
+	},
 
-		set(appointmentTimeAtom, update);
-	}
-);
+	{
+		period: "jioni",
+		min: "16",
+		max: "20",
+	},
+];
+
 
 type PickATimeSectionProps = {
 	timeRange: TimeRange;
@@ -182,13 +192,18 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = ({
 	timeRange,
 	onChange,
 }) => {
+	const [language, setLanguage] = useAtom(languageAtom);
+
+	const slots=language==="en"?timeSlots:timeSlotsSwahili
 	return (
 		<VStack space={5}>
-			<Text fontSize="2xl" bold>
+			<Text fontSize="2xl" bold
+				tx="appointmentTime.preferredTimeRange"
+			>
 				Preferred Time Range
 			</Text>
 			<HStack justifyContent={"space-between"} space={2}>
-				{timeSlots.map((slot) => {
+				{slots.map((slot) => {
 					return (
 						<Pressable
 							onPress={() => {
@@ -386,19 +401,19 @@ export default function SetAppointmentTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
 			<VStack paddingX={3} mt={2} space={10}>
 				{/* Consultant Preview */}
 				<Box>
-					<FacilityListItem facility={facility} onPress={() => {}} />
+					<FacilityListItem facility={facility} onPress={() => { }} />
 				</Box>
 
 				{/* Picking appointment times */}
@@ -414,7 +429,7 @@ export default function SetAppointmentTime() {
 					/>
 				</VStack>
 
-				
+
 				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
@@ -426,7 +441,12 @@ export default function SetAppointmentTime() {
 					onPress={onPressNext}
 					rounded={20}
 				>
-					Next
+					<Text
+						color="white"
+						tx="common.next"
+					>
+						Preferred Time Range
+					</Text>
 				</Button>
 			</VStack>
 		</MainContainer>

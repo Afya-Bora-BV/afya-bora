@@ -8,7 +8,6 @@ import {
 	Input,
 	ScrollView,
 	Stack,
-	Text,
 	TextArea,
 	View,
 	VStack,
@@ -40,6 +39,7 @@ import {
 	setComplaint,
 	toggleSymptom,
 } from "../../store/slices/appointment";
+import { Text } from "../../components/text";
 
 const keySymptoms = [
 	"Fever",
@@ -134,7 +134,7 @@ export function PatientComplaint() {
 			"Submit Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
 					onPress: (setIsLoading(true), submit),
@@ -148,17 +148,17 @@ export function PatientComplaint() {
 
 	return (
 		<MainContainer
-			title="About your Visit"
+			title="aboutVisit.aboutYourVisit"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -174,9 +174,13 @@ export function PatientComplaint() {
 						space={10}
 					>
 						<View>
-							<Text fontSize={"3xl"}>Symptoms</Text>
+							<Text fontSize={"3xl"}
+								tx="aboutVisit.symptoms"
+							>Symptoms</Text>
 
-							<Text>Check any symptoms you have.</Text>
+							<Text
+								tx="aboutVisit.checkAnySymtomsYouHave"
+							>Check any symptoms you have.</Text>
 						</View>
 
 						<Stack space={2}>
@@ -276,7 +280,9 @@ export function PatientComplaint() {
 						}}
 						space={3}
 					>
-						<Text fontSize={"xl"}>
+						<Text fontSize={"xl"}
+							tx="aboutVisit.primaryReasonToSeeDoctor"
+						>
 							What is your primary reason for seeing the doctor?
 						</Text>
 
@@ -286,7 +292,7 @@ export function PatientComplaint() {
 							multiline
 							textAlignVertical="top"
 							borderColor="#FFF"
-							placeholder="Describe how you are feeling ..."
+							placeholder=""
 							onChangeText={(complaint) => {
 								dispatch(setComplaint(complaint));
 							}}
@@ -301,7 +307,21 @@ export function PatientComplaint() {
 					isLoading={isLoading}
 					rounded={20}
 				>
-					{isLoading ? "Loading ..." : "Book Appointment"}
+
+					{isLoading ?
+						<Text
+							color="white"
+							tx="common.loading"
+						>
+							Loading....
+						</Text>
+						:
+						<Text
+							color="white"
+							tx="aboutVisit.bookAppointment"
+						>
+							Book appointment
+						</Text>}
 				</Button>
 			</VStack>
 		</MainContainer>

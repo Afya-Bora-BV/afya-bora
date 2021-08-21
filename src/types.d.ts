@@ -90,4 +90,4 @@ interface PatientProfile {
 	email: string;
 }
 
-type TimeRange = "morning" | "afternoon" | "evening";
+type TimeRange = "morning" | "afternoon" | "evening"|"asubuhi"|"mchana"|"jioni";

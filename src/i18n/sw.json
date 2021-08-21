@@ -7,7 +7,8 @@
 		"switchLanguage": "Switch Language",
 		"hi":"Habari",
 		"next":"Endelea",
-		"logout":"Ondoka"
+		"logout":"Ondoka",
+		"loading":"Tafadhari suburi ..."
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
@@ -31,7 +32,17 @@
 		"scheduleAppointment":"Weka mihadi"
 	},
 	"appointmentTime":{
-		"dayAndTime":"Siku na Saa"
+		"dayAndTime":"Siku na Muda",
+		"preferredDate":"Siku",
+		"preferredTimeRange":"Muda"
+	},
+	"aboutVisit":{
+		"aboutYourVisit":"Taarifa za mahudhurio",
+		"symptoms":"Dalili",
+		"checkAnySymtomsYouHave":"Chagua dalili ulizonazo",
+		"primaryReasonToSeeDoctor":"Nini sababu kuu ya kumuona dactari ?",
+		"describeHowYouAreFeeling":"Elezea unavyojisikia hapa ...",
+		"bookAppointment":"Weka Mihadi"
 	},
 
 	"profile": {

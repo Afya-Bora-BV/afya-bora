@@ -7,7 +7,8 @@
 		"switchLanguage": "Badilisha Lugha",
 		"hi":"Hi",
 		"next":"Next",
-		"logout":"Logout"
+		"logout":"Logout",
+		"loading":"Loading ..."
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
@@ -34,7 +35,17 @@
 		"scheduleAppointment":"Schedule Appointment"
 	},
 	"appointmentTime":{
-		"dayAndTime":"Day and Time"
+		"dayAndTime":"Day and Time",
+		"preferredDate":"Preferred Date",
+		"preferredTimeRange":"Preferred Time Range"
+	},
+	"aboutVisit":{
+		"aboutYourVisit":"About your visit",
+		"symptoms":"Symptoms",
+		"checkAnySymtomsYouHave":"Check any symptoms you have",
+		"primaryReasonToSeeDoctor":"What is your primary reason for seeing the doctor ?",
+		"describeHowYouAreFeeling":"Describe how you are feeling ...",
+		"bookAppointment":"Book appointment"
 	},
 	"profile": {
 		"visitHistory": "Visit History",
