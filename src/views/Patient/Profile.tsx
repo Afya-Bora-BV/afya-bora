@@ -11,7 +11,7 @@ import {
 	useToast,
 } from "native-base";
 import { Text } from "../../components/text";
-import { Dimensions } from "react-native";
+import { Dimensions, ToastAndroid } from "react-native";
 import { useAtom } from "jotai";
 import i18n from "i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -33,7 +33,7 @@ import { RootState } from "../../store";
 
 import { languageAtom } from "../../store/atoms";
 
-function ProfileCard({}) {
+function ProfileCard({ }) {
 	const navigation = useNavigation();
 	const currentProfile = useSelector(({ profile }: RootState) => profile);
 	return (
@@ -119,16 +119,21 @@ export default function ProfileMain() {
 		auth()
 			.signOut()
 			.then((res) => {
-				Toast.show({
-					title: "Signed out successuly.",
-				});
-				navigation.navigate(HomeNavKey.HomeScreen);
+				ToastAndroid.show(
+					"Signed out successuly.",
+					ToastAndroid.SHORT);
+				navigation.dispatch(
+					CommonActions.reset({
+						index: 0,
+						routes: [{ name: HomeNavKey.HomeScreen }]
+					}));
 			})
 			.catch((err) => {
 				console.log(err);
-				Toast.show({
-					title: "Something went wrong in signing out",
-				});
+				ToastAndroid.show(
+					"Something went wrong in signing out",
+					ToastAndroid.SHORT);
+
 			});
 	};
 
@@ -138,10 +143,14 @@ export default function ProfileMain() {
 		i18n.changeLanguage(lng)
 			.then((res) => {
 				setLanguage(lng);
-				Toast.show({ title: "Language changed." });
+				ToastAndroid.show(
+					"Language changed.",
+					ToastAndroid.SHORT)
 			})
 			.catch((error) =>
-				Toast.show({ title: "Error changing the language" })
+				ToastAndroid.show(
+					"Error changing the language",
+					ToastAndroid.SHORT)
 			);
 	};
 
@@ -149,9 +158,10 @@ export default function ProfileMain() {
 		onError: (error, variables, context) => {
 			// An error happened!
 			console.log(`error on signing out  `, error);
-			Toast.show({
-				title: "Something went wrong in signing out",
-			});
+			ToastAndroid.show(
+				"Something went wrong in signing out",
+				ToastAndroid.SHORT)
+
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
@@ -263,9 +273,9 @@ export default function ProfileMain() {
 										onPress={
 											onAction !== undefined
 												? () =>
-														navigation.navigate(
-															HomeNavKey.ChooseProfile
-														)
+													navigation.navigate(
+														HomeNavKey.ChooseProfile
+													)
 												: undefined
 										}
 									>

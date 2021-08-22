@@ -6,6 +6,7 @@ import appointment from "../store/slices/appointment";
 function usePatientAppointments(patientId: string | undefined) {
 	const [allAppointments, setAllAppointments] = useState([]);
 
+	if (!patientId) return 
 	useEffect(() => {
 		if (patientId) {
 			const subscription = firestore()
@@ -30,7 +31,7 @@ function usePatientAppointments(patientId: string | undefined) {
 		}
 	}, [patientId]);
 
-	const appointments = allAppointments.filter((appointment: any) => (appointment.status !== "rejected")).filter((appointment:any)=>(appointment.status!=="cancelled"))
+	const appointments = allAppointments.filter((appointment: any) => (appointment.status !== "rejected")).filter((appointment: any) => (appointment.status !== "cancelled"))
 	return { appointments };
 }
 

@@ -243,7 +243,7 @@ const VerifyCode = ({
 				</Box>
 			</Box>
 			<View flex={1} alignItems="center" marginBottom={5}>
-				<Text color="#2AD3E7">Resend (00:39)</Text>
+				{/* <Text color="#2AD3E7">Resend (00:39)</Text> */}
 			</View>
 		</AltContainer>
 	);
@@ -261,7 +261,7 @@ export default function Login() {
 			if (user) {
 				// User is signed in.
 				console.log("User is signed in");
-				navigation.navigate(HomeNavKey.HomeScreen);
+				// navigation.navigate(HomeNavKey.HomeScreen);
 			}
 		});
 		return () => {

@@ -271,7 +271,7 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
-	console.log("All appointment : ", appointments);
+	// console.log("All appointment : ", appointments);
 	return (
 		<View>
 			{user && appointment && (
@@ -306,8 +306,10 @@ const UpcomingAppointments = () => {
 	);
 };
 export default function Home() {
+	const user=auth().currentUser
 	const navigation = useNavigation();
 
+	console.log("Curre user : ",user)
 	return (
 		<MainContainer
 			leftSection={() => (
