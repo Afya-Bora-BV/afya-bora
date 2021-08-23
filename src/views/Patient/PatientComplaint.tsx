@@ -40,6 +40,7 @@ import {
 	toggleSymptom,
 } from "../../store/slices/appointment";
 import { Text } from "../../components/text";
+import { useAuth } from "../../contexts/AuthContext";
 
 const keySymptoms = [
 	"Fever",
@@ -81,11 +82,14 @@ export function PatientComplaint() {
 
 	const [isLoading, setIsLoading] = useState(false);
 
-	const currentUser = auth().currentUser;
 
-	const { profile, appointment } = useSelector(
-		(state: RootState) => ({ profile: state.profile, appointment: state.appointment })
+	const { appointment } = useSelector(
+		(state: RootState) => ({ appointment: state.appointment })
 	);
+
+	const { currentUser, profile } = useAuth();
+
+
 	const dispatch = useDispatch();
 
 	const submit = () => {
@@ -99,7 +103,7 @@ export function PatientComplaint() {
 					// FIXME: Add a checker for fid being present
 					fid,
 					aboutVisit: appointment.aboutVisit,
-					pid: profile?.profile?.id,
+					pid: profile?.id,
 					timeRange: appointment.timeRange,
 					type: appointment.type,
 					utcDate: new Date(appointment.date).toUTCString(),

@@ -32,10 +32,11 @@ import { clearProfile } from "../../store/slices/profile";
 import { RootState } from "../../store";
 
 import { languageAtom } from "../../store/atoms";
+import { useAuth } from "../../contexts/AuthContext";
 
-function ProfileCard({}) {
+function ProfileCard({ }) {
 	const navigation = useNavigation();
-	const currentProfile = useSelector(({ profile }: RootState) => profile);
+	const { profile } = useAuth();
 	return (
 		<HStack
 			bg="white"
@@ -57,9 +58,9 @@ function ProfileCard({}) {
 				</Avatar>
 				<VStack space={1} justifyContent="center">
 					<Text fontWeight="600" fontSize="xl">
-						{currentProfile?.profile?.name}
+						{profile?.name}
 					</Text>
-					<Text color="#747F9E">{currentProfile?.profile?.id}</Text>
+					<Text color="#747F9E">{profile?.id}</Text>
 				</VStack>
 			</HStack>
 
@@ -99,8 +100,6 @@ const profileOptions = [
 // FIXME: Need to clear out the clearProfileAtom
 export default function ProfileMain() {
 	const navigation = useNavigation();
-	const Toast = useToast();
-	const dispatch = useDispatch();
 
 	const [language, setLanguage] = useAtom(languageAtom);
 
@@ -111,7 +110,7 @@ export default function ProfileMain() {
 	const signOutAndClearStore = async () => {
 		try {
 			await auth().signOut();
-			dispatch(clearProfile());
+
 		} catch (e) {
 			throw new Error("Something went wrong in signing out");
 		}
@@ -122,7 +121,7 @@ export default function ProfileMain() {
 			.signOut()
 			.then((res) => {
 				ToastAndroid.show("Signed out successuly.", ToastAndroid.SHORT);
-				dispatch(clearProfile());
+
 				navigation.dispatch(
 					CommonActions.reset({
 						index: 0,
@@ -274,9 +273,9 @@ export default function ProfileMain() {
 										onPress={
 											onAction !== undefined
 												? () =>
-														navigation.navigate(
-															HomeNavKey.ChooseProfile
-														)
+													navigation.navigate(
+														HomeNavKey.ChooseProfile
+													)
 												: undefined
 										}
 									>

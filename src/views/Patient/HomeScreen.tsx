@@ -92,8 +92,8 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					<Text
 						fontWeight="800"
 						textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
 					>
 						Sign in / Create Account
 					</Text>
@@ -268,10 +268,10 @@ const LocationHelper = () => {
 const UpcomingAppointments = () => {
 	const user = auth().currentUser;
 
-	const currentProfile = useSelector(({ profile }: RootState) => profile);
+	const { profile, } = useAuth();
 
 	const { appointments = [] } = usePatientAppointments(
-		currentProfile.profile?.id
+		profile?.id
 	);
 	const navigation = useNavigation();
 	const appointment = appointments[0];
@@ -282,7 +282,6 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
-	// console.log("All appointment : ", appointments);
 	return (
 		<View>
 			{user && appointment && (

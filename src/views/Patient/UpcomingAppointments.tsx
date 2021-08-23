@@ -23,6 +23,7 @@ import auth from "@react-native-firebase/auth";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -104,13 +105,9 @@ export function NoAppointment() {
 const UpcomingAppointmentsSection = () => {
 	const navigation = useNavigation();
 
-	const user = auth().currentUser;
+	const { profile } = useAuth();
 
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
-
-	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
+	const { appointments } = usePatientAppointments(profile?.id);
 
 
 	return (

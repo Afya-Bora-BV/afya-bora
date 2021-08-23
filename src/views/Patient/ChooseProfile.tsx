@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import appointment from '../../store/slices/appointment';
 import { RootState } from '../../store';
 import profile, { Profile, updateProfile as updateReduxProfile } from '../../store/slices/profile';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const checkPatientProfiles = async () => {
     const uid = await auth().currentUser?.uid;
@@ -35,9 +36,8 @@ const ChooseProfile = () => {
     const email = auth().currentUser?.email
     const phone = auth().currentUser?.phoneNumber
 
-    // FIXME: these two atoms to be reconsidered
-    const dispatch = useDispatch()
 
+    const { profile, setProfile } = useAuth();
 
     const currentProfile = useSelector(
         ({ profile }: RootState) => profile
@@ -60,10 +60,10 @@ const ChooseProfile = () => {
         console.log("Setting profile to ", profile)
         if (phone) {
             // update patient active profile
-            dispatch(updateReduxProfile({
+            setProfile({
                 ...profile,
                 type: "patient"
-            }))
+            })
 
             // navigation.navigate(HomeNavKey.HomeScreen)
             navigation.dispatch(
@@ -71,7 +71,7 @@ const ChooseProfile = () => {
                     index: 0,
                     routes: [{ name: HomeNavKey.HomeScreen }]
                 }));
-                
+
         }
         if (email) {
             // update doctor active profile
