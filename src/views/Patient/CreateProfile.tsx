@@ -133,11 +133,11 @@ export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
 	const phoneNumber = auth().currentUser?.phoneNumber;
-	const dispatch = useDispatch();
+
 
 	const Toast = useToast();
 
-	const { signOut } = useAuth();
+	const { signOut,setProfile } = useAuth();
 
 	const {
 		control,
@@ -180,13 +180,12 @@ export default function CreateProfileScreen() {
 			});
 			// TODO: to reconsider better way to store this server state
 			if (createdProfile.patientId) {
-				dispatch(
-					updateReduxProfile({
-						id: createdProfile.patientId,
-						...data,
-						type: "patient",
-					})
-				);
+				setProfile({
+					id: createdProfile.patientId,
+					...data,
+					type: "patient",
+				})
+
 			} else {
 				console.log("Error in creating profile data");
 			}
@@ -385,7 +384,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => {}}
+														) => { }}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -424,7 +423,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																		"ios"
+																	"ios"
 																);
 																onChange(
 																	currentDate

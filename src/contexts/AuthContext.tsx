@@ -11,6 +11,7 @@ const AuthContext = React.createContext<{
 	profile: Profile | null;
 	loadingProfile: boolean;
 	signOut: () => Promise<any>;
+	setProfile: (data:Profile) => void
 }>({
 	currentUser: null,
 	signIn: () => Promise.resolve(),
@@ -18,6 +19,7 @@ const AuthContext = React.createContext<{
 	loadingProfile: false,
 	profile: null,
 	signOut: () => Promise.resolve(),
+	setProfile: () => null
 });
 
 export function useAuth() {
@@ -96,6 +98,7 @@ export function AuthProvider({ children }) {
 		loadingUser,
 		currentUser,
 		loadingProfile,
+		setProfile,
 		profile,
 		signIn,
 		signOut,
