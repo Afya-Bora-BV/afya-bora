@@ -20,22 +20,32 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
-import { Dimensions, StatusBar, Platform } from "react-native";
+import {
+	Dimensions,
+	StatusBar,
+	Platform,
+	TouchableOpacity,
+	Alert,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { PrimaryButton } from "../../components/button";
 import moment from "moment";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import axios, { AxiosResponse } from "axios";
 import { API_ROOT } from "../../api";
-import { useAtom } from 'jotai'
-import profile, { updateProfile as updateReduxProfile } from '../../store/slices/profile';
+import { useAtom } from "jotai";
+import profile, {
+	setProfile as updateReduxProfile,
+} from "../../store/slices/profile";
 
 import { HomeNavKey } from ".";
 import { updateAppointmentInProgressAtom } from "./PatientComplaint";
 import { useDispatch } from "react-redux";
+import { useAuth } from "../../contexts/AuthContext";
 const regions: { name: string }[] = [
 	"Residency Location",
 	"Arusha",
@@ -79,33 +89,32 @@ const bloodGroups: { name: string }[] = [
 	"B-",
 	"AB-",
 	"O-",
-
 ].map((bloodGroup) => ({ name: bloodGroup }));
-
 
 type Profile = CompleteProfileInputs & {
 	phoneNumber: string;
 };
 
 interface ServerResponse {
-	data: ServerData
+	data: ServerData;
 }
 
-interface ServerData { message: string, patientId: string }
-
+interface ServerData {
+	message: string;
+	patientId: string;
+}
 
 const createPatientProfile = async (profile: Profile): Promise<any> => {
 	const uid = await auth().currentUser?.uid;
 	const createdProfile = await axios.post<AxiosResponse<ServerResponse>>(
 		`${API_ROOT}/v0/user/${uid}/profile/create/patient`,
 		profile
-	)
+	);
 
-	console.log(" created profile ")
-	console.log(createdProfile?.data)
-	return createdProfile?.data
+	console.log(" created profile ");
+	console.log(createdProfile?.data);
+	return createdProfile?.data;
 };
-
 
 //yup form control attrib
 interface CompleteProfileInputs {
@@ -120,15 +129,15 @@ interface CompleteProfileInputs {
 	type: "doctor" | "patient" | "admin";
 }
 
-
-
 export default function CreateProfileScreen() {
 	const navigation = useNavigation();
 	const { width, height } = Dimensions.get("screen");
-	const phoneNumber = auth().currentUser?.phoneNumber
-	const dispatch = useDispatch()
+	const phoneNumber = auth().currentUser?.phoneNumber;
+	const dispatch = useDispatch();
 
-	const Toast = useToast()
+	const Toast = useToast();
+
+	const { signOut } = useAuth();
 
 	const {
 		control,
@@ -138,37 +147,53 @@ export default function CreateProfileScreen() {
 		// resolver: yupResolver(schema),
 	});
 
+	const confirmSignout = () => {
+		Alert.alert(
+			"Confirm",
+			"You are about to sign out and switch accounts.",
+			[
+				{ text: "Cancel" },
+				{
+					text: "Confirm",
+					onPress: () =>
+						signOut().then(() =>
+							navigation.navigate(HomeNavKey.HomeScreen)
+						),
+				},
+			]
+		);
+	};
+
 	const onSubmit = (data: CompleteProfileInputs) => {
 		console.log("Form data : ");
 		console.log(data);
 		completProfile({ ...data, phoneNumber, type: "patient" });
-
 	};
 
 	const handleCreatingProfile = async (data: any) => {
-
 		try {
 			const uid = await auth().currentUser?.uid;
-			const createdProfile = await createPatientProfile({ ...data, phoneNumber, type: "patient" })
+			const createdProfile = await createPatientProfile({
+				...data,
+				phoneNumber,
+				type: "patient",
+			});
 			// TODO: to reconsider better way to store this server state
 			if (createdProfile.patientId) {
-
-				dispatch(updateReduxProfile({
-					id: createdProfile.patientId,
-					...data,
-					type: "patient"
-				}))
-
+				dispatch(
+					updateReduxProfile({
+						id: createdProfile.patientId,
+						...data,
+						type: "patient",
+					})
+				);
 			} else {
-				console.log("Error in creating profile data")
+				console.log("Error in creating profile data");
 			}
+		} catch (e) {
+			throw new Error("Error in creating profile");
 		}
-		catch (e) {
-			throw new Error("Error in creating profile")
-		}
-
-
-	}
+	};
 
 	//Date picker attrib
 	const [show, setShow] = useState(false);
@@ -184,30 +209,26 @@ export default function CreateProfileScreen() {
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`rolling back optimistic update with id `, error);
-				Toast.show({ title: "Error in creating profile" })
-
+				Toast.show({ title: "Error in creating profile" });
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
-				Toast.show({ title: "Successfuly created prifle" })
+				Toast.show({ title: "Successfuly created prifle" });
 
 				navigation.dispatch(
 					CommonActions.reset({
 						index: 0,
-						routes: [{ name: HomeNavKey.HomeScreen }]
-					}));
-
-
+						routes: [{ name: HomeNavKey.HomeScreen }],
+					})
+				);
 			},
 		}
 	);
 
-
-
 	return (
 		<Box flex={1}>
-			{/* <StatusBar translucent backgroundColor={colors.primary} /> */}
+			<StatusBar translucent backgroundColor={colors.primary} />
 			<ScrollView>
 				<Stack
 					backgroundColor={colors.primary}
@@ -232,6 +253,19 @@ export default function CreateProfileScreen() {
 					{/* </Stack> */}
 					<Stack alignItems="center">
 						<Box bg="white" shadow={2} rounded={10} width="90%">
+							<Box position="absolute" right={5} top={5}>
+								<TouchableOpacity
+									style={{
+										flexDirection: "row-reverse",
+										alignItems: "center",
+									}}
+									activeOpacity={0.5}
+									onPress={confirmSignout}
+								>
+									<Icon name="exit-run" size={24} />
+									<Text textAlign="left">Sign Out </Text>
+								</TouchableOpacity>
+							</Box>
 							<Stack mt={-10}>
 								<PicAvatar />
 							</Stack>
@@ -351,7 +385,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => { }}
+														) => {}}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -390,7 +424,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																	"ios"
+																		"ios"
 																);
 																onChange(
 																	currentDate
@@ -546,13 +580,21 @@ export default function CreateProfileScreen() {
 														),
 													}}
 												>
-													{bloodGroups.map((bloodGroup) => (
-														<Select.Item
-															label={bloodGroup.name}
-															value={bloodGroup.name}
-														/>
-													))}
-
+													{bloodGroups.map(
+														(bloodGroup) => (
+															<Select.Item
+																key={
+																	bloodGroup.name
+																}
+																label={
+																	bloodGroup.name
+																}
+																value={
+																	bloodGroup.name
+																}
+															/>
+														)
+													)}
 												</Select>
 											)}
 											name="bloodGroup"
@@ -599,7 +641,6 @@ export default function CreateProfileScreen() {
 															value={region.name}
 														/>
 													))}
-
 												</Select>
 											)}
 											name="location"

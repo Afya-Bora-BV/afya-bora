@@ -13,12 +13,28 @@ import Profile from "./Profile";
 import Notification from "./Notification";
 import EditHealthProfile from "./EditHealthProfile";
 import AppointmentInfo from "./AppointmentInfo";
-import EditAppointment from "./EditAppointment"
+import EditAppointment from "./EditAppointment";
 
 import { PatientComplaint } from "./PatientComplaint";
 import { createStackNavigator } from "@react-navigation/stack";
 import VisitHistory from "./VisitHistory";
 import UpcomingAppointments from "./UpcomingAppointments";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+
+const AuthStack = createStackNavigator();
+
+function AuthRoutes() {
+	return (
+		<AuthStack.Navigator headerMode="none" initialRouteName="Login">
+			<AuthStack.Screen name={HomeNavKey.Login} component={Login} />
+			<AuthStack.Screen
+				name={HomeNavKey.CreateProfile}
+				component={CreateProfile}
+			/>
+		</AuthStack.Navigator>
+	);
+}
 
 export const NavStack = createStackNavigator();
 
@@ -39,13 +55,16 @@ export const HomeNavKey = {
 	VisitHistory: "VisitHistory",
 	EditHealthProfile: "EditHealthProfile",
 	UpcomingAppointments: "UpcomingAppointments",
-	AppointmentInfo: "AppointmentInfo"
+	AppointmentInfo: "AppointmentInfo",
 };
 
-export default function HomeView({ navigation }: any) {
+export default function HomeView({ navigation, initialRouteName }: any) {
+	// console.log(initialRouteName);
+	// const profile = useSelector((store: RootState) => store.profile)
 	return (
-		<NavStack.Navigator headerMode="none"
-			initialRouteName={HomeNavKey.HomeScreen}
+		<NavStack.Navigator
+			headerMode="none"
+			initialRouteName={initialRouteName}
 		>
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />

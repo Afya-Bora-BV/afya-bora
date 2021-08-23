@@ -33,7 +33,7 @@ import { RootState } from "../../store";
 
 import { languageAtom } from "../../store/atoms";
 
-function ProfileCard({ }) {
+function ProfileCard({}) {
 	const navigation = useNavigation();
 	const currentProfile = useSelector(({ profile }: RootState) => profile);
 	return (
@@ -106,6 +106,8 @@ export default function ProfileMain() {
 
 	const { height } = Dimensions.get("screen");
 
+
+	// FIXME: Ally you messed this up, fix!
 	const signOutAndClearStore = async () => {
 		try {
 			await auth().signOut();
@@ -119,21 +121,21 @@ export default function ProfileMain() {
 		auth()
 			.signOut()
 			.then((res) => {
-				ToastAndroid.show(
-					"Signed out successuly.",
-					ToastAndroid.SHORT);
+				ToastAndroid.show("Signed out successuly.", ToastAndroid.SHORT);
+				dispatch(clearProfile());
 				navigation.dispatch(
 					CommonActions.reset({
 						index: 0,
-						routes: [{ name: HomeNavKey.HomeScreen }]
-					}));
+						routes: [{ name: HomeNavKey.HomeScreen }],
+					})
+				);
 			})
 			.catch((err) => {
 				console.log(err);
 				ToastAndroid.show(
 					"Something went wrong in signing out",
-					ToastAndroid.SHORT);
-
+					ToastAndroid.SHORT
+				);
 			});
 	};
 
@@ -143,14 +145,13 @@ export default function ProfileMain() {
 		i18n.changeLanguage(lng)
 			.then((res) => {
 				setLanguage(lng);
-				ToastAndroid.show(
-					"Language changed.",
-					ToastAndroid.SHORT)
+				ToastAndroid.show("Language changed.", ToastAndroid.SHORT);
 			})
 			.catch((error) =>
 				ToastAndroid.show(
 					"Error changing the language",
-					ToastAndroid.SHORT)
+					ToastAndroid.SHORT
+				)
 			);
 	};
 
@@ -160,8 +161,8 @@ export default function ProfileMain() {
 			console.log(`error on signing out  `, error);
 			ToastAndroid.show(
 				"Something went wrong in signing out",
-				ToastAndroid.SHORT)
-
+				ToastAndroid.SHORT
+			);
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
@@ -273,9 +274,9 @@ export default function ProfileMain() {
 										onPress={
 											onAction !== undefined
 												? () =>
-													navigation.navigate(
-														HomeNavKey.ChooseProfile
-													)
+														navigation.navigate(
+															HomeNavKey.ChooseProfile
+														)
 												: undefined
 										}
 									>

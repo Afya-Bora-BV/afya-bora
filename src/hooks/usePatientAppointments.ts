@@ -2,11 +2,16 @@ import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
 import appointment from "../store/slices/appointment";
 
+type PatientAppointments = {
+	appointments: Appointment[];
+};
+
 // FIXME: Add type annotation
-function usePatientAppointments(patientId: string | undefined) {
+function usePatientAppointments(
+	patientId: string | undefined
+): PatientAppointments {
 	const [allAppointments, setAllAppointments] = useState([]);
 
-	if (!patientId) return 
 	useEffect(() => {
 		if (patientId) {
 			const subscription = firestore()
@@ -31,7 +36,9 @@ function usePatientAppointments(patientId: string | undefined) {
 		}
 	}, [patientId]);
 
-	const appointments = allAppointments.filter((appointment: any) => (appointment.status !== "rejected")).filter((appointment: any) => (appointment.status !== "cancelled"))
+	const appointments = allAppointments
+		.filter((appointment: any) => appointment.status !== "rejected")
+		.filter((appointment: any) => appointment.status !== "cancelled");
 	return { appointments };
 }
 

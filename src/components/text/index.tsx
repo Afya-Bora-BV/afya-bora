@@ -70,8 +70,6 @@ export function Text(props: TextProps) {
 	// const [language, _] = useAtom(languageAtom);
 	const { t, i18n } = useTranslation(["en", "sw"], { useSuspense: false });
 
-	console.log(i18n.t("home.scheduleAnAppointment"));
-
 	// figure out which content to use
 	const i18nText = i18n.t(tx); // tx && translate(tx, txOptions);
 	const content = i18nText || text || children;

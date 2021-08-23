@@ -1,11 +1,16 @@
-import "./i18n"
+import "./i18n";
 import React, { Suspense, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { store, persistor } from "./store";
 // import { Text } from 'react-native'
 
-import { extendTheme, NativeBaseProvider, ToastProvider } from "native-base";
+import {
+	extendTheme,
+	NativeBaseProvider,
+	Text,
+	ToastProvider,
+} from "native-base";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 import { colors } from "./constants/colors";
@@ -14,15 +19,17 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Provider as JotaiProvider, useAtom } from "jotai";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import HomeView from "./views/Patient";
-import { PersistGate } from 'redux-persist/integration/react'
+import HomeView, { HomeNavKey } from "./views/Patient";
+import { PersistGate } from "redux-persist/integration/react";
 
-import { Constants } from 'react-native-unimodules';
+import { Constants } from "react-native-unimodules";
 import { languageAtom } from "./store/atoms";
+import { Profile, setProfile } from "./store/slices/profile";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 console.log(Constants.systemFonts);
-
 
 const queryClient = new QueryClient();
 
@@ -106,51 +113,56 @@ export const AppTheme = {
 
 function Main() {
 	const [language, setLanguage] = useAtom(languageAtom);
-	const [ready, setReady] = useState(false);
+	// const [ready, setReady] = useState(false);
 	// Set an initializing state whilst Firebase connects
-	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
+	// const [initializing, setInitializing] = useState(true);
+	// const [initialRouteName, setInitialRouteName] = useState(
+	// 	HomeNavKey.HomeScreen
+	// );
 
-	// Handle user state changes
-	function onAuthStateChanged(user: any) {
-		setUser(user);
-		if (initializing) setInitializing(false);
-	}
+	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
+		useAuth();
 
-	useEffect(() => {
-		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		return subscriber; // unsubscribe on unmount
-	}, []);
+	const ready = !loadingProfile && !loadingUser;
+	const createAccountFirst =
+		ready && currentUser !== null && profile === null;
 
 	useEffect(() => {
 		// Remove splash screen if ready
-		SplashScreen.hide();
+		ready && SplashScreen.hide();
 	}, [ready]);
 
-	if (initializing) return null;
+	console.log(ready, loadingProfile, loadingUser);
 
-	return <HomeView />;
+	if (!ready) return null;
+
+	if (createAccountFirst)
+		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
+
+	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
 }
 
 export default function App() {
 	return (
 		<SafeAreaProvider>
 			<Provider store={store}>
-				<PersistGate loading={null} persistor={persistor}>
-					<NativeBaseProvider theme={theme}>
-						<NavigationContainer theme={AppTheme}>
-							<ToastProvider>
-								<QueryClientProvider client={queryClient}>
-									<JotaiProvider>
-										<Suspense fallback={null}>
-											<Main />
-										</Suspense>
-									</JotaiProvider>
-								</QueryClientProvider>
-							</ToastProvider>
-						</NavigationContainer>
-					</NativeBaseProvider>
-				</PersistGate>
+				<AuthProvider>
+					<PersistGate loading={null} persistor={persistor}>
+						<NativeBaseProvider theme={theme}>
+							<NavigationContainer theme={AppTheme}>
+								<ToastProvider>
+									<QueryClientProvider client={queryClient}>
+										<JotaiProvider>
+											<Suspense fallback={null}>
+												<Main />
+											</Suspense>
+										</JotaiProvider>
+									</QueryClientProvider>
+								</ToastProvider>
+							</NavigationContainer>
+						</NativeBaseProvider>
+					</PersistGate>
+				</AuthProvider>
 			</Provider>
 		</SafeAreaProvider>
 	);

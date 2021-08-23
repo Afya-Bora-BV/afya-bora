@@ -3,44 +3,51 @@ import { Facility, TimeRange } from "../../types";
 import { toggleStringFromList } from "../../utils";
 // import firestore from "@react-native-firebase/firestore"
 
-type DobString = string
+type DobString = string;
 export interface Profile {
-    id: string
-    name: string,
-    gender: "male" | "female",
-    bloodGroup: string,
-    dob: DobString,
-    height: number,
-    location: string,
-    weight: number
-    type: "patient"
+	id: string;
+	uid: string;
+	name: string;
+	gender: "male" | "female";
+	bloodGroup: string;
+	dob: DobString;
+	height: number;
+	location: string;
+	weight: number;
+	type: "patient";
+	loggedIn: boolean;
 }
 
-export interface ProfileState {
-    profile: null | Profile
-}
+// export type ProfileState = null | Profile;
 
-const initialState: ProfileState = {
-    profile: null
+const initialState: Profile = {
+	id: "",
+	uid: "",
+	name: "",
+	gender: "male",
+	bloodGroup: "",
+	dob: "",
+	height: 0,
+	weight: 0,
+	location: "",
+	type: "patient",
+	loggedIn: false,
 };
 
 export const profileSlice = createSlice({
-    name: "profile",
-    initialState,
-    reducers: {
-        updateProfile: (state: ProfileState, action: PayloadAction<Profile>) => {
-            state.profile = action.payload
-        },
-        clearProfile: (state: ProfileState) => {
-            state.profile = null
-        }
-    },
+	name: "profile",
+	initialState,
+	reducers: {
+		setProfile: (state: Profile, action: PayloadAction<Profile>) => {
+			state = action.payload;
+		},
+		clearProfile: (state: Profile) => {
+			state = { ...initialState };
+		},
+	},
 });
 
 // Action creators are generated for each case reducer function
-export const {
-    updateProfile,
-    clearProfile
-} = profileSlice.actions;
+export const { setProfile, clearProfile } = profileSlice.actions;
 
 export default profileSlice.reducer;

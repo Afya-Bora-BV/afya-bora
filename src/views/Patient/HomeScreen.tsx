@@ -21,7 +21,7 @@ import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 
 import HomeScreenIllustration from "../../assets/illustrations/HomeScreenIllustration";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 import { Spacer } from "../../components/Spacer";
 import { PrimaryButton } from "../../components/button";
@@ -39,36 +39,37 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from "react-native-geolocation-service";
-import { useSelector } from "react-redux";
+import { useSelector, useStore } from "react-redux";
 import { RootState } from "../../store";
+import { Profile } from "../../store/slices/profile";
+import { useAuth } from "../../contexts/AuthContext";
 
-const AccountDetails = () => {
-	const navigation = useNavigation();
-	const user = auth().currentUser;
-	const handlPress = () => {
-		if (user) {
-			// navigate to seeing details
-			navigation.navigate(HomeNavKey.Profile);
-		} else {
-			navigation.navigate(HomeNavKey.Login);
-		}
-	};
+type AccountDetailsProps = {
+	profile: Profile | null;
+	handleAccountPress: () => void;
+};
 
-	if (user) {
+const AccountDetails: React.FC<AccountDetailsProps> = ({
+	handleAccountPress,
+	profile,
+}) => {
+	if (profile) {
 		return (
 			<Stack space={2}>
-				<Text fontSize="xl"
+				<Text
+					fontSize="xl"
 					fontWeight="bold"
 					tx="home.yourAfyaBoraAccout"
-				>Your AfyaBora Account</Text>
-				<Pressable onPress={handlPress}>
+				>
+					Your AfyaBora Account
+				</Text>
+				<Pressable onPress={handleAccountPress}>
 					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
 						<AppointmentIllustration size={70} />
 						<Text
 							fontWeight="800"
 							textAlign="center"
 							tx="home.profileAndVisits"
-
 						>
 							Profile and Visits
 						</Text>
@@ -78,22 +79,21 @@ const AccountDetails = () => {
 		);
 	}
 
-	console.log("user : ", user);
+	console.log("profile : ", profile);
 	return (
 		<Stack space={2}>
-			<Text fontSize="xl"
-				fontWeight="bold"
-				tx="home.yourAfyaBoraAccout"
-			>Your AfyaBora Account</Text>
-			<Pressable onPress={handlPress}>
+			<Text fontSize="xl" fontWeight="bold" tx="home.yourAfyaBoraAccout">
+				Your AfyaBora Account
+			</Text>
+			<Pressable onPress={handleAccountPress}>
 				{/* Find mean to set relative width: 160 -> 33%?? */}
 				<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
 					<AppointmentIllustration size={70} />
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
 					>
 						Sign in / Create Account
 					</Text>
@@ -103,17 +103,25 @@ const AccountDetails = () => {
 	);
 };
 
-// FIXME: Update user information with information from the profile store.
-const ProfileInformation = () => {
-	const user = auth().currentUser;
-	const currentProfile = useSelector(({ profile }: RootState) => profile);
+type ProfileInformationProps = {
+	profile: Profile | null;
+	user: FirebaseAuthTypes.User | null;
+};
 
+// FIXME: Update user information with information from the profile store.
+const ProfileInformation: React.FC<ProfileInformationProps> = ({
+	profile,
+	user,
+}) => {
 	if (user) {
 		return (
 			<VStack flex={1}>
 				<Text>{moment().format("DD MMMM YYYY")}</Text>
 				<Heading fontSize="3xl">
-					<Text fontSize="3xl" tx="common.hi">Hi</Text>, {currentProfile?.profile?.name}
+					<Text fontSize="3xl" tx="common.hi">
+						Hi
+					</Text>
+					, {profile?.name}
 				</Heading>
 			</VStack>
 		);
@@ -213,7 +221,9 @@ const LocationHelper = () => {
 	}, []);
 	return (
 		<Stack space={2}>
-			<Text tx={"home.quickMedicalAttention"} fontSize="xl"
+			<Text
+				tx={"home.quickMedicalAttention"}
+				fontSize="xl"
 				fontWeight="bold"
 			>
 				Need quick medical attention?
@@ -242,7 +252,6 @@ const LocationHelper = () => {
 							fontWeight="800"
 							textAlign="center"
 							tx="home.facilitiesNearYou"
-
 						>
 							Facilities near you
 						</Text>
@@ -261,7 +270,9 @@ const UpcomingAppointments = () => {
 
 	const currentProfile = useSelector(({ profile }: RootState) => profile);
 
-	const { appointments } = usePatientAppointments(currentProfile.profile?.id);
+	const { appointments = [] } = usePatientAppointments(
+		currentProfile.profile?.id
+	);
 	const navigation = useNavigation();
 	const appointment = appointments[0];
 
@@ -279,7 +290,9 @@ const UpcomingAppointments = () => {
 					<View marginBottom={6}>
 						<Text
 							tx="home.upcomingAppointments"
-							fontSize="lg" fontWeight="bold">
+							fontSize="lg"
+							fontWeight="bold"
+						>
 							Upcoming Appointments
 						</Text>
 
@@ -293,7 +306,10 @@ const UpcomingAppointments = () => {
 								);
 							}}
 						>
-							<Text textAlign="right" my={2} color="gray.500"
+							<Text
+								textAlign="right"
+								my={2}
+								color="gray.500"
 								tx="home.seeAllAppointments"
 							>
 								See All Appointments
@@ -306,18 +322,36 @@ const UpcomingAppointments = () => {
 	);
 };
 export default function Home() {
-	const user=auth().currentUser
+	// const user = auth().currentUser;
+	// const profile = useSelector((store: RootState) => store.profile);
 	const navigation = useNavigation();
 
-	console.log("Curre user : ",user)
+	const { currentUser, profile, loadingProfile, loadingUser } = useAuth();
+
+	const handleAccountPress = () => {
+		if (profile && profile?.uid) {
+			// navigate to seeing details
+			navigation.navigate(HomeNavKey.Profile);
+		} else {
+			navigation.navigate(HomeNavKey.Login);
+		}
+	};
+
+	useEffect(() => {
+		if (!profile && auth().currentUser) {
+			navigation.navigate(HomeNavKey.CreateProfile);
+		}
+	}, []);
+
+	console.log("Curre user : ", profile, auth().currentUser);
+
+	if (loadingProfile || loadingUser) {
+		return <Text>Loading your profile</Text>;
+	}
 	return (
 		<MainContainer
 			leftSection={() => (
-				<Pressable
-					onPress={() => {
-						navigation.navigate(HomeNavKey.Profile);
-					}}
-				>
+				<Pressable onPress={handleAccountPress}>
 					<IconContainer>
 						<UserIcon size={6} color="#561BB3" />
 					</IconContainer>
@@ -327,7 +361,12 @@ export default function Home() {
 				<HStack space={4}>
 					<Pressable
 						onPress={() => {
-							navigation.navigate(HomeNavKey.Notification);
+							// navigation.navigate(HomeNavKey.Notification);
+							auth()
+								.signOut()
+								.then((res) => {
+									ToastAndroid.show("signed out", 3000);
+								});
 						}}
 					>
 						<IconContainer>
@@ -338,37 +377,9 @@ export default function Home() {
 			)}
 		>
 			<ScrollView width="100%" testID="Home" p={5} pb={10}>
-				<ProfileInformation />
+				<ProfileInformation profile={profile} user={currentUser} />
 				<Spacer size={30} />
 				<UpcomingAppointments />
-
-				{/* {appointment && (
-					<Stack px={1}>
-						<View marginBottom={6}>
-							<Text
-								fontSize="lg"
-								marginBottom={1}
-								fontWeight="bold"
-							>
-								Upcoming Appointments
-							</Text>
-
-							<AppointmentAlert appointment={appointment} />
-							<TouchableOpacity
-								style={{ marginTop: 8 }}
-								onPress={() => {
-									navigation.navigate(
-										HomeNavKey.UpcomingAppointments
-									);
-								}}
-							>
-								<Text textAlign="right" my={2} color="gray.500">
-									See All Appointments
-								</Text>
-							</TouchableOpacity>
-						</View>
-					</Stack>
-				)} */}
 				<ScheduleAppointmentSection />
 				<Spacer size={30} />
 
@@ -380,7 +391,10 @@ export default function Home() {
 					py={2}
 				>
 					<LocationHelper />
-					<AccountDetails />
+					<AccountDetails
+						profile={profile}
+						handleAccountPress={handleAccountPress}
+					/>
 				</VStack>
 			</ScrollView>
 		</MainContainer>
@@ -411,12 +425,9 @@ export const ScheduleAppointmentSection = () => {
 				<Stack space={5} py={2}>
 					<AppointmentCustomizer />
 					<PrimaryButton onPress={handleOnPress}>
-						<Text tx="home.schedule"
-							color="white"
-						>
+						<Text tx="home.schedule" color="white">
 							Schedule
 						</Text>
-
 					</PrimaryButton>
 				</Stack>
 			</Box>

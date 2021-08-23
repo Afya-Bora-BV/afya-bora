@@ -27,6 +27,7 @@ import _ from "lodash";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import CodeInput from "../../components/forms/codeInput";
 import { HomeNavKey } from ".";
+import { useAuth } from "../../contexts/AuthContext";
 
 // TODO : logic to be moved somewhere on refactor
 
@@ -81,6 +82,8 @@ const SendConfirmationCode = ({
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			// updating phoneNumber on success
+			console.log("Here it is");
+			console.log(data);
 		},
 	});
 
@@ -255,29 +258,22 @@ export default function Login() {
 	const [confirm, setConfirm] =
 		useState<FirebaseAuthTypes.ConfirmationResult>();
 
-	// On auth state changed, you should expect to send the user directly to the home screen
-	useEffect(() => {
-		const authListener = auth().onAuthStateChanged(async (user) => {
-			if (user) {
-				// User is signed in.
-				console.log("User is signed in");
-				// navigation.navigate(HomeNavKey.HomeScreen);
-			}
-		});
-		return () => {
-			authListener();
-		};
-	}, []);
+	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
+		useAuth();
 
 	async function signInWithPhoneNumber(phoneNumber: string) {
 		// checking if the phone exists
 		// await checkUserProfile(phoneNumber)
-		const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+		const confirmation = await signIn(phoneNumber);
 		setConfirm(confirmation);
 		Toast.show({
 			title: `Verification code sent to ${phoneNumber}`,
 		});
 	}
+
+	console.log("\n\nProfile:");
+	console.log(profile, currentUser, loadingProfile, loadingUser);
+	console.log("\n\n");
 
 	async function confirmCode(code: string) {
 		try {
