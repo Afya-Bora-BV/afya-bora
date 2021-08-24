@@ -134,6 +134,7 @@ function Main() {
 
 	console.log(ready, loadingProfile, loadingUser);
 
+	console.log("Current language  : ",language)
 	if (!ready) return null;
 
 	if (createAccountFirst)
