@@ -68,7 +68,6 @@ export function Text(props: TextProps) {
 
 	// grab the language
 	const [language, _] = useAtom(languageAtom);
-	console.log("Input language  : ", language)
 	const { t, i18n } = useTranslation([language, "en", "sw"], { useSuspense: false });
 
 	// figure out which content to use

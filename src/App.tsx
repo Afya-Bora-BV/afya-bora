@@ -29,6 +29,7 @@ import { Constants } from "react-native-unimodules";
 import { languageAtom } from "./store/atoms";
 import { Profile, setProfile } from "./store/slices/profile";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
@@ -113,12 +114,9 @@ export const AppTheme = {
 
 function Main() {
 	const [language, setLanguage] = useAtom(languageAtom);
-	// const [ready, setReady] = useState(false);
-	// Set an initializing state whilst Firebase connects
-	// const [initializing, setInitializing] = useState(true);
-	// const [initialRouteName, setInitialRouteName] = useState(
-	// 	HomeNavKey.HomeScreen
-	// );
+	const { t, i18n } = useTranslation();
+
+
 
 	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
 		useAuth();
@@ -128,13 +126,17 @@ function Main() {
 		ready && currentUser !== null && profile === null;
 
 	useEffect(() => {
+		i18n.changeLanguage(language);
+	}, [])
+	
+	useEffect(() => {
 		// Remove splash screen if ready
 		ready && SplashScreen.hide();
 	}, [ready]);
 
 	console.log(ready, loadingProfile, loadingUser);
 
-	console.log("Current language  : ",language)
+	console.log("Current language  : ", language)
 	if (!ready) return null;
 
 	if (createAccountFirst)
