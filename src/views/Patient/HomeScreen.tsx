@@ -361,11 +361,9 @@ export default function Home() {
 					<Pressable
 						onPress={() => {
 							// navigation.navigate(HomeNavKey.Notification);
-							auth()
-								.signOut()
-								.then((res) => {
-									ToastAndroid.show("signed out", 3000);
-								});
+
+							ToastAndroid.show("Under construction !", 3000);
+
 						}}
 					>
 						<IconContainer>
