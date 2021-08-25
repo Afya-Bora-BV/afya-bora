@@ -20,12 +20,9 @@ import { ConsultantListItem } from "../../components/consultant-list-item";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 import { Pressable, Dimensions, View } from "react-native";
-import { useCallback } from "react";
 
 import { useQuery } from "react-query";
-import axios, { AxiosResponse } from "axios";
 import { useEffect } from "react";
-import { API_ROOT, getFacilities } from "../../api";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppointmentCustomizer, {
 	completeScheduleAtom,
@@ -39,17 +36,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setFacility } from "../../store/slices/appointment";
 import { colors } from "../../constants/colors";
+import { getFacilities } from "../../api";
 
 
 const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
 
-	// const [facility] = useSelector(
-	// 	({ appointment }: RootState) => [
-	// 		appointment.facility,
-	// 	]
-	// );
 	const dispatch = useDispatch();
 
 	const selectFacility = (facility: Facility) => {
@@ -62,7 +55,7 @@ const FacilityList = () => {
 		error,
 		isLoading,
 	} = useQuery<{ count: number; data: Facility[] }>(
-		["facilities"],
+		["facilities",2],
 		getFacilities
 	);
 

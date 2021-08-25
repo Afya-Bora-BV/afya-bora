@@ -2,18 +2,24 @@ type DBDate = number | Date;
 export type FacilityStatus = "active" | "inactive" | "removed"|"suspended"
 
 interface Facility {
+	state: string,
+	id:string,
 	name: string,
+	geopoint: {
+	   lat: string,
+	   lng: string
+	},
+	street: string,
+	rating: {
+	   stars: number,
+	   count: number
+	},
+	city: string,
 	createdAt: {
-		seconds: number,
-		nanoseconds: number
+	   _seconds: number,
+	   _nanoseconds: number
 	},
-	address?: string,
-	geopoint?: {
-		latitude: number,
-		longitude: number
-	},
-	id: string,
-	status?: FacilityStatus
+	country: string
 }
 
 type Rating = {
