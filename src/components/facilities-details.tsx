@@ -23,7 +23,7 @@ type FacilityDetailsProps = {
 };
 
 export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
-	facility: { name, address, specialities },
+	facility: { name, city, street, country },
 }) => {
 	return (
 		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
@@ -45,7 +45,13 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 						<VStack space={1}>
 							<Heading fontSize="lg">{name} </Heading>
 							<Text fontSize="md" bold color="#747F9E">
-								{address}
+								{street}
+							</Text>
+							<Text fontSize="md" bold color="#747F9E">
+								{city}
+							</Text>
+							<Text fontSize="md" bold color="#747F9E">
+								{country}
 							</Text>
 						</VStack>
 
@@ -63,7 +69,7 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 									</VStack>
 								</HStack>
 								<Text pl={7} color={"#747F9E"}>
-									{specialities}
+									{""}
 								</Text>
 							</VStack>
 
