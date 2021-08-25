@@ -3,10 +3,7 @@ import {
 	ArrowBackIcon,
 	Box,
 	Button,
-	Heading,
 	HStack,
-	Input,
-	ScrollView,
 	Stack,
 	TextArea,
 	View,
@@ -15,8 +12,6 @@ import {
 } from "native-base";
 import {
 	CommonActions,
-	RouteProp,
-	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
