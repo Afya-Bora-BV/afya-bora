@@ -1,18 +1,19 @@
 type DBDate = number | Date;
+export type FacilityStatus = "active" | "inactive" | "removed"|"suspended"
 
 interface Facility {
-	id: string;
-	name: string;
-	geopoint: {
-		lat: number;
-		lng: number;
-	};
-	address: string;
-	imageUrl?: string;
-	rating: {
-		stars: number; // 4.5
-		count: number; // 934
-	};
+	name: string,
+	createdAt: {
+		seconds: number,
+		nanoseconds: number
+	},
+	address?: string,
+	geopoint?: {
+		latitude: number,
+		longitude: number
+	},
+	id: string,
+	status?: FacilityStatus
 }
 
 type Rating = {
@@ -38,10 +39,10 @@ export interface ConsultantProfile {
 }
 
 interface RealTimeAppointment {
-	id:string
+	id: string
 	cid: string;
 	consultant: ConsultantProfile;
-	status:"pending"|"cancelled";
+	status: "pending" | "cancelled";
 	patient: {
 		name: string,
 		gender: "male" | "female",
@@ -90,4 +91,4 @@ interface PatientProfile {
 	email: string;
 }
 
-type TimeRange = "morning" | "afternoon" | "evening"|"asubuhi"|"mchana"|"jioni";
+type TimeRange = "morning" | "afternoon" | "evening" | "asubuhi" | "mchana" | "jioni";

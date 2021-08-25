@@ -15,6 +15,7 @@ import moment from "moment";
 import { HomeNavKey } from ".";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
@@ -55,15 +56,12 @@ export default function VisitHistory() {
 
 const VisitHistorySection = () => {
 	const navigation = useNavigation();
-	const currentProfile = useSelector(
-		({ profile }: RootState) => profile
-	);
-
+	const { profile, } = useAuth();
 	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection("appointments")
-			.where("pid", "==", currentProfile?.profile?.id)
+			.where("pid", "==", profile?.id)
 			// .where("status","!=","cancelled")
 			.onSnapshot((documentSnapshot) => {
 				const shots = [
@@ -74,7 +72,7 @@ const VisitHistorySection = () => {
 
 		// Stop listening for updates when no longer required
 		return () => subscriber();
-	}, [currentProfile?.profile?.id]);
+	}, [profile?.id]);
 
 	const visitHistory = appointments?.filter((appointment) => {
 		return (
