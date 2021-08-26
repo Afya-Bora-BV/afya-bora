@@ -1,25 +1,20 @@
 import React, { useState } from "react";
 import {
-	Heading,
 	HStack,
 	VStack,
 	Text,
 	ScrollView,
-	StatusBar,
 	ArrowBackIcon,
 	useToast,
 	Modal,
 	Button,
 	Spacer,
 	Spinner,
-	Stack,
-	Box,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { ConsultantListItem } from "../../components/consultant-list-item";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
-import { Pressable, Dimensions, View } from "react-native";
+import { Pressable } from "react-native";
 
 import { useQuery } from "react-query";
 import { useEffect } from "react";
@@ -55,7 +50,7 @@ const FacilityList = () => {
 		error,
 		isLoading,
 	} = useQuery<{ count: number; data: Facility[] }>(
-		["facilities",2],
+		["facilities", 2],
 		getFacilities
 	);
 
@@ -100,10 +95,11 @@ const FacilityList = () => {
 						<VStack space={2}>
 							{facilities.map((facility, ix) => {
 								return (
-									<FacilityListItem
-										facility={facility}
-										onPress={() => selectFacility(facility)}
-									/>
+									<Pressable onPress={() => selectFacility(facility)}>
+										<FacilityListItem
+											facility={facility}
+										/>
+									</Pressable>
 								);
 							})}
 						</VStack>

@@ -1,6 +1,54 @@
 type DBDate = number | Date;
 export type FacilityStatus = "active" | "inactive" | "removed"|"suspended"
 
+export interface Consultant{
+	id: string
+    name:string
+    phoneNumber:string;
+    residence:string;
+    facilityId:string;
+    email:string
+    clinicianType:string
+	specialities:string[]
+}
+
+export type Appointment = {
+    patient: {
+        name: string,
+        id: string,
+        telephone: string,
+        uid: string
+    },
+    aboutVisit: {
+        symptoms: string[],
+        complaint: string
+    },
+    updatedAt: {
+        seconds: number,
+        nanoseconds: number
+    },
+    fid: string,
+    createdAt: {
+        seconds: number,
+        nanoseconds: number
+    },
+    date: {
+        seconds: number,
+        nanoseconds: number
+    },
+    pid: string,
+    utcDate: string,
+    timeRange: "morning" | "afternoon" | "evening" | "asubuhi" | "mchana" | 'jioni',
+    facility: {
+        address: string,
+        name: string
+    },
+    status: "pending" | "accepted" | "cancelled" | "rejected",
+    type: "offline" | "online",
+    id: string,
+	consultant?:Consultant
+}
+
 interface Facility {
 	state: string,
 	id:string,
@@ -28,26 +76,11 @@ type Rating = {
 	ratedById: string;
 };
 
-export interface ConsultantProfile {
-	id: string;
-	uid: Uid;
-	identifier: string;
-	facilityId?: Facility["id"];
-	name: string;
-	gender: GenderType;
-	phoneNumber?: string;
-	email: string;
-	residence: string;
-	rating: number;
-	ratedBy: number;
-	clinicianType: string;
-	specialities: string[];
-}
+
 
 interface RealTimeAppointment {
 	id: string
 	cid: string;
-	consultant: ConsultantProfile;
 	status: "pending" | "cancelled";
 	patient: {
 		name: string,

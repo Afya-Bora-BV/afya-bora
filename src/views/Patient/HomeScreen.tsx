@@ -282,6 +282,9 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
+	console.log("Appointments all ")
+	console.log(JSON.stringify(appointments, null, 3))
+	
 	return (
 		<View>
 			{user && appointment && (

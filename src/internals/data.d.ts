@@ -55,6 +55,16 @@ interface ConsultantionSlot {
     dateTime: Date
 }
 
+export interface Consultant {
+    id: string
+    name: string
+    phoneNumber: string;
+    residence: string;
+    facilityId: string;
+    email: string
+    clinicianType: string
+}
+
 interface Appointment {
     pid: string
     cid: string
@@ -68,6 +78,7 @@ interface Appointment {
         complaint: string;
         symptoms: string[]
     }
+    consultant?: Consultant
 }
 
 
