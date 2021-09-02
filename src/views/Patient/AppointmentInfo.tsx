@@ -17,8 +17,6 @@ import { StatusAppointmentAlert } from "../../components/core/appointment";
 import { Alert, Pressable, ToastAndroid } from "react-native";
 import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { API_ROOT, getAppointmentDetails } from "../../api";
-import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { Spacer } from "../../components/Spacer";
 import { HomeNavKey } from ".";
@@ -28,6 +26,7 @@ import { FacilityListItem } from "../../components/facilities-list-item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setDate, setTimeRange } from "../../store/slices/appointment";
+import { ConsultantListItem } from "../../components/consultant-list-item";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -134,13 +133,10 @@ export default function AppointmentInfo() {
 	const { appointment: data } = route?.params;
 
 	const { cid, pid } = data;
-	// const { status, data, error, isLoading } = useQuery(
-	// 	["appointmentDetails", cid, pid],
-	// 	() => getAppointmentDetails({ cid, pid })
-	// );
+
 
 	console.log("Appointment : ")
-	console.log(JSON.stringify(data, null, 3))
+	console.log(JSON.stringify(data?.consultant, null, 3))
 	return (
 		<MainContainer
 			title="Appointment Info"
@@ -176,14 +172,15 @@ export default function AppointmentInfo() {
 				</View>
 
 				<HStack justifyContent="space-between">
-					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || {}} />
+					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || { }} />
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
-				<VStack mt={2}>
+				<VStack mt={2} space={4}>
 					<FacilityListItem
 						facility={data?.facility}
-						onPress={() => null}
 					/>
+
+					{data?.consultant && <ConsultantListItem consultant={data?.consultant} />}
 				</VStack>
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text fontSize={"2xl"}>Symptoms</Text>

@@ -282,6 +282,9 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
+	console.log("Appointments all ")
+	console.log(JSON.stringify(appointments, null, 3))
+	
 	return (
 		<View>
 			{user && appointment && (
@@ -361,11 +364,9 @@ export default function Home() {
 					<Pressable
 						onPress={() => {
 							// navigation.navigate(HomeNavKey.Notification);
-							auth()
-								.signOut()
-								.then((res) => {
-									ToastAndroid.show("signed out", 3000);
-								});
+
+							ToastAndroid.show("Under construction !", 3000);
+
 						}}
 					>
 						<IconContainer>

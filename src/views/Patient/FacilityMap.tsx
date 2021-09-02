@@ -236,6 +236,30 @@ const FindFacility: React.FC = () => {
 					{ useNativeDriver: true }
 				)}
 			>
+				{isLoading &&
+					<Center
+						style={{
+							shadowColor: "#CCC",
+							shadowOffset: {
+								width: 0,
+								height: 5,
+							},
+							shadowOpacity: 0.57,
+							shadowRadius: 13.19,
+
+							elevation: 13,
+						}}
+						minWidth={300}
+						minHeight={200}
+						bgColor="#FFF"
+						shadow={40}
+						padding={3}
+						borderRadius={20}
+						marginRight={5}
+					>
+						<Text>Loading nearby facilities....</Text>
+					</Center>
+				}
 				{state.length === 0 && !isLoading &&
 					<Center
 						style={{

@@ -3,10 +3,7 @@ import {
 	ArrowBackIcon,
 	Box,
 	Button,
-	Heading,
 	HStack,
-	Input,
-	ScrollView,
 	Stack,
 	TextArea,
 	View,
@@ -15,22 +12,15 @@ import {
 } from "native-base";
 import {
 	CommonActions,
-	RouteProp,
-	StackActions,
 	useNavigation,
 } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
 import functions from "@react-native-firebase/functions";
 import _ from "lodash";
 import { TouchableOpacity, Alert, ToastAndroid, Pressable } from "react-native";
-import { toggleStringFromList } from "../../utils";
-import { StackNavigationProp } from "@react-navigation/stack";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
-import auth from "@react-native-firebase/auth";
 import { atom, useAtom } from "jotai";
-import axios from "axios";
-import { API_ROOT } from "../../api";
 import { HomeNavKey } from ".";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";

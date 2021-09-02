@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
-import appointment from "../store/slices/appointment";
+import { Appointment } from "../types";
 
 type PatientAppointments = {
-	appointments: Appointment[];
-};
+	appointments:Appointment[]
+}
 
 // FIXME: Add type annotation
 function usePatientAppointments(
 	patientId: string | undefined
 ): PatientAppointments {
-	const [allAppointments, setAllAppointments] = useState([]);
+	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 
 	useEffect(() => {
 		if (patientId) {
@@ -24,7 +24,7 @@ function usePatientAppointments(
 							snap?.docs.map((doc) => ({
 								...doc.data(),
 								id: doc.id,
-							}))
+							} as Appointment))
 						);
 					},
 					(error) => {

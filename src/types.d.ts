@@ -1,18 +1,73 @@
 type DBDate = number | Date;
+export type FacilityStatus = "active" | "inactive" | "removed"|"suspended"
+
+export interface Consultant{
+	id: string
+    name:string
+    phoneNumber:string;
+    residence:string;
+    facilityId:string;
+    email:string
+    clinicianType:string
+	specialities:string[]
+}
+
+export type Appointment = {
+    patient: {
+        name: string,
+        id: string,
+        telephone: string,
+        uid: string
+    },
+    aboutVisit: {
+        symptoms: string[],
+        complaint: string
+    },
+    updatedAt: {
+        seconds: number,
+        nanoseconds: number
+    },
+    fid: string,
+    createdAt: {
+        seconds: number,
+        nanoseconds: number
+    },
+    date: {
+        seconds: number,
+        nanoseconds: number
+    },
+    pid: string,
+    utcDate: string,
+    timeRange: "morning" | "afternoon" | "evening" | "asubuhi" | "mchana" | 'jioni',
+    facility: {
+        address: string,
+        name: string
+    },
+    status: "pending" | "accepted" | "cancelled" | "rejected",
+    type: "offline" | "online",
+    id: string,
+	consultant?:Consultant
+}
 
 interface Facility {
-	id: string;
-	name: string;
+	state: string,
+	id:string,
+	name: string,
 	geopoint: {
-		lat: number;
-		lng: number;
-	};
-	address: string;
-	imageUrl?: string;
+	   lat: string,
+	   lng: string
+	},
+	street: string,
 	rating: {
-		stars: number; // 4.5
-		count: number; // 934
-	};
+	   stars: number,
+	   count: number
+	},
+	city: string,
+	createdAt: {
+	   _seconds: number,
+	   _nanoseconds: number
+	},
+	country: string
 }
 
 type Rating = {
@@ -21,27 +76,12 @@ type Rating = {
 	ratedById: string;
 };
 
-export interface ConsultantProfile {
-	id: string;
-	uid: Uid;
-	identifier: string;
-	facilityId?: Facility["id"];
-	name: string;
-	gender: GenderType;
-	phoneNumber?: string;
-	email: string;
-	residence: string;
-	rating: number;
-	ratedBy: number;
-	clinicianType: string;
-	specialities: string[];
-}
+
 
 interface RealTimeAppointment {
-	id:string
+	id: string
 	cid: string;
-	consultant: ConsultantProfile;
-	status:"pending"|"cancelled";
+	status: "pending" | "cancelled";
 	patient: {
 		name: string,
 		gender: "male" | "female",
@@ -90,4 +130,4 @@ interface PatientProfile {
 	email: string;
 }
 
-type TimeRange = "morning" | "afternoon" | "evening"|"asubuhi"|"mchana"|"jioni";
+type TimeRange = "morning" | "afternoon" | "evening" | "asubuhi" | "mchana" | "jioni";
