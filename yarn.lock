@@ -2281,11 +2281,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-12.5.0.tgz#e9cead308bf87ed115666d564c7e2c413a9c730e"
   integrity sha512-aAy5bGMoPvoUYk+AQZrzqmsRi7Qe8FIEscon2yhgyeRXvZ4YwXPeOyc60EHmVAEGLDEEmyWG2owLqryVrDTmDw==
 
-"@react-native-masked-view/masked-view@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.6.tgz#b26c52d5db3ad0926b13deea79c69620966a9221"
-  integrity sha512-303CxmetUmgiX9NSUxatZkNh9qTYYdiM8xkGf9I3Uj20U3eGY3M78ljeNQ4UVCJA+FNGS5nC1dtS9GjIqvB4dg==
-
 "@react-navigation/bottom-tabs@^5.11.11":
   version "5.11.11"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.11.11.tgz#ad4dfee4316522d8c05b5a8ad460f597bddb9e3c"
@@ -9444,6 +9439,11 @@ react-native-swipe-gestures@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+
+react-native-telehealth@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-telehealth/-/react-native-telehealth-0.1.1.tgz#28f78dfa233e99d6dfb7a7af4429815ff23c7310"
+  integrity sha512-vLew1T+kIyqPKf3uTgk3n0to08exTlsm2wvukET7gbIFWem73xgjyuXfTZoHs94zj4NvCjM0i6ecxO6/Ph0G7g==
 
 react-native-unimodules@^0.14.6:
   version "0.14.6"

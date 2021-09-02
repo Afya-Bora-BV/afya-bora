@@ -55,6 +55,7 @@
     "react-native-skeleton-placeholder": "^5.0.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "12.1.1",
+    "react-native-telehealth": "^0.1.1",
     "react-native-unimodules": "^0.14.6",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
