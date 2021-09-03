@@ -92,8 +92,8 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						// wordBreak="break-word"
+						// overflowWrap="break-word"
 					>
 						Sign in / Create Account
 					</Text>
@@ -268,11 +268,9 @@ const LocationHelper = () => {
 const UpcomingAppointments = () => {
 	const user = auth().currentUser;
 
-	const { profile, } = useAuth();
+	const { profile } = useAuth();
 
-	const { appointments = [] } = usePatientAppointments(
-		profile?.id
-	);
+	const { appointments = [] } = usePatientAppointments(profile?.id);
 	const navigation = useNavigation();
 	const appointment = appointments[0];
 
@@ -282,9 +280,9 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
-	console.log("Appointments all ")
-	console.log(JSON.stringify(appointments, null, 3))
-	
+	console.log("Appointments all ");
+	console.log(JSON.stringify(appointments, null, 3));
+
 	return (
 		<View>
 			{user && appointment && (
@@ -366,7 +364,6 @@ export default function Home() {
 							// navigation.navigate(HomeNavKey.Notification);
 
 							ToastAndroid.show("Under construction !", 3000);
-
 						}}
 					>
 						<IconContainer>
@@ -397,6 +394,20 @@ export default function Home() {
 					/>
 				</VStack>
 			</ScrollView>
+			<TouchableOpacity
+				onPress={() => {
+					navigation.navigate(HomeNavKey.RemoteConsultation);
+				}}
+				style={{
+					flex: 1,
+					flexDirection: "row",
+					justifyContent: "center",
+					marginBottom: 10,
+				}}
+				activeOpacity={0.8}
+			>
+				<Text>.</Text>
+			</TouchableOpacity>
 		</MainContainer>
 	);
 }

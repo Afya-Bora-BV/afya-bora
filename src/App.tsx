@@ -1,3 +1,4 @@
+// import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "./i18n";
 import React, { Suspense, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
@@ -116,8 +117,6 @@ function Main() {
 	const [language, setLanguage] = useAtom(languageAtom);
 	const { t, i18n } = useTranslation();
 
-
-
 	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
 		useAuth();
 
@@ -127,8 +126,8 @@ function Main() {
 
 	useEffect(() => {
 		i18n.changeLanguage(language);
-	}, [])
-	
+	}, []);
+
 	useEffect(() => {
 		// Remove splash screen if ready
 		ready && SplashScreen.hide();
@@ -136,7 +135,7 @@ function Main() {
 
 	console.log(ready, loadingProfile, loadingUser);
 
-	console.log("Current language  : ", language)
+	console.log("Current language  : ", language);
 	if (!ready) return null;
 
 	if (createAccountFirst)
@@ -147,26 +146,30 @@ function Main() {
 
 export default function App() {
 	return (
-		<SafeAreaProvider>
-			<Provider store={store}>
-				<AuthProvider>
-					<PersistGate loading={null} persistor={persistor}>
-						<NativeBaseProvider theme={theme}>
-							<NavigationContainer theme={AppTheme}>
-								<ToastProvider>
-									<QueryClientProvider client={queryClient}>
-										<JotaiProvider>
-											<Suspense fallback={null}>
-												<Main />
-											</Suspense>
-										</JotaiProvider>
-									</QueryClientProvider>
-								</ToastProvider>
-							</NavigationContainer>
-						</NativeBaseProvider>
-					</PersistGate>
-				</AuthProvider>
-			</Provider>
-		</SafeAreaProvider>
+		// <GestureHandlerRootView>
+			<SafeAreaProvider>
+				<Provider store={store}>
+					<AuthProvider>
+						<PersistGate loading={null} persistor={persistor}>
+							<NativeBaseProvider theme={theme}>
+								<NavigationContainer theme={AppTheme}>
+									<ToastProvider>
+										<QueryClientProvider
+											client={queryClient}
+										>
+											<JotaiProvider>
+												<Suspense fallback={null}>
+													<Main />
+												</Suspense>
+											</JotaiProvider>
+										</QueryClientProvider>
+									</ToastProvider>
+								</NavigationContainer>
+							</NativeBaseProvider>
+						</PersistGate>
+					</AuthProvider>
+				</Provider>
+			</SafeAreaProvider>
+		// </GestureHandlerRootView>
 	);
 }

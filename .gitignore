@@ -62,3 +62,12 @@ buck-out/
 
 # Ignore massive profile files in android
 *.hprof
+
+
+.env
+.env.example
+.env.local
+.env.development
+.env.test
+
+

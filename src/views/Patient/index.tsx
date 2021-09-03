@@ -21,6 +21,7 @@ import VisitHistory from "./VisitHistory";
 import UpcomingAppointments from "./UpcomingAppointments";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import RemoteConsultation from "./RemoteConsultation";
 
 const AuthStack = createStackNavigator();
 
@@ -56,6 +57,7 @@ export const HomeNavKey = {
 	EditHealthProfile: "EditHealthProfile",
 	UpcomingAppointments: "UpcomingAppointments",
 	AppointmentInfo: "AppointmentInfo",
+	RemoteConsultation: "RemoteConsultation"
 };
 
 export default function HomeView({ navigation, initialRouteName }: any) {
@@ -132,6 +134,11 @@ export default function HomeView({ navigation, initialRouteName }: any) {
 				name={HomeNavKey.EditAppointment}
 				component={EditAppointment}
 			/>
+			<NavStack.Screen
+				name={HomeNavKey.RemoteConsultation}
+				component={RemoteConsultation}
+			/>
+			
 		</NavStack.Navigator>
 	);
 }
