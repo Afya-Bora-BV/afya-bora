@@ -26,6 +26,8 @@ import RemoteConsultation from "./RemoteConsultation";
 // TODO : to organize the doctors routes and patient routes better
 import DoctorLogin from "../Doctor/LoginDoctor"
 import DoctorHome from "../Doctor/HomeDoctor"
+import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor"
+import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
 
 const AuthStack = createStackNavigator();
 
@@ -67,7 +69,9 @@ export const HomeNavKey = {
 
 export const DoctorRoutes = {
 	DoctorHome: "DoctorHome",
-	DoctorLogin: "DoctorLogin"
+	DoctorLogin: "DoctorLogin",
+	DoctorAppointmentInfo: "DoctorAppointmentInfo",
+	DoctorRemoteConsultation: "DoctorRemoteConsultation"
 }
 
 
@@ -158,6 +162,15 @@ export default function HomeView({ navigation, initialRouteName }: any) {
 				name={DoctorRoutes.DoctorHome}
 				component={DoctorHome}
 			/>
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorAppointmentInfo}
+				component={DoctorAppointmentInfo}
+			/>
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorRemoteConsultation}
+				component={DoctorRemoteConsultation}
+			/>
+
 
 		</NavStack.Navigator>
 	);

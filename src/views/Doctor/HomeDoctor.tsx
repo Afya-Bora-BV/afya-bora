@@ -30,6 +30,8 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import ArrowIcon_Next from "../../assets/icons/ArrowIcon_Next";
 import { useAuth } from "../../contexts/AuthContext";
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import { DoctorRoutes } from "../Patient";
 
 export const MONTH_NAMES = [
     "January",
@@ -48,7 +50,7 @@ export const MONTH_NAMES = [
 
 export default function DoctorHome() {
     const navigation = useNavigation();
-    const { profile } = useAuth()
+    const { profile, signOut } = useAuth()
 
     return (
         <MainContainer
@@ -62,11 +64,16 @@ export default function DoctorHome() {
                     <Pressable
                         onPress={() => {
                             // navigation.navigate(HomeNavKey.NotificationScreen);
-                            ToastAndroid.show("Under construction ", ToastAndroid.SHORT)
+                            ToastAndroid.show("signing out ", ToastAndroid.SHORT)
+                            signOut().then((res) => {
+                                console.log("Successfuly signed out")
+                            }).catch((e) => {
+                                console.log("Something went wrong in signing out")
+                            })
                         }}
                     >
                         <IconContainer>
-                            <BellIcon size={6} color="#561BB3" />
+                            <MaterialIcon name="logout" size={25} color="#561BB3" />
                         </IconContainer>
                     </Pressable>
                 </HStack>
@@ -77,7 +84,7 @@ export default function DoctorHome() {
                     <Text color="#B0B3C7" fontSize="md">
                         {moment().format("D MMMM YYYY")}
                     </Text>
-                    {profile?.type == "doctor" && (
+                    {profile?.type == "consultant" && (
                         <Heading fontSize="3xl">Hi, {profile?.name}</Heading>
                     )}
                 </VStack>
@@ -215,15 +222,11 @@ export const Appointments = () => {
                             <AppointmentAlertDoctor
                                 appointment={appointment}
                                 onPress={() => {
-                                    // navigation.navigate(
-                                    //     HomeNavKey.AppointmentInfoScreen,
-                                    //     {
-                                    //         appointment: appointment,
-                                    //     }
-                                    // );
-                                    console.log(
-                                        "Clicking appointment event"
-                                    );
+                                    DoctorRoutes.DoctorAppointmentInfo,
+                                    {
+                                        appointment: appointment,
+                                    }
+                                  
                                 }}
                             />
                         </View>
@@ -239,15 +242,11 @@ export const Appointments = () => {
                             <AppointmentAlertDoctor
                                 appointment={appointment}
                                 onPress={() => {
-                                    // navigation.navigate(
-                                    //     HomeNavKey.AppointmentInfoScreen,
-                                    //     {
-                                    //         appointment: appointment,
-                                    //     }
-                                    // );
-                                    console.log(
-                                        "Clicking appointment event"
-                                    );
+                                    DoctorRoutes.DoctorAppointmentInfo,
+                                    {
+                                        appointment: appointment,
+                                    }
+                                    
                                 }}
                             />
                         </View>
@@ -272,15 +271,16 @@ export const Appointments = () => {
                             <AppointmentAlertDoctor
                                 appointment={appointment}
                                 onPress={() => {
-                                    // navigation.navigate(
-                                    //     HomeNavKey.AppointmentInfoScreen,
-                                    //     {
-                                    //         appointment: appointment,
-                                    //     }
-                                    // );
                                     console.log(
-                                        "Clicking appointment event"
+                                        "Going to doctor appointment info"
                                     );
+                                    navigation.navigate(
+                                        DoctorRoutes.DoctorAppointmentInfo,
+                                        {
+                                            appointment: appointment,
+                                        }
+                                    );
+                                    
                                 }}
                             />
 
