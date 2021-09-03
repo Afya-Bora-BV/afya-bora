@@ -23,6 +23,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import RemoteConsultation from "./RemoteConsultation";
 
+// TODO : to organize the doctors routes and patient routes better
+import DoctorLogin from "../Doctor/LoginDoctor"
+import DoctorHome from "../Doctor/HomeDoctor"
+
 const AuthStack = createStackNavigator();
 
 function AuthRoutes() {
@@ -60,9 +64,14 @@ export const HomeNavKey = {
 	RemoteConsultation: "RemoteConsultation"
 };
 
+
+export const DoctorRoutes = {
+	DoctorHome: "DoctorHome",
+	DoctorLogin: "DoctorLogin"
+}
+
+
 export default function HomeView({ navigation, initialRouteName }: any) {
-	// console.log(initialRouteName);
-	// const profile = useSelector((store: RootState) => store.profile)
 	return (
 		<NavStack.Navigator
 			headerMode="none"
@@ -138,7 +147,18 @@ export default function HomeView({ navigation, initialRouteName }: any) {
 				name={HomeNavKey.RemoteConsultation}
 				component={RemoteConsultation}
 			/>
-			
+
+			{/* TODO: to keep doctor routes to a separate stack */}
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorLogin}
+				component={DoctorLogin}
+			/>
+
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorHome}
+				component={DoctorHome}
+			/>
+
 		</NavStack.Navigator>
 	);
 }

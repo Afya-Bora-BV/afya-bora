@@ -10,6 +10,7 @@ export interface Consultant{
     email:string
     clinicianType:string
 	specialities:string[]
+	type:"consultant"
 }
 
 export type Appointment = {

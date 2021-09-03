@@ -3,15 +3,17 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useEffect } from "react";
 import { Profile } from "../store/slices/profile";
+import { ToastAndroid } from "react-native";
+import { Consultant } from "../types";
 
 const AuthContext = React.createContext<{
 	currentUser: FirebaseAuthTypes.User | null;
 	signIn: (tel: string) => Promise<any>;
 	loadingUser: boolean;
-	profile: Profile | null;
+	profile: Profile | Consultant | null;
 	loadingProfile: boolean;
 	signOut: () => Promise<any>;
-	setProfile: (data:Profile) => void
+	setProfile: (data: Profile) => void
 }>({
 	currentUser: null,
 	signIn: () => Promise.resolve(),
@@ -32,7 +34,7 @@ export function AuthProvider({ children }) {
 		React.useState<FirebaseAuthTypes.User | null>(null);
 
 	const [loadingProfile, setLoadingProfile] = React.useState(true);
-	const [profile, setProfile] = React.useState<Profile | null>(null);
+	const [profile, setProfile] = React.useState<Profile | Consultant | null>(null);
 
 	function signIn(telephone: string) {
 		return auth().signInWithPhoneNumber(telephone);
@@ -44,9 +46,6 @@ export function AuthProvider({ children }) {
 
 	useEffect(() => {
 		const unsubscribe = auth().onAuthStateChanged((user) => {
-			// if (user) {
-			// setLoadingProfile(true);
-			// }
 			setCurrentUser(user);
 			setLoadingUser(false);
 		});
@@ -61,25 +60,51 @@ export function AuthProvider({ children }) {
 		let unsubscribe: any;
 		console.log("Change: ", currentUser);
 		if (currentUser) {
-			setLoadingProfile(true);
-			console.log("CurrentUser: ", currentUser);
 
-			unsubscribe = firestore()
-				.collection("patients")
-				.where("uid", "==", currentUser.uid)
-				.onSnapshot((snap) => {
-					console.log("waiting for snaps", snap.size);
+			const email = currentUser.email
+			const phone = currentUser.phoneNumber
+			// checking if its patient
+			if (phone) {
+				setLoadingProfile(true);
+				unsubscribe = firestore()
+					.collection("patients")
+					.where("uid", "==", currentUser.uid)
+					.onSnapshot((snap) => {
+						console.log("waiting for snaps", snap.size);
 
-					if (snap && snap.size > 0) {
-						const u1 = snap.docs[0];
+						if (snap && snap.size > 0) {
+							const u1 = snap.docs[0];
 
-						// @ts-ignore
-						setProfile({ ...u1.data(), id: u1.id });
-					} else {
-						setProfile(null);
-					}
-					setLoadingProfile(false);
-				});
+							// @ts-ignore
+							setProfile({ ...u1.data(), id: u1.id, type: "patient" });
+						} else {
+							setProfile(null);
+						}
+						setLoadingProfile(false);
+					});
+			} else if (email) {
+				setLoadingProfile(true);
+
+				unsubscribe = firestore()
+					.collection("consultants")
+					.where("uid", "==", currentUser.uid)
+					.onSnapshot((snap) => {
+						console.log("waiting for snaps", snap.size);
+
+						if (snap && snap.size > 0) {
+							const u1 = snap.docs[0];
+
+							// @ts-ignore
+							setProfile({ ...u1.data(), id: u1.id, type: "consultant" });
+						} else {
+							setProfile(null);
+						}
+						setLoadingProfile(false);
+					});
+			} else {
+				ToastAndroid.show("Unknown type of user, please contect adminstration.", ToastAndroid.LONG)
+			}
+
 		} else {
 			setLoadingProfile(false);
 		}

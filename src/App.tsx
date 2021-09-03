@@ -23,12 +23,11 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import HomeView, { HomeNavKey } from "./views/Patient";
+import HomeView, { DoctorRoutes, HomeNavKey } from "./views/Patient";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { Constants } from "react-native-unimodules";
 import { languageAtom } from "./store/atoms";
-import { Profile, setProfile } from "./store/slices/profile";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 console.log(Constants.systemFonts);
@@ -138,6 +137,12 @@ function Main() {
 	console.log("Current language  : ", language);
 	if (!ready) return null;
 
+	if (profile?.type === "consultant") {
+		return (
+			<HomeView initialRouteName={DoctorRoutes.DoctorHome} />
+		)
+	}
+	
 	if (createAccountFirst)
 		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
 
@@ -147,29 +152,29 @@ function Main() {
 export default function App() {
 	return (
 		// <GestureHandlerRootView>
-			<SafeAreaProvider>
-				<Provider store={store}>
-					<AuthProvider>
-						<PersistGate loading={null} persistor={persistor}>
-							<NativeBaseProvider theme={theme}>
-								<NavigationContainer theme={AppTheme}>
-									<ToastProvider>
-										<QueryClientProvider
-											client={queryClient}
-										>
-											<JotaiProvider>
-												<Suspense fallback={null}>
-													<Main />
-												</Suspense>
-											</JotaiProvider>
-										</QueryClientProvider>
-									</ToastProvider>
-								</NavigationContainer>
-							</NativeBaseProvider>
-						</PersistGate>
-					</AuthProvider>
-				</Provider>
-			</SafeAreaProvider>
+		<SafeAreaProvider>
+			<Provider store={store}>
+				<AuthProvider>
+					<PersistGate loading={null} persistor={persistor}>
+						<NativeBaseProvider theme={theme}>
+							<NavigationContainer theme={AppTheme}>
+								<ToastProvider>
+									<QueryClientProvider
+										client={queryClient}
+									>
+										<JotaiProvider>
+											<Suspense fallback={null}>
+												<Main />
+											</Suspense>
+										</JotaiProvider>
+									</QueryClientProvider>
+								</ToastProvider>
+							</NavigationContainer>
+						</NativeBaseProvider>
+					</PersistGate>
+				</AuthProvider>
+			</Provider>
+		</SafeAreaProvider>
 		// </GestureHandlerRootView>
 	);
 }

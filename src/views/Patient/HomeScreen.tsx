@@ -26,7 +26,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Spacer } from "../../components/Spacer";
 import { PrimaryButton } from "../../components/button";
 import AppointmentCustomizer from "../../components/appointment-customizer";
-import { HomeNavKey } from ".";
+import { DoctorRoutes, HomeNavKey } from ".";
 import {
 	Alert,
 	PermissionsAndroid,
@@ -43,6 +43,7 @@ import { useSelector, useStore } from "react-redux";
 import { RootState } from "../../store";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
+import FontisoIcon from 'react-native-vector-icons/Fontisto'
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -92,8 +93,8 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					<Text
 						fontWeight="800"
 						textAlign="center"
-						// wordBreak="break-word"
-						// overflowWrap="break-word"
+					// wordBreak="break-word"
+					// overflowWrap="break-word"
 					>
 						Sign in / Create Account
 					</Text>
@@ -370,6 +371,19 @@ export default function Home() {
 							<BellIcon size={6} color="#561BB3" />
 						</IconContainer>
 					</Pressable>
+
+					<Pressable
+						onPress={() => {
+							navigation.navigate(DoctorRoutes.DoctorLogin);
+
+							ToastAndroid.show("Under construction !", 3000);
+						}}
+					>
+						<IconContainer>
+							<FontisoIcon name="doctor" size={25} color="#561BB3" />
+						</IconContainer>
+					</Pressable>
+
 				</HStack>
 			)}
 		>
