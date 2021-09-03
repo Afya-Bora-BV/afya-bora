@@ -68,7 +68,7 @@ export function AppointmentAlert({
             {appointment?.status}
           </Text>
           <Text italic>
-            {appointment.timeRange === "online"
+            {appointment.type === "online"
               ? "Online"
               : "At Facility"}
           </Text>
