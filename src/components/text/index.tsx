@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { Text as NativeBaseText } from "native-base";
+import { ITextProps, Text as NativeBaseText } from "native-base";
 // import { presets } from "./text.presets";
 // import { TextProps } from "./text.props";
 import { translate } from "../../i18n";
@@ -16,7 +16,7 @@ type TextPresets = {
 	[key: string]: any;
 };
 
-interface TextProps extends TextProperties {
+interface TextProps extends ITextProps {
 	/**
 	 * Children components.
 	 */
