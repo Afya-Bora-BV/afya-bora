@@ -22,10 +22,11 @@ const RemoteConsultation = () => {
 	const { roomId } = route?.params;
 	const callRef = firestore().collection("meet").doc(roomId);
 
+	console.log("Room id : ", roomId)
 	return (
 		<TeleHealth
-			isPatient={false}
-			isClinician={true}
+			isPatient={true}
+			isClinician={false}
 			connectiongConfig={configuration}
 			callRef={callRef}
 		/>
