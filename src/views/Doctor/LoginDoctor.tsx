@@ -56,7 +56,6 @@ export default function LoginDoctor() {
     const Toast = useToast()
     const navigation = useNavigation();
 
-    const { profile, setProfile } = useAuth();
 
     const {
         control,
