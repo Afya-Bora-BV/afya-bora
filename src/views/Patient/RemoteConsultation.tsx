@@ -4,20 +4,23 @@ import TeleHealth from "react-native-telehealth";
 import firestore from "@react-native-firebase/firestore";
 import type { RTCPeerConnectionConfiguration } from "react-native-webrtc";
 import { TURN_URL, TURN_USERNAME, TURN_PASSWORD } from '@env';
+import { useRoute } from "@react-navigation/native";
 
 const configuration: RTCPeerConnectionConfiguration = {
 	iceServers: [
-	  { urls: ['stun:stun.l.google.com:19302'] },
-	  {
-		urls: [TURN_URL as string],
-		username: TURN_USERNAME,
-		credential: TURN_PASSWORD,
-	  },
+		{ urls: ['stun:stun.l.google.com:19302'] },
+		{
+			urls: [TURN_URL as string],
+			username: TURN_USERNAME,
+			credential: TURN_PASSWORD,
+		},
 	],
-  };
+};
 
 const RemoteConsultation = () => {
-	const callRef = firestore().collection("meet").doc("chatId2");
+	const route = useRoute<any>();
+	const { roomId } = route?.params;
+	const callRef = firestore().collection("meet").doc(roomId);
 
 	return (
 		<TeleHealth

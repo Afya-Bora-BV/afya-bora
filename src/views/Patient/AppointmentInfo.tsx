@@ -25,8 +25,9 @@ import firestore from '@react-native-firebase/firestore';
 import { FacilityListItem } from "../../components/facilities-list-item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { setDate, setTimeRange } from "../../store/slices/appointment";
+import appointment, { setDate, setTimeRange } from "../../store/slices/appointment";
 import { ConsultantListItem } from "../../components/consultant-list-item";
+import { colors } from "../../constants/colors";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -176,9 +177,9 @@ export default function AppointmentInfo() {
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<VStack mt={2} space={4}>
-					<FacilityListItem
+					{!(data?.type === "online") && <FacilityListItem
 						facility={data?.facility}
-					/>
+					/>}
 
 					{data?.consultant && <ConsultantListItem consultant={data?.consultant} />}
 				</VStack>
@@ -210,6 +211,17 @@ export default function AppointmentInfo() {
 						</Text>
 					</VStack>
 				</View>
+				<VStack>
+					{(data?.type === "online") && (data?.status === "accepted")
+						&& <Button bgColor={colors.primary}
+							onPress={() => {
+								navigation.navigate(HomeNavKey.RemoteConsultation, {
+									roomId: data?.roomId
+								})
+							}}
+						>Join</Button>
+					}
+				</VStack>
 			</VStack>
 		</MainContainer>
 	);
