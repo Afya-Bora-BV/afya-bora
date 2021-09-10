@@ -4,6 +4,7 @@ import { toggleStringFromList } from "../../utils";
 // import firestore from "@react-native-firebase/firestore"
 
 type DobString = string;
+
 export interface Profile {
 	id: string;
 	uid: string;

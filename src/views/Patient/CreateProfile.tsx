@@ -26,6 +26,7 @@ import {
 	Platform,
 	TouchableOpacity,
 	Alert,
+	ToastAndroid,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { PrimaryButton } from "../../components/button";
@@ -35,17 +36,9 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import axios, { AxiosResponse } from "axios";
-import { API_ROOT } from "../../api";
-import { useAtom } from "jotai";
-import profile, {
-	setProfile as updateReduxProfile,
-} from "../../store/slices/profile";
-
 import { HomeNavKey } from ".";
-import { updateAppointmentInProgressAtom } from "./PatientComplaint";
-import { useDispatch } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
+
 const regions: { name: string }[] = [
 	"Residency Location",
 	"Arusha",
@@ -105,15 +98,12 @@ interface ServerData {
 }
 
 const createPatientProfile = async (profile: Profile): Promise<any> => {
-	const uid = await auth().currentUser?.uid;
-	const createdProfile = await axios.post<AxiosResponse<ServerResponse>>(
-		`${API_ROOT}/v0/user/${uid}/profile/create/patient`,
-		profile
-	);
-
-	console.log(" created profile ");
-	console.log(createdProfile?.data);
-	return createdProfile?.data;
+	const { uid, phoneNumber } = await auth().currentUser!
+	await firestore().collection("patients").add({
+		createdAt: new Date(),
+		uid: uid,
+		...profile,
+	})
 };
 
 //yup form control attrib
@@ -137,7 +127,7 @@ export default function CreateProfileScreen() {
 
 	const Toast = useToast();
 
-	const { signOut,setProfile } = useAuth();
+	const { signOut, setProfile } = useAuth();
 
 	const {
 		control,
@@ -172,23 +162,12 @@ export default function CreateProfileScreen() {
 
 	const handleCreatingProfile = async (data: any) => {
 		try {
-			const uid = await auth().currentUser?.uid;
-			const createdProfile = await createPatientProfile({
+			await createPatientProfile({
 				...data,
 				phoneNumber,
 				type: "patient",
 			});
-			// TODO: to reconsider better way to store this server state
-			if (createdProfile.patientId) {
-				setProfile({
-					id: createdProfile.patientId,
-					...data,
-					type: "patient",
-				})
 
-			} else {
-				console.log("Error in creating profile data");
-			}
 		} catch (e) {
 			throw new Error("Error in creating profile");
 		}
@@ -208,19 +187,19 @@ export default function CreateProfileScreen() {
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`rolling back optimistic update with id `, error);
-				Toast.show({ title: "Error in creating profile" });
+				ToastAndroid.show( "Error in creating profile" ,ToastAndroid.SHORT);
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
-				Toast.show({ title: "Successfuly created prifle" });
-
+				ToastAndroid.show("Successfuly created prifle",ToastAndroid.SHORT);
+				
 				navigation.dispatch(
 					CommonActions.reset({
 						index: 0,
-						routes: [{ name: HomeNavKey.HomeScreen }],
-					})
-				);
+						routes: [{ name: HomeNavKey.HomeScreen }]
+					}));
+
 			},
 		}
 	);

@@ -28,7 +28,7 @@ export function useAuth() {
 	return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }) {
+export const AuthProvider: React.FC<{}> = ({ children }) => {
 	const [loadingUser, setLoadingUser] = React.useState(true);
 	const [currentUser, setCurrentUser] =
 		React.useState<FirebaseAuthTypes.User | null>(null);

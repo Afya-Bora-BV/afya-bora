@@ -26,7 +26,6 @@ import { HomeNavKey } from ".";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Facility } from "../../types";
-import { API_ROOT, getFacilities } from "../../api";
 import { useDispatch } from "react-redux";
 import { setFacility } from "../../store/slices/appointment";
 import functions from "@react-native-firebase/functions";
@@ -35,22 +34,7 @@ const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
-// export const markers = [
-// 	{
-// 		id: "SAdad",
-// 		name: "Demo Hospital",
-// 		geopoint: {
-// 			lat: -6.801707786030863,
-// 			lng: 39.27184542122396,
-// 		},
-// 		address: "Malik Rd, Dar es Salaam",
-// 		rating: {
-// 			stars: 4.5,
-// 			count: 934
-// 		}
-// 	},
 
-// ];
 
 /**
  * Region window to show the contents

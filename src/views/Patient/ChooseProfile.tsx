@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Center, Heading, HStack, Spinner, Text, VStack } from 'native-base'
-import auth from '@react-native-firebase/auth';
-import { API_ROOT } from "../../api";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import axios, { AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import firestore from '@react-native-firebase/firestore';
@@ -16,17 +15,13 @@ import { updateAppointmentInProgressAtom } from './PatientComplaint';
 import { useDispatch, useSelector } from 'react-redux';
 import appointment from '../../store/slices/appointment';
 import { RootState } from '../../store';
-import profile, { Profile, updateProfile as updateReduxProfile } from '../../store/slices/profile';
 import { useAuth } from '../../contexts/AuthContext';
+import { Profile } from '../../store/slices/profile';
 
-export const checkPatientProfiles = async () => {
+export const checkPatientProfiles = async (): Promise<Profile[]> => {
     const uid = await auth().currentUser?.uid;
-    console.log("Checking user profile data");
-    console.log(`${API_ROOT}/v0/user/${uid}/profile/patients`);
-    const profiles = await axios.get(
-        `${API_ROOT}/v0/user/${uid}/profile/patients`
-    );
-    return profiles.data.data;
+    const res = await firestore().collection("patients").where("uid", "==", uid).get()
+    return res.docs.map((doc) => ({ ...doc.data(), type: "patient", id: doc.id } as Profile))
 };
 
 
