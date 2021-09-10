@@ -38,6 +38,8 @@ import { useMutation } from "react-query";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
+import functions from "@react-native-firebase/functions";
+
 
 const regions: { name: string }[] = [
 	"Residency Location",
@@ -97,12 +99,14 @@ interface ServerData {
 	patientId: string;
 }
 
+
+
 const createPatientProfile = async (profile: Profile): Promise<any> => {
 	const { uid, phoneNumber } = await auth().currentUser!
-	await firestore().collection("patients").add({
-		createdAt: new Date(),
+	await functions().httpsCallable("createNewProfile")({
 		uid: uid,
 		...profile,
+
 	})
 };
 
@@ -187,13 +191,13 @@ export default function CreateProfileScreen() {
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`rolling back optimistic update with id `, error);
-				ToastAndroid.show( "Error in creating profile" ,ToastAndroid.SHORT);
+				ToastAndroid.show("Error in creating profile", ToastAndroid.SHORT);
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
-				ToastAndroid.show("Successfuly created prifle",ToastAndroid.SHORT);
-				
+				ToastAndroid.show("Successfuly created prifle", ToastAndroid.SHORT);
+
 				navigation.dispatch(
 					CommonActions.reset({
 						index: 0,
