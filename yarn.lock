@@ -2299,6 +2299,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-12.5.0.tgz#e9cead308bf87ed115666d564c7e2c413a9c730e"
   integrity sha512-aAy5bGMoPvoUYk+AQZrzqmsRi7Qe8FIEscon2yhgyeRXvZ4YwXPeOyc60EHmVAEGLDEEmyWG2owLqryVrDTmDw==
 
+"@react-native-picker/picker@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.1.0.tgz#1ef22d4e9b2e555d44b43453f51a46d8631f3182"
+  integrity sha512-iJ/QaDrBMBaW6cFuQyR3DXzcn2h7c5O7mGgmNLCBQHTTtLNBZR+Sxogy6YleFPeToNdysG5mTTkXqBmlWHMQqg==
+
 "@react-navigation/bottom-tabs@^5.11.11":
   version "5.11.11"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.11.11.tgz#ad4dfee4316522d8c05b5a8ad460f597bddb9e3c"
@@ -9441,6 +9446,11 @@ react-native-gesture-handler@~1.10.2:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-incall-manager@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-incall-manager/-/react-native-incall-manager-3.3.0.tgz#69f4ada83b5a8db464b1cfae368dadbae4a949eb"
+  integrity sha512-SvomgHUoKqVso/BGv02b4ndBqenlqYqW3pptZz5qHwteidKFNWI6ny+PPw5X55MdK0lyTbzBoiT3DwS06Qu0lg==
+
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -9524,10 +9534,10 @@ react-native-swipe-gestures@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
 
-react-native-telehealth@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-telehealth/-/react-native-telehealth-0.1.1.tgz#28f78dfa233e99d6dfb7a7af4429815ff23c7310"
-  integrity sha512-vLew1T+kIyqPKf3uTgk3n0to08exTlsm2wvukET7gbIFWem73xgjyuXfTZoHs94zj4NvCjM0i6ecxO6/Ph0G7g==
+react-native-telehealth@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-telehealth/-/react-native-telehealth-0.2.0.tgz#d7a14db451350fa758a8b4132192fccb4e1de8ad"
+  integrity sha512-cPx+FxcpYL5HDxLF01Dz+0amyIimrluKILp3Q701YR/BJUAREkOwE7ac0Y4Da7wois0Z7P3qV1xh9hGBcfRxKg==
 
 react-native-unimodules@^0.14.6:
   version "0.14.6"
