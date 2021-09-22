@@ -68,12 +68,12 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 				setLoadingProfile(true);
 				unsubscribe = firestore()
 					.collection("patients")
-					.where("uid", "==", currentUser.uid)
+					.doc(currentUser.uid)
 					.onSnapshot((snap) => {
-						console.log("waiting for snaps", snap.size);
+						console.log("waiting for snaps", snap.exists);
 
-						if (snap && snap.size > 0) {
-							const u1 = snap.docs[0];
+						if (snap && snap.exists) {
+							const u1 = snap;
 
 							// @ts-ignore
 							setProfile({ ...u1.data(), id: u1.id, type: "patient" });
