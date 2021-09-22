@@ -23,6 +23,7 @@
     "@react-native-firebase/auth": "^12.1.0",
     "@react-native-firebase/firestore": "^12.1.0",
     "@react-native-firebase/functions": "^12.5.0",
+    "@react-native-firebase/messaging": "^12.8.0",
     "@react-native-picker/picker": "^2.1.0",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",

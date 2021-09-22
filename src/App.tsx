@@ -30,6 +30,7 @@ import { Constants } from "react-native-unimodules";
 import { languageAtom } from "./store/atoms";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useTranslation } from "react-i18next";
+import { updateDeviceMessagingToken } from "./utils";
 console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
@@ -126,6 +127,12 @@ function Main() {
 	useEffect(() => {
 		i18n.changeLanguage(language);
 	}, []);
+
+	useEffect(() => {
+		if (currentUser) {
+			updateDeviceMessagingToken(currentUser.uid)
+		}
+	}, [currentUser])
 
 	useEffect(() => {
 		// Remove splash screen if ready

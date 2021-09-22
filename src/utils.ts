@@ -1,12 +1,15 @@
+import messaging from "@react-native-firebase/messaging";
+import firestore from "@react-native-firebase/firestore";
+import _ from "lodash";
+
 export function toggleStringFromList(text: string, list: string[]): string[] {
-    if (list.includes(text)) {
-        return list.filter((t) => t !== text)
-    }
-    return [...list, text]
+	if (list.includes(text)) {
+		return list.filter((t) => t !== text);
+	}
+	return [...list, text];
 }
 
-
-const MONTH_NAMES = [
+export const MONTH_NAMES = [
 	"January",
 	"February",
 	"March",
@@ -30,4 +33,58 @@ export function friendlyFormatDate(timeStamp: Date | string | number) {
 	const monthName = MONTH_NAMES[d.getMonth()];
 
 	return `${date} ${monthName}`;
+}
+
+/**
+ * Update the current users messaging token that is stored in firestore.
+ *
+ * @export
+ * @param {string} userId
+ * @return {*} 
+ */
+export function updateDeviceMessagingToken(userId: string) {
+	messaging().onTokenRefresh;
+	return messaging()
+		.getToken()
+		.then(async (res) => {
+			console.log(res, userId);
+			const serverTimestamp = firestore.FieldValue.serverTimestamp();
+			const dateTimestamp = new Date().getTime();
+
+			const docRef = firestore()
+				.collection("messaging-device-keys")
+				.doc(userId);
+
+			const document = await docRef.get();
+
+			if (document.exists) {
+				const { tokens } = document.data();
+
+				// check that the current token doesnt already exist
+				const exists = _.values(tokens).includes(res);
+
+				if (exists) {
+					return;
+				}
+				const tokenPath = `tokens.${dateTimestamp}`;
+
+				return docRef.update({
+					[tokenPath]: res,
+				});
+			}
+			return firestore()
+				.collection("messaging-device-keys")
+				.doc(userId)
+				.set({
+					uid: userId,
+					// [dateTimestamp]: res,
+					tokens: {
+						[dateTimestamp]: res,
+					},
+					updatedAt: serverTimestamp,
+				});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 }

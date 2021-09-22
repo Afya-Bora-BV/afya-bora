@@ -2299,6 +2299,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-12.5.0.tgz#e9cead308bf87ed115666d564c7e2c413a9c730e"
   integrity sha512-aAy5bGMoPvoUYk+AQZrzqmsRi7Qe8FIEscon2yhgyeRXvZ4YwXPeOyc60EHmVAEGLDEEmyWG2owLqryVrDTmDw==
 
+"@react-native-firebase/messaging@^12.8.0":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-12.8.0.tgz#f601541be15e67678d6e44ff0a4f3fd9183142bb"
+  integrity sha512-Lc6qxhSP7w7XHSPy9CKbIuRVqCk//G3dbMFr9Jq5jmRgbT4pr6tlsZVjMVU1Yx5OBJm8beB3RPWKjZhAsRxy7Q==
+
 "@react-native-picker/picker@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.1.0.tgz#1ef22d4e9b2e555d44b43453f51a46d8631f3182"
