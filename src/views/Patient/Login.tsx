@@ -75,14 +75,20 @@ const SendConfirmationCode = ({
 	);
 
 	const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
-		onError: (error, variables, context) => {
+		onError: (error: FirebaseAuthTypes.PhoneAuthError, variables, context) => {
 			// An error happened!
 			console.log(`rolling back optimistic update with id `, error);
+			if (error.code === "auth/invalid-phone-number") {
+				ToastAndroid.show(`Invalid phone number format`, ToastAndroid.SHORT)
+				return
+			}
+			ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT)
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			// updating phoneNumber on success
 			console.log("Here it is");
+			ToastAndroid.show(`Verification code sent to ${getValues("phoneNumber")}`, ToastAndroid.SHORT)
 			console.log(data);
 		},
 	});
@@ -102,7 +108,7 @@ const SendConfirmationCode = ({
 						<ControllerFormInput
 							name="phoneNumber"
 							control={control}
-							label="Enter Phone number"
+							label="Phone number (eg ++255788000000)"
 							keyboardType="phone-pad"
 						/>
 					</VStack>
@@ -111,12 +117,14 @@ const SendConfirmationCode = ({
 						bottom={-20}
 						left={0}
 						right={0}
-						width="100%"
 						paddingX={10}
+						justifyContent="center"
+						alignItems="center"
 					>
 						<Button
 							onPress={onLogin}
 							borderRadius={20}
+							w={260}
 							isLoading={isLoading}
 							disabled={isLoading}
 							style={{ backgroundColor: colors.primary }}
@@ -182,14 +190,12 @@ const VerifyCode = ({
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`Error in verifying code `, error);
-				Toast.show({
-					title: "Invalid verification code",
-				});
+				ToastAndroid.show(`Invalid verification code `, ToastAndroid.SHORT)
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("Successfuly verified code ");
-				navigation.navigate(HomeNavKey.ChooseProfile);
+				ToastAndroid.show(`Successfully logged in  `, ToastAndroid.SHORT)
 			},
 		}
 	);
