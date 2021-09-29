@@ -64,25 +64,7 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 			const email = currentUser.email
 			const phone = currentUser.phoneNumber
 			// checking if its patient
-			if (phone) {
-				setLoadingProfile(true);
-				unsubscribe = firestore()
-					.collection("patients")
-					.doc(currentUser.uid)
-					.onSnapshot((snap) => {
-						console.log("waiting for snaps", snap.exists);
-
-						if (snap && snap.exists) {
-							const u1 = snap;
-
-							// @ts-ignore
-							setProfile({ ...u1.data(), id: u1.id, type: "patient" });
-						} else {
-							setProfile(null);
-						}
-						setLoadingProfile(false);
-					});
-			} else if (email) {
+			if (email) {
 				setLoadingProfile(true);
 
 				unsubscribe = firestore()
@@ -101,6 +83,26 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 						}
 						setLoadingProfile(false);
 					});
+			}
+			else if (phone) {
+				setLoadingProfile(true);
+				unsubscribe = firestore()
+					.collection("patients")
+					.doc(currentUser.uid)
+					.onSnapshot((snap) => {
+						console.log("waiting for snaps", snap.exists);
+
+						if (snap && snap.exists) {
+							const u1 = snap;
+
+							// @ts-ignore
+							setProfile({ ...u1.data(), id: u1.id, type: "patient" });
+						} else {
+							setProfile(null);
+						}
+						setLoadingProfile(false);
+					});
+
 			} else {
 				ToastAndroid.show("Unknown type of user, please contect adminstration.", ToastAndroid.LONG)
 			}

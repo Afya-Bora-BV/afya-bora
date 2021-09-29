@@ -30,6 +30,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useAuth } from "../../contexts/AuthContext";
 import { Consultant } from "../../types";
+import { HomeNavKey } from "../Patient";
 
 // let render = 0
 
@@ -84,6 +85,7 @@ export default function LoginDoctor() {
         },
         onSuccess: (data: Consultant | undefined, variables, context) => {
             console.log("Logged in successfully ", data)
+            ToastAndroid.show(`Successfuly logged in `, ToastAndroid.SHORT)
         },
 
     })
@@ -164,7 +166,7 @@ export default function LoginDoctor() {
 
 
                         onPress={() => {
-                            // navigation.navigate(_MainAppNavKey.LoginScreen);
+                            navigation.navigate(HomeNavKey.Login);
                         }}
                     >
                         <Text bold color={colors.primary}>

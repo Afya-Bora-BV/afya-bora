@@ -26,7 +26,7 @@ import _ from "lodash";
 
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import CodeInput from "../../components/forms/codeInput";
-import { HomeNavKey } from ".";
+import { DoctorRoutes, HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
 
 // TODO : logic to be moved somewhere on refactor
@@ -108,9 +108,10 @@ const SendConfirmationCode = ({
 						<ControllerFormInput
 							name="phoneNumber"
 							control={control}
-							label="Phone number (eg ++255788000000)"
+							label="Phone number"
 							keyboardType="phone-pad"
 						/>
+						<Text color="grey">Format +255xxxxxxxx</Text>
 					</VStack>
 					<Box
 						position="absolute"
@@ -146,9 +147,7 @@ const SendConfirmationCode = ({
 						// using Platform api in RN
 						// cursor="pointer"
 						onPress={() => {
-							Toast.show({
-								title: "Work in progress",
-							});
+							navigation.navigate(DoctorRoutes.DoctorLogin);
 						}}
 					>
 						<Text bold color={colors.primary}>
