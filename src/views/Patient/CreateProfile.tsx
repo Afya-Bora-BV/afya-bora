@@ -196,7 +196,7 @@ export default function CreateProfileScreen() {
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
-				ToastAndroid.show("Successfuly created prifle", ToastAndroid.SHORT);
+				ToastAndroid.show("successfully created profile", ToastAndroid.SHORT);
 
 				navigation.dispatch(
 					CommonActions.reset({

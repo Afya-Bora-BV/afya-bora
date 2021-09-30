@@ -23,7 +23,7 @@ import AltContainer from "../../components/containers/AltContainer";
 import { ControllerFormInput } from "../../components/forms/inputs";
 import { useMutation } from "react-query";
 import _ from "lodash";
-
+import PhoneInput from "react-native-phone-number-input";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import CodeInput from "../../components/forms/codeInput";
 import { DoctorRoutes, HomeNavKey } from ".";
@@ -60,13 +60,21 @@ const SendConfirmationCode = ({
 	} = useForm<FormPhoneInputs>({
 		// resolver: yupResolver(formPhoneSchema),
 	});
+	const [value, setValue] = useState("");
+	const [formattedValue, setFormattedValue] = useState("");
+	const phoneInput = React.useRef<PhoneInput>(null);
 
 	const onLogin = handleSubmit(
 		// When successfull
 		async ({ phoneNumber }) => {
 			// do somthign with phone #
-			console.log("Usee phone number ", phoneNumber);
-			await login(phoneNumber);
+			if (!Boolean(formattedValue)) {
+				ToastAndroid.show(`Phone number can not be empty`, ToastAndroid.SHORT)
+				return
+			}
+			console.log("Usee phone number ", formattedValue);
+			await login(formattedValue);
+
 		},
 		// when invalid
 		(err: any) => {
@@ -94,7 +102,7 @@ const SendConfirmationCode = ({
 	});
 
 	return (
-		<AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
+		<AltContainer title="Sign In" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">
 				<Box
 					bg="white"
@@ -105,13 +113,22 @@ const SendConfirmationCode = ({
 					marginX={5}
 				>
 					<VStack space={5} marginBottom={15}>
-						<ControllerFormInput
-							name="phoneNumber"
-							control={control}
-							label="Phone number"
-							keyboardType="phone-pad"
+						<PhoneInput
+							ref={phoneInput}
+							defaultValue={value}
+							defaultCode="TZ"
+							layout="first"
+							onChangeText={(text) => {
+								setValue(text);
+							}}
+							onChangeFormattedText={(text) => {
+								setFormattedValue(text);
+							}}
+							// withDarkTheme
+							withShadow
+							autoFocus
 						/>
-						<Text color="grey">Format +255xxxxxxxx</Text>
+
 					</VStack>
 					<Box
 						position="absolute"
@@ -132,7 +149,7 @@ const SendConfirmationCode = ({
 							_text={{ color: "white" }}
 							shadow={5}
 						>
-							Login
+							Continue
 						</Button>
 					</Box>
 				</Box>
