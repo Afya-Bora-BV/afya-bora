@@ -261,7 +261,7 @@ export default function CreateProfileScreen() {
 									}}
 								>
 									<Stack>
-										<Text>First & Last Name</Text>
+										<Text>Full Name</Text>
 
 										<Controller
 											control={control}

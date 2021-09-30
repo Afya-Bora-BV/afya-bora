@@ -11,7 +11,7 @@ import {
 	useToast,
 } from "native-base";
 import { Text } from "../../components/text";
-import { Dimensions, ToastAndroid } from "react-native";
+import { Alert, Dimensions, ToastAndroid } from "react-native";
 import { useAtom } from "jotai";
 import i18n from "i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -102,6 +102,7 @@ export default function ProfileMain() {
 	const navigation = useNavigation();
 
 	const [language, setLanguage] = useAtom(languageAtom);
+	const [isLoading, setIsLoading] = React.useState(false)
 
 	const { height } = Dimensions.get("screen");
 
@@ -117,25 +118,41 @@ export default function ProfileMain() {
 	};
 
 	const signOut = () => {
-		auth()
-			.signOut()
-			.then((res) => {
-				ToastAndroid.show("Signed out successuly.", ToastAndroid.SHORT);
+		Alert.alert(
+			"Confirm",
+			"Are you sure you want to sign out. By signing out you wont be able to book or access your appointments",
+			[
+				{ text: "Cancel" },
+				{
+					text: "Confirm",
+					onPress: () => {
+						setIsLoading(true)
+						auth()
+							.signOut()
+							.then((res) => {
+								ToastAndroid.show("Signed out successuly.", ToastAndroid.SHORT);
+								setIsLoading(false)
+								navigation.dispatch(
+									CommonActions.reset({
+										index: 0,
+										routes: [{ name: HomeNavKey.HomeScreen }],
+									})
+								);
+							})
+							.catch((err) => {
+								console.log(err);
+								ToastAndroid.show(
+									"Something went wrong in signing out",
+									ToastAndroid.SHORT
+								);
+								setIsLoading(false)
+							});
+					}
+				},
+			]
+		);
 
-				navigation.dispatch(
-					CommonActions.reset({
-						index: 0,
-						routes: [{ name: HomeNavKey.HomeScreen }],
-					})
-				);
-			})
-			.catch((err) => {
-				console.log(err);
-				ToastAndroid.show(
-					"Something went wrong in signing out",
-					ToastAndroid.SHORT
-				);
-			});
+
 	};
 
 	const toggleLanguage = () => {
@@ -154,26 +171,7 @@ export default function ProfileMain() {
 			);
 	};
 
-	const { isLoading, mutate: logout } = useMutation(signOutAndClearStore, {
-		onError: (error, variables, context) => {
-			// An error happened!
-			console.log(`error on signing out  `, error);
-			ToastAndroid.show(
-				"Something went wrong in signing out",
-				ToastAndroid.SHORT
-			);
-		},
-		onSuccess: (data, variables, context) => {
-			// Boom baby!
-			console.log("Signned out successuly ");
-			navigation.dispatch(
-				CommonActions.reset({
-					index: 0,
-					routes: [{ name: HomeNavKey.HomeScreen }],
-				})
-			);
-		},
-	});
+
 
 	// console.log("Language : ",langu)
 	return (
