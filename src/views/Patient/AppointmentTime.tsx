@@ -40,6 +40,8 @@ import { setDate, setTimeRange } from "../../store/slices/appointment";
 import { TimeRange } from "../../types";
 import { Text } from "../../components/text";
 import { languageAtom } from "../../store/atoms";
+import { IScrollViewProps } from "native-base/lib/typescript/components/basic/ScrollView/types";
+
 
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
@@ -90,7 +92,7 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 	onChangeDate,
 }) => {
 	// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
-	const daysListRef = useRef(null);
+	const daysListRef = useRef<any>(null);
 
 	return (
 		<View>
@@ -122,6 +124,8 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 					{_.times(getDaysInMonth(date), (n) => {
 						const d = new Date(date);
 						d.setDate(n + 1);
+						const isBefore = moment(d).isBefore(new Date(),"days")
+						if (isBefore) return null
 						return (
 							<CalendarDay
 								onPress={() => onChangeDate(d)}
@@ -194,7 +198,7 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = ({
 }) => {
 	const [language, setLanguage] = useAtom(languageAtom);
 
-	const slots=language==="en"?timeSlots:timeSlotsSwahili
+	const slots = language === "en" ? timeSlots : timeSlotsSwahili
 	return (
 		<VStack space={5}>
 			<Text fontSize="2xl" bold
@@ -304,7 +308,7 @@ const MonthDropDown: React.FC<MonthDropDownProps> = ({
 }) => {
 	return (
 		<Menu
-			// closeOnSelect={true}
+			closeOnSelect={true}
 			trigger={(triggerProps) => {
 				console.log("here");
 				console.log(_.keys(triggerProps));
@@ -324,21 +328,23 @@ const MonthDropDown: React.FC<MonthDropDownProps> = ({
 			}}
 		>
 			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
-			{listOfNextNMonths(3).map((date, i, arr) => (
-				<TouchableOpacity
-					style={{
-						padding: 10,
-						paddingHorizontal: 15,
-						borderBottomWidth: i === arr.length - 1 ? 0 : 1,
-						borderBottomColor: "#ccc",
-					}}
-					onPress={() => onChangeDate(date)}
-				>
-					{/* <Menu.Item key={String(date)}> */}
-					<Text>{moment(date).format("MMMM YYYY")}</Text>
-					{/* </Menu.Item> */}
-				</TouchableOpacity>
-			))}
+			{listOfNextNMonths(12).map((date, i, arr) => {
+				return (
+					<TouchableOpacity
+						style={{
+							padding: 10,
+							paddingHorizontal: 15,
+							borderBottomWidth: i === arr.length - 1 ? 0 : 1,
+							borderBottomColor: "#ccc",
+						}}
+						onPress={() => onChangeDate(date)}
+					>
+						{/* <Menu.Item key={String(date)}> */}
+						<Text>{moment(date).format("MMMM YYYY")}</Text>
+						{/* </Menu.Item> */}
+					</TouchableOpacity>
+				)
+			})}
 		</Menu>
 	);
 };

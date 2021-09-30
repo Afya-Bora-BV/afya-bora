@@ -34,16 +34,6 @@ import { useAuth } from "../../contexts/AuthContext";
 // let render = 0
 const { height } = Dimensions.get("screen");
 
-/**
- * Form for Phone number only
- * ----------------------------
- */
-const formPhoneSchema = yup.object().shape({
-	phoneNumber: yup.string().required(),
-});
-interface FormPhoneInputs {
-	phoneNumber: string;
-}
 
 const SendConfirmationCode = ({
 	signInWithPhoneNumber,
@@ -51,36 +41,22 @@ const SendConfirmationCode = ({
 	signInWithPhoneNumber: (phoneNumber: string) => Promise<void>;
 }) => {
 	const navigation = useNavigation();
-	const Toast = useToast();
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-		getValues,
-	} = useForm<FormPhoneInputs>({
-		// resolver: yupResolver(formPhoneSchema),
-	});
+
 	const [value, setValue] = useState("");
 	const [formattedValue, setFormattedValue] = useState("");
 	const phoneInput = React.useRef<PhoneInput>(null);
 
-	const onLogin = handleSubmit(
-		// When successfull
-		async ({ phoneNumber }) => {
-			// do somthign with phone #
-			if (!Boolean(formattedValue)) {
-				ToastAndroid.show(`Phone number can not be empty`, ToastAndroid.SHORT)
-				return
-			}
-			console.log("Usee phone number ", formattedValue);
-			await login(formattedValue);
-
-		},
-		// when invalid
-		(err: any) => {
-			console.log("Form is invalid");
+	const onLogin = () => {
+		// do somthign with phone #
+		if (!Boolean(formattedValue)) {
+			ToastAndroid.show(`Phone number can not be empty`, ToastAndroid.SHORT)
+			return
 		}
-	);
+		console.log("Usee phone number ", formattedValue);
+		login(formattedValue);
+
+
+	}
 
 	const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
 		onError: (error: FirebaseAuthTypes.PhoneAuthError, variables, context) => {
@@ -96,7 +72,7 @@ const SendConfirmationCode = ({
 			// Boom baby!
 			// updating phoneNumber on success
 			console.log("Here it is");
-			ToastAndroid.show(`Verification code sent to ${getValues("phoneNumber")}`, ToastAndroid.SHORT)
+			ToastAndroid.show(`Verification code sent to ${formattedValue}`, ToastAndroid.SHORT)
 			console.log(data);
 		},
 	});
@@ -211,7 +187,7 @@ const VerifyCode = ({
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("Successfuly verified code ");
-				ToastAndroid.show(`Successfully logged in  `, ToastAndroid.SHORT)
+				ToastAndroid.show(`Successfully signed in  `, ToastAndroid.SHORT)
 			},
 		}
 	);
