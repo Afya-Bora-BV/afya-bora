@@ -84,6 +84,7 @@ export function PatientComplaint() {
 
 	const submit = () => {
 		console.log(currentUser, profile);
+		setIsLoading(true)
 		if (currentUser !== null || !profile) {
 			const fid = appointment.facility?.id;
 
@@ -125,13 +126,13 @@ export function PatientComplaint() {
 			return ToastAndroid.show("Please wait while loading ...", 3000);
 		}
 		Alert.alert(
-			"Submit Request",
+			"Confirm Request",
 			"Please confirm that you have entered correct information.",
 			[
 				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
-					onPress: (setIsLoading(true), submit),
+					onPress: (submit),
 				},
 			]
 		);

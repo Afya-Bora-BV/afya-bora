@@ -364,7 +364,7 @@ export default function Home() {
 						onPress={() => {
 							// navigation.navigate(HomeNavKey.Notification);
 
-							ToastAndroid.show("Under construction !", 3000);
+							ToastAndroid.show("Coming soon!", 3000);
 						}}
 					>
 						<IconContainer>
@@ -375,8 +375,6 @@ export default function Home() {
 					<Pressable
 						onPress={() => {
 							navigation.navigate(DoctorRoutes.DoctorLogin);
-
-							ToastAndroid.show("Under construction !", 3000);
 						}}
 					>
 						<IconContainer>

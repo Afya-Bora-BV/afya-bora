@@ -31,7 +31,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { PrimaryButton } from "../../components/button";
 import moment from "moment";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import firestore from "@react-native-firebase/firestore";
 import { useMutation } from "react-query";
@@ -229,7 +229,7 @@ export default function CreateProfileScreen() {
 						paddingY={20}
 					>
 						<Text color="white" fontSize={24}>
-							Complete Profile
+							Complete Profile 
 						</Text>
 					</View>
 					{/* </Stack> */}
@@ -244,7 +244,7 @@ export default function CreateProfileScreen() {
 									activeOpacity={0.5}
 									onPress={confirmSignout}
 								>
-									<Icon name="exit-run" size={24} />
+									<Icon name="exit-outline" size={24} />
 									<Text textAlign="left">Sign Out </Text>
 								</TouchableOpacity>
 							</Box>
