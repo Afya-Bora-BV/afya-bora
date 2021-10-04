@@ -211,7 +211,7 @@ const VerifyCode = ({
 			>
 				<VStack space={5} marginBottom={15} alignContent="center">
 					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
-						Verification Code Sent
+						Verification Code
 					</Text>
 					<CodeInput value={code} onChangeCode={set} cellCount={4} />
 				</VStack>
@@ -252,7 +252,6 @@ const VerifyCode = ({
 
 export default function Login() {
 	const navigation = useNavigation();
-	const Toast = useToast();
 	const [confirm, setConfirm] =
 		useState<FirebaseAuthTypes.ConfirmationResult>();
 
@@ -264,9 +263,6 @@ export default function Login() {
 		// await checkUserProfile(phoneNumber)
 		const confirmation = await signIn(phoneNumber);
 		setConfirm(confirmation);
-		Toast.show({
-			title: `Verification code sent to ${phoneNumber}`,
-		});
 	}
 
 	console.log("\n\nProfile:");
