@@ -77,6 +77,7 @@ type AppointmentType = {
 	value: ConsultantionType;
 	onPress: (val: ConsultantionType) => void;
 	isActive: boolean;
+	text:string
 };
 
 const AppointmentTypeButton: React.FC<AppointmentType> = ({
@@ -84,6 +85,7 @@ const AppointmentTypeButton: React.FC<AppointmentType> = ({
 	value,
 	onPress,
 	isActive,
+	text
 }) => {
 	return (
 		<TouchableOpacity
@@ -105,6 +107,7 @@ const AppointmentTypeButton: React.FC<AppointmentType> = ({
 				style={{
 					color: isActive ? "white" : "grey",
 				}}
+				tx={text}
 			>
 				{title}
 			</Text>
@@ -131,6 +134,7 @@ const AppointmentCustomizer: React.FC = () => {
 				<HStack space={2}>
 					<AppointmentTypeButton
 						title={"At Facility"}
+						text="common.atFacility"
 						value={"offline"}
 						isActive={type === "offline"}
 						onPress={(v) => dispatch(setAppointmentType(v))}
@@ -138,6 +142,7 @@ const AppointmentCustomizer: React.FC = () => {
 					<AppointmentTypeButton
 						title={"Online (Virtual)"}
 						value={"online"}
+						text="common.online"
 						isActive={type === "online"}
 						onPress={(v) => dispatch(setAppointmentType(v))}
 					/>

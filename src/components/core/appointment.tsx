@@ -9,7 +9,6 @@ import {
   VStack,
   View,
   Heading,
-  Text,
 } from "native-base";
 import { TextPropTypes, TouchableOpacity } from "react-native";
 import moment from "moment";
@@ -18,6 +17,7 @@ import { useNavigation } from "@react-navigation/core";
 import { HomeNavKey } from "../../views/Patient";
 import { colors } from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Text } from "../text";
 
 
 export function AppointmentAlert({
@@ -67,7 +67,13 @@ export function AppointmentAlert({
           >
             {appointment?.status}
           </Text>
-          <Text italic>
+          <Text italic
+            tx={
+              appointment.type === "online"
+                ? "common.online"
+                : "common.atFacility"
+            }
+          >
             {appointment.type === "online"
               ? "Online"
               : "At Facility"}
@@ -77,13 +83,32 @@ export function AppointmentAlert({
           <TouchableOpacity
             onPress={() => openAppointment(appointment)}
           >
+            <HStack>
+              <Text
+                color={colors.primary}
+                fontSize="lg"
+                tx="common.join"
+              >
+                Join
+              </Text>
+              <Text
+                color={colors.primary}
+                fontSize="lg"
+              // tx="common.join"
+              >
+                /
+              </Text>
 
-            <Text
-              color={colors.primary}
-              fontSize="lg"
-            >
-              Join/Edit
-            </Text>
+              <Text
+                color={colors.primary}
+                fontSize="lg"
+                tx="common.edit"
+              >
+                Edit
+              </Text>
+
+            </HStack>
+
           </TouchableOpacity>
 
         </View>
