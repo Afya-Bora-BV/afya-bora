@@ -162,7 +162,7 @@ export default function CreateProfileScreen() {
 	const onSubmit = (data: CompleteProfileInputs) => {
 		console.log("Form data : ");
 		console.log(data);
-		// completProfile({ ...data, phoneNumber, type: "patient" });
+		completProfile({ ...data, phoneNumber, type: "patient" });
 	};
 
 	const handleCreatingProfile = async (data: any) => {
