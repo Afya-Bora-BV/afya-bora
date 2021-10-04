@@ -136,8 +136,8 @@ android {
         applicationId "io.afyabora"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "0.01"
+        versionCode 4
+        versionName "0.02"
         multiDexEnabled true 
     }
     splits {

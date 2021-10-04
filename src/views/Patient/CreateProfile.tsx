@@ -39,7 +39,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
 import functions from "@react-native-firebase/functions";
-
+import { Picker } from '@react-native-picker/picker';
 
 const regions: { name: string }[] = [
 	"Residency Location",
@@ -76,6 +76,7 @@ const regions: { name: string }[] = [
 ].map((region) => ({ name: region }));
 
 const bloodGroups: { name: string }[] = [
+	"Blooad Group",
 	"A+",
 	"B+",
 	"AB+",
@@ -161,7 +162,7 @@ export default function CreateProfileScreen() {
 	const onSubmit = (data: CompleteProfileInputs) => {
 		console.log("Form data : ");
 		console.log(data);
-		completProfile({ ...data, phoneNumber, type: "patient" });
+		// completProfile({ ...data, phoneNumber, type: "patient" });
 	};
 
 	const handleCreatingProfile = async (data: any) => {
@@ -229,7 +230,7 @@ export default function CreateProfileScreen() {
 						paddingY={20}
 					>
 						<Text color="white" fontSize={24}>
-							Complete Profile 
+							Complete Profile
 						</Text>
 					</View>
 					{/* </Stack> */}
@@ -293,49 +294,51 @@ export default function CreateProfileScreen() {
 
 									<Spacer size={20} />
 
+
+
+
 									<Stack>
 										<Text>Gender</Text>
 
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="Gender"
-													placeholder="Gender"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
-															/>
-														),
-													}}
-												>
-													<Select.Item
-														label="Male"
-														value="male"
-													/>
-													<Select.Item
-														label="Female"
-														value="female"
-													/>
-												</Select>
-											)}
-											name="gender"
-											defaultValue="male"
-										/>
+										<Stack
+											borderWidth={1}
+											borderColor="#DEDEDE"
+											borderRadius={18}
+										>
+											<Controller
+												control={control}
+												render={({
+													field: {
+														onChange,
+														onBlur,
+														value,
+													},
+												}) => (
+													<Picker
+														selectedValue={value}
+														onValueChange={(itemValue, itemIndex) =>
+															onChange(itemValue)
+														}>
+														<Picker.Item
+															label="Gender"
+															value=""
+														/>
+
+														<Picker.Item
+															label="Male"
+															value="male"
+														/>
+														<Picker.Item
+															label="Female"
+															value="female"
+														/>
+
+													</Picker>
+												)}
+												name="gender"
+												defaultValue="male"
+											/>
+										</Stack>
 									</Stack>
 
 									<Spacer size={20} />
@@ -535,54 +538,45 @@ export default function CreateProfileScreen() {
 									<Stack>
 										<Text>Blood Group</Text>
 
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="BloodGroup"
-													placeholder="BloodGroup"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
-															/>
-														),
-													}}
-												>
-													{bloodGroups.map(
-														(bloodGroup) => (
-															<Select.Item
-																key={
-																	bloodGroup.name
-																}
-																label={
-																	bloodGroup.name
-																}
-																value={
-																	bloodGroup.name
-																}
-															/>
-														)
-													)}
-												</Select>
-											)}
-											name="bloodGroup"
-											// rules={{ required: true }}
-											defaultValue=""
-										/>
+										<Stack
+											borderWidth={1}
+											borderColor="#DEDEDE"
+											borderRadius={18}
+										>
+											<Controller
+												control={control}
+												render={({
+													field: {
+														onChange,
+														onBlur,
+														value,
+													},
+												}) => (
+													<Picker
+														selectedValue={value}
+														onValueChange={(itemValue, itemIndex) =>
+															onChange(itemValue)
+														}>
+														{bloodGroups.map(
+															(bloodGroup) => {
+																return (
+																	<Picker.Item
+																		label={bloodGroup.name}
+																		value={bloodGroup.name}
+																	/>
+																)
+															})}
+
+
+													</Picker>
+												)}
+												name="bloodGroup"
+												defaultValue=""
+											/>
+
+										</Stack>
+
+
 									</Stack>
 
 									<Spacer size={20} />
@@ -590,45 +584,38 @@ export default function CreateProfileScreen() {
 									<Stack>
 										<Text>Location of Residence</Text>
 
-										<Controller
-											control={control}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-												},
-											}) => (
-												<Select
-													variant="rounded"
-													selectedValue={value}
-													minWidth={200}
-													accessibilityLabel="Location"
-													placeholder="Location"
-													onValueChange={(
-														itemValue
-													) => onChange(itemValue)}
-													_selectedItem={{
-														bg: "cyan.600",
-														endIcon: (
-															<CheckIcon
-																size={4}
+										<Stack
+											borderWidth={1}
+											borderColor="#DEDEDE"
+											borderRadius={18}
+										>
+											<Controller
+												control={control}
+												render={({
+													field: {
+														onChange,
+														onBlur,
+														value,
+													},
+												}) => (
+													<Picker
+														selectedValue={value}
+														onValueChange={(itemValue, itemIndex) =>
+															onChange(itemValue)
+														}>
+														{regions.map((region) => (
+															<Select.Item
+																label={region.name}
+																value={region.name}
 															/>
-														),
-													}}
-												>
-													{regions.map((region) => (
-														<Select.Item
-															label={region.name}
-															value={region.name}
-														/>
-													))}
-												</Select>
-											)}
-											name="location"
-											// rules={{ required: true }}
-											defaultValue=""
-										/>
+														))}
+													</Picker>
+												)}
+												name="location"
+												defaultValue=""
+											/>
+
+										</Stack>
 									</Stack>
 								</Stack>
 							</Stack>
