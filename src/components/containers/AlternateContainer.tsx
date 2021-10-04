@@ -3,13 +3,13 @@ import {
 	Box,
 	StatusBar,
 	View,
-	Text,
 	ScrollView,
 	HStack,
 	Stack,
 } from "native-base";
 import _BaseContainer from "./_BaseContainer";
 import { StatusBarStyle } from "react-native";
+import { Text } from "../text";
 
 export interface AlternateContainerProps {
 	children: JSX.Element[] | JSX.Element;
@@ -75,6 +75,7 @@ export default function AlternateContainer({
 								textAlign="center"
 								fontWeight="500"
 								color={textColor}
+								tx={title}
 							>
 								{title}
 							</Text>

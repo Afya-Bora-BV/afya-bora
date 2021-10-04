@@ -6,7 +6,6 @@ import {
 	Pressable,
 	ScrollView,
 	Stack,
-	Text,
 	View,
 	Square,
 	VStack,
@@ -28,6 +27,9 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import CodeInput from "../../components/forms/codeInput";
 import { DoctorRoutes, HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
+import { Text } from "../../components/text";
+import { useAtom } from "jotai";
+import { languageAtom } from "../../store/atoms";
 
 // TODO : logic to be moved somewhere on refactor
 
@@ -45,7 +47,7 @@ const SendConfirmationCode = ({
 	const [value, setValue] = useState("");
 	const [formattedValue, setFormattedValue] = useState("");
 	const phoneInput = React.useRef<PhoneInput>(null);
-
+	const [language]=useAtom(languageAtom)
 	const onLogin = () => {
 		// do somthign with phone #
 		if (!Boolean(formattedValue)) {
@@ -77,8 +79,9 @@ const SendConfirmationCode = ({
 		},
 	});
 
+	const phoneInputPlaceHolder=language?"Phone Number":"Nambe Ya Simy"
 	return (
-		<AltContainer title="Sign In" backdropHeight={height / 5.5}>
+		<AltContainer title="common.signIn" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">
 				<Box
 					bg="white"
@@ -90,6 +93,7 @@ const SendConfirmationCode = ({
 				>
 					<VStack space={5} marginBottom={15}>
 						<PhoneInput
+							placeholder={phoneInputPlaceHolder}
 							ref={phoneInput}
 							defaultValue={value}
 							defaultCode="TZ"
@@ -125,7 +129,10 @@ const SendConfirmationCode = ({
 							_text={{ color: "white" }}
 							shadow={5}
 						>
-							Continue
+							<Text color="white" tx="common.continue">
+								Continue
+							</Text>
+
 						</Button>
 					</Box>
 				</Box>
@@ -133,7 +140,9 @@ const SendConfirmationCode = ({
 
 			<Stack alignItems="center" marginBottom={5}>
 				<HStack>
-					<Text> Are you a doctor ? </Text>
+					<Text
+						tx="common.areYouDoctor"
+					> </Text>
 					<Pressable
 						focusable
 						// TODO: detect platform and show cursor="Pointer" only in web
@@ -143,8 +152,10 @@ const SendConfirmationCode = ({
 							navigation.navigate(DoctorRoutes.DoctorLogin);
 						}}
 					>
-						<Text bold color={colors.primary}>
-							Sign in
+						<Text
+							tx="common.signIn"
+							bold color={colors.primary}>
+
 						</Text>
 					</Pressable>
 				</HStack>
