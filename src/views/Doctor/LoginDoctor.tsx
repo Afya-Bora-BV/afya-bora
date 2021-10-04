@@ -6,7 +6,6 @@ import {
     Pressable,
     ScrollView,
     Stack,
-    Text,
     View,
     Square,
     VStack,
@@ -31,6 +30,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useAuth } from "../../contexts/AuthContext";
 import { Consultant } from "../../types";
 import { HomeNavKey } from "../Patient";
+import { Text } from "../../components/text";
 
 // let render = 0
 
@@ -101,12 +101,14 @@ export default function LoginDoctor() {
                             name="email"
                             control={control}
                             label="Email address"
+                            text="common.emailAdress"
                             keyboardType="email-address"
                         />
                         <ControllerFormInput
                             name="password"
                             control={control}
                             label="Enter Password"
+                            text="common.password"
                             keyboardType="password"
                             type={
                                 visibility === "eye-outline"
@@ -151,7 +153,11 @@ export default function LoginDoctor() {
                             _text={{ color: "white" }}
                             shadow={5}
                         >
-                            Login
+                            <Text
+                                color="white"
+                                tx="common.login"
+                            > Login </Text>
+
                         </Button>
                     </Box>
                 </Box>
@@ -159,8 +165,10 @@ export default function LoginDoctor() {
             </View>
 
             <Stack alignItems="center" marginBottom={5}>
-                <HStack>
-                    <Text> Are you a patient ? </Text>
+                <HStack space={2}>
+                    <Text
+                        tx="common.areYouPatient"
+                    > Are you a patient ? </Text>
                     <Pressable
                         focusable
 
@@ -169,7 +177,9 @@ export default function LoginDoctor() {
                             navigation.navigate(HomeNavKey.Login);
                         }}
                     >
-                        <Text bold color={colors.primary}>
+                        <Text
+                            tx="common.signIn"
+                            bold color={colors.primary}>
                             Sign in
                         </Text>
                     </Pressable>

@@ -436,7 +436,9 @@ export default function SetAppointmentTime() {
 				</VStack>
 
 
-				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
+				<Text 
+					tx="common.requestChangeMessage"
+				fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
 				</Text>

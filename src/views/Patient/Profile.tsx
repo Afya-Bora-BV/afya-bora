@@ -294,7 +294,9 @@ export default function ProfileMain() {
 									<Square size={6}>
 										<LogoutIcon />
 									</Square>
-									<Text fontSize={18}>
+									<Text fontSize={18}
+										tx={!isLoading?"common.logout":"common.loading"}
+									>
 										{isLoading
 											? "Logging out ... "
 											: "Logout"}

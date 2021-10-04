@@ -1,7 +1,7 @@
 import React from "react";
-import { Stack, Text, Spacer, Input } from "native-base";
+import { Stack, Spacer, Input } from "native-base";
 import { useController, Controller } from "react-hook-form";
-
+import {Text} from '../text'
 /**
  * Input form that uses react controller
  */
@@ -10,8 +10,11 @@ export function ControllerFormInput({
 	keyboardType,
 	control,
 	name,
+	text,
 	...inputProps
-}: any) {
+}: any & {
+	text?: string
+}) {
 	// console.log({ others })
 	const {
 		formState: { errors },
@@ -19,7 +22,7 @@ export function ControllerFormInput({
 
 	return (
 		<Stack testID="ControllerFormInput">
-			<Text>{label}</Text>
+			<Text tx={text}>{label}</Text>
 			<Spacer size={2} />
 			<Controller
 				control={control}
