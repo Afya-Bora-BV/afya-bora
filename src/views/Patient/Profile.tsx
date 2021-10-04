@@ -83,17 +83,20 @@ const profileOptions = [
 	{
 		icon: AccountIcon,
 		title: "Switch Profile",
+		text: "common.switchProfile",
 		onAction: (action: () => void) => action(),
 	},
 
 	{
 		icon: HeadphoneIcon,
 		title: "Help Center",
+		text: "common.helpCenter",
 	},
 
 	{
 		icon: InfoIcon,
 		title: "About Us",
+		text: "common.aboutUs",
 	},
 ];
 
@@ -176,7 +179,7 @@ export default function ProfileMain() {
 	// console.log("Language : ",langu)
 	return (
 		<AlternateContainer
-			title="Profile"
+			title="common.profile"
 			titleColor="#FFF"
 			barStyle="dark-content"
 			backdropHeight={height / 7}
@@ -265,7 +268,7 @@ export default function ProfileMain() {
 								</HStack>
 							</Pressable>
 							{profileOptions.map(
-								({ icon: ActualIcon, title, onAction }, ix) => (
+								({ icon: ActualIcon, title, onAction, text }, ix) => (
 									<Pressable
 										key={`profOpt-${ix}`}
 										onPress={
@@ -281,7 +284,7 @@ export default function ProfileMain() {
 											<Square size={6}>
 												<ActualIcon />
 											</Square>
-											<Text fontSize={18}>{title}</Text>
+											<Text tx={text} fontSize={18}>{ }</Text>
 										</HStack>
 									</Pressable>
 								)
