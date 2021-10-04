@@ -37,7 +37,9 @@
 		"afternoon":"Afternoon",
 		"requestChange":"Request Change",
 		"dayAndTime":" Day And Time",
-		"requestChangeMessage":"*Your requested change will be reviewed by the doctor. If they accept your request, you will be notified."				
+		"requestChangeMessage":"*Your requested change will be reviewed by the doctor. If they accept your request, you will be notified.",				
+		"upcomingAppointments":"Upcoming Appointments"
+
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."

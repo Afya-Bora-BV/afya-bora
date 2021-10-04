@@ -30,7 +30,7 @@ export default function UpcomingAppointments() {
 
 	return (
 		<MainContainer
-			title="Upcoming Appointments"
+			title="common.upcomingAppointments"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()

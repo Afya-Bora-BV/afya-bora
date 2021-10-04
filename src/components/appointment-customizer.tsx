@@ -77,7 +77,7 @@ type AppointmentType = {
 	value: ConsultantionType;
 	onPress: (val: ConsultantionType) => void;
 	isActive: boolean;
-	text:string
+	text: string
 };
 
 const AppointmentTypeButton: React.FC<AppointmentType> = ({

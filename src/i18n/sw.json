@@ -37,7 +37,8 @@
 		"afternoon":"Mchana",
 		"requestChange":"Omba Mabadiliko",
 		"dayAndTime":"Siku Na Muda",
-		"requestChangeMessage":"*Mabadiliko uliyoomba yatapitiwa na daktari. Maombi yako yakikubaliwa, utataarifiwa(Tutakutaarifu)."				
+		"requestChangeMessage":"*Mabadiliko uliyoomba yatapitiwa na daktari. Maombi yako yakikubaliwa, utataarifiwa(Tutakutaarifu).",				
+		"upcomingAppointments":"Miadi ijayo"
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
