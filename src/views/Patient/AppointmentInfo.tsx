@@ -5,7 +5,6 @@ import {
 	Heading,
 	HStack,
 	Modal,
-	Text,
 	useToast,
 	View,
 	VStack,
@@ -28,6 +27,7 @@ import { RootState } from "../../store";
 import appointment, { setDate, setTimeRange } from "../../store/slices/appointment";
 import { ConsultantListItem } from "../../components/consultant-list-item";
 import { colors } from "../../constants/colors";
+import { Text } from "../../components/text";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -85,7 +85,9 @@ export const CancelAppointmentButton = ({ appointmentId }: { appointmentId: stri
 			{isLoading ?
 				<Spinner />
 				:
-				<Text style={{ color: "red" }} fontSize="sm">
+				<Text
+					tx="appointmentInfo.cancelAppointment"
+					style={{ color: "red" }} fontSize="sm">
 					Cancel Appointment
 				</Text>}
 
@@ -121,7 +123,10 @@ const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: 
 		}}>
 			<HStack space={2}>
 				<PenEditIcon size={4} />
-				<Text fontSize="sm">Edit Appointment</Text>
+				<Text
+					tx="appointmentInfo.editAppointment"
+					fontSize="sm"
+				>Edit Appointment</Text>
 			</HStack>
 		</Pressable>
 	)
@@ -140,7 +145,7 @@ export default function AppointmentInfo() {
 	console.log(JSON.stringify(data?.consultant, null, 3))
 	return (
 		<MainContainer
-			title="Appointment Info"
+			title="appointmentInfo.appointmentInfo"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
@@ -173,7 +178,7 @@ export default function AppointmentInfo() {
 				</View>
 
 				<HStack justifyContent="space-between">
-					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || { }} />
+					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || {}} />
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<VStack mt={2} space={4}>
@@ -184,7 +189,9 @@ export default function AppointmentInfo() {
 					{data?.consultant && <ConsultantListItem consultant={data?.consultant} />}
 				</VStack>
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
-					<Text fontSize={"2xl"}>Symptoms</Text>
+					<Text
+						tx="common.symptoms"
+						fontSize={"2xl"}>Symptoms</Text>
 					<Spacer size={10} />
 					<HStack space={4} flexWrap="wrap">
 						{data?.aboutVisit?.symptoms?.map((symptom: any) => (
@@ -203,7 +210,9 @@ export default function AppointmentInfo() {
 					</HStack>
 
 					<VStack mt={6}>
-						<Text fontSize={"2xl"}>
+						<Text fontSize={"2xl"}
+							tx="common.otherNotes"
+						>
 							Other Notes
 						</Text>
 						<Text>

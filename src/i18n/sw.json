@@ -30,7 +30,7 @@
 		"pending":"Inasubiri",
 		"editAppointment":"Hariri Miadi",
 		"cancelAppointments":"Sitisha/Ghairi Miadi",
-		"prefferedDate":"Tarehe unayopendelea",
+		"preferedDate":"Tarehe unayopendelea",
 		"preferredTime":"Muda Unaopendelea/ Kiwango Cha Muda Unaopendelea",						
 		"morning":"Asubuhi",
 		"evening":"Jioni",	
@@ -57,6 +57,11 @@
 		"signInCreateAccount":"Weka sahihi / Fungua Akaunti",
 		"howCanWeHelpYouToday":"Tunawezaje kukusaidia leo ? "
 	
+	},
+	"appointmentInfo":{
+		"appointmentInfo":"Maelezo Ya Miadi",
+		"editAppointment":"Hariri Miadi",
+		"cancelAppointment":"Sitisha/Ghairi Miadi"
 	},
 	"facilitiList":{
 		"selectFacility":"Chagua Kito cha Huduma"

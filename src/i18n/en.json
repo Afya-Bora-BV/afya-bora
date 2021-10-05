@@ -30,7 +30,7 @@
 		"pending":"Pending",
 		"editAppointment":"Edit Appointment",
 		"cancelAppointments":"Cancel Appointments",
-		"preferredDate":"Cancel Appointments",
+		"preferedDate":"Preferred Date",
 		"preferredTime":"Preferred Time",
 		"morning":"Morning",	
 		"evening":"Evening",	
@@ -39,7 +39,6 @@
 		"dayAndTime":" Day And Time",
 		"requestChangeMessage":"*Your requested change will be reviewed by the doctor. If they accept your request, you will be notified.",				
 		"upcomingAppointments":"Upcoming Appointments"
-
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
@@ -58,6 +57,11 @@
 		"signInCreateAccount":"Sign In / Create Account",
 		"howCanWeHelpYouToday":"How can we help you today ? "
 		
+	},
+	"appointmentInfo":{
+		"appointmentInfo":"Appointment Info",
+		"editAppointment":"Edit Appointment",
+		"cancelAppointment":"Cancel Appointment"
 	},
 	"facilitiList":{
 		"selectFacility":"Select Facility"

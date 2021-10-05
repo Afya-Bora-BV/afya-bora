@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
 	View,
-	Text,
 	StatusBar,
 	ScrollView,
 	Box,
@@ -23,7 +22,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ConsultantListItem } from "../../components/consultant-list-item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
-import { ToastAndroid, TouchableOpacity } from "react-native";
+import { Alert, ToastAndroid, TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
 import { colors } from "../../constants/colors";
 import moment from "moment";
@@ -41,6 +40,8 @@ import { setDate, setTimeRange } from "../../store/slices/appointment";
 import { TimeRange } from "../../types";
 import firestore from '@react-native-firebase/firestore';
 import { useMutation } from "react-query";
+import { Text } from "../../components/text";
+import { languageAtom } from "../../store/atoms";
 
 
 // TODO: this to be moved to the firebase function
@@ -112,10 +113,15 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 	return (
 		<View>
 			<HStack justifyContent="space-between" mb={3}>
-				<Text fontSize="2xl" bold>
+				<Text fontSize="2xl" bold
+					tx="common.preferedDate"
+				>
 					Preferred Date
 				</Text>
 
+			</HStack>
+
+			<HStack justifyContent="flex-end" mb={3}>
 				<MonthDropDown
 					onChangeDate={(date) => onChangeDate(date)}
 					date={date}
@@ -178,6 +184,25 @@ const timeSlots: Array<TimeSlot> = [
 	},
 ];
 
+const timeSlotsSwahili: Array<TimeSlot> = [
+	{
+		period: "asubuhi",
+		max: "12",
+		min: "9",
+	},
+	{
+		period: "mchana",
+		min: "12",
+		max: "16",
+	},
+
+	{
+		period: "jioni",
+		min: "16",
+		max: "20",
+	},
+];
+
 const appointmentTimeAtom = atom<string>("");
 
 const setAppointmentTimeAtom = atom(
@@ -200,13 +225,19 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = ({
 	timeRange,
 	onChange,
 }) => {
+
+	const [language, setLanguage] = useAtom(languageAtom);
+	const slots = language === "en" ? timeSlots : timeSlotsSwahili
+
 	return (
 		<VStack space={5}>
-			<Text fontSize="2xl" bold>
+			<Text fontSize="2xl" bold
+				tx="common.preferredTime"
+			>
 				Preferred Time Range
 			</Text>
 			<HStack justifyContent={"space-between"} space={2}>
-				{timeSlots.map((slot) => {
+				{slots.map((slot) => {
 					return (
 						<Pressable
 							onPress={() => {
@@ -327,7 +358,7 @@ const MonthDropDown: React.FC<MonthDropDownProps> = ({
 			}}
 		>
 			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
-			{listOfNextNMonths(3).map((date, i, arr) => (
+			{listOfNextNMonths(12).map((date, i, arr) => (
 				<TouchableOpacity
 					style={{
 						padding: 10,
@@ -398,12 +429,24 @@ export default function SetAppointmentTime() {
 	);
 
 	const handleEditAppointment = () => {
-		// console.log("Date ", date)
-		editedAppointment({
-			appointmentId: appointment.id,
-			date: date,
-			timeRange: timeRange
-		})
+		Alert.alert(
+			"Confirm Request",
+			"Are you sure you want to submit these changes ? ",
+			[
+				{ text: "Cancel", onPress: () => { } },
+				{
+					text: "Confirm",
+					onPress: () => {
+						editedAppointment({
+							appointmentId: appointment.id,
+							date: date,
+							timeRange: timeRange
+						})
+					},
+				},
+			]
+		);
+
 	}
 
 	const dispatch = useDispatch();
@@ -431,7 +474,7 @@ export default function SetAppointmentTime() {
 	console.log(JSON.stringify(appointment, null, 3))
 	return (
 		<MainContainer
-			title="Day and Time"
+			title="common.dayAndTime"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
@@ -460,7 +503,9 @@ export default function SetAppointmentTime() {
 					/>
 				</VStack>
 
-				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center">
+				<Text fontSize={"md"} color={"#B0B3C7"} textAlign="center"
+					tx="common.requestChangeMessage"
+				>
 					*Your requested change will be reviewed by the doctor. If they acceept your request, you will be notified.
 				</Text>
 
@@ -472,7 +517,13 @@ export default function SetAppointmentTime() {
 					isLoading={isLoading}
 					disabled={isLoading}
 				>
-					Request Change
+					<Text
+						tx="common.requestChange"
+						color="white"
+					>
+						Request Change
+					</Text>
+
 				</Button>
 			</VStack>
 		</MainContainer>

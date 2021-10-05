@@ -149,7 +149,13 @@ export function StatusAppointmentAlert({
             {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
           {status === "accepted" && <Text italic>Time : {hours}</Text>}
-          <Text italic>
+          <Text italic
+            tx={
+              type === "online"
+                ? "common.online"
+                : "common.atFacility"
+            }
+          >
             {type === "online"
               ? "Online"
               : "At Facility"}
