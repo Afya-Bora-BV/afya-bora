@@ -23,7 +23,7 @@ const getDistance = (geopoint: { lat: number, lng: number }) => {
 }
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
-	facility: { name, city, street, country },
+	facility: { name, city, street, country, photoUrl },
 }) => {
 	return (
 		<Box bg="white" shadow={2} rounded={10}>
@@ -38,12 +38,12 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 						size={120}
 						borderRadius={6}
 						source={{
-							uri: "https://wallpaperaccess.com/full/317501.jpg",
+							uri: photoUrl ? photoUrl : "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc"
 						}}
 					>
 						SS
 					</Avatar>
-					<VStack style={{ }} pl={3} flex={1}>
+					<VStack style={{}} pl={3} flex={1}>
 						<HStack
 							justifyContent="space-between"
 							alignItems="center"

@@ -2,7 +2,6 @@ import {
 	Box,
 	ScrollView,
 	Stack,
-	Text,
 	Input,
 	Select,
 	CheckIcon,
@@ -40,6 +39,7 @@ import { HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
 import functions from "@react-native-firebase/functions";
 import { Picker } from '@react-native-picker/picker';
+import { Text } from "../../components/text";
 
 const regions: { name: string }[] = [
 	"Residency Location",

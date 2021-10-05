@@ -69,6 +69,7 @@ interface Facility {
 	   _nanoseconds: number
 	},
 	country: string
+	photoUrl?:string
 }
 
 type Rating = {

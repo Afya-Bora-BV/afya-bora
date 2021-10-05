@@ -47,7 +47,7 @@ const SendConfirmationCode = ({
 	const [value, setValue] = useState("");
 	const [formattedValue, setFormattedValue] = useState("");
 	const phoneInput = React.useRef<PhoneInput>(null);
-	const [language]=useAtom(languageAtom)
+	const [language] = useAtom(languageAtom)
 	const onLogin = () => {
 		// do somthign with phone #
 		if (!Boolean(formattedValue)) {
@@ -79,7 +79,7 @@ const SendConfirmationCode = ({
 		},
 	});
 
-	const phoneInputPlaceHolder=language=="en"?"Phone Number":"Nambe Ya Simu"
+	const phoneInputPlaceHolder = language == "en" ? "Phone Number" : "Nambe Ya Simu"
 	return (
 		<AltContainer title="common.signIn" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">
@@ -207,7 +207,7 @@ const VerifyCode = ({
 		<AltContainer
 			backdropHeight={height / 5.2}
 			navigation={navigation}
-			title="Verify Your Number"
+			title="common.verifyYourNumber"
 			noScroll
 		>
 			<Box
@@ -221,7 +221,9 @@ const VerifyCode = ({
 				marginBottom={10}
 			>
 				<VStack space={5} marginBottom={15} alignContent="center">
-					<Text fontWeight="500" textAlign="center" color={"#747F9E"}>
+					<Text fontWeight="500" textAlign="center" color={"#747F9E"}
+						tx="common.verificationCode"
+					>
 						Verification Code
 					</Text>
 					<CodeInput value={code} onChangeCode={set} cellCount={4} />
@@ -250,7 +252,14 @@ const VerifyCode = ({
 						style={{ backgroundColor: colors.primary }}
 						_text={{ color: "white" }}
 					>
-						Confirm
+
+						<Text
+							tx="common.confirm"
+							color="white"
+						>
+							Confirm
+						</Text>
+
 					</Button>
 				</Box>
 			</Box>

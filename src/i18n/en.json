@@ -38,7 +38,10 @@
 		"requestChange":"Request Change",
 		"dayAndTime":" Day And Time",
 		"requestChangeMessage":"*Your requested change will be reviewed by the doctor. If they accept your request, you will be notified.",				
-		"upcomingAppointments":"Upcoming Appointments"
+		"upcomingAppointments":"Upcoming Appointments",
+		"verifyYourNumber":"Verify Your Number",
+		"verificationCode":"Verification Code",
+		"confirm":"Confirm"
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
