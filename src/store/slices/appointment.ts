@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ConsultantionType } from "../../internals/data";
 import { Facility, TimeRange } from "../../types";
 import { toggleStringFromList } from "../../utils";
 // import firestore from "@react-native-firebase/firestore"
