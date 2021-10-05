@@ -20,7 +20,7 @@
 		"emailAdress":"Email Adress",
 		"password":"Password",
 		"login":"Log In",
-		"areYouPatient":"Are You A Patient?",
+		"areYouPatient":"Are You A Patient ?",
 		"areYouDoctor":"Are you a doctor ?",
 		"signIn":"Sign In",
 		"join":"Join",
@@ -54,8 +54,10 @@
 		"profileAndVisits":"Profile and Visits",
 		"chooseTypeOfAppointment":"Choose Type of Appointment",
 		"chooseLocation":"Choose Location",
-		"schedule":"Schedule"
-	
+		"schedule":"Schedule",
+		"signInCreateAccount":"Sign In / Create Account"
+
+		
 	},
 	"facilitiList":{
 		"selectFacility":"Select Facility"

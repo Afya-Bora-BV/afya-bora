@@ -13,6 +13,8 @@ import {
 	setSpeciality,
 } from "../store/slices/appointment";
 import { Text } from "./text";
+import { ConsultantionType } from "../internals/data";
+import { languageAtom } from "../store/atoms";
 // these attoms to be moved since the state might be needed somewhere
 
 const specialities: { name: string }[] = [
@@ -123,7 +125,10 @@ const AppointmentCustomizer: React.FC = () => {
 			appointment.speciality,
 		]
 	);
+	const [language] = useAtom(languageAtom)
+	const languagePlaceholder = language === "en" ? "Location" : "Mahali"
 	const dispatch = useDispatch();
+
 
 	return (
 		<Stack space={7}>
@@ -158,7 +163,7 @@ const AppointmentCustomizer: React.FC = () => {
 					selectedValue={location}
 					minWidth={200}
 					accessibilityLabel="Location"
-					placeholder="Location"
+					placeholder={languagePlaceholder}
 					onValueChange={(itemValue) => {
 						dispatch(setLocation(itemValue));
 					}}

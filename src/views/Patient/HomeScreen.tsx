@@ -93,8 +93,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					<Text
 						fontWeight="800"
 						textAlign="center"
-					// wordBreak="break-word"
-					// overflowWrap="break-word"
+						tx="home.signInCreateAccount"
 					>
 						Sign in / Create Account
 					</Text>

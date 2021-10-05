@@ -124,7 +124,7 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 					{_.times(getDaysInMonth(date), (n) => {
 						const d = new Date(date);
 						d.setDate(n + 1);
-						const isBefore = moment(d).isBefore(new Date(),"days")
+						const isBefore = moment(d).isBefore(new Date(), "days")
 						if (isBefore) return null
 						return (
 							<CalendarDay
@@ -436,9 +436,9 @@ export default function SetAppointmentTime() {
 				</VStack>
 
 
-				<Text 
+				<Text
 					tx="common.requestChangeMessage"
-				fontSize={"md"} color={"#B0B3C7"} textAlign="center">
+					fontSize={"md"} color={"#B0B3C7"} textAlign="center">
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
 				</Text>
