@@ -17,7 +17,6 @@ import {
 	Heading,
 	VStack,
 	HStack,
-	Text,
 	Box,
 	Center,
 } from "native-base";
@@ -29,6 +28,7 @@ import { Facility } from "../../types";
 import { useDispatch } from "react-redux";
 import { setFacility } from "../../store/slices/appointment";
 import functions from "@react-native-firebase/functions";
+import { Text } from "../../components/text";
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
@@ -156,7 +156,7 @@ const FindFacility: React.FC = () => {
 	return (
 		<MainContainer
 			noScroll
-			title="Find Facilty"
+			title="facilityMap.findFacility"
 			headerMode="float"
 			leftSection={
 				// Go back if can go back
@@ -241,7 +241,9 @@ const FindFacility: React.FC = () => {
 						borderRadius={20}
 						marginRight={5}
 					>
-						<Text>Loading nearby facilities....</Text>
+						<Text
+							tx="common.pleaseWait"
+						>Loading nearby facilities....</Text>
 					</Center>
 				}
 				{state.length === 0 && !isLoading &&
@@ -265,7 +267,9 @@ const FindFacility: React.FC = () => {
 						borderRadius={20}
 						marginRight={5}
 					>
-						<Text>No nearby facilities</Text>
+						<Text
+							tx="facilityMap.noNearByFacility"
+						>No nearby facilities</Text>
 					</Center>
 				}
 				{state.map((marker, index) => (
@@ -299,9 +303,7 @@ const FindFacility: React.FC = () => {
 								height={120}
 								borderRadius={20}
 								source={{
-									uri:
-										marker?.imageUrl ||
-										"https://wallpaperaccess.com/full/317501.jpg",
+									uri: marker.photoUrl ? marker.photoUrl : "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc"
 								}}
 							/>
 							{/* Text ara */}

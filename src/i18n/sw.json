@@ -41,7 +41,8 @@
 		"upcomingAppointments":"Miadi ijayo",
 		"verifyYourNumber":"Thibitisha Namba Yako",
 		"verificationCode":"Namba ya Uthibitisho",
-		"confirm":"Thibitisha"
+		"confirm":"Thibitisha",
+		"pleaseWait":"Tafahdali Subiri..."
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
@@ -68,6 +69,10 @@
 	},
 	"facilitiList":{
 		"selectFacility":"Chagua Kito cha Huduma"
+	},
+	"facilityMap":{
+		"findFacility":"Tafuta Kituo Cha Huduma",
+		"noNearByFacility":"Hakuna Kituo Karibu"
 	},
 	"facilityInfo":{
 		"scheduleAppointment":"Weka mihadi"

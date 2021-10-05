@@ -41,7 +41,8 @@
 		"upcomingAppointments":"Upcoming Appointments",
 		"verifyYourNumber":"Verify Your Number",
 		"verificationCode":"Verification Code",
-		"confirm":"Confirm"
+		"confirm":"Confirm",
+		"pleaseWait":"Please wait..."
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."
@@ -70,6 +71,10 @@
 		"selectFacility":"Select Facility"
 	},
 
+	"facilityMap":{
+		"findFacility":"Find Facility",
+		"noNearByFacility":"No Nearby Facility"
+	},
 
 	"facilityInfo":{
 		"scheduleAppointment":"Schedule Appointment"
