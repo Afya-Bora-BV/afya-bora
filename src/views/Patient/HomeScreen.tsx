@@ -129,7 +129,10 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 	return (
 		<HStack flexWrap="wrap">
 			<VStack flex={1} justifyContent="center">
-				<Heading fontSize="3xl">How can we help you today?</Heading>
+				<Text fontSize="3xl"
+				fontWeight="bold"
+					tx="home.howCanWeHelpYouToday"
+				>How can we help you today?</Text>
 			</VStack>
 
 			<HomeScreenIllustration flex={3} size={200} />

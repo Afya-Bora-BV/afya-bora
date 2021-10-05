@@ -55,8 +55,8 @@
 		"chooseTypeOfAppointment":"Choose Type of Appointment",
 		"chooseLocation":"Choose Location",
 		"schedule":"Schedule",
-		"signInCreateAccount":"Sign In / Create Account"
-
+		"signInCreateAccount":"Sign In / Create Account",
+		"howCanWeHelpYouToday":"How can we help you today ? "
 		
 	},
 	"facilitiList":{

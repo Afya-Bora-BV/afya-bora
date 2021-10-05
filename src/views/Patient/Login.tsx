@@ -79,7 +79,7 @@ const SendConfirmationCode = ({
 		},
 	});
 
-	const phoneInputPlaceHolder=language?"Phone Number":"Nambe Ya Simy"
+	const phoneInputPlaceHolder=language=="en"?"Phone Number":"Nambe Ya Simu"
 	return (
 		<AltContainer title="common.signIn" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">

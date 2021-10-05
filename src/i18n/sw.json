@@ -54,7 +54,9 @@
 		"chooseTypeOfAppointment":"Chagua aina ya mihadi",
 		"chooseLocation":"Chagua mahali",
 		"schedule":"Weka kwenye ratiba",
-		"signInCreateAccount":"Weka sahihi / Fungua Akaunti"
+		"signInCreateAccount":"Weka sahihi / Fungua Akaunti",
+		"howCanWeHelpYouToday":"Tunawezaje kukusaidia leo ? "
+	
 	},
 	"facilitiList":{
 		"selectFacility":"Chagua Kito cha Huduma"

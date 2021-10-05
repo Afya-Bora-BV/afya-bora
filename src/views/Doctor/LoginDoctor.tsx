@@ -31,6 +31,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Consultant } from "../../types";
 import { HomeNavKey } from "../Patient";
 import { Text } from "../../components/text";
+import { useAtom } from "jotai";
+import { languageAtom } from "../../store/atoms";
 
 // let render = 0
 
@@ -90,7 +92,6 @@ export default function LoginDoctor() {
 
     })
 
-
     return (
         <AltContainer title="Afya Bora" backdropHeight={height / 5.5}>
             <View flexGrow={1} marginTop={10}>
@@ -100,14 +101,14 @@ export default function LoginDoctor() {
                         <ControllerFormInput
                             name="email"
                             control={control}
-                            label="Email address"
+                            label="demo@gmail.com"
                             text="common.emailAdress"
                             keyboardType="email-address"
                         />
                         <ControllerFormInput
                             name="password"
                             control={control}
-                            label="Enter Password"
+                            label="*************"
                             text="common.password"
                             keyboardType="password"
                             type={
