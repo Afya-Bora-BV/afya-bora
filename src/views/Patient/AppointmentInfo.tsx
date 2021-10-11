@@ -190,23 +190,25 @@ export default function AppointmentInfo() {
 				</VStack>
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text
-						tx="common.symptoms"
+						tx="common.speciality"
 						fontSize={"2xl"}>Speciality</Text>
 					<Spacer size={10} />
 					<HStack space={4} flexWrap="wrap">
-						{data?.aboutVisit?.symptoms?.map((symptom: any) => (
+						{data?.speciality ?
 							<Box
 								rounded="xl"
 								bg={"#B0B3C7"}
 								flex={1}
-								alignItems="center"
-								paddingY={2}
+								// alignItems="center"
+								padding={2}
 							>
-								<Text textAlign="center" color={"white"}>
-									{symptom}
+								<Text textAlign="left" color={"white"}>
+									{data?.speciality}
 								</Text>
 							</Box>
-						))}
+							:
+							<Text></Text>
+						}
 					</HStack>
 
 					<VStack mt={6}>

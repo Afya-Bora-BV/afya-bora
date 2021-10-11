@@ -42,7 +42,8 @@
 		"verifyYourNumber":"Verify Your Number",
 		"verificationCode":"Verification Code",
 		"confirm":"Confirm",
-		"pleaseWait":"Please wait..."
+		"pleaseWait":"Please wait...",
+		"speciality":"Speciality"
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."

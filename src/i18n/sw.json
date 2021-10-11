@@ -6,43 +6,44 @@
 		"back": "Rudi",
 		"profile": "Wasifu",
 		"switchLanguage": "Badili Lugha",
-		"hi":"Habari",
-		"next":"Endelea",
-		"continue":"Endelea",
-		"logout":"Ondoka",
-		"loading":"Tafadhari suburi ...",
-		"switchProfile":"Badili Wasifu",
-		"helpCenter":"Kituo Cha Msaada",
-		"aboutUs":"Kuhusu Sisi",
-		"location":"Mahali",
-		"atFacility":"Katika Kituo",
-		"online":"Mtandaoni",
-		"emailAdress":"Barua Pepe",
-		"password":"Nywila",
-		"login":"Ingia",
-		"areYouPatient":"Wewe Ni Mgonjwa?",
-		"areYouDoctor":"Wewe in Daktari ?",
-		"signIn":"Jiandikishe",
-		"join":"Jiunge",
-		"edit":"Hariri",
-		"symptoms":"Dalili",
-		"otherNotes":"Maelezo Mengine",
-		"pending":"Inasubiri",
-		"editAppointment":"Hariri Miadi",
-		"cancelAppointments":"Sitisha/Ghairi Miadi",
-		"preferedDate":"Tarehe unayopendelea",
-		"preferredTime":"Muda Unaopendelea/ Kiwango Cha Muda Unaopendelea",						
-		"morning":"Asubuhi",
-		"evening":"Jioni",	
-		"afternoon":"Mchana",
-		"requestChange":"Omba Mabadiliko",
-		"dayAndTime":"Siku Na Muda",
-		"requestChangeMessage":"*Mabadiliko uliyoomba yatapitiwa na daktari. Maombi yako yakikubaliwa, utataarifiwa(Tutakutaarifu).",				
-		"upcomingAppointments":"Miadi ijayo",
-		"verifyYourNumber":"Thibitisha Namba Yako",
-		"verificationCode":"Namba ya Uthibitisho",
-		"confirm":"Thibitisha",
-		"pleaseWait":"Tafahdali Subiri..."
+		"hi": "Habari",
+		"next": "Endelea",
+		"continue": "Endelea",
+		"logout": "Ondoka",
+		"loading": "Tafadhari suburi ...",
+		"switchProfile": "Badili Wasifu",
+		"helpCenter": "Kituo Cha Msaada",
+		"aboutUs": "Kuhusu Sisi",
+		"location": "Mahali",
+		"atFacility": "Katika Kituo",
+		"online": "Mtandaoni",
+		"emailAdress": "Barua Pepe",
+		"password": "Nywila",
+		"login": "Ingia",
+		"areYouPatient": "Wewe Ni Mgonjwa?",
+		"areYouDoctor": "Wewe in Daktari ?",
+		"signIn": "Jiandikishe",
+		"join": "Jiunge",
+		"edit": "Hariri",
+		"symptoms": "Dalili",
+		"otherNotes": "Maelezo Mengine",
+		"pending": "Inasubiri",
+		"editAppointment": "Hariri Miadi",
+		"cancelAppointments": "Sitisha/Ghairi Miadi",
+		"preferedDate": "Tarehe unayopendelea",
+		"preferredTime": "Muda Unaopendelea/ Kiwango Cha Muda Unaopendelea",
+		"morning": "Asubuhi",
+		"evening": "Jioni",
+		"afternoon": "Mchana",
+		"requestChange": "Omba Mabadiliko",
+		"dayAndTime": "Siku Na Muda",
+		"requestChangeMessage": "*Mabadiliko uliyoomba yatapitiwa na daktari. Maombi yako yakikubaliwa, utataarifiwa(Tutakutaarifu).",
+		"upcomingAppointments": "Miadi ijayo",
+		"verifyYourNumber": "Thibitisha Namba Yako",
+		"verificationCode": "Namba ya Uthibitisho",
+		"confirm": "Thibitisha",
+		"pleaseWait": "Tafahdali Subiri...",
+		"speciality": "Taaluma ya Daktari"
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."
@@ -50,47 +51,45 @@
 	"home": {
 		"scheduleAnAppointment": "Weka miadi",
 		"seeAllAppointments": "Ona miadi yote",
-		"upcomingAppointments":"Miadi ijayo",
-		"quickMedicalAttention":"Je unahitaji huduma ya haraka?",
-		"facilitiesNearYou":"Vituo vya karibu",
-		"yourAfyaBoraAccout":"Akaunti yako ya AfyaBora",
-		"profileAndVisits":"Taarifa zako na Mahundurio",
-		"chooseTypeOfAppointment":"Chagua aina ya mihadi",
-		"chooseLocation":"Chagua mahali",
-		"schedule":"Weka kwenye ratiba",
-		"signInCreateAccount":"Weka sahihi / Fungua Akaunti",
-		"howCanWeHelpYouToday":"Tunawezaje kukusaidia leo ? "
-	
+		"upcomingAppointments": "Miadi ijayo",
+		"quickMedicalAttention": "Je unahitaji huduma ya haraka?",
+		"facilitiesNearYou": "Vituo vya karibu",
+		"yourAfyaBoraAccout": "Akaunti yako ya AfyaBora",
+		"profileAndVisits": "Taarifa zako na Mahundurio",
+		"chooseTypeOfAppointment": "Chagua aina ya mihadi",
+		"chooseLocation": "Chagua mahali",
+		"schedule": "Weka kwenye ratiba",
+		"signInCreateAccount": "Weka sahihi / Fungua Akaunti",
+		"howCanWeHelpYouToday": "Tunawezaje kukusaidia leo ? "
 	},
-	"appointmentInfo":{
-		"appointmentInfo":"Maelezo Ya Miadi",
-		"editAppointment":"Hariri Miadi",
-		"cancelAppointment":"Sitisha/Ghairi Miadi"
+	"appointmentInfo": {
+		"appointmentInfo": "Maelezo Ya Miadi",
+		"editAppointment": "Hariri Miadi",
+		"cancelAppointment": "Sitisha/Ghairi Miadi"
 	},
-	"facilitiList":{
-		"selectFacility":"Chagua Kito cha Huduma"
+	"facilitiList": {
+		"selectFacility": "Chagua Kito cha Huduma"
 	},
-	"facilityMap":{
-		"findFacility":"Tafuta Kituo Cha Huduma",
-		"noNearByFacility":"Hakuna Kituo Karibu"
+	"facilityMap": {
+		"findFacility": "Tafuta Kituo Cha Huduma",
+		"noNearByFacility": "Hakuna Kituo Karibu"
 	},
-	"facilityInfo":{
-		"scheduleAppointment":"Weka mihadi"
+	"facilityInfo": {
+		"scheduleAppointment": "Weka mihadi"
 	},
-	"appointmentTime":{
-		"dayAndTime":"Siku na Muda",
-		"preferredDate":"Siku",
-		"preferredTimeRange":"Muda"
+	"appointmentTime": {
+		"dayAndTime": "Siku na Muda",
+		"preferredDate": "Siku",
+		"preferredTimeRange": "Muda"
 	},
-	"aboutVisit":{
-		"aboutYourVisit":"Taarifa za mahudhurio",
-		"symptoms":"Dalili",
-		"checkAnySymtomsYouHave":"Chagua dalili ulizonazo",
-		"primaryReasonToSeeDoctor":"Nini sababu kuu ya kumuona dactari ?",
-		"describeHowYouAreFeeling":"Elezea unavyojisikia hapa ...",
-		"bookAppointment":"Weka Mihadi"
+	"aboutVisit": {
+		"aboutYourVisit": "Taarifa za mahudhurio",
+		"symptoms": "Dalili",
+		"checkAnySymtomsYouHave": "Chagua dalili ulizonazo",
+		"primaryReasonToSeeDoctor": "Nini sababu kuu ya kumuona dactari ?",
+		"describeHowYouAreFeeling": "Elezea unavyojisikia hapa ...",
+		"bookAppointment": "Weka Mihadi"
 	},
-
 	"profile": {
 		"visitHistory": "Historia yako",
 		"upcomingVisits": "miadi ijayo"
