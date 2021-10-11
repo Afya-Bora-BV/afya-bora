@@ -107,7 +107,7 @@ export function PatientComplaint() {
 					aboutVisit: appointment.aboutVisit,
 					pid: profile?.id,
 					timeRange: appointment.timeRange,
-					specialization: appointment.speciality,
+					speciality: appointment.speciality,
 					type: appointment.type,
 					utcDate: new Date(appointment.date).toUTCString(),
 				})
