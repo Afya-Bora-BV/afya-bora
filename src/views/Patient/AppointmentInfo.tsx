@@ -191,7 +191,7 @@ export default function AppointmentInfo() {
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text
 						tx="common.symptoms"
-						fontSize={"2xl"}>Symptoms</Text>
+						fontSize={"2xl"}>Speciality</Text>
 					<Spacer size={10} />
 					<HStack space={4} flexWrap="wrap">
 						{data?.aboutVisit?.symptoms?.map((symptom: any) => (

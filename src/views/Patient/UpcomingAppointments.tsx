@@ -24,6 +24,7 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
+import { HomeNavKey } from ".";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -63,6 +64,12 @@ export default function UpcomingAppointments() {
 }
 
 export function NoAppointment() {
+	const { navigate } = useNavigation()
+
+	const createAppointment = () => {
+		navigate(HomeNavKey.ConsultantList);
+	}
+
 	return (
 		<View bg="white" shadow={2} rounded={10} width="100%" padding={3}>
 			<UpcomingAppointmentIllustration size={300} />
@@ -93,6 +100,7 @@ export function NoAppointment() {
 						style={{ backgroundColor: colors.primary }}
 						borderLeftRadius={10}
 						variant="solid"
+						onPress={createAppointment}
 					>
 						Make an appointment
 					</Button>

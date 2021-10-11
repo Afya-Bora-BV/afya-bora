@@ -9,6 +9,7 @@ import {
 	View,
 	VStack,
 	useToast,
+	SimpleGrid
 } from "native-base";
 import {
 	CommonActions,
@@ -27,6 +28,7 @@ import { RootState } from "../../store";
 import {
 	resetAppointmentState,
 	setComplaint,
+	setSpeciality,
 	toggleSymptom,
 } from "../../store/slices/appointment";
 import { Text } from "../../components/text";
@@ -40,6 +42,15 @@ const keySymptoms = [
 	"Ear Pain",
 	"Skin Rash",
 ];
+
+// TODO: these should come from facility settings
+const specializations = [
+	"Gynaecologist",
+	"Dermatologist",
+	"Endocrinology",
+	"Maternity",
+	"Family Medicine"
+]
 
 // to be extended
 interface NewAppointmentRequestBody {
@@ -96,6 +107,7 @@ export function PatientComplaint() {
 					aboutVisit: appointment.aboutVisit,
 					pid: profile?.id,
 					timeRange: appointment.timeRange,
+					specialization: appointment.speciality,
 					type: appointment.type,
 					utcDate: new Date(appointment.date).toUTCString(),
 				})
@@ -171,25 +183,23 @@ export function PatientComplaint() {
 						<View>
 							<Text fontSize={"3xl"}
 								tx="aboutVisit.symptoms"
-							>Symptoms</Text>
+							>Doctor Specialization</Text>
 
 							<Text
 								tx="aboutVisit.checkAnySymtomsYouHave"
-							>Check any symptoms you have.</Text>
+							>Please select the doctos Specialization.</Text>
 						</View>
 
 						<Stack space={2}>
 							{/* FIXME: This smells bad. Needs refactor */}
-							{_.chunk(keySymptoms, 2).map(
-								([symptomA, symptomB], index) => (
-									<HStack space={3}>
+							<SimpleGrid columns={2} space={3}>
+								{specializations.map(
+									(specilization, index) => (
 										<Box
 											rounded="xl"
 											borderColor="#ccc"
 											bg={
-												appointment.aboutVisit.symptoms.includes(
-													symptomA
-												)
+												appointment.speciality === specilization
 													? "#258FBE"
 													: "#fff"
 											}
@@ -204,64 +214,24 @@ export function PatientComplaint() {
 												}}
 												onPress={() =>
 													dispatch(
-														toggleSymptom(symptomA)
+														setSpeciality(specilization)
 													)
 												}
 											>
 												<Text
 													color={
-														appointment.aboutVisit.symptoms.includes(
-															symptomA
-														)
+														appointment.speciality === specilization
 															? "#fff"
 															: "#000"
 													}
 												>
-													{symptomA}
+													{specilization}
 												</Text>
 											</TouchableOpacity>
 										</Box>
-										<Box
-											rounded="xl"
-											borderColor="#ccc"
-											bg={
-												appointment.aboutVisit.symptoms.includes(
-													symptomB
-												)
-													? "#258FBE"
-													: "#fff"
-											}
-											borderWidth={1}
-											flex={1}
-										>
-											<TouchableOpacity
-												style={{
-													padding: 10,
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-												onPress={() =>
-													dispatch(
-														toggleSymptom(symptomB)
-													)
-												}
-											>
-												<Text
-													color={
-														appointment.aboutVisit.symptoms.includes(
-															symptomB
-														)
-															? "#fff"
-															: "#000"
-													}
-												>
-													{symptomB}
-												</Text>
-											</TouchableOpacity>
-										</Box>
-									</HStack>
-								)
-							)}
+									)
+								)}
+							</SimpleGrid>
 						</Stack>
 					</Stack>
 				</Box>

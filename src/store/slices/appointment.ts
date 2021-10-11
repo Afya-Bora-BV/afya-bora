@@ -69,6 +69,7 @@ export const appointmentSlice = createSlice({
 		setComplaint: (state, action: PayloadAction<string>) => {
 			state.aboutVisit.complaint = action.payload;
 		},
+		
 		resetAppointmentState: (state) => {
 			state = { ...initialState };
 		},
