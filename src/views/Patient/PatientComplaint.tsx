@@ -45,10 +45,10 @@ const keySymptoms = [
 
 // TODO: these should come from facility settings
 const specializations = [
+	"Maternity",
 	"Gynaecologist",
 	"Dermatologist",
 	"Endocrinology",
-	"Maternity",
 	"Family Medicine"
 ]
 
