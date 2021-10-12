@@ -28,6 +28,7 @@ import appointment, { setDate, setTimeRange } from "../../store/slices/appointme
 import { ConsultantListItem } from "../../components/consultant-list-item";
 import { colors } from "../../constants/colors";
 import { Text } from "../../components/text";
+import { Appointment } from "../../types";
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -96,7 +97,7 @@ export const CancelAppointmentButton = ({ appointmentId }: { appointmentId: stri
 }
 
 
-const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: string, appointment: any }) => {
+const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: string, appointment: Appointment }) => {
 	const navigation = useNavigation()
 
 	const goToEditAppointment = () => {
@@ -126,7 +127,10 @@ const EditAppointmentButton = ({ appointmentId, appointment }: { appointmentId: 
 				<Text
 					tx="appointmentInfo.editAppointment"
 					fontSize="sm"
-				>Edit Appointment</Text>
+				>
+
+					Edit Appointment
+				</Text>
 			</HStack>
 		</Pressable>
 	)
@@ -177,6 +181,24 @@ export default function AppointmentInfo() {
 					/>
 				</View>
 
+				<View bg="white" borderRadius={8} my={2} shadow={2} p={5}>
+					{data.rejectionReason &&
+						<VStack>
+							<Text fontSize={"xl"}
+								fontWeight="medium"
+							// tx="common.otherNotes"
+							>
+								Reason For Rejection
+							</Text>
+							<Text>
+								{data?.rejectionReason}
+							</Text>
+						</VStack>
+
+					}
+
+				</View>
+
 				<HStack justifyContent="space-between">
 					<EditAppointmentButton appointmentId={data?.id || ""} appointment={data || {}} />
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
@@ -188,10 +210,14 @@ export default function AppointmentInfo() {
 
 					{data?.consultant && <ConsultantListItem consultant={data?.consultant} />}
 				</VStack>
+
+
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text
 						tx="common.speciality"
-						fontSize={"2xl"}>Speciality</Text>
+						fontSize={"xl"}
+						fontWeight="medium"
+					>Speciality</Text>
 					<Spacer size={10} />
 					<HStack space={4} flexWrap="wrap">
 						{data?.speciality ?
@@ -212,8 +238,9 @@ export default function AppointmentInfo() {
 					</HStack>
 
 					<VStack mt={6}>
-						<Text fontSize={"2xl"}
+						<Text fontSize={"xl"}
 							tx="common.otherNotes"
+							fontWeight="medium"
 						>
 							Other Notes
 						</Text>

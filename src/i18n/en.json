@@ -94,7 +94,7 @@
 		"bookAppointment":"Book appointment"
 	},
 	"profile": {
-		"visitHistory": "Visit History",
+		"visitHistory": "Appointment History",
 		"upcomingVisits": "Upcoming Visit"
 	}
 }

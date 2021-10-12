@@ -18,6 +18,7 @@ import { HomeNavKey } from "../../views/Patient";
 import { colors } from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Text } from "../text";
+import _ from "lodash";
 
 
 export function AppointmentAlert({
@@ -38,7 +39,7 @@ export function AppointmentAlert({
         bgColor="#FFF"
         p={4}
         flexDirection="row"
-        rounded={6}
+        borderRadius={8}
         shadow={3}
       >
         <View flex={1.4}>
@@ -135,7 +136,7 @@ export function StatusAppointmentAlert({
       justifyContent="space-between"
       alignItems="center"
       padding={5}
-      rounded={20}
+      borderRadius={8}
       shadow={2}
       bg="white"
       testID="StatusAppointmentAlert"
@@ -169,7 +170,7 @@ export function StatusAppointmentAlert({
         {/* TODO FIX: "Status positioning" */}
         <Box rounded={10} backgroundColor={status === "accepted" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
           <Text fontSize="sm" color={status === "accepted" ? "#24D626" : "black"}>
-            {status}
+            {_.upperFirst(status)}
           </Text>
         </Box>
       </View>

@@ -16,13 +16,14 @@ import { HomeNavKey } from ".";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
+import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
 
 	return (
 		<MainContainer
-			title="Visit History"
+			title="Appointment History"
 			leftSection={
 				// Go back if can go back
 				navigation.canGoBack()
@@ -47,7 +48,7 @@ export default function VisitHistory() {
 				{/* NOTE: This is supposed to render.... regardless */}
 				{/* <DateTimeCardRender /> */}
 				<View width="100%">
-					{/* <VisitHistorySection /> */}
+					<VisitHistorySection />
 				</View>
 			</VStack>
 		</MainContainer>
@@ -57,24 +58,9 @@ export default function VisitHistory() {
 const VisitHistorySection = () => {
 	const navigation = useNavigation();
 	const { profile, } = useAuth();
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
-	useEffect(() => {
-		const subscriber = firestore()
-			.collection("appointments")
-			.where("pid", "==", profile?.id)
-			// .where("status","!=","cancelled")
-			.onSnapshot((documentSnapshot) => {
-				const shots = [
-					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
-				];
-				setAppointments(shots as RealTimeAppointment[]);
-			});
+	const { generalAppointments } = usePatientAppointments(profile?.id)
 
-		// Stop listening for updates when no longer required
-		return () => subscriber();
-	}, [profile?.id]);
-
-	const visitHistory = appointments?.filter((appointment) => {
+	const visitHistory = generalAppointments?.filter((appointment) => {
 		return (
 			moment.unix(appointment.date.seconds).isBefore() &&
 			appointment.status !== "cancelled"
@@ -82,11 +68,11 @@ const VisitHistorySection = () => {
 	});
 
 	console.log("Appontments : ");
-	console.log(JSON.stringify(appointments, null, 3));
+	console.log(JSON.stringify(generalAppointments, null, 3));
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>
-				{visitHistory.map((appointment) => {
+				{generalAppointments.map((appointment) => {
 					return (
 						<View>
 							<AppointmentAlert

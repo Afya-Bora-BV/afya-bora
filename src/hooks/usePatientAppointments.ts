@@ -3,7 +3,8 @@ import firestore from "@react-native-firebase/firestore";
 import { Appointment } from "../types";
 
 type PatientAppointments = {
-	appointments:Appointment[]
+	appointments: Appointment[]
+	generalAppointments: Appointment[]
 }
 
 // FIXME: Add type annotation
@@ -39,7 +40,9 @@ function usePatientAppointments(
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
 		.filter((appointment: any) => appointment.status !== "cancelled");
-	return { appointments };
+
+	const generalAppointments=allAppointments
+	return { appointments, generalAppointments };
 }
 
 export { usePatientAppointments };
