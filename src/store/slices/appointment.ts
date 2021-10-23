@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ConsultantionType } from "../../internals/data";
 import { Facility, TimeRange } from "../../types";
-import { toggleStringFromList } from "../../utils";
+import { isValidDate, toggleStringFromList } from "../../utils";
 // import firestore from "@react-native-firebase/firestore"
 
 export interface AppointmentState {
@@ -12,7 +12,7 @@ export interface AppointmentState {
 	// 	specialities: string[];
 	// };
 	type: ConsultantionType;
-	date: Date;
+	date: number;
 	timeRange: TimeRange;
 	location: string;
 	speciality: string;
@@ -22,13 +22,15 @@ export interface AppointmentState {
 	};
 }
 
+const timeStampNow = new Date().getTime();
+
 const initialState: AppointmentState = {
 	facility: null,
 	type: "offline",
 	location: "",
 	speciality: "",
 	timeRange: "morning",
-	date: new Date(),
+	date: timeStampNow,
 	aboutVisit: {
 		symptoms: [],
 		complaint: "",
@@ -54,8 +56,12 @@ export const appointmentSlice = createSlice({
 		setFacility: (state, action: PayloadAction<Facility>) => {
 			state.facility = action.payload;
 		},
-		setDate: (state, action: PayloadAction<Date>) => {
-			state.date = action.payload;
+		setDate: (state, action: PayloadAction<Date | Number>) => {
+			if (isValidDate(action.payload)) {
+				state.date = new Date(action.payload).getTime();
+			} else {
+				throw new Error("Attempted to set invalid date");
+			}
 		},
 		setTimeRange: (state, action: PayloadAction<TimeRange>) => {
 			state.timeRange = action.payload;
@@ -69,9 +75,9 @@ export const appointmentSlice = createSlice({
 		setComplaint: (state, action: PayloadAction<string>) => {
 			state.aboutVisit.complaint = action.payload;
 		},
-		
+
 		resetAppointmentState: (state) => {
-			state = { ...initialState };
+			Object.assign(state, initialState);
 		},
 	},
 });
@@ -86,7 +92,7 @@ export const {
 	setTimeRange,
 	toggleSymptom,
 	setComplaint,
-	resetAppointmentState
+	resetAppointmentState,
 } = appointmentSlice.actions;
 
 export default appointmentSlice.reducer;

@@ -12,7 +12,7 @@ import {
 } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import appointmetReducer from "./slices/appointment";
+import appointmentReducer from "./slices/appointment";
 import profileReducer from "./slices/profile"
 
 const authPersistConfig = {
@@ -27,7 +27,7 @@ const rootPersistConfig = {
 }
 
 const rootReducer = combineReducers({
-	appointment: appointmetReducer,
+	appointment: appointmentReducer,
 	profile: persistReducer(authPersistConfig, profileReducer)
 });
 

@@ -13,7 +13,7 @@ const AuthContext = React.createContext<{
 	profile: Profile | Consultant | null;
 	loadingProfile: boolean;
 	signOut: () => Promise<any>;
-	setProfile: (data: Profile) => void
+	setProfile: (data: Profile) => void;
 }>({
 	currentUser: null,
 	signIn: () => Promise.resolve(),
@@ -21,20 +21,28 @@ const AuthContext = React.createContext<{
 	loadingProfile: false,
 	profile: null,
 	signOut: () => Promise.resolve(),
-	setProfile: () => null
+	setProfile: () => null,
 });
 
 export function useAuth() {
 	return useContext(AuthContext);
 }
 
+// TODO: This auth context depends on the presence of internet
+// 1. Store the profile to the local state
+// 2. do not allow app to proceed without internet being accessible
 export const AuthProvider: React.FC<{}> = ({ children }) => {
 	const [loadingUser, setLoadingUser] = React.useState(true);
 	const [currentUser, setCurrentUser] =
 		React.useState<FirebaseAuthTypes.User | null>(null);
 
 	const [loadingProfile, setLoadingProfile] = React.useState(true);
-	const [profile, setProfile] = React.useState<Profile | Consultant | null>(null);
+	const [profile, setProfile] = React.useState<Profile | null>(null);
+
+	const [loadingConsultantProfile, setLoadingConsultantProfile] =
+		React.useState(true);
+	const [consultantProfile, setConsultantProfile] =
+		React.useState<Consultant | null>(null);
 
 	function signIn(telephone: string) {
 		return auth().signInWithPhoneNumber(telephone);
@@ -58,66 +66,71 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 
 	useEffect(() => {
 		let unsubscribe: any;
+		let unsubscribeConsultant: any;
 		console.log("Change: ", currentUser);
 		if (currentUser) {
+			const email = currentUser.email;
+			const phone = currentUser.phoneNumber;
 
-			const email = currentUser.email
-			const phone = currentUser.phoneNumber
-			// checking if its patient
-			if (email) {
-				setLoadingProfile(true);
+			// Load patient profile
+			setLoadingProfile(true);
+			unsubscribe = firestore()
+				.collection("patients")
+				.doc(currentUser.uid)
+				.onSnapshot((snap) => {
+					console.log("waiting for snaps", snap.exists);
 
-				unsubscribe = firestore()
-					.collection("consultants")
-					.where("uid", "==", currentUser.uid)
-					.onSnapshot((snap) => {
-						console.log("waiting for snaps", snap.size);
+					if (snap && snap.exists) {
+						const u1 = snap;
 
-						if (snap && snap.size > 0) {
-							const u1 = snap.docs[0];
+						// @ts-ignore
+						setProfile({
+							...u1.data(),
+							id: u1.id,
+						});
+					} else {
+						setProfile(null);
+					}
+					setLoadingProfile(false);
+				});
 
-							// @ts-ignore
-							setProfile({ ...u1.data(), id: u1.id, type: "consultant" });
-						} else {
-							setProfile(null);
-						}
-						setLoadingProfile(false);
-					});
-			}
-			else if (phone) {
-				setLoadingProfile(true);
-				unsubscribe = firestore()
-					.collection("patients")
-					.doc(currentUser.uid)
-					.onSnapshot((snap) => {
-						console.log("waiting for snaps", snap.exists);
+			// Load Consultant profile
+			setLoadingProfile(true);
 
-						if (snap && snap.exists) {
-							const u1 = snap;
+			unsubscribeConsultant = firestore()
+				.collection("consultants")
+				.where("uid", "==", currentUser.uid)
+				.onSnapshot((snap) => {
+					console.log("waiting for snaps", snap.size);
 
-							// @ts-ignore
-							setProfile({ ...u1.data(), id: u1.id, type: "patient" });
-						} else {
-							setProfile(null);
-						}
-						setLoadingProfile(false);
-					});
+					if (snap && snap.size > 0) {
+						const u1 = snap.docs[0];
 
-			} else {
-				ToastAndroid.show("Unknown type of user, please contect adminstration.", ToastAndroid.LONG)
-			}
+						setConsultantProfile({
+							...u1.data(),
+							id: u1.id,
+						} as unknown as Consultant);
+					} else {
+						setConsultantProfile(null);
+					}
+					setLoadingConsultantProfile(false);
+				});
 
+			// ToastAndroid.show("Unknown type of user, please contect adminstration.", ToastAndroid.LONG)
 		} else {
 			setLoadingProfile(false);
+			setLoadingConsultantProfile(false);
 		}
 
 		return () => {
 			console.log("Unhooked: ", currentUser, unsubscribe);
 			if (unsubscribe) {
 				unsubscribe();
+				unsubscribeConsultant();
 			}
 
 			setProfile(null);
+			setConsultantProfile(null);
 		};
 	}, [currentUser]);
 
@@ -127,10 +140,12 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 		loadingProfile,
 		setProfile,
 		profile,
+		loadingConsultantProfile,
+		consultantProfile,
 		signIn,
 		signOut,
 	};
 	return (
 		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 	);
-}
+};

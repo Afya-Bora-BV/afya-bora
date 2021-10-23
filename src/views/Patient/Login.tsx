@@ -14,7 +14,7 @@ import {
 } from "native-base";
 import React, { useState, useCallback, useEffect } from "react";
 import { colors } from "../../constants/colors";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -30,12 +30,13 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Text } from "../../components/text";
 import { useAtom } from "jotai";
 import { languageAtom } from "../../store/atoms";
+import Home from "./HomeScreen";
+import { userHasProfile } from "../../api";
 
 // TODO : logic to be moved somewhere on refactor
 
 // let render = 0
 const { height } = Dimensions.get("screen");
-
 
 const SendConfirmationCode = ({
 	signInWithPhoneNumber,
@@ -47,51 +48,63 @@ const SendConfirmationCode = ({
 	const [value, setValue] = useState("");
 	const [formattedValue, setFormattedValue] = useState("");
 	const phoneInput = React.useRef<PhoneInput>(null);
-	const [language] = useAtom(languageAtom)
+	const [language] = useAtom(languageAtom);
 	const onLogin = () => {
 		// do somthign with phone #
 		if (!Boolean(formattedValue)) {
-			ToastAndroid.show(`Phone number can not be empty`, ToastAndroid.SHORT)
-			return
+			ToastAndroid.show(
+				`Phone number can not be empty`,
+				ToastAndroid.SHORT
+			);
+			return;
 		}
-		console.log("Usee phone number ", formattedValue);
+		console.log("User phone number ", formattedValue);
 		login(formattedValue);
-
-
-	}
+	};
 
 	const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
-		onError: (error: FirebaseAuthTypes.PhoneAuthError, variables, context) => {
+		onError: (
+			error: FirebaseAuthTypes.PhoneAuthError,
+			variables,
+			context
+		) => {
 			// An error happened!
 			console.log(`rolling back optimistic update with id `, error);
 			if (error.code === "auth/invalid-phone-number") {
-				ToastAndroid.show(`Invalid phone number format`, ToastAndroid.SHORT)
-				return
+				ToastAndroid.show(
+					`Invalid phone number format`,
+					ToastAndroid.SHORT
+				);
+				return;
 			}
-			ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT)
+			ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT);
 		},
 		onSuccess: (data, variables, context) => {
 			// Boom baby!
 			// updating phoneNumber on success
 			console.log("Here it is");
-			ToastAndroid.show(`Verification code sent to ${formattedValue}`, ToastAndroid.SHORT)
+			ToastAndroid.show(
+				`Verification code sent to ${formattedValue}`,
+				ToastAndroid.SHORT
+			);
 			console.log(data);
 		},
 	});
 
-	const phoneInputPlaceHolder = language == "en" ? "Phone Number" : "Nambe Ya Simu"
+	const phoneInputPlaceHolder =
+		language == "en" ? "Phone Number" : "Namba Ya Simu";
 	return (
 		<AltContainer title="common.signIn" backdropHeight={height / 5.5}>
 			<View flexGrow={1} marginTop={10} testID="PatientLoginScreen">
 				<Box
 					bg="white"
-					position="relative"
+					// position="relative"
 					shadow={2}
 					rounded="xl"
 					padding={5}
 					marginX={5}
 				>
-					<VStack space={5} marginBottom={15}>
+					<VStack space={5} marginBottom={18}>
 						<PhoneInput
 							placeholder={phoneInputPlaceHolder}
 							ref={phoneInput}
@@ -108,41 +121,41 @@ const SendConfirmationCode = ({
 							withShadow
 							autoFocus
 						/>
-
 					</VStack>
-					<Box
-						position="absolute"
-						bottom={-20}
-						left={0}
-						right={0}
-						paddingX={10}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<Button
-							onPress={onLogin}
-							borderRadius={20}
-							w={260}
-							isLoading={isLoading}
-							disabled={isLoading}
-							style={{ backgroundColor: colors.primary }}
-							_text={{ color: "white" }}
-							shadow={5}
-						>
-							<Text color="white" tx="common.continue">
-								Continue
-							</Text>
-
-						</Button>
-					</Box>
+					{/*<Box*/}
+					{/*	position="absolute"*/}
+					{/*	bottom={-20}*/}
+					{/*	left={0}*/}
+					{/*	right={0}*/}
+					{/*	paddingX={10}*/}
+					{/*	justifyContent="center"*/}
+					{/*	alignItems="center"*/}
+					{/*	zIndex={10}*/}
+					{/*>*/}
+					{/*	*/}
+					{/*</Box>*/}
 				</Box>
+				<Button
+					onPress={onLogin}
+					borderRadius={20}
+					w={260}
+					isLoading={isLoading}
+					disabled={isLoading}
+					style={{ backgroundColor: colors.primary }}
+					_text={{ color: "white" }}
+					shadow={5}
+					alignSelf={"center"}
+					mt={-5}
+				>
+					<Text color="white" tx="common.continue">
+						Continue
+					</Text>
+				</Button>
 			</View>
 
 			<Stack alignItems="center" marginBottom={5}>
 				<HStack>
-					<Text
-						tx="common.areYouDoctor"
-					> </Text>
+					<Text tx="common.areYouDoctor"> </Text>
 					<Pressable
 						focusable
 						// TODO: detect platform and show cursor="Pointer" only in web
@@ -154,9 +167,9 @@ const SendConfirmationCode = ({
 					>
 						<Text
 							tx="common.signIn"
-							bold color={colors.primary}>
-
-						</Text>
+							bold
+							color={colors.primary}
+						></Text>
 					</Pressable>
 				</HStack>
 			</Stack>
@@ -180,7 +193,7 @@ const VerifyCode = ({
 		} catch (e) {
 			throw new Error(
 				JSON.stringify({
-					message: "Error in verifiying phone number",
+					message: "Error in verifying phone number",
 					error: e,
 				})
 			);
@@ -193,12 +206,18 @@ const VerifyCode = ({
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`Error in verifying code `, error);
-				ToastAndroid.show(`Invalid verification code `, ToastAndroid.SHORT)
+				ToastAndroid.show(
+					`Invalid verification code `,
+					ToastAndroid.SHORT
+				);
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("Successfuly verified code ");
-				ToastAndroid.show(`Successfully signed in  `, ToastAndroid.SHORT)
+				ToastAndroid.show(
+					`Successfully signed in  `,
+					ToastAndroid.SHORT
+				);
 			},
 		}
 	);
@@ -210,68 +229,74 @@ const VerifyCode = ({
 			title="common.verifyYourNumber"
 			noScroll
 		>
-			<Box
-				bg="white"
-				position="relative"
-				shadow={2}
-				rounded="xl"
-				padding={5}
-				paddingBottom={10}
-				marginX={5}
-				marginBottom={10}
-			>
-				<VStack space={5} marginBottom={15} alignContent="center">
-					<Text fontWeight="500" textAlign="center" color={"#747F9E"}
-						tx="common.verificationCode"
-					>
-						Verification Code
-					</Text>
-					<CodeInput value={code} onChangeCode={set} cellCount={4} />
-				</VStack>
+			<View flexGrow={1} marginTop={10} testID="PatientVerifyScreen">
 				<Box
-					position="absolute"
-					bottom={-20}
-					left={0}
-					right={0}
-					width="100%"
-					paddingX={10}
+					bg="white"
+					position="relative"
+					shadow={2}
+					rounded="xl"
+					padding={5}
+					paddingBottom={10}
+					marginX={5}
 				>
-					{/* COnfirm button */}
-					<Button
-						onPress={async () => {
-							await confirmCode();
-						}}
-						borderRadius={20}
-						isLoading={isLoading}
-						disabled={isLoading}
-						width="100%"
-						_disabled={{
-							backgroundColor: "#B0B3C7",
-							color: "white",
-						}}
-						style={{ backgroundColor: colors.primary }}
-						_text={{ color: "white" }}
-					>
-
+					<VStack space={5} marginBottom={0} alignContent="center">
 						<Text
-							tx="common.confirm"
-							color="white"
+							fontWeight="500"
+							textAlign="center"
+							color={"#747F9E"}
+							tx="common.verificationCode"
 						>
-							Confirm
+							Verification Code
 						</Text>
-
-					</Button>
+						<CodeInput
+							value={code}
+							onChangeCode={set}
+							cellCount={4}
+						/>
+					</VStack>
+					{/*<Box*/}
+					{/*	position="absolute"*/}
+					{/*	bottom={-20}*/}
+					{/*	left={0}*/}
+					{/*	right={0}*/}
+					{/*	width="100%"*/}
+					{/*	paddingX={10}*/}
+					{/*></Box>*/}
 				</Box>
-			</Box>
-			<View flex={1} alignItems="center" marginBottom={5}>
-				{/* <Text color="#2AD3E7">Resend (00:39)</Text> */}
+				{/* Confirm button */}
+				<Button
+					onPress={async () => {
+						await confirmCode();
+					}}
+					borderRadius={20}
+					w={260}
+					isLoading={isLoading}
+					disabled={isLoading}
+					width="100%"
+					_disabled={{
+						backgroundColor: "#B0B3C7",
+						color: "white",
+					}}
+					style={{ backgroundColor: colors.primary, elevation: 10 }}
+					_text={{ color: "white" }}
+					alignSelf={"center"}
+					mt={-5}
+				>
+					<Text tx="common.confirm" color="white">
+						Confirm
+					</Text>
+				</Button>
 			</View>
+			{/*<View flex={1} alignItems="center" marginBottom={5}>*/}
+			{/* <Text color="#2AD3E7">Resend (00:39)</Text> */}
+			{/*</View>*/}
 		</AltContainer>
 	);
 };
 
 export default function Login() {
 	const navigation = useNavigation();
+	const route = useRoute();
 	const [confirm, setConfirm] =
 		useState<FirebaseAuthTypes.ConfirmationResult>();
 
@@ -285,13 +310,29 @@ export default function Login() {
 		setConfirm(confirmation);
 	}
 
+	const completingAppointment = useRoute().params?.completingAppointment;
+
 	console.log("\n\nProfile:");
 	console.log(profile, currentUser, loadingProfile, loadingUser);
 	console.log("\n\n");
 
 	async function confirmCode(code: string) {
 		try {
-			await confirm?.confirm(code);
+			const confirmation = await confirm?.confirm(code);
+			const hasProfile =
+				confirmation && (await userHasProfile(confirmation?.user.uid));
+
+			if (hasProfile && completingAppointment) {
+				return navigation.navigate(HomeNavKey.ConfirmAppointment);
+			} else if (hasProfile && !completingAppointment) {
+				return navigation.navigate(HomeNavKey.HomeScreen);
+			} else if (!hasProfile) {
+				return navigation.navigate(HomeNavKey.CreateProfile, {
+					completingAppointment,
+				});
+			}
+			console.warn("State should be unreachable");
+			// navigation.navigate(hasProfile ? HomeNavKey.HomeScreen : HomeNavKey.CreateProfile)
 		} catch (error) {
 			console.log(error);
 			throw new Error("Invalid verification code : ");

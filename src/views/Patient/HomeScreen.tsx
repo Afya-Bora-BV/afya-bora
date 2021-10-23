@@ -39,11 +39,12 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from "react-native-geolocation-service";
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootState } from "../../store";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
-import FontisoIcon from 'react-native-vector-icons/Fontisto'
+import FontisoIcon from "react-native-vector-icons/Fontisto";
+import { resetAppointmentState } from "../../store/slices/appointment";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -113,6 +114,7 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 	profile,
 	user,
 }) => {
+	console.log(profile);
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -129,10 +131,13 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 	return (
 		<HStack flexWrap="wrap">
 			<VStack flex={1} justifyContent="center">
-				<Text fontSize="3xl"
-				fontWeight="bold"
+				<Text
+					fontSize="3xl"
+					fontWeight="bold"
 					tx="home.howCanWeHelpYouToday"
-				>How can we help you today?</Text>
+				>
+					How can we help you today?
+				</Text>
 			</VStack>
 
 			<HomeScreenIllustration flex={3} size={200} />
@@ -282,10 +287,6 @@ const UpcomingAppointments = () => {
 	};
 
 	if (!user) return null;
-
-	console.log("Appointments all ");
-	console.log(JSON.stringify(appointments, null, 3));
-
 	return (
 		<View>
 			{user && appointment && (
@@ -328,6 +329,7 @@ export default function Home() {
 	// const user = auth().currentUser;
 	// const profile = useSelector((store: RootState) => store.profile);
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
 
 	const { currentUser, profile, loadingProfile, loadingUser } = useAuth();
 
@@ -341,12 +343,20 @@ export default function Home() {
 	};
 
 	useEffect(() => {
-		if (!profile && auth().currentUser) {
+		if (!profile && !loadingUser && !loadingProfile && auth().currentUser) {
+			console.log("Loading state");
+			console.log(
+				profile,
+				loadingUser,
+				loadingProfile,
+				auth().currentUser
+			);
 			navigation.navigate(HomeNavKey.CreateProfile);
 		}
+		dispatch(resetAppointmentState());
 	}, []);
 
-	console.log("Curre user : ", profile, auth().currentUser);
+	// console.warn("Current user : ", profile, auth().currentUser);
 
 	if (loadingProfile || loadingUser) {
 		return <Text>Loading your profile</Text>;
@@ -380,14 +390,22 @@ export default function Home() {
 						}}
 					>
 						<IconContainer>
-							<FontisoIcon name="doctor" size={25} color="#561BB3" />
+							<FontisoIcon
+								name="doctor"
+								size={25}
+								color="#561BB3"
+							/>
 						</IconContainer>
 					</Pressable>
-
 				</HStack>
 			)}
 		>
-			<ScrollView width="100%" testID="Home" p={5} pb={10}>
+			<ScrollView
+				width="100%"
+				testID="Home"
+				contentContainerStyle={{ padding: 12 }}
+				pb={10}
+			>
 				<ProfileInformation profile={profile} user={currentUser} />
 				<Spacer size={30} />
 				<UpcomingAppointments />
@@ -433,7 +451,6 @@ export const ScheduleAppointmentSection = () => {
 	const handleOnPress = () => {
 		// just logging the data here which can be accessed in other components as well
 		navigate(HomeNavKey.ConsultantList);
-		// navigate on click
 	};
 
 	return (

@@ -34,7 +34,7 @@ import { RootState } from "../../store";
 import { languageAtom } from "../../store/atoms";
 import { useAuth } from "../../contexts/AuthContext";
 
-function ProfileCard({ }) {
+function ProfileCard({}) {
 	const navigation = useNavigation();
 	const { profile } = useAuth();
 	return (
@@ -60,7 +60,7 @@ function ProfileCard({ }) {
 					<Text fontWeight="600" fontSize="xl">
 						{profile?.name}
 					</Text>
-					<Text color="#747F9E">{profile?.id}</Text>
+					{/*<Text color="#747F9E">{profile?.id}</Text>*/}
 				</VStack>
 			</HStack>
 
@@ -81,13 +81,6 @@ function ProfileCard({ }) {
 
 const profileOptions = [
 	{
-		icon: AccountIcon,
-		title: "Switch Profile",
-		text: "common.switchProfile",
-		onAction: (action: () => void) => action(),
-	},
-
-	{
 		icon: HeadphoneIcon,
 		title: "Help Center",
 		text: "common.helpCenter",
@@ -105,16 +98,14 @@ export default function ProfileMain() {
 	const navigation = useNavigation();
 
 	const [language, setLanguage] = useAtom(languageAtom);
-	const [isLoading, setIsLoading] = React.useState(false)
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const { height } = Dimensions.get("screen");
-
 
 	// FIXME: Ally you messed this up, fix!
 	const signOutAndClearStore = async () => {
 		try {
 			await auth().signOut();
-
 		} catch (e) {
 			throw new Error("Something went wrong in signing out");
 		}
@@ -129,16 +120,21 @@ export default function ProfileMain() {
 				{
 					text: "Confirm",
 					onPress: () => {
-						setIsLoading(true)
+						setIsLoading(true);
 						auth()
 							.signOut()
 							.then((res) => {
-								ToastAndroid.show("Signed out successuly.", ToastAndroid.SHORT);
-								setIsLoading(false)
+								ToastAndroid.show(
+									"Signed out successuly.",
+									ToastAndroid.SHORT
+								);
+								setIsLoading(false);
 								navigation.dispatch(
 									CommonActions.reset({
 										index: 0,
-										routes: [{ name: HomeNavKey.HomeScreen }],
+										routes: [
+											{ name: HomeNavKey.HomeScreen },
+										],
 									})
 								);
 							})
@@ -148,14 +144,12 @@ export default function ProfileMain() {
 									"Something went wrong in signing out",
 									ToastAndroid.SHORT
 								);
-								setIsLoading(false)
+								setIsLoading(false);
 							});
-					}
+					},
 				},
 			]
 		);
-
-
 	};
 
 	const toggleLanguage = () => {
@@ -174,8 +168,6 @@ export default function ProfileMain() {
 			);
 	};
 
-
-
 	// console.log("Language : ",langu)
 	return (
 		<AlternateContainer
@@ -186,7 +178,7 @@ export default function ProfileMain() {
 			bgColor="#7065E4"
 		>
 			<ScrollView>
-				<VStack alignItems="center" margin={8} marginTop={5} space={4}>
+				<VStack alignItems="center" margin={6} marginTop={5} space={4}>
 					<ProfileCard />
 
 					<HStack
@@ -268,15 +260,18 @@ export default function ProfileMain() {
 								</HStack>
 							</Pressable>
 							{profileOptions.map(
-								({ icon: ActualIcon, title, onAction, text }, ix) => (
+								(
+									{ icon: ActualIcon, title, onAction, text },
+									ix
+								) => (
 									<Pressable
 										key={`profOpt-${ix}`}
 										onPress={
 											onAction !== undefined
 												? () =>
-													navigation.navigate(
-														HomeNavKey.ChooseProfile
-													)
+														navigation.navigate(
+															HomeNavKey.ChooseProfile
+														)
 												: undefined
 										}
 									>
@@ -284,7 +279,9 @@ export default function ProfileMain() {
 											<Square size={6}>
 												<ActualIcon />
 											</Square>
-											<Text tx={text} fontSize={18}>{ }</Text>
+											<Text tx={text} fontSize={18}>
+												{}
+											</Text>
 										</HStack>
 									</Pressable>
 								)
@@ -294,8 +291,13 @@ export default function ProfileMain() {
 									<Square size={6}>
 										<LogoutIcon />
 									</Square>
-									<Text fontSize={18}
-										tx={!isLoading?"common.logout":"common.loading"}
+									<Text
+										fontSize={18}
+										tx={
+											!isLoading
+												? "common.logout"
+												: "common.loading"
+										}
 									>
 										{isLoading
 											? "Logging out ... "

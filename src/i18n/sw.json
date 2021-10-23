@@ -67,6 +67,9 @@
 		"editAppointment": "Hariri Miadi",
 		"cancelAppointment": "Sitisha/Ghairi Miadi"
 	},
+	"confirmAppointment": {
+		"confirmAppointment": "Hakikisha Taarifa"
+	},
 	"facilitiList": {
 		"selectFacility": "Chagua Kito cha Huduma"
 	},
@@ -84,6 +87,8 @@
 	},
 	"aboutVisit": {
 		"aboutYourVisit": "Taarifa za mahudhurio",
+		"doctorSpecialization": "Doctor Specialization",
+		"doctorSpecializationDescription": "Please select a specialist",
 		"symptoms": "Dalili",
 		"checkAnySymtomsYouHave": "Chagua dalili ulizonazo",
 		"primaryReasonToSeeDoctor": "Nini sababu kuu ya kumuona dactari ?",

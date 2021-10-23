@@ -113,6 +113,7 @@ export const AppTheme = {
 	},
 };
 
+// TODO: SO MUCH JUNK HERE!!
 function Main() {
 	const [language, setLanguage] = useAtom(languageAtom);
 	const { t, i18n } = useTranslation();
@@ -121,8 +122,14 @@ function Main() {
 		useAuth();
 
 	const ready = !loadingProfile && !loadingUser;
+	// console.warn(ready, currentUser);
 	const createAccountFirst =
+		ready && currentUser === null && profile === null;
+
+	const createProfileFirst =
 		ready && currentUser !== null && profile === null;
+
+	console.warn(ready, currentUser, profile);
 
 	useEffect(() => {
 		i18n.changeLanguage(language);
@@ -130,27 +137,25 @@ function Main() {
 
 	useEffect(() => {
 		if (currentUser) {
-			updateDeviceMessagingToken(currentUser.uid)
+			updateDeviceMessagingToken(currentUser.uid);
 		}
-	}, [currentUser])
+	}, [currentUser]);
 
 	useEffect(() => {
 		// Remove splash screen if ready
 		ready && SplashScreen.hide();
 	}, [ready]);
 
-	console.log(ready, loadingProfile, loadingUser);
+	console.log(ready, loadingProfile, loadingUser, auth().currentUser);
 
 	console.log("Current language  : ", language);
 	if (!ready) return null;
 
 	if (profile?.type === "consultant") {
-		return (
-			<HomeView initialRouteName={DoctorRoutes.DoctorHome} />
-		)
+		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;
 	}
-	
-	if (createAccountFirst)
+
+	if (createProfileFirst)
 		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
 
 	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
@@ -166,9 +171,7 @@ export default function App() {
 						<NativeBaseProvider theme={theme}>
 							<NavigationContainer theme={AppTheme}>
 								<ToastProvider>
-									<QueryClientProvider
-										client={queryClient}
-									>
+									<QueryClientProvider client={queryClient}>
 										<JotaiProvider>
 											<Suspense fallback={null}>
 												<Main />

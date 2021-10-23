@@ -12,15 +12,16 @@ import {
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Facility } from "../types";
+import FastImage from "react-native-fast-image";
 
 type FacilityListItemProps = {
-	facility: Facility
+	facility: Facility;
 };
 
 // TODO: calcultae distance from geopoint and render distance
-const getDistance = (geopoint: { lat: number, lng: number }) => {
-	return `${0} km`
-}
+const getDistance = (geopoint: { lat: number; lng: number }) => {
+	return `${0} km`;
+};
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 	facility: { name, city, street, country, photoUrl },
@@ -33,16 +34,17 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 				style={{ backgroundColor: "white" }}
 			>
 				<HStack alignItems="center">
-					<Avatar
-						alignSelf="flex-start"
-						size={120}
-						borderRadius={6}
+					<FastImage
+						style={{ width: 120, height: 120, borderRadius: 6 }}
 						source={{
-							uri: photoUrl ? photoUrl : "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc"
+							uri: photoUrl
+								? photoUrl
+								: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
+							// headers: { Authorization: 'someAuthToken' },
+							priority: FastImage.priority.normal,
 						}}
-					>
-						SS
-					</Avatar>
+						resizeMode={FastImage.resizeMode.cover}
+					/>
 					<VStack style={{}} pl={3} flex={1}>
 						<HStack
 							justifyContent="space-between"
@@ -60,7 +62,6 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							<Text fontSize="md" bold color="#747F9E">
 								{country}
 							</Text>
-
 						</VStack>
 
 						<HStack

@@ -15,6 +15,7 @@ import {
 import { Text } from "./text";
 import { ConsultantionType } from "../internals/data";
 import { languageAtom } from "../store/atoms";
+import MemoizedSelect from "./MemoizedSelect";
 // these attoms to be moved since the state might be needed somewhere
 
 const specialities: { name: string }[] = [
@@ -72,14 +73,14 @@ export const completeScheduleAtom = atom(
 			speciality: get(specialityAtom),
 		};
 	},
-	(get, set) => { }
+	(get, set) => {}
 );
 type AppointmentType = {
 	title: string;
 	value: ConsultantionType;
 	onPress: (val: ConsultantionType) => void;
 	isActive: boolean;
-	text: string
+	text: string;
 };
 
 const AppointmentTypeButton: React.FC<AppointmentType> = ({
@@ -87,7 +88,7 @@ const AppointmentTypeButton: React.FC<AppointmentType> = ({
 	value,
 	onPress,
 	isActive,
-	text
+	text,
 }) => {
 	return (
 		<TouchableOpacity
@@ -125,17 +126,16 @@ const AppointmentCustomizer: React.FC = () => {
 			appointment.speciality,
 		]
 	);
-	const [language] = useAtom(languageAtom)
-	const languagePlaceholder = language === "en" ? "Location" : "Mahali"
+	const [language] = useAtom(languageAtom);
+	const languagePlaceholder = language === "en" ? "Location" : "Mahali";
 	const dispatch = useDispatch();
-
 
 	return (
 		<Stack space={7}>
 			<Stack space={2}>
-				<Text
-					tx="home.chooseTypeOfAppointment"
-				>Choose Type of Appointment</Text>
+				<Text tx="home.chooseTypeOfAppointment">
+					Choose Type of Appointment
+				</Text>
 				<HStack space={2}>
 					<AppointmentTypeButton
 						title={"At Facility"}
@@ -154,34 +154,39 @@ const AppointmentCustomizer: React.FC = () => {
 				</HStack>
 			</Stack>
 
+			{/*<Stack space={2}>*/}
+			{/*	<MemoizedSelect placeholder={languagePlaceholder} selectedValue={location} accessibilityLabel />*/}
+			{/*</Stack>*/}
+
 			<Stack space={2}>
-				<Text
-					tx="home.chooseLocation"
-				>Choose Location</Text>
-				<Select
+				<Text tx="home.chooseLocation">Choose Location</Text>
+				<MemoizedSelect
 					variant="rounded"
 					selectedValue={location}
 					minWidth={200}
 					accessibilityLabel="Location"
+					renderToHardwareTextureAndroid={true}
 					placeholder={languagePlaceholder}
+					options={regions.map((region) => ({
+						label: region.name,
+						value: region.name.toLowerCase(),
+						key: region.name,
+					}))}
 					onValueChange={(itemValue) => {
 						dispatch(setLocation(itemValue));
 					}}
 					_selectedItem={{
-						bg: "cyan.600",
-						endIcon: <CheckIcon size={4} />,
-					}}
-				>
-					{regions.map((region) => (
-						<Select.Item
-							key={region.name}
-							label={region.name}
-							value={region.name}
-						/>
-					))}
-				</Select>
-			</Stack>
+						bg: "cyan.100",
+						// justifyItems: "space-between",
+						style: { alignContent: "space-between" },
 
+						startIcon: <CheckIcon size={4} />,
+					}}
+					_item={{
+						bg: "muted.50",
+					}}
+				/>
+			</Stack>
 		</Stack>
 	);
 };

@@ -1,6 +1,7 @@
 import messaging from "@react-native-firebase/messaging";
 import firestore from "@react-native-firebase/firestore";
 import _ from "lodash";
+import { boolean } from "yup";
 
 export function toggleStringFromList(text: string, list: string[]): string[] {
 	if (list.includes(text)) {
@@ -40,7 +41,7 @@ export function friendlyFormatDate(timeStamp: Date | string | number) {
  *
  * @export
  * @param {string} userId
- * @return {*} 
+ * @return {*}
  */
 export function updateDeviceMessagingToken(userId: string) {
 	messaging().onTokenRefresh;
@@ -87,4 +88,30 @@ export function updateDeviceMessagingToken(userId: string) {
 		.catch((error) => {
 			console.log(error);
 		});
+}
+
+/**
+ * Checks whether a date is valid or not
+ *
+ * @param date
+ * @return boolean whether its valid or not
+ */
+export function isValidDate(date: string | number | Date): boolean {
+	const d = new Date(date);
+	if (Object.prototype.toString.call(d) === "[object Date]") {
+		// it is a date
+		return !isNaN(d.getTime());
+	} else {
+		// not a date
+		return false;
+	}
+}
+
+/**
+ * Adds commas to numbers
+ * @param num
+ * @return string
+ */
+export function friendlyNumber(num: number): string {
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

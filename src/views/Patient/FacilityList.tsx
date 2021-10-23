@@ -33,7 +33,6 @@ import { setFacility } from "../../store/slices/appointment";
 import { colors } from "../../constants/colors";
 import { getFacilities } from "../../api";
 
-
 const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
@@ -77,16 +76,20 @@ const FacilityList = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
-			<ScrollView padding={5} testID={"ConsultantList"}>
+			<ScrollView
+				padding={5}
+				contentContainerStyle={{ paddingBottom: 16 }}
+				testID={"ConsultantList"}
+			>
 				{/* <SelectionDetails /> */}
 				<Spacer size={4} />
 				{isLoading && <Spinner color={colors.primary} size="lg" />}
@@ -95,10 +98,11 @@ const FacilityList = () => {
 						<VStack space={2}>
 							{facilities.map((facility, ix) => {
 								return (
-									<Pressable onPress={() => selectFacility(facility)}>
-										<FacilityListItem
-											facility={facility}
-										/>
+									<Pressable
+										key={facility.id}
+										onPress={() => selectFacility(facility)}
+									>
+										<FacilityListItem facility={facility} />
 									</Pressable>
 								);
 							})}
@@ -118,7 +122,7 @@ const ModalActions: React.FC = () => {
 	};
 	return (
 		<HStack space={2}>
-			<Button flex={1} onPress={() => { }}>
+			<Button flex={1} onPress={() => {}}>
 				Cancel
 			</Button>
 			<Button flex={1} onPress={viewDetailsAndMore}>

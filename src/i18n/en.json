@@ -68,6 +68,9 @@
 		"editAppointment":"Edit Appointment",
 		"cancelAppointment":"Cancel Appointment"
 	},
+	"confirmAppointment": {
+		"confirmAppointment": "Confirm Appointment"
+	},
 	"facilitiList":{
 		"selectFacility":"Select Facility"
 	},
@@ -87,6 +90,8 @@
 	},
 	"aboutVisit":{
 		"aboutYourVisit":"About your visit",
+		"doctorSpecialization": "Doctor Specialization",
+		"doctorSpecializationDescription": "Please select a specialist",
 		"symptoms":"Symptoms",
 		"checkAnySymtomsYouHave":"Check any symptoms you have",
 		"primaryReasonToSeeDoctor":"What is your primary reason for seeing the doctor ?",

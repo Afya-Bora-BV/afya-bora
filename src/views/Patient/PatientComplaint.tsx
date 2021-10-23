@@ -9,12 +9,9 @@ import {
 	View,
 	VStack,
 	useToast,
-	SimpleGrid
+	SimpleGrid,
 } from "native-base";
-import {
-	CommonActions,
-	useNavigation,
-} from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
 import functions from "@react-native-firebase/functions";
 import _ from "lodash";
@@ -33,6 +30,7 @@ import {
 } from "../../store/slices/appointment";
 import { Text } from "../../components/text";
 import { useAuth } from "../../contexts/AuthContext";
+import { type } from "os";
 
 const keySymptoms = [
 	"Fever",
@@ -45,12 +43,13 @@ const keySymptoms = [
 
 // TODO: these should come from facility settings
 const specializations = [
+	"General Doctor",
 	"Maternity",
 	"Gynaecologist",
 	"Dermatologist",
 	"Endocrinology",
-	"Family Medicine"
-]
+	"Family Medicine",
+];
 
 // to be extended
 interface NewAppointmentRequestBody {
@@ -81,70 +80,46 @@ export function PatientComplaint() {
 	const toast = useToast();
 	const navigation = useNavigation();
 
-	const [isLoading, setIsLoading] = useState(false);
+	const { appointment } = useSelector((state: RootState) => ({
+		appointment: state.appointment,
+	}));
 
-
-	const { appointment } = useSelector(
-		(state: RootState) => ({ appointment: state.appointment })
-	);
-
-	const { currentUser, profile } = useAuth();
-
+	const { currentUser, profile, loadingProfile } = useAuth();
 
 	const dispatch = useDispatch();
 
 	const submit = () => {
 		console.log(currentUser, profile);
-		setIsLoading(true)
-		if (currentUser !== null || !profile) {
-			const fid = appointment.facility?.id;
-
-			// FIXME: Move function to API file
-			functions()
-				.httpsCallable("makeAppointment")({
-					// FIXME: Add a checker for fid being present
-					fid,
-					aboutVisit: appointment.aboutVisit,
-					pid: profile?.id,
-					timeRange: appointment.timeRange,
-					speciality: appointment.speciality,
-					type: appointment.type,
-					utcDate: new Date(appointment.date).toUTCString(),
-				})
-				.then((res) => {
-					ToastAndroid.show(
-						"Success! Your appointment request has been made.",
-						3000
-					);
-					dispatch(resetAppointmentState());
-					navigation.dispatch(
-						CommonActions.reset({
-							index: 0,
-							routes: [{ name: HomeNavKey.HomeScreen }]
-						}));
-				})
-				.catch((err) => {
-					console.log(err);
-					setIsLoading(false);
-					ToastAndroid.show("Error. Please try again.", 3000);
-				});
+		if (profile && !loadingProfile) {
+			navigation.navigate(HomeNavKey.ConfirmAppointment);
+		} else if (!profile && !currentUser) {
+			ToastAndroid.show(
+				"Please create an account first before proceeding.",
+				ToastAndroid.SHORT
+			);
+			return navigation.navigate(HomeNavKey.Login, {
+				completingAppointment: true,
+			});
 		} else {
-			navigation.navigate(HomeNavKey.Login);
+			ToastAndroid.show(
+				"Please create your profile first first before proceeding.",
+				ToastAndroid.SHORT
+			);
+			navigation.navigate(HomeNavKey.CreateProfile, {
+				completingAppointment: true,
+			});
 		}
 	};
 
 	const confirmSubmit = () => {
-		if (isLoading) {
-			return ToastAndroid.show("Please wait while loading ...", 3000);
-		}
 		Alert.alert(
 			"Confirm Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => { } },
+				{ text: "Cancel", onPress: () => {} },
 				{
 					text: "Confirm",
-					onPress: (submit),
+					onPress: submit,
 				},
 			]
 		);
@@ -160,16 +135,16 @@ export function PatientComplaint() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
-			<VStack alignItems="center" paddingX={10} space={10}>
+			<VStack alignItems="center" paddingX={4} space={10}>
 				{/* Symptomps section */}
 				<Box bg="white" shadow={2} rounded={10} width="100%">
 					<Stack
@@ -181,56 +156,59 @@ export function PatientComplaint() {
 						space={10}
 					>
 						<View>
-							<Text fontSize={"3xl"}
-								tx="aboutVisit.symptoms"
-							>Doctor Specialization</Text>
-
 							<Text
-								tx="aboutVisit.checkAnySymtomsYouHave"
-							>Please select the doctos Specialization.</Text>
+								fontSize={"3xl"}
+								tx="aboutVisit.doctorSpecialization"
+							>
+								Doctor Specialization
+							</Text>
+
+							<Text tx="aboutVisit.doctorSpecializationDescription">
+								Please select a specialist.
+							</Text>
 						</View>
 
 						<Stack space={2}>
 							{/* FIXME: This smells bad. Needs refactor */}
 							<SimpleGrid columns={2} space={3}>
-								{specializations.map(
-									(specilization, index) => (
-										<Box
-											rounded="xl"
-											borderColor="#ccc"
-											bg={
-												appointment.speciality === specilization
-													? "#258FBE"
-													: "#fff"
+								{specializations.map((specilization, index) => (
+									<Box
+										rounded="xl"
+										borderColor="#ccc"
+										bg={
+											appointment.speciality ===
+											specilization
+												? "#258FBE"
+												: "#fff"
+										}
+										borderWidth={1}
+										flex={1}
+									>
+										<TouchableOpacity
+											style={{
+												padding: 10,
+												alignItems: "center",
+												justifyContent: "center",
+											}}
+											onPress={() =>
+												dispatch(
+													setSpeciality(specilization)
+												)
 											}
-											borderWidth={1}
-											flex={1}
 										>
-											<TouchableOpacity
-												style={{
-													padding: 10,
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-												onPress={() =>
-													dispatch(
-														setSpeciality(specilization)
-													)
+											<Text
+												color={
+													appointment.speciality ===
+													specilization
+														? "#fff"
+														: "#000"
 												}
 											>
-												<Text
-													color={
-														appointment.speciality === specilization
-															? "#fff"
-															: "#000"
-													}
-												>
-													{specilization}
-												</Text>
-											</TouchableOpacity>
-										</Box>
-									)
-								)}
+												{specilization}
+											</Text>
+										</TouchableOpacity>
+									</Box>
+								))}
 							</SimpleGrid>
 						</Stack>
 					</Stack>
@@ -245,7 +223,8 @@ export function PatientComplaint() {
 						}}
 						space={3}
 					>
-						<Text fontSize={"xl"}
+						<Text
+							fontSize={"xl"}
 							tx="aboutVisit.primaryReasonToSeeDoctor"
 						>
 							What is your primary reason for seeing the doctor?
@@ -256,8 +235,8 @@ export function PatientComplaint() {
 							autoCorrect={false}
 							multiline
 							textAlignVertical="top"
-							borderColor="#FFF"
-							placeholder=""
+							borderColor="#ccc"
+							placeholder="..."
 							onChangeText={(complaint) => {
 								dispatch(setComplaint(complaint));
 							}}
@@ -269,24 +248,11 @@ export function PatientComplaint() {
 					width="100%"
 					bg={colors.primary}
 					onPress={confirmSubmit}
-					isLoading={isLoading}
 					rounded={20}
 				>
-
-					{isLoading ?
-						<Text
-							color="white"
-							tx="common.loading"
-						>
-							Loading....
-						</Text>
-						:
-						<Text
-							color="white"
-							tx="aboutVisit.bookAppointment"
-						>
-							Book appointment
-						</Text>}
+					<Text color="white" tx="aboutVisit.bookAppointment">
+						Book appointment
+					</Text>
 				</Button>
 			</VStack>
 		</MainContainer>

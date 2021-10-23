@@ -42,7 +42,6 @@ import { Text } from "../../components/text";
 import { languageAtom } from "../../store/atoms";
 import { IScrollViewProps } from "native-base/lib/typescript/components/basic/ScrollView/types";
 
-
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
 		consultant: any;
@@ -97,12 +96,9 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 	return (
 		<View>
 			<HStack justifyContent="space-between" mb={3}>
-				<Text fontSize="2xl" bold
-					tx="appointmentTime.preferredDate"
-				>
+				<Text fontSize="2xl" tx="appointmentTime.preferredDate">
 					Preferred Date
 				</Text>
-
 			</HStack>
 
 			<HStack justifyContent="flex-end" mb={3}>
@@ -116,19 +112,19 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 				horizontal
 				paddingBottom={3}
 				ref={daysListRef}
-				onLayout={() =>
-					daysListRef.current?.scrollTo({
-						x: 50 * date.getDate(),
-						y: 0,
-					})
-				}
+				// onLayout={() =>
+				// 	daysListRef.current?.scrollTo({
+				// 		x: 50 * date.getDate(),
+				// 		y: 0,
+				// 	})
+				// }
 			>
 				<HStack alignItems="center" space={1}>
 					{_.times(getDaysInMonth(date), (n) => {
 						const d = new Date(date);
 						d.setDate(n + 1);
-						const isBefore = moment(d).isBefore(new Date(), "days")
-						if (isBefore) return null
+						const isBefore = moment(d).isBefore(new Date(), "days");
+						if (isBefore) return null;
 						return (
 							<CalendarDay
 								onPress={() => onChangeDate(d)}
@@ -189,7 +185,6 @@ const timeSlotsSwahili: Array<TimeSlot> = [
 	},
 ];
 
-
 type PickATimeSectionProps = {
 	timeRange: TimeRange;
 	onChange: (t: TimeRange) => void;
@@ -201,12 +196,10 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = ({
 }) => {
 	const [language, setLanguage] = useAtom(languageAtom);
 
-	const slots = language === "en" ? timeSlots : timeSlotsSwahili
+	const slots = language === "en" ? timeSlots : timeSlotsSwahili;
 	return (
 		<VStack space={5}>
-			<Text fontSize="2xl" bold
-				tx="appointmentTime.preferredTimeRange"
-			>
+			<Text fontSize="2xl" tx="appointmentTime.preferredTimeRange">
 				Preferred Time Range
 			</Text>
 			<HStack justifyContent={"space-between"} space={2}>
@@ -217,6 +210,7 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = ({
 								onChange(slot.period);
 							}}
 							flex={1}
+							key={slot.period}
 						>
 							<Box
 								borderWidth={1}
@@ -294,7 +288,11 @@ const PreferedDoctor = () => {
 			}}
 		>
 			{doctors.map((doctor) => (
-				<Select.Item label={doctor.name} value={doctor.name} />
+				<Select.Item
+					key={doctor.name}
+					label={doctor.name}
+					value={doctor.name}
+				/>
 			))}
 		</Select>
 	);
@@ -340,13 +338,14 @@ const MonthDropDown: React.FC<MonthDropDownProps> = ({
 							borderBottomWidth: i === arr.length - 1 ? 0 : 1,
 							borderBottomColor: "#ccc",
 						}}
+						key={date.toString()}
 						onPress={() => onChangeDate(date)}
 					>
 						{/* <Menu.Item key={String(date)}> */}
 						<Text>{moment(date).format("MMMM YYYY")}</Text>
 						{/* </Menu.Item> */}
 					</TouchableOpacity>
-				)
+				);
 			})}
 		</Menu>
 	);
@@ -410,26 +409,42 @@ export default function SetAppointmentTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
 			<VStack paddingX={3} mt={2} space={10}>
 				{/* Consultant Preview */}
 				<Box>
-					<FacilityListItem facility={facility} onPress={() => { }} />
+					{facility && (
+						<TouchableOpacity
+							activeOpacity={0.5}
+							onPress={() => {}}
+						>
+							<FacilityListItem facility={facility} />
+						</TouchableOpacity>
+					)}
 				</Box>
 
 				{/* Picking appointment times */}
-				<VStack bg="white" p={3} shadow={2} space={6} rounded={10} mb={1}>
+				<VStack
+					bg="white"
+					p={3}
+					shadow={2}
+					space={6}
+					rounded={10}
+					mb={1}
+				>
 					<PickADateSection
-						date={date}
-						onChangeDate={(date) => dispatch(setDate(date))}
+						date={new Date(date)}
+						onChangeDate={(date) =>
+							dispatch(setDate(date.getTime()))
+						}
 					/>
 
 					<PickATimeSection
@@ -438,10 +453,12 @@ export default function SetAppointmentTime() {
 					/>
 				</VStack>
 
-
 				<Text
 					tx="common.requestChangeMessage"
-					fontSize={"md"} color={"#B0B3C7"} textAlign="center">
+					fontSize={"md"}
+					color={"#B0B3C7"}
+					textAlign="center"
+				>
 					*Your exact appointment day, time, and doctor will be
 					confirmed by the facility administrator.
 				</Text>
@@ -452,10 +469,7 @@ export default function SetAppointmentTime() {
 					onPress={onPressNext}
 					rounded={20}
 				>
-					<Text
-						color="white"
-						tx="common.next"
-					>
+					<Text color="white" tx="common.next">
 						Preferred Time Range
 					</Text>
 				</Button>

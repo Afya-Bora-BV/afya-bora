@@ -17,7 +17,11 @@ import { Spacer } from "../../components/Spacer";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+	CommonActions,
+	useNavigation,
+	useRoute,
+} from "@react-navigation/native";
 import { colors } from "../../constants/colors";
 import {
 	Dimensions,
@@ -38,7 +42,7 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { HomeNavKey } from ".";
 import { useAuth } from "../../contexts/AuthContext";
 import functions from "@react-native-firebase/functions";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 import { Text } from "../../components/text";
 
 const regions: { name: string }[] = [
@@ -76,7 +80,7 @@ const regions: { name: string }[] = [
 ].map((region) => ({ name: region }));
 
 const bloodGroups: { name: string }[] = [
-	"Blooad Group",
+	"Blood Group",
 	"A+",
 	"B+",
 	"AB+",
@@ -100,15 +104,12 @@ interface ServerData {
 	patientId: string;
 }
 
-
-
 const createPatientProfile = async (profile: Profile): Promise<any> => {
-	const { uid, phoneNumber } = await auth().currentUser!
+	const { uid, phoneNumber } = await auth().currentUser!;
 	await functions().httpsCallable("createNewProfile")({
 		uid: uid,
 		...profile,
-
-	})
+	});
 };
 
 //yup form control attrib
@@ -126,9 +127,9 @@ interface CompleteProfileInputs {
 
 export default function CreateProfileScreen() {
 	const navigation = useNavigation();
+	const { params } = useRoute();
 	const { width, height } = Dimensions.get("screen");
 	const phoneNumber = auth().currentUser?.phoneNumber;
-
 
 	const Toast = useToast();
 
@@ -172,13 +173,12 @@ export default function CreateProfileScreen() {
 				phoneNumber,
 				type: "patient",
 			});
-
 		} catch (e) {
 			throw new Error("Error in creating profile");
 		}
 	};
 
-	//Date picker attrib
+	//Date picker attribute
 	const [show, setShow] = useState(false);
 	const [date, setDate] = useState(new Date(1598051730000));
 
@@ -192,19 +192,29 @@ export default function CreateProfileScreen() {
 			onError: (error, variables, context) => {
 				// An error happened!
 				console.log(`rolling back optimistic update with id `, error);
-				ToastAndroid.show("Error in creating profile", ToastAndroid.SHORT);
+				ToastAndroid.show(
+					"Error in creating profile",
+					ToastAndroid.SHORT
+				);
 			},
 			onSuccess: (data, variables, context) => {
 				// Boom baby!
 				console.log("created successfully ");
-				ToastAndroid.show("successfully created profile", ToastAndroid.SHORT);
+				ToastAndroid.show(
+					"successfully created profile",
+					ToastAndroid.SHORT
+				);
+
+				if (params?.completingAppointment) {
+					return navigation.navigate(HomeNavKey.ConfirmAppointment);
+				}
 
 				navigation.dispatch(
 					CommonActions.reset({
-						index: 0,
-						routes: [{ name: HomeNavKey.HomeScreen }]
-					}));
-
+						index: 1,
+						routes: [{ name: HomeNavKey.HomeScreen }],
+					})
+				);
 			},
 		}
 	);
@@ -294,9 +304,6 @@ export default function CreateProfileScreen() {
 
 									<Spacer size={20} />
 
-
-
-
 									<Stack>
 										<Text>Gender</Text>
 
@@ -316,9 +323,13 @@ export default function CreateProfileScreen() {
 												}) => (
 													<Picker
 														selectedValue={value}
-														onValueChange={(itemValue, itemIndex) =>
+														onValueChange={(
+															itemValue,
+															itemIndex
+														) =>
 															onChange(itemValue)
-														}>
+														}
+													>
 														<Picker.Item
 															label="Gender"
 															value=""
@@ -332,7 +343,6 @@ export default function CreateProfileScreen() {
 															label="Female"
 															value="female"
 														/>
-
 													</Picker>
 												)}
 												name="gender"
@@ -370,7 +380,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => { }}
+														) => {}}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -409,7 +419,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																	"ios"
+																		"ios"
 																);
 																onChange(
 																	currentDate
@@ -554,29 +564,36 @@ export default function CreateProfileScreen() {
 												}) => (
 													<Picker
 														selectedValue={value}
-														onValueChange={(itemValue, itemIndex) =>
+														onValueChange={(
+															itemValue,
+															itemIndex
+														) =>
 															onChange(itemValue)
-														}>
+														}
+													>
 														{bloodGroups.map(
 															(bloodGroup) => {
 																return (
 																	<Picker.Item
-																		label={bloodGroup.name}
-																		value={bloodGroup.name}
+																		key={
+																			bloodGroup.name
+																		}
+																		label={
+																			bloodGroup.name
+																		}
+																		value={
+																			bloodGroup.name
+																		}
 																	/>
-																)
-															})}
-
-
+																);
+															}
+														)}
 													</Picker>
 												)}
 												name="bloodGroup"
 												defaultValue=""
 											/>
-
 										</Stack>
-
-
 									</Stack>
 
 									<Spacer size={20} />
@@ -600,21 +617,33 @@ export default function CreateProfileScreen() {
 												}) => (
 													<Picker
 														selectedValue={value}
-														onValueChange={(itemValue, itemIndex) =>
+														onValueChange={(
+															itemValue,
+															itemIndex
+														) =>
 															onChange(itemValue)
-														}>
-														{regions.map((region) => (
-															<Select.Item
-																label={region.name}
-																value={region.name}
-															/>
-														))}
+														}
+													>
+														{regions.map(
+															(region) => (
+																<Select.Item
+																	label={
+																		region.name
+																	}
+																	key={
+																		region.name
+																	}
+																	value={
+																		region.name
+																	}
+																/>
+															)
+														)}
 													</Picker>
 												)}
 												name="location"
 												defaultValue=""
 											/>
-
 										</Stack>
 									</Stack>
 								</Stack>

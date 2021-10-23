@@ -24,10 +24,11 @@ import { RootState } from "../../store";
 import RemoteConsultation from "./RemoteConsultation";
 
 // TODO : to organize the doctors routes and patient routes better
-import DoctorLogin from "../Doctor/LoginDoctor"
-import DoctorHome from "../Doctor/HomeDoctor"
-import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor"
+import DoctorLogin from "../Doctor/LoginDoctor";
+import DoctorHome from "../Doctor/HomeDoctor";
+import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor";
 import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
+import ConfirmAppointment from "./ConfirmAppointment";
 
 const AuthStack = createStackNavigator();
 
@@ -63,23 +64,23 @@ export const HomeNavKey = {
 	EditHealthProfile: "EditHealthProfile",
 	UpcomingAppointments: "UpcomingAppointments",
 	AppointmentInfo: "AppointmentInfo",
-	RemoteConsultation: "RemoteConsultation"
+	RemoteConsultation: "RemoteConsultation",
+	ConfirmAppointment: "ConfirmAppointment",
 };
-
 
 export const DoctorRoutes = {
 	DoctorHome: "DoctorHome",
 	DoctorLogin: "DoctorLogin",
 	DoctorAppointmentInfo: "DoctorAppointmentInfo",
-	DoctorRemoteConsultation: "DoctorRemoteConsultation"
-}
+	DoctorRemoteConsultation: "DoctorRemoteConsultation",
+};
 
-
-export default function HomeView({ navigation, initialRouteName }: any) {
+function HomeView({ navigation, initialRouteName }: any) {
 	return (
 		<NavStack.Navigator
 			headerMode="none"
 			initialRouteName={initialRouteName}
+			// initialRouteName={"ConfirmAppointment"}
 		>
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
@@ -106,6 +107,10 @@ export default function HomeView({ navigation, initialRouteName }: any) {
 			<NavStack.Screen
 				name={HomeNavKey.PatientComplaint}
 				component={PatientComplaint}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.ConfirmAppointment}
+				component={ConfirmAppointment}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.AppointmentInvoice}
@@ -170,8 +175,8 @@ export default function HomeView({ navigation, initialRouteName }: any) {
 				name={DoctorRoutes.DoctorRemoteConsultation}
 				component={DoctorRemoteConsultation}
 			/>
-
-
 		</NavStack.Navigator>
 	);
 }
+
+export default React.memo(HomeView);
