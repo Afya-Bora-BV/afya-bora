@@ -9,9 +9,7 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import MainContainer from "../../components/containers/MainContainer";
-import {
-	AppointmentAlert,
-} from "../../components/core/appointment";
+import { AppointmentAlert } from "../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -25,6 +23,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
 import { HomeNavKey } from ".";
+import {
+	LoaderItem,
+	LoadingFullScreen,
+} from "../../components/LoadingFullScreen";
 
 export default function UpcomingAppointments() {
 	const navigation = useNavigation();
@@ -36,12 +38,12 @@ export default function UpcomingAppointments() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
@@ -64,11 +66,11 @@ export default function UpcomingAppointments() {
 }
 
 export function NoAppointment() {
-	const { navigate } = useNavigation()
+	const { navigate } = useNavigation();
 
 	const createAppointment = () => {
 		navigate(HomeNavKey.ConsultantList);
-	}
+	};
 
 	return (
 		<View bg="white" shadow={2} rounded={10} width="100%" padding={3}>
@@ -115,8 +117,11 @@ const UpcomingAppointmentsSection = () => {
 
 	const { profile } = useAuth();
 
-	const { appointments } = usePatientAppointments(profile?.id);
+	const { appointments, loading } = usePatientAppointments(profile?.id);
 
+	if (loading) {
+		return <LoadingFullScreen />;
+	}
 
 	return (
 		<VStack space={4} marginTop={8}>
@@ -126,10 +131,8 @@ const UpcomingAppointmentsSection = () => {
 				{appointments.map((appointment) => {
 					{
 						return (
-							<View>
-								<AppointmentAlert
-									appointment={appointment}
-								/>
+							<View key={appointment.id}>
+								<AppointmentAlert appointment={appointment} />
 							</View>
 						);
 					}

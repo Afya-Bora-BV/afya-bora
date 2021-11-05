@@ -86,61 +86,69 @@ type PickADateSectionProps = {
 	onChangeDate: (date: Date) => void;
 };
 
-const PickADateSection: React.FC<PickADateSectionProps> = ({
-	date,
-	onChangeDate,
-}) => {
-	// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
-	const daysListRef = useRef<any>(null);
+const PickADateSection: React.FC<PickADateSectionProps> = React.memo(
+	({ date, onChangeDate }) => {
+		// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
+		const daysListRef = useRef<any>(null);
 
-	return (
-		<View>
-			<HStack justifyContent="space-between" mb={3}>
-				<Text fontSize="2xl" tx="appointmentTime.preferredDate">
-					Preferred Date
-				</Text>
-			</HStack>
-
-			<HStack justifyContent="flex-end" mb={3}>
-				<MonthDropDown
-					onChangeDate={(date) => onChangeDate(date)}
-					date={date}
-				/>
-			</HStack>
-			<ScrollView
-				snapToInterval={2}
-				horizontal
-				paddingBottom={3}
-				ref={daysListRef}
-				// onLayout={() =>
-				// 	daysListRef.current?.scrollTo({
-				// 		x: 50 * date.getDate(),
-				// 		y: 0,
-				// 	})
-				// }
-			>
-				<HStack alignItems="center" space={1}>
-					{_.times(getDaysInMonth(date), (n) => {
-						const d = new Date(date);
-						d.setDate(n + 1);
-						const isBefore = moment(d).isBefore(new Date(), "days");
-						if (isBefore) return null;
-						return (
-							<CalendarDay
-								onPress={() => onChangeDate(d)}
-								key={n}
-								status={
-									isSameDay(d, date) ? "active" : "inactive"
-								}
-								date={d}
-							/>
-						);
-					})}
+		return (
+			<View>
+				<HStack justifyContent="space-between" mb={3}>
+					<Text fontSize="2xl" tx="appointmentTime.preferredDate">
+						Preferred Date
+					</Text>
 				</HStack>
-			</ScrollView>
-		</View>
-	);
-};
+
+				<HStack justifyContent="flex-end" mb={3}>
+					<MonthDropDown
+						onChangeDate={(date) => onChangeDate(date)}
+						date={date}
+					/>
+				</HStack>
+				<ScrollView
+					snapToInterval={2}
+					horizontal
+					paddingBottom={3}
+					ref={daysListRef}
+					// onLayout={() =>
+					// 	daysListRef.current?.scrollTo({
+					// 		x: 50 * date.getDate(),
+					// 		y: 0,
+					// 	})
+					// }
+				>
+					<HStack alignItems="center" space={1}>
+						{/* TODO: REFACTOR FOR PERFORMANCE */}
+						{_.times(getDaysInMonth(date), (n) => {
+							const d = new Date(date);
+							d.setDate(n + 1);
+							const isBefore = moment(d).isBefore(
+								new Date(),
+								"days"
+							);
+							if (isBefore) return null;
+							return (
+								<CalendarDay
+									onPress={() => onChangeDate(d)}
+									key={n}
+									status={
+										isSameDay(d, date)
+											? "active"
+											: "inactive"
+									}
+									date={d}
+								/>
+							);
+						})}
+					</HStack>
+				</ScrollView>
+			</View>
+		);
+	},
+	(prev, next) => {
+		return prev.date === next.date;
+	}
+);
 
 type TimeSlot = {
 	period: TimeRange;
@@ -190,70 +198,70 @@ type PickATimeSectionProps = {
 	onChange: (t: TimeRange) => void;
 };
 
-const PickATimeSection: React.FC<PickATimeSectionProps> = ({
-	timeRange,
-	onChange,
-}) => {
-	const [language, setLanguage] = useAtom(languageAtom);
+const PickATimeSection: React.FC<PickATimeSectionProps> = React.memo(
+	({ timeRange, onChange }) => {
+		const [language, setLanguage] = useAtom(languageAtom);
 
-	const slots = language === "en" ? timeSlots : timeSlotsSwahili;
-	return (
-		<VStack space={5}>
-			<Text fontSize="2xl" tx="appointmentTime.preferredTimeRange">
-				Preferred Time Range
-			</Text>
-			<HStack justifyContent={"space-between"} space={2}>
-				{slots.map((slot) => {
-					return (
-						<Pressable
-							onPress={() => {
-								onChange(slot.period);
-							}}
-							flex={1}
-							key={slot.period}
-						>
-							<Box
-								borderWidth={1}
-								borderColor="#ccc"
-								rounded={10}
-								// width={100}
-								py={2}
-								backgroundColor={
-									timeRange === slot.period
-										? "#258FBE"
-										: "white"
-								}
+		const slots = language === "en" ? timeSlots : timeSlotsSwahili;
+		return (
+			<VStack space={5}>
+				<Text fontSize="2xl" tx="appointmentTime.preferredTimeRange">
+					Preferred Time Range
+				</Text>
+				<HStack justifyContent={"space-between"} space={2}>
+					{slots.map((slot) => {
+						return (
+							<Pressable
+								onPress={() => {
+									onChange(slot.period);
+								}}
+								flex={1}
+								key={slot.period}
 							>
-								<Center>
-									<Text
-										style={{
-											color:
-												timeRange === slot.period
-													? "white"
-													: "grey",
-										}}
-									>
-										{_.upperFirst(slot.period)}
-									</Text>
-									<Text
-										style={{
-											color:
-												timeRange === slot.period
-													? "white"
-													: "grey",
-										}}
-									>
-										{slot.min}-{slot.max}
-									</Text>
-								</Center>
-							</Box>
-						</Pressable>
-					);
-				})}
-			</HStack>
-		</VStack>
-	);
-};
+								<Box
+									borderWidth={1}
+									borderColor="#ccc"
+									rounded={10}
+									// width={100}
+									py={2}
+									backgroundColor={
+										timeRange === slot.period
+											? "#258FBE"
+											: "white"
+									}
+								>
+									<Center>
+										<Text
+											style={{
+												color:
+													timeRange === slot.period
+														? "white"
+														: "grey",
+											}}
+										>
+											{_.upperFirst(slot.period)}
+										</Text>
+										<Text
+											style={{
+												color:
+													timeRange === slot.period
+														? "white"
+														: "grey",
+											}}
+										>
+											{slot.min}-{slot.max}
+										</Text>
+									</Center>
+								</Box>
+							</Pressable>
+						);
+					})}
+				</HStack>
+			</VStack>
+		);
+	},
+	(prev, next) => prev.timeRange === next.timeRange
+);
 
 const doctors: { name: string }[] = ["Dentist", "Dermatologist"].map(
 	(speciality) => ({ name: speciality })
@@ -303,53 +311,50 @@ type MonthDropDownProps = {
 	onChangeDate: (date: Date) => void;
 };
 
-const MonthDropDown: React.FC<MonthDropDownProps> = ({
-	date,
-	onChangeDate,
-}) => {
-	return (
-		<Menu
-			closeOnSelect={true}
-			trigger={(triggerProps) => {
-				console.log("here");
-				console.log(_.keys(triggerProps));
-				console.log(triggerProps.onPress);
-				return (
-					<Pressable
-						accessibilityLabel="More options menu"
-						{...triggerProps}
-					>
-						<HStack>
-							{/* <HamburgerIcon /> */}
+const MonthDropDown: React.FC<MonthDropDownProps> = React.memo(
+	({ date, onChangeDate }) => {
+		return (
+			<Menu
+				closeOnSelect={true}
+				trigger={(triggerProps) => {
+					return (
+						<Pressable
+							accessibilityLabel="More options menu"
+							{...triggerProps}
+						>
+							<HStack>
+								{/* <HamburgerIcon /> */}
+								<Text>{moment(date).format("MMMM YYYY")}</Text>
+								<ChevronDownIcon />
+							</HStack>
+						</Pressable>
+					);
+				}}
+			>
+				{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
+				{listOfNextNMonths(12).map((date, i, arr) => {
+					return (
+						<TouchableOpacity
+							style={{
+								padding: 10,
+								paddingHorizontal: 15,
+								borderBottomWidth: i === arr.length - 1 ? 0 : 1,
+								borderBottomColor: "#ccc",
+							}}
+							key={date.toString()}
+							onPress={() => onChangeDate(date)}
+						>
+							{/* <Menu.Item key={String(date)}> */}
 							<Text>{moment(date).format("MMMM YYYY")}</Text>
-							<ChevronDownIcon />
-						</HStack>
-					</Pressable>
-				);
-			}}
-		>
-			{/* <Menu.Item>{moment(new Date()).format("MMMM YYYY")}</Menu.Item> */}
-			{listOfNextNMonths(12).map((date, i, arr) => {
-				return (
-					<TouchableOpacity
-						style={{
-							padding: 10,
-							paddingHorizontal: 15,
-							borderBottomWidth: i === arr.length - 1 ? 0 : 1,
-							borderBottomColor: "#ccc",
-						}}
-						key={date.toString()}
-						onPress={() => onChangeDate(date)}
-					>
-						{/* <Menu.Item key={String(date)}> */}
-						<Text>{moment(date).format("MMMM YYYY")}</Text>
-						{/* </Menu.Item> */}
-					</TouchableOpacity>
-				);
-			})}
-		</Menu>
-	);
-};
+							{/* </Menu.Item> */}
+						</TouchableOpacity>
+					);
+				})}
+			</Menu>
+		);
+	},
+	(prev, next) => prev.date === next.date
+);
 
 type CalendarDayProps = {
 	date: Date;
@@ -357,33 +362,36 @@ type CalendarDayProps = {
 	status: "active" | "inactive";
 };
 
-const CalendarDay: React.FC<CalendarDayProps> = ({ date, onPress, status }) => {
-	return (
-		<TouchableOpacity onPress={() => onPress(date)}>
-			<Box
-				borderWidth={1}
-				borderColor="#ccc"
-				p={status === "active" ? 4 : 3}
-				rounded="xl"
-				bg={status === "active" ? "#258FBE" : "#fff"}
-				alignItems="center"
-			>
-				<Text
-					color={status === "active" ? "#fff" : "#000"}
-					fontSize={status === "active" ? "xl" : "md"}
+const CalendarDay: React.FC<CalendarDayProps> = React.memo(
+	({ date, onPress, status }) => {
+		return (
+			<TouchableOpacity onPress={() => onPress(date)}>
+				<Box
+					borderWidth={1}
+					borderColor="#ccc"
+					p={status === "active" ? 4 : 3}
+					rounded="xl"
+					bg={status === "active" ? "#258FBE" : "#fff"}
+					alignItems="center"
 				>
-					{moment(date).format("ddd")}
-				</Text>
-				<Text
-					color={status === "active" ? "#fff" : "#000"}
-					fontSize={status === "active" ? "lg" : "sm"}
-				>
-					{moment(date).format("DD/MM")}
-				</Text>
-			</Box>
-		</TouchableOpacity>
-	);
-};
+					<Text
+						color={status === "active" ? "#fff" : "#000"}
+						fontSize={status === "active" ? "xl" : "md"}
+					>
+						{moment(date).format("ddd")}
+					</Text>
+					<Text
+						color={status === "active" ? "#fff" : "#000"}
+						fontSize={status === "active" ? "lg" : "sm"}
+					>
+						{moment(date).format("DD/MM")}
+					</Text>
+				</Box>
+			</TouchableOpacity>
+		);
+	},
+	(prev, next) => prev.status === next.status
+);
 
 export default function SetAppointmentTime() {
 	const navigation = useNavigation();
@@ -399,6 +407,8 @@ export default function SetAppointmentTime() {
 			appointment.timeRange,
 		]
 	);
+
+	console.log("render");
 
 	const dispatch = useDispatch();
 

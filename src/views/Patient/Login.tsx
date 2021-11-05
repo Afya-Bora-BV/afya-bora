@@ -15,7 +15,7 @@ import {
 import React, { useState, useCallback, useEffect } from "react";
 import { colors } from "../../constants/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Dimensions, ToastAndroid } from "react-native";
+import { Dimensions, ToastAndroid, TouchableOpacity } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import AltContainer from "../../components/containers/AltContainer";
@@ -38,58 +38,52 @@ import { userHasProfile } from "../../api";
 // let render = 0
 const { height } = Dimensions.get("screen");
 
+type SendConfirmationProps = {
+	phoneNumber: string;
+	onChangeNumber: (tel: string) => void;
+	onSubmit: () => void;
+	isLoading: boolean;
+};
+
 const SendConfirmationCode = ({
-	signInWithPhoneNumber,
-}: {
-	signInWithPhoneNumber: (phoneNumber: string) => Promise<void>;
-}) => {
+	phoneNumber,
+	onChangeNumber,
+	isLoading,
+	onSubmit,
+}: SendConfirmationProps) => {
 	const navigation = useNavigation();
-
-	const [value, setValue] = useState("");
-	const [formattedValue, setFormattedValue] = useState("");
-	const phoneInput = React.useRef<PhoneInput>(null);
 	const [language] = useAtom(languageAtom);
-	const onLogin = () => {
-		// do somthign with phone #
-		if (!Boolean(formattedValue)) {
-			ToastAndroid.show(
-				`Phone number can not be empty`,
-				ToastAndroid.SHORT
-			);
-			return;
-		}
-		console.log("User phone number ", formattedValue);
-		login(formattedValue);
-	};
 
-	const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
-		onError: (
-			error: FirebaseAuthTypes.PhoneAuthError,
-			variables,
-			context
-		) => {
-			// An error happened!
-			console.log(`rolling back optimistic update with id `, error);
-			if (error.code === "auth/invalid-phone-number") {
-				ToastAndroid.show(
-					`Invalid phone number format`,
-					ToastAndroid.SHORT
-				);
-				return;
-			}
-			ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT);
-		},
-		onSuccess: (data, variables, context) => {
-			// Boom baby!
-			// updating phoneNumber on success
-			console.log("Here it is");
-			ToastAndroid.show(
-				`Verification code sent to ${formattedValue}`,
-				ToastAndroid.SHORT
-			);
-			console.log(data);
-		},
-	});
+	const phoneInput = React.useRef<PhoneInput>(null);
+
+	// const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
+	// 	onError: (
+	// 		error: FirebaseAuthTypes.PhoneAuthError,
+	// 		variables,
+	// 		context
+	// 	) => {
+	// 		// An error happened!
+	// 		console.log(`rolling back optimistic update with id `, error);
+	// 		if (error.code === "auth/invalid-phone-number") {
+	// 			ToastAndroid.show(
+	// 				`Invalid phone number format`,
+	// 				ToastAndroid.SHORT
+	// 			);
+	// 			return;
+	// 		}
+	// 		ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT);
+	// 	},
+	// 	onSuccess: (data, variables, context) => {
+	// 		// Boom baby!
+	// 		// updating phoneNumber on success
+	// 		console.log("Here it is");
+	// 		ToastAndroid.show(
+	// 			`Verification code sent to ${formattedValue}`,
+	// 			ToastAndroid.SHORT
+	// 		);
+	// 		console.log(data);
+	// 	},
+	// });
 
 	const phoneInputPlaceHolder =
 		language == "en" ? "Phone Number" : "Namba Ya Simu";
@@ -108,35 +102,19 @@ const SendConfirmationCode = ({
 						<PhoneInput
 							placeholder={phoneInputPlaceHolder}
 							ref={phoneInput}
-							defaultValue={value}
+							defaultValue={phoneNumber}
 							defaultCode="TZ"
 							layout="first"
-							onChangeText={(text) => {
-								setValue(text);
-							}}
 							onChangeFormattedText={(text) => {
-								setFormattedValue(text);
+								onChangeNumber(text);
 							}}
-							// withDarkTheme
 							withShadow
 							autoFocus
 						/>
 					</VStack>
-					{/*<Box*/}
-					{/*	position="absolute"*/}
-					{/*	bottom={-20}*/}
-					{/*	left={0}*/}
-					{/*	right={0}*/}
-					{/*	paddingX={10}*/}
-					{/*	justifyContent="center"*/}
-					{/*	alignItems="center"*/}
-					{/*	zIndex={10}*/}
-					{/*>*/}
-					{/*	*/}
-					{/*</Box>*/}
 				</Box>
 				<Button
-					onPress={onLogin}
+					onPress={onSubmit}
 					borderRadius={20}
 					w={260}
 					isLoading={isLoading}
@@ -158,9 +136,6 @@ const SendConfirmationCode = ({
 					<Text tx="common.areYouDoctor"> </Text>
 					<Pressable
 						focusable
-						// TODO: detect platform and show cursor="Pointer" only in web
-						// using Platform api in RN
-						// cursor="pointer"
 						onPress={() => {
 							navigation.navigate(DoctorRoutes.DoctorLogin);
 						}}
@@ -177,50 +152,59 @@ const SendConfirmationCode = ({
 	);
 };
 
+type VerifyCodeProps = {
+	resentCode: boolean;
+	submit: () => void;
+	onChangeCode: (code: string) => void;
+	confirmationCode: string;
+	resendCode: () => void;
+	isLoading: boolean;
+};
+
 const VerifyCode = ({
-	verify,
-}: {
-	verify: (code: string) => Promise<void>;
-}) => {
+	isLoading,
+	confirmationCode,
+	onChangeCode,
+	submit,
+	resendCode,
+	resentCode,
+}: VerifyCodeProps) => {
 	const navigation = useNavigation();
-	const Toast = useToast();
-	const [code, set] = useState<string>("");
-	const uid = auth().currentUser?.uid;
 
-	const onConfirmCode = async () => {
-		try {
-			await verify(code);
-		} catch (e) {
-			throw new Error(
-				JSON.stringify({
-					message: "Error in verifying phone number",
-					error: e,
-				})
-			);
-		}
-	};
+	// const onConfirmCode = async () => {
+	// 	try {
+	// 		await verify(code);
+	// 	} catch (e) {
+	// 		throw new Error(
+	// 			JSON.stringify({
+	// 				message: "Error in verifying phone number",
+	// 				error: e,
+	// 			})
+	// 		);
+	// 	}
+	// };
 
-	const { isLoading, mutate: confirmCode } = useMutation(
-		() => onConfirmCode(),
-		{
-			onError: (error, variables, context) => {
-				// An error happened!
-				console.log(`Error in verifying code `, error);
-				ToastAndroid.show(
-					`Invalid verification code `,
-					ToastAndroid.SHORT
-				);
-			},
-			onSuccess: (data, variables, context) => {
-				// Boom baby!
-				console.log("Successfuly verified code ");
-				ToastAndroid.show(
-					`Successfully signed in  `,
-					ToastAndroid.SHORT
-				);
-			},
-		}
-	);
+	// const { isLoading, mutate: confirmCode } = useMutation(
+	// 	() => onConfirmCode(),
+	// 	{
+	// 		onError: (error, variables, context) => {
+	// 			// An error happened!
+	// 			console.log(`Error in verifying code `, error);
+	// 			ToastAndroid.show(
+	// 				`Invalid verification code `,
+	// 				ToastAndroid.SHORT
+	// 			);
+	// 		},
+	// 		onSuccess: (data, variables, context) => {
+	// 			// Boom baby!
+	// 			console.log("Successfuly verified code ");
+	// 			ToastAndroid.show(
+	// 				`Successfully signed in  `,
+	// 				ToastAndroid.SHORT
+	// 			);
+	// 		},
+	// 	}
+	// );
 
 	return (
 		<AltContainer
@@ -249,25 +233,15 @@ const VerifyCode = ({
 							Verification Code
 						</Text>
 						<CodeInput
-							value={code}
-							onChangeCode={set}
+							value={confirmationCode}
+							onChangeCode={onChangeCode}
 							cellCount={4}
 						/>
 					</VStack>
-					{/*<Box*/}
-					{/*	position="absolute"*/}
-					{/*	bottom={-20}*/}
-					{/*	left={0}*/}
-					{/*	right={0}*/}
-					{/*	width="100%"*/}
-					{/*	paddingX={10}*/}
-					{/*></Box>*/}
 				</Box>
 				{/* Confirm button */}
 				<Button
-					onPress={async () => {
-						await confirmCode();
-					}}
+					onPress={submit}
 					borderRadius={20}
 					w={260}
 					isLoading={isLoading}
@@ -286,10 +260,16 @@ const VerifyCode = ({
 						Confirm
 					</Text>
 				</Button>
+
+				{!resentCode && (
+					<TouchableOpacity
+						style={{ alignItems: "center", marginTop: 20 }}
+						onPress={resendCode}
+					>
+						<Text color="#2AD3E7">Resend Code</Text>
+					</TouchableOpacity>
+				)}
 			</View>
-			{/*<View flex={1} alignItems="center" marginBottom={5}>*/}
-			{/* <Text color="#2AD3E7">Resend (00:39)</Text> */}
-			{/*</View>*/}
 		</AltContainer>
 	);
 };
@@ -297,31 +277,59 @@ const VerifyCode = ({
 export default function Login() {
 	const navigation = useNavigation();
 	const route = useRoute();
+	const [resentCode, setResentCode] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [phoneNumber, setPhoneNumber] = useState("");
 	const [confirm, setConfirm] =
 		useState<FirebaseAuthTypes.ConfirmationResult>();
+	const [confirmationCode, setConfirmationCode] = useState<string>("");
 
 	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
 		useAuth();
 
-	async function signInWithPhoneNumber(phoneNumber: string) {
-		// checking if the phone exists
-		// await checkUserProfile(phoneNumber)
-		const confirmation = await signIn(phoneNumber);
-		setConfirm(confirmation);
-	}
+	const submitTelephone = (phoneNumber: string) => {
+		if (loading) {
+			return;
+		}
+		setLoading(true);
+		signIn(phoneNumber)
+			.then((res) => {
+				setLoading(false);
+				setConfirm(res);
+				ToastAndroid.show(
+					"Verification code sent to " + phoneNumber,
+					3000
+				);
+			})
+			.catch((error) => {
+				setLoading(false);
+				console.log(error);
+				ToastAndroid.show(
+					"There was an error. Please try again.",
+					3000
+				);
+			});
+	};
+
+	// async function signInWithPhoneNumber(phoneNumber: string) {
+	// 	// checking if the phone exists
+	// 	// await checkUserProfile(phoneNumber)
+	// 	const confirmation = await signIn(phoneNumber);
+	// 	setConfirm(confirmation);
+	// }
 
 	const completingAppointment = useRoute().params?.completingAppointment;
 
-	console.log("\n\nProfile:");
-	console.log(profile, currentUser, loadingProfile, loadingUser);
-	console.log("\n\n");
-
 	async function confirmCode(code: string) {
+		setLoading(true);
+		console.log("We out here!");
+		console.log(completingAppointment);
 		try {
 			const confirmation = await confirm?.confirm(code);
 			const hasProfile =
 				confirmation && (await userHasProfile(confirmation?.user.uid));
-
+			console.log(hasProfile);
+			setLoading(false);
 			if (hasProfile && completingAppointment) {
 				return navigation.navigate(HomeNavKey.ConfirmAppointment);
 			} else if (hasProfile && !completingAppointment) {
@@ -335,16 +343,38 @@ export default function Login() {
 			// navigation.navigate(hasProfile ? HomeNavKey.HomeScreen : HomeNavKey.CreateProfile)
 		} catch (error) {
 			console.log(error);
+			setLoading(false);
 			throw new Error("Invalid verification code : ");
 		}
 	}
 
+	const resendCode = () => {
+		auth()
+			.signInWithPhoneNumber(phoneNumber, true)
+			.then((res) => {
+				ToastAndroid.show("Confirmation code resent", 3000);
+				setResentCode(true);
+			});
+	};
+
 	if (!confirm) {
 		return (
 			<SendConfirmationCode
-				signInWithPhoneNumber={signInWithPhoneNumber}
+				phoneNumber={phoneNumber}
+				isLoading={loading}
+				onSubmit={() => submitTelephone(phoneNumber)}
+				onChangeNumber={(number: string) => setPhoneNumber(number)}
 			/>
 		);
 	}
-	return <VerifyCode verify={confirmCode} />;
+	return (
+		<VerifyCode
+			resentCode={resentCode}
+			resendCode={resendCode}
+			isLoading={loading}
+			confirmationCode={confirmationCode}
+			onChangeCode={(code) => setConfirmationCode(code)}
+			submit={() => confirmCode(confirmationCode)}
+		/>
+	);
 }

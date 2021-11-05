@@ -81,7 +81,6 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 		);
 	}
 
-	console.log("profile : ", profile);
 	return (
 		<Stack space={2}>
 			<Text fontSize="xl" fontWeight="bold" tx="home.yourAfyaBoraAccout">
@@ -114,7 +113,6 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 	profile,
 	user,
 }) => {
-	console.log(profile);
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -353,7 +351,7 @@ export default function Home() {
 			);
 			navigation.navigate(HomeNavKey.CreateProfile);
 		}
-		dispatch(resetAppointmentState());
+		// dispatch(resetAppointmentState());
 	}, []);
 
 	// console.warn("Current user : ", profile, auth().currentUser);
@@ -468,7 +466,7 @@ export const ScheduleAppointmentSection = () => {
 					<AppointmentCustomizer />
 					<PrimaryButton onPress={handleOnPress}>
 						<Text tx="home.schedule" color="white">
-							Schedule
+							Schedule Appointment
 						</Text>
 					</PrimaryButton>
 				</Stack>

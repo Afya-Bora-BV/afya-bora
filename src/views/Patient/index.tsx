@@ -80,7 +80,7 @@ function HomeView({ navigation, initialRouteName }: any) {
 		<NavStack.Navigator
 			headerMode="none"
 			initialRouteName={initialRouteName}
-			// initialRouteName={"ConfirmAppointment"}
+			// initialRouteName={"Login"}
 		>
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />

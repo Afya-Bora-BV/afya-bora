@@ -14,7 +14,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 
 import { useQuery } from "react-query";
 import { useEffect } from "react";
@@ -64,8 +64,8 @@ const FacilityList = () => {
 		}
 	}, [error]);
 
-	console.log("All facilities ");
-	console.log(JSON.stringify(facilityList, null, 3));
+	// console.log("All facilities ");
+	// console.log(JSON.stringify(facilityList, null, 3));
 
 	const facilities = facilityList?.data || [];
 
@@ -98,12 +98,13 @@ const FacilityList = () => {
 						<VStack space={2}>
 							{facilities.map((facility, ix) => {
 								return (
-									<Pressable
+									<TouchableOpacity
 										key={facility.id}
+										activeOpacity={0.5}
 										onPress={() => selectFacility(facility)}
 									>
 										<FacilityListItem facility={facility} />
-									</Pressable>
+									</TouchableOpacity>
 								);
 							})}
 						</VStack>

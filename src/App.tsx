@@ -5,7 +5,7 @@ import SplashScreen from "react-native-splash-screen";
 import { Provider, useDispatch } from "react-redux";
 import { store, persistor } from "./store";
 // import { Text } from 'react-native'
-
+import Spinner from "react-native-spinkit";
 import {
 	extendTheme,
 	NativeBaseProvider,
@@ -31,6 +31,8 @@ import { languageAtom } from "./store/atoms";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import { updateDeviceMessagingToken } from "./utils";
+import { View } from "react-native";
+import { LoadingFullScreen } from "./components/LoadingFullScreen";
 console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
@@ -122,14 +124,11 @@ function Main() {
 		useAuth();
 
 	const ready = !loadingProfile && !loadingUser;
-	// console.warn(ready, currentUser);
 	const createAccountFirst =
 		ready && currentUser === null && profile === null;
 
 	const createProfileFirst =
 		ready && currentUser !== null && profile === null;
-
-	console.warn(ready, currentUser, profile);
 
 	useEffect(() => {
 		i18n.changeLanguage(language);
@@ -148,8 +147,9 @@ function Main() {
 
 	console.log(ready, loadingProfile, loadingUser, auth().currentUser);
 
-	console.log("Current language  : ", language);
-	if (!ready) return null;
+	// console.log("Current language  : ", language);
+	// TODO: Put placeholder to prevent screen splashing white
+	if (!ready) return <LoadingFullScreen />;
 
 	if (profile?.type === "consultant") {
 		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;

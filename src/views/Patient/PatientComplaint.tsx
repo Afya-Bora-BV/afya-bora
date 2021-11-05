@@ -89,7 +89,6 @@ export function PatientComplaint() {
 	const dispatch = useDispatch();
 
 	const submit = () => {
-		console.log(currentUser, profile);
 		if (profile && !loadingProfile) {
 			navigation.navigate(HomeNavKey.ConfirmAppointment);
 		} else if (!profile && !currentUser) {
@@ -124,9 +123,6 @@ export function PatientComplaint() {
 			]
 		);
 	};
-
-	console.log("Root state ");
-	console.log(JSON.stringify(appointment, null, 3));
 
 	return (
 		<MainContainer
@@ -183,6 +179,7 @@ export function PatientComplaint() {
 										}
 										borderWidth={1}
 										flex={1}
+										key={specilization}
 									>
 										<TouchableOpacity
 											style={{
