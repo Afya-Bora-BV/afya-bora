@@ -14,13 +14,9 @@ import { Pressable } from "react-native";
 import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import UpcomingAppointmentIllustration from "../../assets/illustrations/UpcomingAppointmentIllustration";
-import { typography } from "styled-system";
 import { Spacer } from "../../components/Spacer";
 import { colors } from "../../constants/colors";
-import auth from "@react-native-firebase/auth";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
 import { HomeNavKey } from ".";
 import {

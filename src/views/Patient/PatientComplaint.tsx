@@ -20,7 +20,7 @@ import MainContainer from "../../components/containers/MainContainer";
 import { IconContainer } from "../../components/misc";
 import { atom, useAtom } from "jotai";
 import { HomeNavKey } from ".";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
 	resetAppointmentState,
@@ -80,9 +80,13 @@ export function PatientComplaint() {
 	const toast = useToast();
 	const navigation = useNavigation();
 
-	const { appointment } = useSelector((state: RootState) => ({
-		appointment: state.appointment,
-	}));
+	const { speciality, complaint } = useSelector(
+		(state: RootState) => ({
+			speciality: state.appointment.speciality,
+			complaint: state.appointment.aboutVisit.complaint,
+		}),
+		shallowEqual
+	);
 
 	const { currentUser, profile, loadingProfile } = useAuth();
 
@@ -172,8 +176,7 @@ export function PatientComplaint() {
 										rounded="xl"
 										borderColor="#ccc"
 										bg={
-											appointment.speciality ===
-											specilization
+											speciality === specilization
 												? "#258FBE"
 												: "#fff"
 										}
@@ -195,8 +198,7 @@ export function PatientComplaint() {
 										>
 											<Text
 												color={
-													appointment.speciality ===
-													specilization
+													speciality === specilization
 														? "#fff"
 														: "#000"
 												}
@@ -228,7 +230,7 @@ export function PatientComplaint() {
 						</Text>
 
 						<TextArea
-							value={appointment.aboutVisit.complaint}
+							value={complaint}
 							autoCorrect={false}
 							multiline
 							textAlignVertical="top"

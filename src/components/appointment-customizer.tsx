@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "./button";
 import { colors } from "../constants/colors";
 import { RootState } from "../store";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
 	setAppointmentType,
 	setLocation,
@@ -119,16 +119,18 @@ const AppointmentTypeButton: React.FC<AppointmentType> = ({
 };
 
 const AppointmentCustomizer: React.FC = () => {
-	const [type, location, speciality] = useSelector(
+	const [type, location] = useSelector(
 		({ appointment }: RootState) => [
 			appointment.type,
 			appointment.location,
-			appointment.speciality,
-		]
+		],
+		shallowEqual
 	);
 	const [language] = useAtom(languageAtom);
 	const languagePlaceholder = language === "en" ? "Location" : "Mahali";
 	const dispatch = useDispatch();
+
+	console.log("AppointmentCustomizer");
 
 	return (
 		<Stack space={7}>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
 	View,
 	StatusBar,
@@ -22,7 +22,7 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ConsultantListItem } from "../../components/consultant-list-item";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getDaysInMonth, isSameDay } from "date-fns";
-import { TouchableOpacity } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import _, { add } from "lodash";
 import { colors } from "../../constants/colors";
 import moment from "moment";
@@ -34,7 +34,7 @@ import { StringLocale } from "yup/lib/locale";
 import { FacilityListItem } from "../../components/facilities-list-item";
 import { PatientComplaint } from "./PatientComplaint";
 import { HomeNavKey } from ".";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setDate, setTimeRange } from "../../store/slices/appointment";
 import { TimeRange } from "../../types";
@@ -86,10 +86,34 @@ type PickADateSectionProps = {
 	onChangeDate: (date: Date) => void;
 };
 
+const isDayPast = (date: Date) => (day: Date | string) => {
+	return moment(day).isBefore(date, "days");
+};
+
 const PickADateSection: React.FC<PickADateSectionProps> = React.memo(
 	({ date, onChangeDate }) => {
 		// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
 		const daysListRef = useRef<any>(null);
+
+		const days = useMemo(() => {
+			const inFuture = (day: Date | string) =>
+				!isDayPast(new Date())(day);
+			return _.times(getDaysInMonth(date), (n) => {
+				const d = new Date(date);
+				d.setDate(n + 1);
+				return d;
+			}).filter(inFuture);
+		}, [date]);
+
+		const renderDay = ({ item }: { item: Date }) => (
+			<CalendarDay
+				onPress={() => onChangeDate(item)}
+				status={isSameDay(item, date) ? "active" : "inactive"}
+				date={item}
+			/>
+		);
+
+		console.log("Render PickADateSection");
 
 		return (
 			<View>
@@ -105,43 +129,42 @@ const PickADateSection: React.FC<PickADateSectionProps> = React.memo(
 						date={date}
 					/>
 				</HStack>
-				<ScrollView
-					snapToInterval={2}
-					horizontal
-					paddingBottom={3}
-					ref={daysListRef}
-					// onLayout={() =>
-					// 	daysListRef.current?.scrollTo({
-					// 		x: 50 * date.getDate(),
-					// 		y: 0,
-					// 	})
-					// }
-				>
-					<HStack alignItems="center" space={1}>
-						{/* TODO: REFACTOR FOR PERFORMANCE */}
-						{_.times(getDaysInMonth(date), (n) => {
-							const d = new Date(date);
-							d.setDate(n + 1);
-							const isBefore = moment(d).isBefore(
-								new Date(),
-								"days"
-							);
-							if (isBefore) return null;
-							return (
-								<CalendarDay
-									onPress={() => onChangeDate(d)}
-									key={n}
-									status={
-										isSameDay(d, date)
-											? "active"
-											: "inactive"
-									}
-									date={d}
-								/>
-							);
-						})}
-					</HStack>
-				</ScrollView>
+				<FlatList
+					horizontal={true}
+					data={days}
+					renderItem={renderDay}
+					keyExtractor={(item) => item.toString()}
+				/>
+				{/*<ScrollView*/}
+				{/*	snapToInterval={2}*/}
+				{/*	horizontal*/}
+				{/*	paddingBottom={3}*/}
+				{/*	ref={daysListRef}*/}
+				{/*	// onLayout={() =>*/}
+				{/*	// 	daysListRef.current?.scrollTo({*/}
+				{/*	// 		x: 50 * date.getDate(),*/}
+				{/*	// 		y: 0,*/}
+				{/*	// 	})*/}
+				{/*	// }*/}
+				{/*>*/}
+				{/*	<HStack alignItems="center" space={1}>*/}
+				{/*		/!* TODO: REFACTOR FOR PERFORMANCE *!/*/}
+				{/*		{days.map((d, n) => {*/}
+				{/*			return (*/}
+				{/*				<CalendarDay*/}
+				{/*					onPress={() => onChangeDate(d)}*/}
+				{/*					key={n}*/}
+				{/*					status={*/}
+				{/*						isSameDay(d, date)*/}
+				{/*							? "active"*/}
+				{/*							: "inactive"*/}
+				{/*					}*/}
+				{/*					date={d}*/}
+				{/*				/>*/}
+				{/*			);*/}
+				{/*		})}*/}
+				{/*	</HStack>*/}
+				{/*</ScrollView>*/}
 			</View>
 		);
 	},
@@ -405,10 +428,18 @@ export default function SetAppointmentTime() {
 			appointment.facility,
 			appointment.date,
 			appointment.timeRange,
-		]
+		],
+		shallowEqual
 	);
 
-	console.log("render");
+	const selectDate = useCallback(
+		(date) => dispatch(setDate(date.getTime())),
+		[]
+	);
+
+	const selectedDate = useMemo(() => new Date(date), [date]);
+
+	console.log("render", selectedDate);
 
 	const dispatch = useDispatch();
 
@@ -451,10 +482,8 @@ export default function SetAppointmentTime() {
 					mb={1}
 				>
 					<PickADateSection
-						date={new Date(date)}
-						onChangeDate={(date) =>
-							dispatch(setDate(date.getTime()))
-						}
+						date={selectedDate}
+						onChangeDate={selectDate}
 					/>
 
 					<PickATimeSection

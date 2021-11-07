@@ -34,17 +34,14 @@ import {
 	ToastAndroid,
 	TouchableOpacity,
 } from "react-native";
-import _ from "lodash";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from "react-native-geolocation-service";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
 import FontisoIcon from "react-native-vector-icons/Fontisto";
-import { resetAppointmentState } from "../../store/slices/appointment";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
