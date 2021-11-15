@@ -50,7 +50,7 @@ const ConfirmAppointment: React.FC = () => {
 					timeRange: appointment.timeRange,
 					speciality: appointment.speciality,
 					type: appointment.type,
-					utcDate: new Date(appointment.date).toUTCString(),
+					utcDate: new Date(appointment.date || new Date()).toUTCString(),
 				})
 				.then((res) => {
 					ToastAndroid.show(
