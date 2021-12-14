@@ -56,35 +56,6 @@ const SendConfirmationCode = ({
 
 	const phoneInput = React.useRef<PhoneInput>(null);
 
-	// const { isLoading, mutate: login } = useMutation(signInWithPhoneNumber, {
-	// 	onError: (
-	// 		error: FirebaseAuthTypes.PhoneAuthError,
-	// 		variables,
-	// 		context
-	// 	) => {
-	// 		// An error happened!
-	// 		console.log(`rolling back optimistic update with id `, error);
-	// 		if (error.code === "auth/invalid-phone-number") {
-	// 			ToastAndroid.show(
-	// 				`Invalid phone number format`,
-	// 				ToastAndroid.SHORT
-	// 			);
-	// 			return;
-	// 		}
-	// 		ToastAndroid.show(`Error : ${error?.code}`, ToastAndroid.SHORT);
-	// 	},
-	// 	onSuccess: (data, variables, context) => {
-	// 		// Boom baby!
-	// 		// updating phoneNumber on success
-	// 		console.log("Here it is");
-	// 		ToastAndroid.show(
-	// 			`Verification code sent to ${formattedValue}`,
-	// 			ToastAndroid.SHORT
-	// 		);
-	// 		console.log(data);
-	// 	},
-	// });
-
 	const phoneInputPlaceHolder =
 		language == "en" ? "Phone Number" : "Namba Ya Simu";
 	return (
@@ -170,42 +141,6 @@ const VerifyCode = ({
 	resentCode,
 }: VerifyCodeProps) => {
 	const navigation = useNavigation();
-
-	// const onConfirmCode = async () => {
-	// 	try {
-	// 		await verify(code);
-	// 	} catch (e) {
-	// 		throw new Error(
-	// 			JSON.stringify({
-	// 				message: "Error in verifying phone number",
-	// 				error: e,
-	// 			})
-	// 		);
-	// 	}
-	// };
-
-	// const { isLoading, mutate: confirmCode } = useMutation(
-	// 	() => onConfirmCode(),
-	// 	{
-	// 		onError: (error, variables, context) => {
-	// 			// An error happened!
-	// 			console.log(`Error in verifying code `, error);
-	// 			ToastAndroid.show(
-	// 				`Invalid verification code `,
-	// 				ToastAndroid.SHORT
-	// 			);
-	// 		},
-	// 		onSuccess: (data, variables, context) => {
-	// 			// Boom baby!
-	// 			console.log("Successfuly verified code ");
-	// 			ToastAndroid.show(
-	// 				`Successfully signed in  `,
-	// 				ToastAndroid.SHORT
-	// 			);
-	// 		},
-	// 	}
-	// );
-
 	return (
 		<AltContainer
 			backdropHeight={height / 5.2}
@@ -310,13 +245,6 @@ export default function Login() {
 				);
 			});
 	};
-
-	// async function signInWithPhoneNumber(phoneNumber: string) {
-	// 	// checking if the phone exists
-	// 	// await checkUserProfile(phoneNumber)
-	// 	const confirmation = await signIn(phoneNumber);
-	// 	setConfirm(confirmation);
-	// }
 
 	const completingAppointment = useRoute().params?.completingAppointment;
 
