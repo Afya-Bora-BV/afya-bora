@@ -88,14 +88,14 @@ export function PatientComplaint() {
 		shallowEqual
 	);
 
-	const { currentUser, profile, loadingProfile } = useAuth();
+	const { user, profile, loading } = useAuth();
 
 	const dispatch = useDispatch();
 
 	const submit = () => {
-		if (profile && !loadingProfile) {
+		if (profile && !loading) {
 			navigation.navigate(HomeNavKey.ConfirmAppointment);
-		} else if (!profile && !currentUser) {
+		} else if (!profile && !user) {
 			ToastAndroid.show(
 				"Please create an account first before proceeding.",
 				ToastAndroid.SHORT

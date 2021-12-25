@@ -1,151 +1,144 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
+import { Consultant, PatientProfile } from "../types";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import { useEffect } from "react";
-import { Profile } from "../store/slices/profile";
-import { ToastAndroid } from "react-native";
-import { Consultant } from "../types";
+import { produce } from "immer";
+import { updateDeviceMessagingToken } from "../utils";
 
-const AuthContext = React.createContext<{
-	currentUser: FirebaseAuthTypes.User | null;
-	signIn: (tel: string) => Promise<any>;
-	loadingUser: boolean;
-	profile: Profile | Consultant | null;
-	loadingProfile: boolean;
-	signOut: () => Promise<any>;
-	setProfile: (data: Profile) => void;
-}>({
-	currentUser: null,
-	signIn: () => Promise.resolve(),
-	loadingUser: false,
-	loadingProfile: false,
+type AuthState = {
+	loading: boolean;
+	profile: Consultant | PatientProfile | null;
+	user: FirebaseAuthTypes.User | null;
+};
+
+type Action =
+	| { type: "set-user"; payload: FirebaseAuthTypes.User }
+	| { type: "remove-user" }
+	| { type: "set-profile"; payload: Consultant | PatientProfile }
+	| { type: "remove-profile" }
+	| { type: "set-loading"; payload: boolean };
+
+const initialState: AuthState = {
+	loading: true,
 	profile: null,
-	signOut: () => Promise.resolve(),
-	setProfile: () => null,
-});
+	user: null,
+};
 
-export function useAuth() {
-	return useContext(AuthContext);
+const AuthContext = React.createContext<AuthState>(initialState);
+
+function reducer(state: AuthState, action: Action): AuthState {
+	switch (action.type) {
+		case "set-loading":
+			return produce(state, (draft) => {
+				draft.loading = action.payload;
+			});
+		case "set-user":
+			return produce(state, (draft) => {
+				draft.user = action.payload;
+			});
+		case "remove-user":
+			return produce(state, (draft) => {
+				draft.user = null;
+				draft.profile = null;
+			});
+		case "set-profile":
+			return produce(state, (draft) => {
+				draft.profile = action.payload;
+			});
+		case "remove-profile":
+			return produce(state, (draft) => {
+				draft.profile = null;
+			});
+		default:
+			return state;
+	}
 }
 
-// TODO: This auth context depends on the presence of internet
-// 1. Store the profile to the local state
-// 2. do not allow app to proceed without internet being accessible
 export const AuthProvider: React.FC<{}> = ({ children }) => {
-	const [loadingUser, setLoadingUser] = React.useState(true);
-	const [currentUser, setCurrentUser] =
-		React.useState<FirebaseAuthTypes.User | null>(null);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const [loadingProfile, setLoadingProfile] = React.useState(true);
-	const [profile, setProfile] = React.useState<Profile | null>(null);
+	const profileListener = async (
+		user: FirebaseAuthTypes.User,
+		onProfileChange: (profile: Consultant | PatientProfile | null) => void
+	): Promise<() => void> => {
+		const idTokenResult = await user?.getIdTokenResult();
+		const userId = user.uid;
 
-	const [loadingConsultantProfile, setLoadingConsultantProfile] =
-		React.useState(true);
-	const [consultantProfile, setConsultantProfile] =
-		React.useState<Consultant | null>(null);
+		const { collectionName, type } = idTokenResult?.claims.admin
+			? { collectionName: "admins-facilities", type: "admin" }
+			: { collectionName: "patients", type: "patient" };
 
-	function signIn(telephone: string) {
-		return auth().signInWithPhoneNumber(telephone);
-	}
+		const userRef = firestore().collection(collectionName).doc(userId);
 
-	function signOut() {
-		return auth().signOut();
-	}
+		return userRef.onSnapshot((snap) => {
+			if (snap.exists) {
+				const profile = {
+					...snap.data(),
+					id: snap.id,
+					type,
+				} as unknown as Consultant | PatientProfile;
+				onProfileChange(profile);
+			} else {
+				onProfileChange(null);
+			}
+		});
+	};
 
 	useEffect(() => {
-		const unsubscribe = auth().onAuthStateChanged((user) => {
-			setCurrentUser(user);
-			setLoadingUser(false);
-		});
+		let profileSubscription: (() => void) | null = null;
+		const authListener = auth().onAuthStateChanged(
+			(user: FirebaseAuthTypes.User | null) => {
+				dispatch({ type: "set-loading", payload: true });
+				if (user) {
+					dispatch({ type: "set-user", payload: user });
+
+					// get the profile
+					profileListener(user, (profile) => {
+						if (profile) {
+							dispatch({ type: "set-profile", payload: profile });
+						} else {
+							dispatch({ type: "remove-profile" });
+						}
+						dispatch({ type: "set-loading", payload: false });
+					})
+						.then((sub) => (profileSubscription = sub))
+						.catch((error) => {
+							console.warn(error);
+							profileSubscription = null;
+						});
+				} else {
+					profileSubscription = null;
+					dispatch({ type: "remove-user" });
+					dispatch({ type: "set-loading", payload: false });
+				}
+			}
+		);
 
 		return () => {
-			unsubscribe();
-			setCurrentUser(null);
+			authListener();
+			profileSubscription && profileSubscription();
 		};
 	}, []);
 
+	// Update the users device messaging context. For notifications from firebase
+	// to come to the most recent device as well.
 	useEffect(() => {
-		let unsubscribe: any;
-		let unsubscribeConsultant: any;
-		console.log("Change: ", currentUser);
-		if (currentUser) {
-			const email = currentUser.email;
-			const phone = currentUser.phoneNumber;
-
-			// Load patient profile
-			setLoadingProfile(true);
-			unsubscribe = firestore()
-				.collection("patients")
-				.doc(currentUser.uid)
-				.onSnapshot((snap) => {
-					console.log("waiting for snaps", snap.exists);
-
-					if (snap && snap.exists) {
-						const u1 = snap;
-
-						// @ts-ignore
-						setProfile({
-							...u1.data(),
-							id: u1.id,
-						});
-					} else {
-						setProfile(null);
-					}
-					setLoadingProfile(false);
-				});
-
-			// Load Consultant profile
-			setLoadingProfile(true);
-
-			unsubscribeConsultant = firestore()
-				.collection("consultants")
-				.where("uid", "==", currentUser.uid)
-				.onSnapshot((snap) => {
-					console.log("waiting for snaps", snap.size);
-
-					if (snap && snap.size > 0) {
-						const u1 = snap.docs[0];
-
-						setConsultantProfile({
-							...u1.data(),
-							id: u1.id,
-						} as unknown as Consultant);
-					} else {
-						setConsultantProfile(null);
-					}
-					setLoadingConsultantProfile(false);
-				});
-
-			// ToastAndroid.show("Unknown type of user, please contect adminstration.", ToastAndroid.LONG)
-		} else {
-			setLoadingProfile(false);
-			setLoadingConsultantProfile(false);
+		if (state.user) {
+			updateDeviceMessagingToken(state.user.uid);
 		}
+	}, [state.user]);
 
-		return () => {
-			console.log("Unhooked: ", currentUser, unsubscribe);
-			if (unsubscribe) {
-				unsubscribe();
-				unsubscribeConsultant();
-			}
-
-			setProfile(null);
-			setConsultantProfile(null);
-		};
-	}, [currentUser]);
-
-	const value = {
-		loadingUser,
-		currentUser,
-		loadingProfile,
-		setProfile,
-		profile,
-		loadingConsultantProfile,
-		consultantProfile,
-		signIn,
-		signOut,
-	};
 	return (
-		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+		<AuthContext.Provider value={state}>{children}</AuthContext.Provider>
 	);
 };
+
+/**
+ * Authentication Hook
+ */
+export function useAuth() {
+	if (AuthContext === undefined) {
+		throw new Error("Please wrap the component in AuthProvider ");
+	}
+	return useContext(AuthContext);
+}

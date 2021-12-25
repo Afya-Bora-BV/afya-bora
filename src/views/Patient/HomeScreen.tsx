@@ -326,7 +326,7 @@ export default function Home() {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 
-	const { currentUser, profile, loadingProfile, loadingUser } = useAuth();
+	const { user, profile, loading } = useAuth();
 
 	const handleAccountPress = () => {
 		if (profile && profile?.uid) {
@@ -338,14 +338,9 @@ export default function Home() {
 	};
 
 	useEffect(() => {
-		if (!profile && !loadingUser && !loadingProfile && auth().currentUser) {
+		if (!profile && !loading && auth().currentUser) {
 			console.log("Loading state");
-			console.log(
-				profile,
-				loadingUser,
-				loadingProfile,
-				auth().currentUser
-			);
+			console.log(profile, loading, auth().currentUser);
 			navigation.navigate(HomeNavKey.CreateProfile);
 		}
 		// dispatch(resetAppointmentState());
@@ -353,7 +348,7 @@ export default function Home() {
 
 	// console.warn("Current user : ", profile, auth().currentUser);
 
-	if (loadingProfile || loadingUser) {
+	if (loading) {
 		return <Text>Loading your profile</Text>;
 	}
 	return (
@@ -401,7 +396,7 @@ export default function Home() {
 				contentContainerStyle={{ padding: 12 }}
 				pb={10}
 			>
-				<ProfileInformation profile={profile} user={currentUser} />
+				<ProfileInformation profile={profile} user={user} />
 				<Spacer size={30} />
 				<UpcomingAppointments />
 				<ScheduleAppointmentSection />

@@ -133,7 +133,7 @@ export default function CreateProfileScreen() {
 
 	const Toast = useToast();
 
-	const { signOut, setProfile } = useAuth();
+	const signOut = () => auth().signOut();
 
 	const {
 		control,

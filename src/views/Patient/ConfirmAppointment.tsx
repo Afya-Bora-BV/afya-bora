@@ -31,13 +31,13 @@ const ConfirmAppointment: React.FC = () => {
 		appointment: state.appointment,
 	}));
 
-	const { currentUser, profile, loadingProfile } = useAuth();
+	const { user, profile, loading } = useAuth();
 
 	const dispatch = useDispatch();
 
 	const submit = () => {
 		setIsLoading(true);
-		if (currentUser !== null || !profile) {
+		if (user !== null || !profile) {
 			const fid = appointment.facility?.id;
 
 			// FIXME: Move function to API file
@@ -50,7 +50,9 @@ const ConfirmAppointment: React.FC = () => {
 					timeRange: appointment.timeRange,
 					speciality: appointment.speciality,
 					type: appointment.type,
-					utcDate: new Date(appointment.date || new Date()).toUTCString(),
+					utcDate: new Date(
+						appointment.date || new Date()
+					).toUTCString(),
 				})
 				.then((res) => {
 					ToastAndroid.show(
@@ -87,12 +89,12 @@ const ConfirmAppointment: React.FC = () => {
 		}
 	};
 
-	if (currentUser === null) {
+	if (user === null) {
 		navigation.navigate(HomeNavKey.Login, {
 			completingAppointment: true,
 		});
 		return <></>;
-	} else if (profile === null && !loadingProfile) {
+	} else if (profile === null && !loading) {
 		navigation.navigate(HomeNavKey.CreateProfile, {
 			completingAppointment: true,
 		});

@@ -219,8 +219,9 @@ export default function Login() {
 		useState<FirebaseAuthTypes.ConfirmationResult>();
 	const [confirmationCode, setConfirmationCode] = useState<string>("");
 
-	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
-		useAuth();
+	const { user, profile } = useAuth();
+
+	const signIn = (tel: string) => auth().signInWithPhoneNumber(tel);
 
 	const submitTelephone = (phoneNumber: string) => {
 		if (loading) {

@@ -120,36 +120,23 @@ function Main() {
 	const [language, setLanguage] = useAtom(languageAtom);
 	const { t, i18n } = useTranslation();
 
-	const { signIn, currentUser, profile, loadingProfile, loadingUser } =
-		useAuth();
+	const { user, profile, loading } = useAuth();
 
-	const ready = !loadingProfile && !loadingUser;
-	const createAccountFirst =
-		ready && currentUser === null && profile === null;
-
-	const createProfileFirst =
-		ready && currentUser !== null && profile === null;
+	const createProfileFirst = !loading && user !== null && profile === null;
+	console.info(loading, user, profile);
 
 	useEffect(() => {
 		i18n.changeLanguage(language);
 	}, []);
 
 	useEffect(() => {
-		if (currentUser) {
-			updateDeviceMessagingToken(currentUser.uid);
-		}
-	}, [currentUser]);
-
-	useEffect(() => {
 		// Remove splash screen if ready
-		ready && SplashScreen.hide();
-	}, [ready]);
-
-	console.log(ready, loadingProfile, loadingUser, auth().currentUser);
+		!loading && SplashScreen.hide();
+	}, [loading]);
 
 	// console.log("Current language  : ", language);
 	// TODO: Put placeholder to prevent screen splashing white
-	if (!ready) return <LoadingFullScreen />;
+	// if (!loading) return <LoadingFullScreen />;
 
 	if (profile?.type === "consultant") {
 		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;

@@ -1,5 +1,7 @@
 import messaging from "@react-native-firebase/messaging";
-import firestore from "@react-native-firebase/firestore";
+import firestore, {
+	FirebaseFirestoreTypes,
+} from "@react-native-firebase/firestore";
 import _ from "lodash";
 import { boolean } from "yup";
 
@@ -59,7 +61,7 @@ export function updateDeviceMessagingToken(userId: string) {
 			const document = await docRef.get();
 
 			if (document.exists) {
-				const { tokens } = document.data();
+				const { tokens } = document.data() || { tokens: [] };
 
 				// check that the current token doesnt already exist
 				const exists = _.values(tokens).includes(res);

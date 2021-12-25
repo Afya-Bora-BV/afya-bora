@@ -2,9 +2,7 @@ import { ArrowBackIcon, View, VStack } from "native-base";
 import { Text } from "react-native-svg";
 import React, { useEffect, useState } from "react";
 import MainContainer from "../../components/containers/MainContainer";
-import {
-	AppointmentAlert,
-} from "../../components/core/appointment";
+import { AppointmentAlert } from "../../components/core/appointment";
 import { Pressable } from "react-native";
 import { IconContainer } from "../../components/misc";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -28,12 +26,12 @@ export default function VisitHistory() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+					  )
 					: undefined
 			}
 		>
@@ -57,8 +55,8 @@ export default function VisitHistory() {
 
 const VisitHistorySection = () => {
 	const navigation = useNavigation();
-	const { profile, } = useAuth();
-	const { generalAppointments } = usePatientAppointments(profile?.id)
+	const { profile } = useAuth();
+	const { generalAppointments } = usePatientAppointments(profile?.id);
 
 	const visitHistory = generalAppointments?.filter((appointment) => {
 		return (
@@ -75,9 +73,7 @@ const VisitHistorySection = () => {
 				{generalAppointments.map((appointment) => {
 					return (
 						<View>
-							<AppointmentAlert
-								appointment={appointment}
-							/>
+							<AppointmentAlert appointment={appointment} />
 						</View>
 					);
 				})}
