@@ -420,7 +420,7 @@ export default function SetAppointmentTime() {
 	const navigation = useNavigation();
 
 	const onPressNext = useCallback(() => {
-		navigation.navigate(HomeNavKey.PatientComplaint);
+		navigation.navigate(HomeNavKey.ConfirmAppointment);
 	}, []);
 
 	const [facility, date, timeRange] = useSelector(

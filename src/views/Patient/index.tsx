@@ -48,12 +48,12 @@ export const NavStack = createStackNavigator();
 
 export const HomeNavKey = {
 	HomeScreen: "HomeScreen",
+	PatientComplaint: "PatientComplaint",
 	ConsultantList: "ConsultantList",
-	AppointmentTime: "AppointmentTime",
 	FacilityMap: "FacilityMap",
 	FacilityInfo: "FacilityInfo",
+	AppointmentTime: "AppointmentTime",
 	EditAppointment: "EditAppointment",
-	PatientComplaint: "PatientComplaint",
 	AppointmentInvoice: "AppointmentInvoice",
 	Login: "Login",
 	CreateProfile: "CreateProfile",
@@ -89,12 +89,12 @@ function HomeView({ navigation, initialRouteName }: any) {
 				component={HomeScreen}
 			/>
 			<NavStack.Screen
-				name={HomeNavKey.ConsultantList}
-				component={FacilityList}
+				name={HomeNavKey.PatientComplaint}
+				component={PatientComplaint}
 			/>
 			<NavStack.Screen
-				name={HomeNavKey.AppointmentTime}
-				component={AppointmentTime}
+				name={HomeNavKey.ConsultantList}
+				component={FacilityList}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.FacilityMap}
@@ -105,8 +105,8 @@ function HomeView({ navigation, initialRouteName }: any) {
 				component={FacilityInfo}
 			/>
 			<NavStack.Screen
-				name={HomeNavKey.PatientComplaint}
-				component={PatientComplaint}
+				name={HomeNavKey.AppointmentTime}
+				component={AppointmentTime}
 			/>
 			<NavStack.Screen
 				name={HomeNavKey.ConfirmAppointment}

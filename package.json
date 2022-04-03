@@ -63,7 +63,7 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "12.1.1",
     "react-native-telehealth": "^0.2.0",
-    "react-native-unimodules": "^0.14.6",
+    "react-native-unimodules": "0.9.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "~0.17.5",
     "react-native-web-maps": "^0.3.0",
@@ -78,6 +78,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^3.0.1",
     "@testing-library/react-native": "~7.2.0",

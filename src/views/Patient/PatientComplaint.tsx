@@ -114,6 +114,11 @@ export function PatientComplaint() {
 		}
 	};
 
+	const handleOnPress = () => {
+		// just logging the data here which can be accessed in other components as well
+		navigation.navigate(HomeNavKey.ConsultantList);
+	};
+
 	const confirmSubmit = () => {
 		Alert.alert(
 			"Confirm Request",
@@ -246,11 +251,11 @@ export function PatientComplaint() {
 				<Button
 					width="100%"
 					bg={colors.primary}
-					onPress={confirmSubmit}
+					onPress={handleOnPress}
 					rounded={20}
 				>
-					<Text color="white" tx="aboutVisit.bookAppointment">
-						Book appointment
+					<Text color="white" tx="Select Facility">
+						Select Facility
 					</Text>
 				</Button>
 			</VStack>

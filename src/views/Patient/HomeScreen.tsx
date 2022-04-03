@@ -262,7 +262,7 @@ const LocationHelper = () => {
 				</Pressable>
 			)}
 			{!location && !isLocationLoading && (
-				<Text>here was an error in Acquiring Your Location</Text>
+				<Text>There was an error in Acquiring Your Location</Text>
 			)}
 		</Stack>
 	);
@@ -440,7 +440,7 @@ export const ScheduleAppointmentSection = () => {
 
 	const handleOnPress = () => {
 		// just logging the data here which can be accessed in other components as well
-		navigate(HomeNavKey.ConsultantList);
+		navigate(HomeNavKey.PatientComplaint);
 	};
 
 	return (

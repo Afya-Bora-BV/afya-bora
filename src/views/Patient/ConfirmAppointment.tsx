@@ -13,6 +13,7 @@ import _ from "lodash";
 import MainContainer from "../../components/containers/MainContainer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { IconContainer } from "../../components/misc";
+import { FlatList, TouchableOpacity, Alert } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import functions from "@react-native-firebase/functions";
 import { ToastAndroid } from "react-native";
@@ -32,6 +33,20 @@ const ConfirmAppointment: React.FC = () => {
 	}));
 
 	const { user, profile, loading } = useAuth();
+
+	const confirmSubmit = () => {
+		Alert.alert(
+			"Confirm Request",
+			"Please confirm that you have entered correct information.",
+			[
+				{ text: "Cancel", onPress: () => {} },
+				{
+					text: "Confirm",
+					onPress: submit,
+				},
+			]
+		);
+	};
 
 	const dispatch = useDispatch();
 

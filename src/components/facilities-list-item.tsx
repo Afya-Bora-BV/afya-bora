@@ -24,7 +24,7 @@ const getDistance = (geopoint: { lat: number; lng: number }) => {
 };
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
-	facility: { name, city, street, country, photoUrl },
+	facility: { name, city, specialties, street, country, photoUrl },
 }) => {
 	return (
 		<Box bg="white" shadow={2} rounded={10}>
@@ -54,7 +54,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 						</HStack>
 						<VStack>
 							<Text fontSize="md" bold color="#747F9E">
-								{street}
+								{specialties}
 							</Text>
 							<Text fontSize="md" bold color="#747F9E">
 								{city}
