@@ -60,7 +60,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					fontWeight="bold"
 					tx="home.yourAfyaBoraAccout"
 				>
-					Your AfyaBora Account
+					Your Afya Bora Account
 				</Text>
 				<Pressable onPress={handleAccountPress}>
 					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
@@ -81,7 +81,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 	return (
 		<Stack space={2}>
 			<Text fontSize="xl" fontWeight="bold" tx="home.yourAfyaBoraAccout">
-				Your AfyaBora Account
+				Your Afya Bora Account
 			</Text>
 			<Pressable onPress={handleAccountPress}>
 				{/* Find mean to set relative width: 160 -> 33%?? */}
@@ -289,7 +289,7 @@ const UpcomingAppointments = () => {
 					<View marginBottom={6}>
 						<Text
 							tx="home.upcomingAppointments"
-							fontSize="lg"
+							fontSize="xl"
 							fontWeight="bold"
 						>
 							Upcoming Appointments
@@ -447,7 +447,7 @@ export const ScheduleAppointmentSection = () => {
 		<>
 			<Text
 				tx="home.scheduleAnAppointment"
-				fontSize="lg"
+				fontSize="xl"
 				marginBottom={1}
 				fontWeight="bold"
 			>

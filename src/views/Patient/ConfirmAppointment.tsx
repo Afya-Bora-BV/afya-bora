@@ -37,11 +37,11 @@ const ConfirmAppointment: React.FC = () => {
 	const confirmSubmit = () => {
 		Alert.alert(
 			"Confirm Request",
-			"Please confirm that you have entered correct information.",
+			"Please submit your appointment if the information enterd is correct.",
 			[
 				{ text: "Cancel", onPress: () => {} },
 				{
-					text: "Confirm",
+					text: "Submit",
 					onPress: submit,
 				},
 			]
@@ -160,6 +160,10 @@ const ConfirmAppointment: React.FC = () => {
 					</View>
 				</HStack>
 
+				<Text fontSize={"xl"} mt={4}>
+					Doctor Specialisation
+				</Text>
+
 				<HStack
 					bg="white"
 					borderRadius={8}
@@ -175,19 +179,33 @@ const ConfirmAppointment: React.FC = () => {
 					/>
 					<Text fontSize={"xl"}>{appointment.speciality}</Text>
 				</HStack>
+				<Text fontSize={"xl"} mt={4}>
+					Primary reason for seeing the doctor
+				</Text>
 
-				<Box shadow={2} borderRadius={8} bg={"white"} p={5}>
-					<Text fontSize={"xl"}>Notes</Text>
+				<HStack
+					bg="white"
+					borderRadius={8}
+					my={2}
+					shadow={2}
+					p={5}
+					space={"sm"}
+				>
+					<Icon
+						size={26}
+						color={"#6d28d9"}
+						name={"message-plus-outline"}
+					/>
+					<Text fontSize={"xl"}>{appointment.aboutVisit.complaint}</Text>
+				</HStack>
 
-					<Text>{appointment.aboutVisit.complaint}</Text>
-				</Box>
 
 				<Box mt={4}>
 					<Button
 						bg={colors.primary}
 						rounded={20}
 						isLoading={isLoading}
-						onPress={submit}
+						onPress={confirmSubmit}
 					>
 						Submit
 					</Button>

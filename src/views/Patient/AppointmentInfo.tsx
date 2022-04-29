@@ -76,7 +76,7 @@ export const CancelAppointmentButton = ({
 	const onCancelAppointment = () => {
 		Alert.alert(
 			"Submit Request",
-			"Are you sure you want to cancell this appointment",
+			"Are you sure you want to cancel this appointment?",
 			[
 				{ text: "No", onPress: () => {} },
 				{

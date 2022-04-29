@@ -54,7 +54,6 @@ function ProfileCard({}) {
 						uri: "https://organicfeeds.com/wp-content/uploads/2021/03/How-To-Raise-A-Baby-Duck-scaled-1.jpg",
 					}}
 				>
-					SS
 				</Avatar>
 				<VStack space={1} justifyContent="center">
 					<Text fontWeight="600" fontSize="xl">
@@ -84,12 +83,7 @@ const profileOptions = [
 		icon: HeadphoneIcon,
 		title: "Help Center",
 		text: "common.helpCenter",
-	},
-
-	{
-		icon: InfoIcon,
-		title: "About Us",
-		text: "common.aboutUs",
+		
 	},
 ];
 
@@ -110,6 +104,13 @@ export default function ProfileMain() {
 			throw new Error("Something went wrong in signing out");
 		}
 	};
+
+	const help = () => {
+		ToastAndroid.show(
+			"Please Contact Support: 0788 875 419",
+			ToastAndroid.LONG
+		);
+	}
 
 	const signOut = () => {
 		Alert.alert(
@@ -186,7 +187,7 @@ export default function ProfileMain() {
 						marginTop={3}
 						justifyContent="space-between"
 					>
-						<Box bg="white" shadow={2} rounded={10} width="45%">
+						<Box bg="white" shadow={2} rounded={10} width="50%">
 							<Pressable
 								onPress={() => {
 									navigation.navigate(
@@ -194,7 +195,7 @@ export default function ProfileMain() {
 									);
 								}}
 							>
-								<HStack justifyContent={"center"} paddingY={2}>
+								<HStack justifyContent={"center"} paddingY={2} paddingX={2}>
 									<Stack flex={1}>
 										<AppointmentIllustration size={60} />
 									</Stack>
@@ -218,7 +219,7 @@ export default function ProfileMain() {
 									);
 								}}
 							>
-								<HStack justifyContent={"center"} paddingY={2}>
+								<HStack justifyContent={"center"} paddingY={2} paddingX={2}>
 									<Stack flex={1}>
 										<OnlineConsulationIllustration
 											size={60}
@@ -230,7 +231,7 @@ export default function ProfileMain() {
 											textAlign="center"
 											tx="profile.upcomingVisits"
 										>
-											Upcoming Visits
+										Upcoming Visits
 										</Text>
 									</Stack>
 								</HStack>
@@ -266,14 +267,7 @@ export default function ProfileMain() {
 								) => (
 									<Pressable
 										key={`profOpt-${ix}`}
-										onPress={
-											onAction !== undefined
-												? () =>
-														navigation.navigate(
-															HomeNavKey.ChooseProfile
-														)
-												: undefined
-										}
+										onPress={help}
 									>
 										<HStack alignItems="center" space={3}>
 											<Square size={6}>
