@@ -52,7 +52,7 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 									: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
 							}}
 						>
-							SS
+							Hospital
 						</Avatar>
 					</VStack>
 					<VStack space={5}>

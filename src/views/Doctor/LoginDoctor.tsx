@@ -165,7 +165,7 @@ export default function LoginDoctor() {
 				</Box>
 			</View>
 
-			<Stack alignItems="center" marginBottom={5}>
+			{/* <Stack alignItems="center" marginBottom={5}>
 				<HStack space={2}>
 					<Text tx="common.areYouPatient"> Are you a patient ? </Text>
 					<Pressable
@@ -179,7 +179,7 @@ export default function LoginDoctor() {
 						</Text>
 					</Pressable>
 				</HStack>
-			</Stack>
+			</Stack> */}
 		</AltContainer>
 	);
 }
