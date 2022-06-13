@@ -41,7 +41,7 @@ import Geolocation from "react-native-geolocation-service";
 import { useDispatch } from "react-redux";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
-import FontisoIcon from "react-native-vector-icons/Fontisto";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -380,11 +380,7 @@ export default function Home() {
 						}}
 					>
 						<IconContainer>
-							<FontisoIcon
-								name="doctor"
-								size={25}
-								color="#561BB3"
-							/>
+							<Icon name="doctor" size={25} color="#561BB3" />
 						</IconContainer>
 					</Pressable>
 				</HStack>

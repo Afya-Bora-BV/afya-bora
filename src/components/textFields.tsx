@@ -9,8 +9,7 @@ import {
 	HStack,
 	IInputProps,
 } from "native-base";
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../constants/colors";
 import { Alert } from "react-native";
 import { useState } from "react";
@@ -43,8 +42,8 @@ export const SearchBar = () => {
 							Alert.alert("Search Pressed");
 						}}
 					>
-						<AntDesign
-							name="search1"
+						<Icon
+							name="magnify"
 							size={24}
 							color={colors.primary}
 							style={{ paddingEnd: 10 }}
@@ -65,7 +64,7 @@ export const DropDown: React.FC<inputProp> = ({ holderText }) => {
 				placeholder={holderText}
 				InputRightElement={
 					<Pressable onPress={() => Alert.alert("Arrow clicked")}>
-						<MaterialCommunityIcons
+						<Icon
 							name="chevron-down"
 							size={24}
 							color={colors.primary}
@@ -91,7 +90,7 @@ export const Location: React.FC<inputProp> = ({ holderText }) => {
 		>
 			<HStack>
 				<Stack flex={0.5}>
-					<MaterialCommunityIcons
+					<Icon
 						name="map-marker-outline"
 						size={24}
 						color={state === "checked" ? "black" : "grey"}
@@ -106,7 +105,7 @@ export const Location: React.FC<inputProp> = ({ holderText }) => {
 				</Stack>
 
 				<Stack flex={3} alignItems="flex-end">
-					<MaterialCommunityIcons
+					<Icon
 						name="check"
 						size={24}
 						color={state === "checked" ? "black" : "transparent"}

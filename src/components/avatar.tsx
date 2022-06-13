@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Avatar, Center } from "native-base";
-import CameraIcon from "../assets/icons/Camera"
-import Icon from "react-native-vector-icons/Ionicons"
+import CameraIcon from "../assets/icons/Camera";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const PicAvatar = () => {
 	return (
@@ -18,10 +18,16 @@ export const PicAvatar = () => {
 			justifyContent="center"
 			size={20}
 			width="100%"
-
 		>
-			<Stack size={20} borderRadius="full" alignItems="center" justifyContent="center" backgroundColor="white" shadow={1}>
-				<Icon name="person-add-outline" size={42} />
+			<Stack
+				size={20}
+				borderRadius="full"
+				alignItems="center"
+				justifyContent="center"
+				backgroundColor="white"
+				shadow={1}
+			>
+				<Icon name="account-plus-outline" size={42} />
 			</Stack>
 
 			{/* <Avatar

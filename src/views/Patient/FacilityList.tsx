@@ -64,8 +64,8 @@ const FacilityList = () => {
 		}
 	}, [error]);
 
-	// console.log("All facilities ");
-	// console.log(JSON.stringify(facilityList, null, 3));
+	console.log("All facilities ");
+	console.log(JSON.stringify(facilityList, null, 3));
 
 	const facilities = facilityList?.data || [];
 

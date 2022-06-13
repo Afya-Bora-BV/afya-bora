@@ -24,7 +24,8 @@
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import * as Localization from "expo-localization";
+// import * as Localization from "expo-localization";
+import * as RNLocalize from "react-native-localize";
 
 import en from "./en.json";
 import sw from "./sw.json";
@@ -38,11 +39,17 @@ const languageDetector = {
 	type: "languageDetector",
 	async: true, // flags below detection to be async
 	detect: (callback) => {
-		return /*'en'; */ Localization.getLocalizationAsync().then(
-			({ locale }) => {
-				callback(locale);
-			}
-		);
+		return new Promise((resolve, reject) => {
+			const { languageTag } = RNLocalize.findBestAvailableLanguage(
+				Object.keys(resources)
+			) || { languageTag: "en" };
+			resolve(languageTag);
+		}).then((language) => callback(language));
+		// return /*'en'; */ Localization.getLocalizationAsync().then(
+		// 	({ locale }) => {
+		// 		callback(locale);
+		// 	}
+		// );
 	},
 	init: () => {},
 	cacheUserLanguage: () => {},
@@ -52,11 +59,20 @@ i18n.use(languageDetector)
 	.use(initReactI18next)
 	.init({
 		fallbackLng: "en",
-		lng: Localization.locale || "en",
+		// lng: Localization.locale || "en",
+		lng: RNLocalize.getLocales()[0].languageCode || "en",
 		resources,
 		// ns: ["common"],
 		// defaultNS: "common",
 	});
+
+// =================
+
+// const translations = { en, sw };
+
+const { languageTag } = RNLocalize.findBestAvailableLanguage(
+	Object.keys(resources)
+) || { languageTag: "en" };
 
 // creating a language detection plugin using expo
 // http://i18next.com/docs/ownplugin/#languagedetector

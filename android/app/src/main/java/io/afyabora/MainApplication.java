@@ -1,5 +1,5 @@
 package io.afyabora;
-import io.afyabora.generated.BasePackageList;
+// import io.afyabora.generated.BasePackageList;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,14 +19,14 @@ import androidx.multidex.MultiDexApplication;
 // import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import com.facebook.react.bridge.JSIModulePackage;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+// import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+// import org.unimodules.adapters.react.ModuleRegistryAdapter;
+// import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+  // private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -40,14 +40,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new SplashScreenReactPackage());
-
-          // Add unimodules
-          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
-            new ModuleRegistryAdapter(mModuleRegistryProvider)
-          );
-          packages.addAll(unimodules);
-
+          // packages.add(new MyReactNativePackage());
+          // packages.add(new CodePush(getResources().getString(R.string.CodePushDeploymentKey), MainApplication.this, BuildConfig.DEBUG));
           return packages;
         }
 
@@ -56,10 +50,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           return "index";
         }
 
-        @Override
-        protected JSIModulePackage getJSIModulePackage() {
-          return new ReanimatedJSIModulePackage();
-        }
+        // @Override
+        // protected JSIModulePackage getJSIModulePackage() {
+        //   return new ReanimatedJSIModulePackage();
+        // }
       };
 
   @Override
@@ -89,7 +83,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.nativeapp.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("io.afyabora.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

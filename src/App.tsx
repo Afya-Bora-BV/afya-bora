@@ -26,14 +26,14 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView, { DoctorRoutes, HomeNavKey } from "./views/Patient";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { Constants } from "react-native-unimodules";
+// import { Constants } from "react-native-unimodules";
 import { languageAtom } from "./store/atoms";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import { updateDeviceMessagingToken } from "./utils";
 import { View } from "react-native";
 import { LoadingFullScreen } from "./components/LoadingFullScreen";
-console.log(Constants.systemFonts);
+// console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
 

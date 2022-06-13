@@ -9,8 +9,8 @@ import {
 } from "native-base";
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../constants/colors";
 import BackIcon from "../assets/icons/BackIcon";
 import AddPersonIcon from "../assets/icons/AddPersonIcon";
@@ -49,7 +49,7 @@ type IconContainer = {};
 export const IconContainer: React.FC<IconContainer> = ({ children }) => {
 	return (
 		<Center
-		testID={"IconContainer"}
+			testID={"IconContainer"}
 			bg="#E7E5FF"
 			borderRadius={4}
 			_text={{
@@ -145,11 +145,7 @@ const HeaderWithSearch = () => {
 				</IconContainer>
 				<Text fontSize="lg">Doctot List</Text>
 				<IconContainer>
-					<AntDesign
-						name="search1"
-						size={24}
-						color={colors.primary}
-					/>
+					<Icon name="magnify" size={24} color={colors.primary} />
 				</IconContainer>
 			</HStack>
 
@@ -159,7 +155,7 @@ const HeaderWithSearch = () => {
 					size={25}
 					color={colors.primary}
 				/>
-				<AntDesign name="search1" size={24} color={colors.primary} />
+				<Icon name="magnify" size={24} color={colors.primary} />
 			</HStack>
 			{/* <Header head="Login" /> */}
 		</Stack>

@@ -72,3 +72,4 @@ buck-out/
 .env.test
 
 
+/android/app/debug.keystore
