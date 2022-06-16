@@ -6,10 +6,16 @@ import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
+    // @Override
+    // protected void onCreate(Bundle savedInstanceState) {
+    //   SplashScreen.show(this);  // here
+    //   super.onCreate(savedInstanceState);
+    // }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-      SplashScreen.show(this);  // here
-      super.onCreate(savedInstanceState);
+      SplashScreen.show(this);
+      super.onCreate(null);
     }
 
   /**

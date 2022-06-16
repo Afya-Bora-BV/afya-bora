@@ -58,6 +58,7 @@ const languageDetector = {
 i18n.use(languageDetector)
 	.use(initReactI18next)
 	.init({
+		compatibilityJSON: "v3",
 		fallbackLng: "en",
 		// lng: Localization.locale || "en",
 		lng: RNLocalize.getLocales()[0].languageCode || "en",

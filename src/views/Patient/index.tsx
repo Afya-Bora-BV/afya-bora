@@ -78,7 +78,10 @@ export const DoctorRoutes = {
 function HomeView({ navigation, initialRouteName }: any) {
 	return (
 		<NavStack.Navigator
-			headerMode="none"
+			// headerMode="none"
+			screenOptions={{
+				headerShown: false,
+			}}
 			initialRouteName={initialRouteName}
 			// initialRouteName={"Login"}
 		>
