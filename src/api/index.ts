@@ -2,15 +2,18 @@ import functions from "@react-native-firebase/functions";
 import firestore from "@react-native-firebase/firestore";
 
 export const getFacilities = async (): Promise<any> => {
-	const result = await functions().httpsCallable("getFacilities")({});
+	// const result = await functions().httpsCallable("getFacilities")({});
 
-	if (result && result.data) {
-		return result.data;
-	}
+	// if (result && result.data) {
+	// 	return result.data;
+	// }
 
-	// FIXME: potentially just return the error
-	console.log("Error: Unable to get list of facilities");
-	return { count: 0, data: [] };
+	// // FIXME: potentially just return the error
+	// console.log("Error: Unable to get list of facilities");
+	// return { count: 0, data: [] };
+
+	const facilities = await (await firestore().collection("facilities").get()).docs.map(doc => ({ ...doc.data(), id: doc.id }));
+	return facilities ? facilities : [];
 };
 
 /**
