@@ -27,12 +27,13 @@ import HomeView, { DoctorRoutes, HomeNavKey } from "./views/Patient";
 import { PersistGate } from "redux-persist/integration/react";
 
 // import { Constants } from "react-native-unimodules";
-import { languageAtom } from "./store/atoms";
+import { languageAtom, showOnboardAtom } from "./store/atoms";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import { updateDeviceMessagingToken } from "./utils";
 import { View } from "react-native";
 import { LoadingFullScreen } from "./components/LoadingFullScreen";
+import OnBoard from "./views/Patient/OnBoard";
 // console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
@@ -115,9 +116,17 @@ export const AppTheme = {
 	},
 };
 
+const AtomsPreLoader = () => {
+	const [] = useAtom(languageAtom);
+	const [] = useAtom(showOnboardAtom)
+	return null
+}
+
 // TODO: SO MUCH JUNK HERE!!
 function Main() {
-	// const [language, setLanguage] = useAtom(languageAtom);
+	const [language, setLanguage] = useAtom(languageAtom);
+	const [isFirstTime, setIsFirstTime] = useAtom(showOnboardAtom);
+
 	const { t, i18n } = useTranslation();
 
 	const { user, profile, loading } = useAuth();
@@ -126,7 +135,7 @@ function Main() {
 	console.info(loading, user, profile);
 
 	useEffect(() => {
-		// i18n.changeLanguage(language);
+		i18n.changeLanguage(language);
 	}, []);
 
 	useEffect(() => {
@@ -137,6 +146,14 @@ function Main() {
 	// console.log("Current language  : ", language);
 	// TODO: Put placeholder to prevent screen splashing white
 	// if (!loading) return <LoadingFullScreen />;
+
+	// Render the first time the app is installed only
+	
+	console.log("Is first time : ", isFirstTime)
+	if (isFirstTime) {
+		return <OnBoard />
+	}
+
 
 	if (profile?.type === "consultant") {
 		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;
@@ -162,6 +179,7 @@ export default function App() {
 									<QueryClientProvider client={queryClient}>
 										<JotaiProvider>
 											<Suspense fallback={null}>
+												<AtomsPreLoader />
 												<Main />
 											</Suspense>
 										</JotaiProvider>

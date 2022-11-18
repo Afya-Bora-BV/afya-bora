@@ -29,6 +29,7 @@ import DoctorHome from "../Doctor/HomeDoctor";
 import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor";
 import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
 import ConfirmAppointment from "./ConfirmAppointment";
+import OnBoard from "./OnBoard";
 
 const AuthStack = createStackNavigator();
 
@@ -66,6 +67,7 @@ export const HomeNavKey = {
 	AppointmentInfo: "AppointmentInfo",
 	RemoteConsultation: "RemoteConsultation",
 	ConfirmAppointment: "ConfirmAppointment",
+	OnBoard: "OnBoard"
 };
 
 export const DoctorRoutes = {
@@ -83,8 +85,9 @@ function HomeView({ navigation, initialRouteName }: any) {
 				headerShown: false,
 			}}
 			initialRouteName={initialRouteName}
-			// initialRouteName={"Login"}
+		// initialRouteName={"Login"}
 		>
+			<NavStack.Screen name={HomeNavKey.OnBoard} component={OnBoard} />
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
 			<NavStack.Screen
