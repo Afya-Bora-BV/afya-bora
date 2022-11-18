@@ -1,7 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Pressable, Stack, ArrowBackIcon } from "native-base";
 import React from "react";
-import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import { Dimensions , TouchableOpacity } from "react-native";
+import {ScrollView} from 'native-base'
 import MainContainer from "../../components/containers/MainContainer";
 import { Spacer } from "../../components/Spacer";
 import { IconContainer } from "../../components/misc";

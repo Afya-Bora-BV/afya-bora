@@ -391,7 +391,7 @@ export default function Home() {
 				testID="Home"
 				contentContainerStyle={{ padding: 12 }}
 				pb={10}
-				backgroundColor="#F6F6F9"
+				backgroundColor="#F4F6FA"
 			>
 				<ProfileInformation profile={profile} user={user} />
 				<Spacer size={30} />

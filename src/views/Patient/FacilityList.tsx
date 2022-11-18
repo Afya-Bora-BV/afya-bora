@@ -88,7 +88,7 @@ const FacilityList = () => {
 				padding={5}
 				contentContainerStyle={{ paddingBottom: 16 }}
 				testID={"ConsultantList"}
-				backgroundColor="#F6F6F9"
+				backgroundColor="#F4F6FA"
 			>
 				{/* <SelectionDetails /> */}
 				<Spacer size={0} />

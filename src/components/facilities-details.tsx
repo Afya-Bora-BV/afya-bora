@@ -86,6 +86,7 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 									{(specialties || [])
 										.map(_.upperFirst)
 										.join(", ")}
+										{/* {JSON.stringify(specialties)} */}
 								</Text>
 							</VStack>
 
