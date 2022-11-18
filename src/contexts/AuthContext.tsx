@@ -54,7 +54,7 @@ function reducer(state: AuthState, action: Action): AuthState {
 	}
 }
 
-export const AuthProvider: React.FC<{}> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const profileListener = async (

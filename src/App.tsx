@@ -150,6 +150,7 @@ function Main() {
 
 export default function App() {
 	return (
+		
 		// <GestureHandlerRootView>
 		<SafeAreaProvider>
 			<Provider store={store}>
