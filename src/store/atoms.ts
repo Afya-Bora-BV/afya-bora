@@ -37,6 +37,8 @@ export const createJSONStorage = (
 
 const defaultStorage = createJSONStorage(() => AsyncStorage)
 
-export const languageAtom = atomWithStorage<"sw" | "en">('darkMode', "en", defaultStorage);
+// export const languageAtom = atomWithStorage<"sw" | "en">('darkMode', "en", defaultStorage);
+export const languageAtom = atom<"sw" | "en">("en");
+
 
 // FIXME: add persistance to this state variable

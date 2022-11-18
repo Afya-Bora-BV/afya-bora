@@ -53,9 +53,10 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							<Heading fontSize="lg">{name} </Heading>
 						</HStack>
 						<VStack>
-							<Text fontSize="md" bold color="#747F9E">
+							{/* TODO: specialties information to be pushed to the view facility page */}
+							{/* <Text fontSize="md" bold color="#747F9E">
 								{specialties}
-							</Text>
+							</Text> */}
 							<Text fontSize="md" bold color="#747F9E">
 								{city}
 							</Text>

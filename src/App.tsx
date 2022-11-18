@@ -4,7 +4,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
 import { Provider, useDispatch } from "react-redux";
 import { store, persistor } from "./store";
-// import { Text } from 'react-native'
+import { Text as RNText } from 'react-native'
 import Spinner from "react-native-spinkit";
 import {
 	extendTheme,
@@ -117,7 +117,7 @@ export const AppTheme = {
 
 // TODO: SO MUCH JUNK HERE!!
 function Main() {
-	const [language, setLanguage] = useAtom(languageAtom);
+	// const [language, setLanguage] = useAtom(languageAtom);
 	const { t, i18n } = useTranslation();
 
 	const { user, profile, loading } = useAuth();
@@ -126,7 +126,7 @@ function Main() {
 	console.info(loading, user, profile);
 
 	useEffect(() => {
-		i18n.changeLanguage(language);
+		// i18n.changeLanguage(language);
 	}, []);
 
 	useEffect(() => {
@@ -150,7 +150,7 @@ function Main() {
 
 export default function App() {
 	return (
-		
+
 		// <GestureHandlerRootView>
 		<SafeAreaProvider>
 			<Provider store={store}>

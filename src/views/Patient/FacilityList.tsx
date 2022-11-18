@@ -10,6 +10,7 @@ import {
 	Button,
 	Spacer,
 	Spinner,
+	Stack,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import MainContainer from "../../components/containers/MainContainer";
@@ -45,10 +46,10 @@ const FacilityList = () => {
 	};
 
 	const {
-		data: facilityList,
+		data: facilities,
 		error,
 		isLoading,
-	} = useQuery<{ count: number; data: Facility[] }>(
+	} = useQuery<Facility[]>(
 		["facilities", 2],
 		getFacilities
 	);
@@ -65,9 +66,7 @@ const FacilityList = () => {
 	}, [error]);
 
 	console.log("All facilities ");
-	console.log(JSON.stringify(facilityList, null, 3));
-
-	const facilities = facilityList?.data || [];
+	console.log(JSON.stringify(facilities, null, 3));
 
 	return (
 		<MainContainer
@@ -76,12 +75,12 @@ const FacilityList = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -89,25 +88,24 @@ const FacilityList = () => {
 				padding={5}
 				contentContainerStyle={{ paddingBottom: 16 }}
 				testID={"ConsultantList"}
+				backgroundColor="#F6F6F9"
 			>
 				{/* <SelectionDetails /> */}
-				<Spacer size={4} />
+				<Spacer size={0} />
 				{isLoading && <Spinner color={colors.primary} size="lg" />}
 				{facilities && (
 					<VStack space={4}>
-						<VStack space={2}>
-							{facilities.map((facility, ix) => {
-								return (
-									<TouchableOpacity
-										key={facility.id}
-										activeOpacity={0.5}
-										onPress={() => selectFacility(facility)}
-									>
-										<FacilityListItem facility={facility} />
-									</TouchableOpacity>
-								);
-							})}
-						</VStack>
+						{facilities.map((facility, ix) => {
+							return (
+								<TouchableOpacity
+									key={facility.id}
+									activeOpacity={0.5}
+									onPress={() => selectFacility(facility)}
+								>
+									<FacilityListItem facility={facility} />
+								</TouchableOpacity>
+							);
+						})}
 					</VStack>
 				)}
 			</ScrollView>
@@ -123,7 +121,7 @@ const ModalActions: React.FC = () => {
 	};
 	return (
 		<HStack space={2}>
-			<Button flex={1} onPress={() => {}}>
+			<Button flex={1} onPress={() => { }}>
 				Cancel
 			</Button>
 			<Button flex={1} onPress={viewDetailsAndMore}>
