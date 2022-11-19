@@ -12,7 +12,8 @@ export const getFacilities = async (): Promise<any> => {
 	// console.log("Error: Unable to get list of facilities");
 	// return { count: 0, data: [] };
 
-	const facilities = await (await firestore().collection("facilities").get()).docs.map(doc => ({ ...doc.data(), id: doc.id }));
+	const facilitiesList = await firestore().collection("facilities").where("status", "==", "active").get();
+	const facilities = await facilitiesList.docs.map(doc => ({ ...doc.data(), id: doc.id }))
 	return facilities ? facilities : [];
 };
 

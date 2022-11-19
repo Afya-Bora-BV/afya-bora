@@ -149,7 +149,7 @@ export function PatientComplaint() {
 					: undefined
 			}
 		>
-			<VStack alignItems="center" paddingX={4} space={10}>
+			<VStack alignItems="center" paddingX={4} space={4} mt={4}>
 				{/* Symptomps section */}
 				<Box bg="white" shadow={2} rounded={10} width="100%">
 					<Stack

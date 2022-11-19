@@ -34,6 +34,7 @@ export function ContainerHeader({
 			position={isAbsolute ? "absolute" : undefined}
 			zIndex={isAbsolute ? 999 : undefined}
 			top={isAbsolute ? 0 : undefined}
+			backgroundColor={"#FFFFFF"}
 		>
 			{/* Left section */}
 			<View>{LeftSection !== undefined ? <LeftSection /> : null}</View>
@@ -72,6 +73,7 @@ export default function MainContainer({
 				flex={1}
 				position={headerMode === "float" ? "relative" : undefined}
 				testID="MainContainer"
+				backgroundColor={"#F4F6FA"}
 			>
 				{/* Header */}
 				<ContainerHeader
@@ -79,6 +81,7 @@ export default function MainContainer({
 					title={title}
 					leftSection={leftSection}
 					rightSection={rightSection}
+					
 				/>
 
 				{/* Body */}
