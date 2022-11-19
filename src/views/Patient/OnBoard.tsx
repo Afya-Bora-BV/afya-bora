@@ -29,7 +29,7 @@ const OnBoard = () => {
                         endIcon: <CheckIcon size="5" />
                     }} mt={1} onValueChange={itemValue => setLanguage(itemValue as "en" | "sw")}>
                         {languages.map(lang => (
-                            <Select.Item label={lang.label} value={lang.value} />
+                            <Select.Item key={lang.value} label={lang.label} value={lang.value} />
                         ))}
                     </Select>
                 </VStack>
