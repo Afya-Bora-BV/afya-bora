@@ -182,7 +182,7 @@ export function PatientComplaint() {
 										borderColor="#ccc"
 										bg={
 											speciality === specilization
-												? "#258FBE"
+												? colors.primary
 												: "#fff"
 										}
 										borderWidth={1}

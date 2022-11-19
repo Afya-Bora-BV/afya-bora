@@ -42,6 +42,7 @@ import { Text } from "../../components/text";
 import { languageAtom } from "../../store/atoms";
 import { IScrollViewProps } from "native-base/lib/typescript/components/basic/ScrollView/types";
 
+
 export type BookAppointmentStackParamList = {
 	SetAppointmentTime: {
 		consultant: any;
@@ -249,7 +250,7 @@ const PickATimeSection: React.FC<PickATimeSectionProps> = React.memo(
 									py={2}
 									backgroundColor={
 										timeRange === slot.period
-											? "#258FBE"
+											? colors.primary
 											: "white"
 									}
 								>
@@ -394,7 +395,7 @@ const CalendarDay: React.FC<CalendarDayProps> = React.memo(
 					borderColor="#ccc"
 					p={status === "active" ? 4 : 3}
 					rounded="xl"
-					bg={status === "active" ? "#258FBE" : "#fff"}
+					bg={status === "active" ? colors.primary : "#fff"}
 					alignItems="center"
 				>
 					<Text
@@ -459,7 +460,7 @@ export default function SetAppointmentTime() {
 					: undefined
 			}
 		>
-			<VStack paddingX={3} mt={2} space={10}>
+			<VStack paddingX={3} mt={4} space={4}>
 				{/* Consultant Preview */}
 				<Box>
 					{facility && (
