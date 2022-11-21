@@ -19,6 +19,9 @@ const FacilityInfo: React.FC = () => {
 		({ appointment }: RootState) => appointment.facility
 	);
 	const navigation = useNavigation();
+
+	console.log("Facility specialities")
+	console.log(facility?.specialties)
 	return (
 		<MainContainer
 			title="facilitiList.selectFacility"

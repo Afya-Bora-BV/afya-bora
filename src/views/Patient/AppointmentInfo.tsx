@@ -241,7 +241,7 @@ export default function AppointmentInfo() {
 					</View>
 				)}
 
-				<HStack justifyContent="space-between" backgroundColor={"#FFFFFF"} px={3} py={4}>
+				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
 					<EditAppointmentButton
 						appointmentId={data?.id || ""}
 						appointment={data || {}}
@@ -249,13 +249,13 @@ export default function AppointmentInfo() {
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<VStack mt={2} space={4}>
-					{/* {!(data?.type === "online" && data?.facility) && (
-						<FacilityListItem facility={data?.facility} />
+					{!(data?.type === "online") && data?.fid && (
+						<FacilityListItem facility={data?.facility} fid={data?.fid} />
 					)}
 
 					{data?.consultant && (
 						<ConsultantListItem consultant={data?.consultant} />
-					)} */}
+					)}
 				</VStack>
 
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>

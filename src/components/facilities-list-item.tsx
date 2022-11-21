@@ -16,6 +16,7 @@ import FastImage from "react-native-fast-image";
 
 type FacilityListItemProps = {
 	facility: Facility;
+	fid: string;
 };
 
 // TODO: calcultae distance from geopoint and render distance
@@ -24,7 +25,8 @@ const getDistance = (geopoint: { lat: number; lng: number }) => {
 };
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
-	facility: { name, city, specialties, street, country, photoUrl },
+	facility,
+	fid
 }) => {
 	return (
 		<Box bg="white" shadow={2} rounded={10}>
@@ -37,8 +39,8 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 					<FastImage
 						style={{ width: 120, height: 120, borderRadius: 6 }}
 						source={{
-							uri: photoUrl
-								? photoUrl
+							uri: facility?.photoUrl
+								? facility?.photoUrl
 								: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
 							// headers: { Authorization: 'someAuthToken' },
 							priority: FastImage.priority.normal,
@@ -50,7 +52,8 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							justifyContent="space-between"
 							alignItems="center"
 						>
-							<Heading fontSize="lg">{name} </Heading>
+							<Heading fontSize="lg">{facility?.name} </Heading>
+							<Heading fontSize="lg">{fid} </Heading>
 						</HStack>
 						<VStack>
 							{/* TODO: specialties information to be pushed to the view facility page */}
@@ -58,10 +61,10 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 								{specialties}
 							</Text> */}
 							<Text fontSize="md" bold color="#747F9E">
-								{city}
+								{facility?.city}
 							</Text>
 							<Text fontSize="md" bold color="#747F9E">
-								{country}
+								{facility?.country}
 							</Text>
 						</VStack>
 
