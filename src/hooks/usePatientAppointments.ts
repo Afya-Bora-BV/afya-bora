@@ -15,6 +15,8 @@ function usePatientAppointments(
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
+	console.log("Appointments : ",patientId)
+	console.log(allAppointments)
 	useEffect(() => {
 		const today = (() => {
 			const d = new Date();
@@ -24,9 +26,9 @@ function usePatientAppointments(
 		if (patientId) {
 			const subscription = firestore()
 				.collection("appointments")
-				.where("patient.id", "==", patientId)
-				.where("date", ">=", today)
-				.orderBy("date", "desc")
+				.where("pid", "==", patientId)
+				// .where("date", ">=", today)
+				// .orderBy("date", "desc")
 				.onSnapshot(
 					(snap) => {
 						setAllAppointments(
@@ -47,6 +49,8 @@ function usePatientAppointments(
 					}
 				);
 			return () => subscription();
+		}else{
+			console.log("WHATS GOING ON")
 		}
 	}, [patientId]);
 

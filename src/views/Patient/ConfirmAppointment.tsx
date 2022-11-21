@@ -16,6 +16,9 @@ import { IconContainer } from "../../components/misc";
 import { FlatList, TouchableOpacity, Alert } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import functions from "@react-native-firebase/functions";
+import firestore from '@react-native-firebase/firestore';
+
+
 import { ToastAndroid } from "react-native";
 import { resetAppointmentState } from "../../store/slices/appointment";
 import { HomeNavKey } from "./index";
@@ -39,7 +42,7 @@ const ConfirmAppointment: React.FC = () => {
 			"Confirm Request",
 			"Please submit your appointment if the information enterd is correct.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Submit",
 					onPress: submit,
@@ -55,25 +58,30 @@ const ConfirmAppointment: React.FC = () => {
 		if (user !== null || !profile) {
 			const fid = appointment.facility?.id;
 
-			// FIXME: Move function to API file
-			functions()
-				.httpsCallable("makeAppointment")({
-					// FIXME: Add a checker for fid being present
-					fid,
-					aboutVisit: appointment.aboutVisit,
-					pid: profile?.id,
-					timeRange: appointment.timeRange,
-					speciality: appointment.speciality,
-					type: appointment.type,
-					utcDate: new Date(
-						appointment.date || new Date()
-					).toUTCString(),
-				})
+			const data = {
+				fid,
+				aboutVisit: appointment.aboutVisit,
+				pid: profile?.id,
+				timeRange: appointment.timeRange,
+				speciality: appointment.speciality,
+				type: appointment.type,
+				data: new Date(
+					appointment.date || new Date()),
+				utcDate: new Date(
+					appointment.date || new Date()
+				).toUTCString(),
+			}
+
+			firestore()
+				.collection('appointments')
+				.add(data)
 				.then((res) => {
+					console.log('appointment  added! ', res);
 					ToastAndroid.show(
 						"Success! Your appointment request has been made.",
 						3000
 					);
+					setIsLoading(false)
 					dispatch(resetAppointmentState());
 					navigation.dispatch(
 						CommonActions.reset({
@@ -81,8 +89,7 @@ const ConfirmAppointment: React.FC = () => {
 							routes: [{ name: HomeNavKey.HomeScreen }],
 						})
 					);
-				})
-				.catch((err) => {
+				}).catch((err) => {
 					console.log(err, typeof err);
 					setIsLoading(false);
 					if (err.code === "unauthenticated") {
@@ -95,7 +102,50 @@ const ConfirmAppointment: React.FC = () => {
 						});
 					}
 					ToastAndroid.show("Error. Please try again.", 3000);
+
 				});
+
+			// FIXME: Move function to API file
+			// functions()
+			// 	.httpsCallable("makeAppointment")({
+			// 		// FIXME: Add a checker for fid being present
+			// 		fid,
+			// 		aboutVisit: appointment.aboutVisit,
+			// 		pid: profile?.id,
+			// 		timeRange: appointment.timeRange,
+			// 		speciality: appointment.speciality,
+			// 		type: appointment.type,
+			// 		utcDate: new Date(
+			// 			appointment.date || new Date()
+			// 		).toUTCString(),
+			// 	})
+			// 	.then((res) => {
+			// 		ToastAndroid.show(
+			// 			"Success! Your appointment request has been made.",
+			// 			3000
+			// 		);
+			// 		dispatch(resetAppointmentState());
+			// 		navigation.dispatch(
+			// 			CommonActions.reset({
+			// 				index: 0,
+			// 				routes: [{ name: HomeNavKey.HomeScreen }],
+			// 			})
+			// 		);
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err, typeof err);
+			// 		setIsLoading(false);
+			// 		if (err.code === "unauthenticated") {
+			// 			ToastAndroid.show(
+			// 				"Please login first before proceeding.",
+			// 				ToastAndroid.SHORT
+			// 			);
+			// 			return navigation.navigate(HomeNavKey.Login, {
+			// 				completingAppointment: true,
+			// 			});
+			// 		}
+			// 		ToastAndroid.show("Error. Please try again.", 3000);
+			// 	});
 		} else {
 			ToastAndroid.show(
 				"Error confirming and validating your account. Please contact support.",
@@ -123,12 +173,12 @@ const ConfirmAppointment: React.FC = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>

@@ -75,6 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 				const profile = {
 					...snap.data(),
 					id: snap.id,
+					pid: snap.id,
 					type,
 				} as unknown as Consultant | PatientProfile;
 				onProfileChange(profile);

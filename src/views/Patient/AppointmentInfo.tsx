@@ -78,7 +78,7 @@ export const CancelAppointmentButton = ({
 			"Submit Request",
 			"Are you sure you want to cancel this appointment?",
 			[
-				{ text: "No", onPress: () => {} },
+				{ text: "No", onPress: () => { } },
 				{
 					text: "Yes",
 					onPress: () => {
@@ -91,21 +91,41 @@ export const CancelAppointmentButton = ({
 	console.log("Appointment id : ", appointmentId);
 	return (
 		<Pressable
+			disabled={isLoading}
 			onPress={() => {
 				onCancelAppointment();
 			}}
 		>
 			{isLoading ? (
 				<Spinner />
-			) : (
-				<Text
-					tx="appointmentInfo.cancelAppointment"
-					style={{ color: "red" }}
-					fontSize="sm"
-				>
-					Cancel Appointment
-				</Text>
-			)}
+			) :
+
+
+				(
+					// <Text
+					// 	tx="appointmentInfo.cancelAppointment"
+					// 	style={{ color: "red" }}
+					// 	fontSize="sm"
+					// >
+					// 	Cancel Appointment
+					// </Text>
+
+					<HStack space={2}
+						style={{ backgroundColor: "#FFFFFF", }}
+						borderWidth={1}
+						borderColor={"#FF5A5B"}
+						px={12} py={3}
+						alignItems="center"
+						color={colors.primary}
+						borderRadius="md"
+
+					>
+						<Text tx="appointmentInfo.cancelAppointment" fontSize="sm" color={"#FF5A5B"}>
+							Cancel Appointment
+						</Text>
+					</HStack>
+
+				)}
 		</Pressable>
 	);
 };
@@ -143,12 +163,22 @@ const EditAppointmentButton = ({
 				goToEditAppointment();
 			}}
 		>
-			<HStack space={2}>
-				<PenEditIcon size={4} />
-				<Text tx="appointmentInfo.editAppointment" fontSize="sm">
+			<HStack space={2}
+				style={{ backgroundColor: "#FFFFFF", }}
+				borderWidth={1}
+				borderColor={colors.primary}
+				px={12} py={3}
+				alignItems="center"
+				color={colors.primary}
+				borderRadius="md"
+			>
+				<PenEditIcon size={4} color={colors.primary} />
+				<Text tx="appointmentInfo.editAppointment" fontSize="sm" color={colors.primary}>
 					Edit Appointment
 				</Text>
 			</HStack>
+
+
 		</Pressable>
 	);
 };
@@ -170,12 +200,12 @@ export default function AppointmentInfo() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -202,7 +232,7 @@ export default function AppointmentInfo() {
 							<Text
 								fontSize={"xl"}
 								fontWeight="medium"
-								// tx="common.otherNotes"
+							// tx="common.otherNotes"
 							>
 								Reason For Rejection
 							</Text>
@@ -211,7 +241,7 @@ export default function AppointmentInfo() {
 					</View>
 				)}
 
-				<HStack justifyContent="space-between">
+				<HStack justifyContent="space-between" backgroundColor={"#FFFFFF"} px={3} py={4}>
 					<EditAppointmentButton
 						appointmentId={data?.id || ""}
 						appointment={data || {}}
@@ -219,13 +249,13 @@ export default function AppointmentInfo() {
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
 				<VStack mt={2} space={4}>
-					{!(data?.type === "online") && (
+					{/* {!(data?.type === "online" && data?.facility) && (
 						<FacilityListItem facility={data?.facility} />
 					)}
 
 					{data?.consultant && (
 						<ConsultantListItem consultant={data?.consultant} />
-					)}
+					)} */}
 				</VStack>
 
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>

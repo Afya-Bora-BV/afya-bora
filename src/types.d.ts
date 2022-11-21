@@ -40,12 +40,12 @@ export type Appointment = {
 	pid: string;
 	utcDate: string;
 	timeRange:
-		| "morning"
-		| "afternoon"
-		| "evening"
-		| "asubuhi"
-		| "mchana"
-		| "jioni";
+	| "morning"
+	| "afternoon"
+	| "evening"
+	| "asubuhi"
+	| "mchana"
+	| "jioni";
 	facility: {
 		address: string;
 		name: string;
@@ -129,6 +129,7 @@ interface RealTimeAppointment {
 interface PatientProfile {
 	bloodGroup: "A+" | "B+" | "AB+" | "O+" | "A-" | "B-" | "AB-" | "O-";
 	pid: string;
+	id: string;
 	gender: "male" | "female";
 	dob: Date;
 	height: string;

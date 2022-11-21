@@ -148,12 +148,13 @@ function Main() {
 	// if (!loading) return <LoadingFullScreen />;
 
 	// Render the first time the app is installed only
-	
+
 	console.log("Is first time : ", isFirstTime)
+
 	if (isFirstTime) {
 		return <OnBoard />
+		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
 	}
-
 
 	if (profile?.type === "consultant") {
 		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;
@@ -161,6 +162,8 @@ function Main() {
 
 	if (createProfileFirst)
 		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
+
+
 
 	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
 }

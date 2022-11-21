@@ -88,6 +88,7 @@ function HomeView({ navigation, initialRouteName }: any) {
 		// initialRouteName={"Login"}
 		>
 			<NavStack.Screen name={HomeNavKey.OnBoard} component={OnBoard} />
+			
 			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
 			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
 			<NavStack.Screen

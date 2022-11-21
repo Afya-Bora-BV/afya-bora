@@ -339,8 +339,8 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!profile && !loading && auth().currentUser) {
-			console.log("Loading state");
-			console.log(profile, loading, auth().currentUser);
+			// console.log("Loading state");
+			// console.log(profile, loading, auth().currentUser);
 			navigation.navigate(HomeNavKey.CreateProfile);
 		}
 		// dispatch(resetAppointmentState());

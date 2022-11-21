@@ -64,8 +64,8 @@
 	},
 	"appointmentInfo": {
 		"appointmentInfo": "Maelezo Ya Miadi",
-		"editAppointment": "Hariri Miadi",
-		"cancelAppointment": "Sitisha/Ghairi Miadi"
+		"editAppointment": "Hariri",
+		"cancelAppointment": "Sitisha"
 	},
 	"confirmAppointment": {
 		"confirmAppointment": "Hakikisha Taarifa"

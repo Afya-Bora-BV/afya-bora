@@ -65,8 +65,8 @@
 	},
 	"appointmentInfo":{
 		"appointmentInfo":"Appointment Info",
-		"editAppointment":"Edit Appointment",
-		"cancelAppointment":"Cancel Appointment"
+		"editAppointment":"Edit",
+		"cancelAppointment":"Cancel"
 	},
 	"confirmAppointment": {
 		"confirmAppointment": "Confirm Appointment"

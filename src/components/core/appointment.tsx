@@ -44,13 +44,15 @@ export function AppointmentAlert({
       >
         <View flex={1.4}>
           <Icon
-            size={40}
+            size={32}
+            color={colors.primary}
             name="calendar-month-outline"
           />
         </View>
         <VStack flex={5} space={1}>
           <Text fontSize="md" fontWeight="bold">
-            {appointment?.facility?.name}
+            {/* {appointment?.facility?.name} */}
+            {appointment?.fid}
           </Text>
           <Text
             fontWeight="bold"
@@ -68,7 +70,7 @@ export function AppointmentAlert({
           >
             {appointment?.status}
           </Text>
-          <Text italic
+          <Text
             tx={
               appointment.type === "online"
                 ? "common.online"
@@ -84,7 +86,7 @@ export function AppointmentAlert({
           <TouchableOpacity
             onPress={() => openAppointment(appointment)}
           >
-            <HStack>
+            <HStack space={1}>
               <Text
                 color={colors.primary}
                 fontSize="lg"
@@ -94,7 +96,7 @@ export function AppointmentAlert({
               </Text>
               <Text
                 color={colors.primary}
-                fontSize="lg"
+                fontSize="md"
               // tx="common.join"
               >
                 /
@@ -150,7 +152,7 @@ export function StatusAppointmentAlert({
             {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
           {status === "accepted" && <Text italic>Time : {hours}</Text>}
-          <Text italic
+          <Text 
             tx={
               type === "online"
                 ? "common.online"
@@ -168,7 +170,7 @@ export function StatusAppointmentAlert({
       {/* right */}
       <View alignSelf="flex-end" justifyContent="center">
         {/* TODO FIX: "Status positioning" */}
-        <Box rounded={10} backgroundColor={status === "accepted" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
+        <Box borderRadius={"md"} backgroundColor={status === "accepted" ? "#A9FA0F" : "#FF5A5B"} px={6} py={2}>
           <Text fontSize="sm" color={status === "accepted" ? "#24D626" : "black"}>
             {_.upperFirst(status)}
           </Text>
