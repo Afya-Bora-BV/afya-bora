@@ -10,6 +10,8 @@ import {
 	VStack,
 	useToast,
 	SimpleGrid,
+	Select,
+	CheckIcon,
 } from "native-base";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { colors } from "../../constants/colors";
@@ -31,6 +33,7 @@ import {
 import { Text } from "../../components/text";
 import { useAuth } from "../../contexts/AuthContext";
 import { type } from "os";
+import { specialities } from "../../data/specialities";
 
 const keySymptoms = [
 	"Fever",
@@ -124,7 +127,7 @@ export function PatientComplaint() {
 			"Confirm Request",
 			"Please confirm that you have entered correct information.",
 			[
-				{ text: "Cancel", onPress: () => {} },
+				{ text: "Cancel", onPress: () => { } },
 				{
 					text: "Confirm",
 					onPress: submit,
@@ -140,12 +143,12 @@ export function PatientComplaint() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -158,7 +161,7 @@ export function PatientComplaint() {
 							paddingTop: 20,
 							paddingBottom: 40,
 						}}
-						space={10}
+						space={4}
 					>
 						<View>
 							<Text
@@ -175,19 +178,19 @@ export function PatientComplaint() {
 
 						<Stack space={2}>
 							{/* FIXME: This smells bad. Needs refactor */}
-							<SimpleGrid columns={2} space={3}>
-								{specializations.map((specilization, index) => (
+							{/* <SimpleGrid columns={2} space={3}> */}
+							{/* {specialities.map((specilization, index) => (
 									<Box
 										rounded="xl"
 										borderColor="#ccc"
 										bg={
-											speciality === specilization
+											speciality === specilization.value
 												? colors.primary
 												: "#fff"
 										}
 										borderWidth={1}
 										flex={1}
-										key={specilization}
+										key={specilization.label}
 									>
 										<TouchableOpacity
 											style={{
@@ -197,23 +200,38 @@ export function PatientComplaint() {
 											}}
 											onPress={() =>
 												dispatch(
-													setSpeciality(specilization)
+													setSpeciality(specilization.value)
 												)
 											}
 										>
 											<Text
 												color={
-													speciality === specilization
+													speciality === specilization.value
 														? "#fff"
 														: "#000"
 												}
 											>
-												{specilization}
+												{specilization.label}
 											</Text>
 										</TouchableOpacity>
 									</Box>
+								))} */}
+							{/* </SimpleGrid> */}
+							<Select selectedValue={speciality} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+								// bg: "teal.600",
+								backgroundColor: colors.primary,
+								endIcon: <CheckIcon size="5" color={"#FFFFFF"} />,
+								color: "red.400",
+								_text: { color: "#FFFFFF" }
+							}} mt={1} onValueChange={itemValue => {
+								dispatch(
+									setSpeciality(itemValue)
+								)
+							}}>
+								{specialities.map(speciality => (
+									<Select.Item key={speciality.value} label={speciality.label} value={speciality.value} />
 								))}
-							</SimpleGrid>
+							</Select>
 						</Stack>
 					</Stack>
 				</Box>

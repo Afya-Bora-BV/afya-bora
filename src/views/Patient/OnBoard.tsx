@@ -4,7 +4,6 @@ import { colors } from '../../constants/colors'
 import { useAtom } from 'jotai'
 import { languageAtom, showOnboardAtom } from '../../store/atoms'
 
-
 const languages: { label: "English" | "Swahili", value: "en" | "sw" }[] = [{
     label: "English", value: "en"
 }, {
@@ -25,8 +24,11 @@ const OnBoard = () => {
                 <VStack>
                     <Text>Choose Language</Text>
                     <Select selectedValue={language} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
-                        bg: "teal.600",
-                        endIcon: <CheckIcon size="5" />
+                        // bg: "teal.600",
+                        backgroundColor:colors.primary,
+                        endIcon: <CheckIcon size="5" color={"#FFFFFF"} />,
+                        color:"red.400",
+                        _text:{color:"#FFFFFF"}
                     }} mt={1} onValueChange={itemValue => setLanguage(itemValue as "en" | "sw")}>
                         {languages.map(lang => (
                             <Select.Item key={lang.value} label={lang.label} value={lang.value} />
