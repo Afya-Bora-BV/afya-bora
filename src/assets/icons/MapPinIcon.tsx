@@ -10,6 +10,7 @@ function SvgComponent({ size, color, ...rest }: SvgProps & IIconProps) {
 				height={24}
 				viewBox="0 0 24 24"
 				fill="none"
+				color={color}
 				{...rest}
 			>
 				<Path

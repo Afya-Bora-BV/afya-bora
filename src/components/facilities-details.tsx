@@ -10,6 +10,7 @@ import {
 	Heading,
 	Pressable,
 	Avatar,
+	Stack,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ClipboardPulseIcon from "../assets/icons/ClipboardPulseIcon";
@@ -17,6 +18,8 @@ import HeartPulseIcon from "../assets/icons/HeartPulseIcon";
 import WalletIcon from "../assets/icons/WalletIcon";
 import { Facility } from "../types";
 import { friendlyNumber } from "../utils";
+import MapPinIcon from "../assets/icons/MapPinIcon";
+import MapView from "react-native-maps";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -86,7 +89,7 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 									{(specialties || [])
 										.map(_.upperFirst)
 										.join(", ")}
-										{/* {JSON.stringify(specialties)} */}
+									{/* {JSON.stringify(specialties)} */}
 								</Text>
 							</VStack>
 
@@ -130,6 +133,36 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 									Tsh {friendlyNumber(endPrice || 400000)} /=
 								</Text>
 							</VStack>
+
+							<VStack>
+								<HStack alignItems={"center"} space={2}>
+									<VStack>
+										<MapPinIcon size={6} color={"#000000"} />
+									</VStack>
+
+									<VStack>
+										<Text bold fontSize="md">
+											Location
+										</Text>
+									</VStack>
+								</HStack>
+								<Stack pl={2} mt={2}>
+									<MapView
+										style={{
+											height:200,
+											width:"100%"
+										}}
+										initialRegion={{
+											latitude: 37.78825,
+											longitude: -122.4324,
+											latitudeDelta: 0.0922,
+											longitudeDelta: 0.0421,
+										}}
+									/>
+								</Stack>
+							</VStack>
+
+
 						</VStack>
 					</VStack>
 				</VStack>
