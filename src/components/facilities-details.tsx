@@ -45,30 +45,30 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 			<VStack p={4} borderRadius={12} bg={"white"} space={5}>
 				<VStack space={5}>
 					<VStack alignItems="center" justifyContent="center">
-						<Avatar
-							width={width / 1.2}
-							height={120}
-							borderRadius={6}
+						<Image
 							source={{
 								uri: photoUrl
 									? photoUrl
 									: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
 							}}
-						>
-							Hospital
-						</Avatar>
+							alt="Alternate Text" size="xl"
+							width={width / 1.2}
+							height={220}
+							borderRadius={4}
+
+						/>
 					</VStack>
 					<VStack space={5}>
-						<VStack space={1}>
+						<VStack space={0}>
 							<Heading fontSize="lg">{name} </Heading>
 							<Text fontSize="md" bold color="#747F9E">
-								{street}
+								{street} ,
 							</Text>
 							<Text fontSize="md" bold color="#747F9E">
-								{city}
+								{city} ,
 							</Text>
 							<Text fontSize="md" bold color="#747F9E">
-								{country}
+								{country}.
 							</Text>
 						</VStack>
 
@@ -149,8 +149,8 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 								<Stack pl={2} mt={2}>
 									<MapView
 										style={{
-											height:200,
-											width:"100%"
+											height: 200,
+											width: "100%"
 										}}
 										initialRegion={{
 											latitude: 37.78825,
