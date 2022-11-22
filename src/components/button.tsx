@@ -11,7 +11,7 @@ export const PrimaryButton: React.FC<buttonProps> = ({
 }) => {
 	return (
 		<Button
-			borderRadius={20}
+			borderRadius={4}
 			_disabled={{
 				backgroundColor: "#B0B3C7",
 				color: "white",

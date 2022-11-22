@@ -28,6 +28,7 @@ export function ControllerFormInput({
 				control={control}
 				render={({ field: { onChange, onBlur, value } }) => (
 					<Input
+						rounded={4}
 						value={value}
 						onBlur={onBlur}
 						onChangeText={onChange}

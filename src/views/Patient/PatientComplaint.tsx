@@ -270,7 +270,7 @@ export function PatientComplaint() {
 					width="100%"
 					bg={colors.primary}
 					onPress={handleOnPress}
-					rounded={20}
+					rounded={4}
 				>
 					<Text color="white" tx="Select Facility">
 						Select Facility

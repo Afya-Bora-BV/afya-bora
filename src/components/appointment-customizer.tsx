@@ -163,7 +163,9 @@ const AppointmentCustomizer: React.FC = () => {
 			<Stack space={2}>
 				<Text tx="home.chooseLocation">Choose Location</Text>
 				<MemoizedSelect
-					variant="rounded"
+
+					// variant="rounded"
+					rounded={4}
 					selectedValue={location}
 					minWidth={200}
 					accessibilityLabel="Location"
@@ -178,15 +180,13 @@ const AppointmentCustomizer: React.FC = () => {
 						dispatch(setLocation(itemValue));
 					}}
 					_selectedItem={{
-						bg: "cyan.100",
+						bg: colors.primary,
 						// justifyItems: "space-between",
 						style: { alignContent: "space-between" },
-
+						_text:{color:"#FFFFFF"},
 						startIcon: <CheckIcon size={4} />,
 					}}
-					_item={{
-						bg: "muted.50",
-					}}
+					
 				/>
 			</Stack>
 		</Stack>

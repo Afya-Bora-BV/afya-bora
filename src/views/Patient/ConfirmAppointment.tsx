@@ -253,7 +253,7 @@ const ConfirmAppointment: React.FC = () => {
 				<Box mt={4}>
 					<Button
 						bg={colors.primary}
-						rounded={20}
+						rounded={4}
 						isLoading={isLoading}
 						onPress={confirmSubmit}
 					>

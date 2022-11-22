@@ -1,8 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Pressable, Stack, ArrowBackIcon } from "native-base";
 import React from "react";
-import { Dimensions , TouchableOpacity } from "react-native";
-import {ScrollView} from 'native-base'
+import { Dimensions, TouchableOpacity } from "react-native";
+import { ScrollView } from 'native-base'
 import MainContainer from "../../components/containers/MainContainer";
 import { Spacer } from "../../components/Spacer";
 import { IconContainer } from "../../components/misc";
@@ -29,21 +29,22 @@ const FacilityInfo: React.FC = () => {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
+
 			<ScrollView>
 				<Stack p={5}>
 					{facility && <FacilityDetails facility={facility} />}
 				</Stack>
 
-				<Stack px={10}>
+				<Stack px={6} mb={10}>
 					<PrimaryButton
 						onPress={() => {
 							navigation.navigate(HomeNavKey.AppointmentTime);
@@ -58,6 +59,7 @@ const FacilityInfo: React.FC = () => {
 					</PrimaryButton>
 				</Stack>
 			</ScrollView>
+
 		</MainContainer>
 	);
 };

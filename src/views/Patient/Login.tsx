@@ -79,15 +79,15 @@ const SendConfirmationCode = ({
 							onChangeFormattedText={(text) => {
 								onChangeNumber(text);
 							}}
-							withShadow
 							autoFocus
+							
 						/>
 					</VStack>
 				</Box>
 				<Button
 					onPress={onSubmit}
-					borderRadius={20}
-					w={260}
+					borderRadius={4}
+					w={"80"}
 					isLoading={isLoading}
 					disabled={isLoading}
 					style={{ backgroundColor: colors.primary }}
@@ -177,11 +177,11 @@ const VerifyCode = ({
 				{/* Confirm button */}
 				<Button
 					onPress={submit}
-					borderRadius={20}
-					w={260}
+					borderRadius={4}
+					w={"80%"}
 					isLoading={isLoading}
 					disabled={isLoading}
-					width="100%"
+					// width="100%"
 					_disabled={{
 						backgroundColor: "#B0B3C7",
 						color: "white",

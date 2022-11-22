@@ -99,6 +99,7 @@ export default function LoginDoctor() {
 					rounded="xl"
 					padding={5}
 					marginX={5}
+					// justifyContent="center"
 				>
 					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
@@ -139,29 +140,34 @@ export default function LoginDoctor() {
 							}
 						/>
 					</VStack>
-					<Box
+					{/* <Box
 						position="absolute"
 						bottom={-20}
 						left={0}
 						right={0}
 						width="100%"
 						paddingX={10}
+					> */}
+					<Button
+						onPress={handleSubmit(onLogin)}
+						isLoading={isLoading}
+						isDisabled={isLoading}
+						borderRadius={4}
+						style={{ backgroundColor: colors.primary }}
+						_text={{ color: "white" }}
+						shadow={5}
+						alignSelf="center"
+						// position="absolute"
+						bottom={-40}
+						width="100%"
+						paddingX={10}
 					>
-						<Button
-							onPress={handleSubmit(onLogin)}
-							isLoading={isLoading}
-							isDisabled={isLoading}
-							borderRadius={20}
-							style={{ backgroundColor: colors.primary }}
-							_text={{ color: "white" }}
-							shadow={5}
-						>
-							<Text color="white" tx="common.login">
-								{" "}
-								Login{" "}
-							</Text>
-						</Button>
-					</Box>
+						<Text color="white" tx="common.login">
+							{" "}
+							Login{" "}
+						</Text>
+					</Button>
+					{/* </Box> */}
 				</Box>
 			</View>
 

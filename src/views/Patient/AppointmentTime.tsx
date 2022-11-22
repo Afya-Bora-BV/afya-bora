@@ -507,7 +507,7 @@ export default function SetAppointmentTime() {
 					mb={3}
 					bg={colors.primary}
 					onPress={onPressNext}
-					rounded={20}
+					rounded={4}
 				>
 					<Text color="white" tx="common.next">
 						Preferred Time Range
