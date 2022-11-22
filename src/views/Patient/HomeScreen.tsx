@@ -42,6 +42,7 @@ import { useDispatch } from "react-redux";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { LoadingFullScreen } from "../../components/LoadingFullScreen";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -349,7 +350,9 @@ export default function Home() {
 	// console.warn("Current user : ", profile, auth().currentUser);
 
 	if (loading) {
-		return <Text>Loading your profile</Text>;
+		return (
+			<LoadingFullScreen />
+		);
 	}
 	return (
 		<MainContainer
