@@ -106,10 +106,19 @@ interface ServerData {
 
 const createPatientProfile = async (profile: Profile): Promise<any> => {
 	const { uid, phoneNumber } = await auth().currentUser!;
-	await functions().httpsCallable("createNewProfile")({
-		uid: uid,
-		...profile,
-	});
+
+	try {
+		const inf = await firestore().collection('patients').doc(uid).set({
+			uid: uid,
+			...profile,
+		})
+	} catch (e) {
+		throw e
+	}
+	// await functions().httpsCallable("createNewProfile")({
+	// 	uid: uid,
+	// 	...profile,
+	// });
 };
 
 //yup form control attrib
@@ -380,7 +389,7 @@ export default function CreateProfileScreen() {
 														onFocus={showDatepicker}
 														onChangeText={(
 															value
-														) => {}}
+														) => { }}
 														// outlineColor={
 														// 	errors.dateOfBirth
 														// 		? "red"
@@ -419,7 +428,7 @@ export default function CreateProfileScreen() {
 																	date;
 																setShow(
 																	Platform.OS ===
-																		"ios"
+																	"ios"
 																);
 																onChange(
 																	currentDate
