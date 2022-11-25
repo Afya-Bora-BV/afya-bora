@@ -80,7 +80,7 @@ const SendConfirmationCode = ({
 								onChangeNumber(text);
 							}}
 							autoFocus
-							
+
 						/>
 					</VStack>
 				</Box>
@@ -249,9 +249,30 @@ export default function Login() {
 
 	const completingAppointment = useRoute().params?.completingAppointment;
 
+	React.useEffect(() => {
+		console.log("IS THIS EFFECT RUNNING")
+		const checkUser = async () => {
+			if (user) {
+				const hasProfile = (await userHasProfile(user.uid));
+				console.log("USER HAS PROFILE ", hasProfile)
+				if (hasProfile && completingAppointment) {
+					return navigation.navigate(HomeNavKey.ConfirmAppointment);
+				} else if (hasProfile && !completingAppointment) {
+					return navigation.navigate(HomeNavKey.HomeScreen);
+				} else if (!hasProfile) {
+					return navigation.navigate(HomeNavKey.CreateProfile, {
+						completingAppointment,
+					});
+				}
+			}
+		}
+
+		checkUser()
+
+	}, [user])
+
 	async function confirmCode(code: string) {
 		setLoading(true);
-		console.log("We out here!");
 		console.log(completingAppointment);
 		try {
 			const confirmation = await confirm?.confirm(code);
