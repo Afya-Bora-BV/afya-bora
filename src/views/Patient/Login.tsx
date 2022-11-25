@@ -250,16 +250,18 @@ export default function Login() {
 	const completingAppointment = useRoute().params?.completingAppointment;
 
 	React.useEffect(() => {
-		console.log("IS THIS EFFECT RUNNING")
 		const checkUser = async () => {
 			if (user) {
+				setLoading(true)
 				const hasProfile = (await userHasProfile(user.uid));
-				console.log("USER HAS PROFILE ", hasProfile)
 				if (hasProfile && completingAppointment) {
+					setLoading(false)
 					return navigation.navigate(HomeNavKey.ConfirmAppointment);
 				} else if (hasProfile && !completingAppointment) {
+					setLoading(false)
 					return navigation.navigate(HomeNavKey.HomeScreen);
 				} else if (!hasProfile) {
+					setLoading(false)
 					return navigation.navigate(HomeNavKey.CreateProfile, {
 						completingAppointment,
 					});
