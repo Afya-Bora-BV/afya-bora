@@ -65,8 +65,9 @@ const ConfirmAppointment: React.FC = () => {
 				timeRange: appointment.timeRange,
 				speciality: appointment.speciality,
 				type: appointment.type,
-				data: new Date(
-					appointment.date || new Date()),
+				rawDate: appointment.date,
+				date: new Date(
+					appointment.date) || new Date(),
 				utcDate: new Date(
 					appointment.date || new Date()
 				).toUTCString(),
