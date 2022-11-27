@@ -15,7 +15,7 @@ function usePatientAppointments(
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	console.log("Appointments : ",patientId)
+	console.log("Appointments : ", patientId)
 	console.log(allAppointments)
 	useEffect(() => {
 		const today = (() => {
@@ -31,15 +31,51 @@ function usePatientAppointments(
 				// .orderBy("date", "desc")
 				.onSnapshot(
 					(snap) => {
-						setAllAppointments(
-							snap?.docs.map(
-								(doc) =>
-									({
-										...doc.data(),
-										id: doc.id,
-									} as Appointment)
-							)
-						);
+
+						snap.forEach(async (data) => {
+							const fid = data.data().fid
+							if (fid) {
+								const docSnap = await firestore().collection('facilities').doc(fid).get()
+								if (docSnap.exists) {
+
+									const facility = docSnap.data();
+									// Use a City instance method
+									const final = {
+										id: data.id,
+										...data.data(),
+										facility
+									} as Appointment
+									console.log(final)
+									setAllAppointments([
+										...allAppointments,
+										final
+									])
+
+								}
+							} else {
+
+								// TODO : to be removed since every appointment must have fid
+								const final = {
+									id: data.id,
+									...data.data()
+								} as Appointment
+								setAllAppointments([
+									...allAppointments,
+									final
+								])
+							}
+
+						})
+
+						// setAllAppointments(
+						// 	snap?.docs.map(
+						// 		(doc) =>
+						// 		({
+						// 			...doc.data(),
+						// 			id: doc.id,
+						// 		} as Appointment)
+						// 	)
+						// );
 						setLoading(false);
 					},
 					(error) => {
@@ -49,7 +85,7 @@ function usePatientAppointments(
 					}
 				);
 			return () => subscription();
-		}else{
+		} else {
 			console.log("WHATS GOING ON")
 		}
 	}, [patientId]);

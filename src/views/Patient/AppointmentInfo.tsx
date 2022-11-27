@@ -213,7 +213,7 @@ export default function AppointmentInfo() {
 				flex={1}
 				width="100%"
 				paddingX={5}
-				space={5}
+				space={4}
 				marginTop={5}
 				marginBottom={10}
 			>
@@ -241,13 +241,6 @@ export default function AppointmentInfo() {
 					</View>
 				)}
 
-				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
-					<EditAppointmentButton
-						appointmentId={data?.id || ""}
-						appointment={data || {}}
-					/>
-					<CancelAppointmentButton appointmentId={data?.id || ""} />
-				</HStack>
 				<VStack mt={2} space={4}>
 					{!(data?.type === "online") && data?.fid && (
 						<FacilityListItem facility={data?.facility} fid={data?.fid} />
@@ -313,6 +306,13 @@ export default function AppointmentInfo() {
 						</Button>
 					)}
 				</VStack>
+				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
+					<EditAppointmentButton
+						appointmentId={data?.id || ""}
+						appointment={data || {}}
+					/>
+					<CancelAppointmentButton appointmentId={data?.id || ""} />
+				</HStack>
 			</VStack>
 		</MainContainer>
 	);

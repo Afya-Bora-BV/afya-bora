@@ -51,8 +51,8 @@ export function AppointmentAlert({
         </View>
         <VStack flex={5} space={1}>
           <Text fontSize="md" fontWeight="bold">
-            {/* {appointment?.facility?.name} */}
-            {appointment?.fid}
+            {appointment?.facility?.name}
+            {/* {appointment?.fid} */}
           </Text>
           <Text
             fontWeight="bold"

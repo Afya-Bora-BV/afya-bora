@@ -53,7 +53,7 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							alignItems="center"
 						>
 							<Heading fontSize="lg">{facility?.name} </Heading>
-							<Heading fontSize="lg">{fid} </Heading>
+							{/* <Heading fontSize="lg">{fid} </Heading> */}
 						</HStack>
 						<VStack>
 							{/* TODO: specialties information to be pushed to the view facility page */}
