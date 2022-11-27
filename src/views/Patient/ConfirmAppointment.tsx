@@ -65,12 +65,14 @@ const ConfirmAppointment: React.FC = () => {
 				timeRange: appointment.timeRange,
 				speciality: appointment.speciality,
 				type: appointment.type,
-				rawDate: appointment.date,
 				date: new Date(
 					appointment.date) || new Date(),
-				utcDate: new Date(
-					appointment.date || new Date()
-				).toUTCString(),
+				rawDate: appointment.date,
+				utcDate: appointment.date
+					? new Date(appointment.date).toUTCString()
+					: new Date().toUTCString(),
+				createdAt: new Date(),
+				updatedAt: new Date()
 			}
 
 			firestore()
