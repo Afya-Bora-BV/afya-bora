@@ -47,6 +47,7 @@ import { languageAtom } from "../../store/atoms";
 // TODO: this to be moved to the firebase function
 const updateAppointment = async ({ appointmentId, date, timeRange }: { appointmentId: string, date: Date, timeRange: TimeRange }) => {
 	try {
+		console.log("appointment id ",appointmentId)
 		await firestore().collection("appointments").doc(appointmentId).update({
 			updatedAt: new Date(),
 			timeRange: timeRange,
@@ -55,7 +56,10 @@ const updateAppointment = async ({ appointmentId, date, timeRange }: { appointme
 		})
 	}
 	catch (e) {
+		console.log("Error in updating appointment")
+		console.log("ISSUE",e)
 		throw new Error("Error while updating appointment info")
+
 	}
 }
 
@@ -109,6 +113,7 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 }) => {
 	// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
 	const daysListRef = useRef(null);
+	console.log("Date ", date)
 
 	return (
 		<View>
@@ -470,8 +475,7 @@ export default function SetAppointmentTime() {
 	);
 
 
-	console.log("Edit appointment page")
-	console.log(JSON.stringify(appointment, null, 3))
+
 	return (
 		<MainContainer
 			title="common.dayAndTime"
@@ -493,7 +497,7 @@ export default function SetAppointmentTime() {
 
 				<VStack bg="white" p={3} shadow={2} space={6} rounded={10} mb={1}>
 					<PickADateSection
-						date={date}
+						date={new Date(date)}
 						onChangeDate={(date) => dispatch(setDate(date))}
 					/>
 

@@ -40,7 +40,7 @@ function usePatientAppointments(
 								if (docSnap.exists) {
 									const facility = docSnap.data();
 									const final = {
-										id: docSnap.id,
+										id: data.id,
 										...data.data(),
 										facility
 									} as Appointment
@@ -48,14 +48,14 @@ function usePatientAppointments(
 								} else {
 									// TODO : to be removed since every appointment must have fid
 									const final = {
-										id: docSnap.id,
+										id: data.id,
 										...data.data(),
 									} as Appointment
 									return final
 								}
 							} else {
 								const final = {
-									id: data.data().id,
+									id: data.id,
 									...data.data(),
 								} as Appointment
 								return final
@@ -123,6 +123,8 @@ function usePatientAppointments(
 		}
 	}, [patientId]);
 
+	console.log("all appointments")
+	console.log(JSON.stringify(allAppointments, null, 4))
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
 		.filter((appointment: any) => appointment.status !== "cancelled");
