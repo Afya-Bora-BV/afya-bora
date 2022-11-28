@@ -30,42 +30,75 @@ function usePatientAppointments(
 				// .where("date", ">=", today)
 				// .orderBy("date", "desc")
 				.onSnapshot(
-					(snap) => {
+					async (snap) => {
 
-						snap.forEach(async (data) => {
+						var results: Appointment[] = await Promise.all(snap.docs.map(async (data): Promise<Appointment> => {
 							const fid = data.data().fid
 							if (fid) {
+
 								const docSnap = await firestore().collection('facilities').doc(fid).get()
 								if (docSnap.exists) {
-
 									const facility = docSnap.data();
-									// Use a City instance method
 									const final = {
-										id: data.id,
+										id: docSnap.id,
 										...data.data(),
 										facility
 									} as Appointment
-									console.log(final)
-									setAllAppointments([
-										...allAppointments,
-										final
-									])
-
+									return final
+								} else {
+									// TODO : to be removed since every appointment must have fid
+									const final = {
+										id: docSnap.id,
+										...data.data(),
+									} as Appointment
+									return final
 								}
 							} else {
-
-								// TODO : to be removed since every appointment must have fid
 								const final = {
-									id: data.id,
-									...data.data()
+									id: data.data().id,
+									...data.data(),
 								} as Appointment
-								setAllAppointments([
-									...allAppointments,
-									final
-								])
+								return final
 							}
+						}));
+						setAllAppointments([
+							...results,
+						])
 
-						})
+						// snap.forEach(async (data) => {
+						// 	const fid = data.data().fid
+						// 	if (fid) {
+						// 		const docSnap = await firestore().collection('facilities').doc(fid).get()
+						// 		if (docSnap.exists) {
+
+						// 			const facility = docSnap.data();
+						// 			// Use a City instance method
+						// 			const final = {
+						// 				id: data.id,
+						// 				...data.data(),
+						// 				facility
+						// 			} as Appointment
+						// 			console.log(final)
+						// 			setAllAppointments([
+						// 				...allAppointments,
+						// 				final
+						// 			])
+
+						// 		}
+						// 	} else {
+
+						// 		// TODO : to be removed since every appointment must have fid
+						// 		const final = {
+						// 			id: data.id,
+						// 			...data.data()
+						// 		} as Appointment
+						// 		setAllAppointments([
+						// 			...allAppointments,
+						// 			final
+						// 		])
+						// 	}
+
+						// })
 
 						// setAllAppointments(
 						// 	snap?.docs.map(

@@ -65,6 +65,7 @@ const ConfirmAppointment: React.FC = () => {
 				timeRange: appointment.timeRange,
 				speciality: appointment.speciality,
 				type: appointment.type,
+				status:"pending",
 				date: new Date(
 					appointment.date) || new Date(),
 				rawDate: appointment.date,
