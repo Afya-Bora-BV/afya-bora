@@ -16,49 +16,10 @@ import { Text } from "./text";
 import { ConsultantionType } from "../internals/data";
 import { languageAtom } from "../store/atoms";
 import MemoizedSelect from "./MemoizedSelect";
+import { specialities } from "../data/specialities";
 // these attoms to be moved since the state might be needed somewhere
 
-const specialities: { name: string }[] = [
-	"Specialities",
-	"Dentist",
-	"Dermatologist",
-	"General",
-	"Other",
-].map((speciality) => ({ name: speciality }));
 
-const regions: { name: string }[] = [
-	"Residency Location",
-	"Arusha",
-	"Dar es Salaam",
-	"Dodoma",
-	"Geita",
-	"Iringa",
-	"Kagera",
-	"Katavi",
-	"Kigoma",
-	"Kilimanjaro",
-	"Lindi",
-	"Manyara",
-	"Mara",
-	"Mbeya",
-	"Morogoro",
-	"Mtwara",
-	"Mwanza",
-	"Njombe",
-	"Pemba North",
-	"Pemba South",
-	"Pwani",
-	"Rukwa",
-	"Ruvuma",
-	"Shinyanga",
-	"Simiyu",
-	"Singida",
-	"Tabora",
-	"Tanga",
-	"Zanzibar North",
-	"Zanzibar South and Central",
-	"Zanzibar West",
-].map((region) => ({ name: region }));
 
 const appointmentTypeAtom = atom<"offline" | "online" | "">("");
 const locationAtom = atom<string>("");
@@ -73,7 +34,7 @@ export const completeScheduleAtom = atom(
 			speciality: get(specialityAtom),
 		};
 	},
-	(get, set) => {}
+	(get, set) => { }
 );
 type AppointmentType = {
 	title: string;
@@ -119,10 +80,11 @@ const AppointmentTypeButton: React.FC<AppointmentType> = ({
 };
 
 const AppointmentCustomizer: React.FC = () => {
-	const [type, location] = useSelector(
+	const [type, location, speciality] = useSelector(
 		({ appointment }: RootState) => [
 			appointment.type,
 			appointment.location,
+			appointment.speciality
 		],
 		shallowEqual
 	);
@@ -156,38 +118,25 @@ const AppointmentCustomizer: React.FC = () => {
 				</HStack>
 			</Stack>
 
-			{/*<Stack space={2}>*/}
-			{/*	<MemoizedSelect placeholder={languagePlaceholder} selectedValue={location} accessibilityLabel />*/}
-			{/*</Stack>*/}
 
 			<Stack space={2}>
-				<Text tx="home.chooseLocation">Choose Location</Text>
-				<MemoizedSelect
 
-					// variant="rounded"
-					rounded={4}
-					selectedValue={location}
-					minWidth={200}
-					accessibilityLabel="Location"
-					renderToHardwareTextureAndroid={true}
-					placeholder={languagePlaceholder}
-					options={regions.map((region) => ({
-						label: region.name,
-						value: region.name.toLowerCase(),
-						key: region.name,
-					}))}
-					onValueChange={(itemValue) => {
-						dispatch(setLocation(itemValue));
-					}}
-					_selectedItem={{
-						bg: colors.primary,
-						// justifyItems: "space-between",
-						style: { alignContent: "space-between" },
-						_text:{color:"#FFFFFF"},
-						startIcon: <CheckIcon size={4} />,
-					}}
-					
-				/>
+				{/* </SimpleGrid> */}
+				<MemoizedSelect selectedValue={speciality} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+					// bg: "teal.600",
+					backgroundColor: colors.primary,
+					endIcon: <CheckIcon size="5" color={"#FFFFFF"} />,
+					color: "red.400",
+					_text: { color: "#FFFFFF" }
+				}} mt={1} onValueChange={itemValue => {
+					dispatch(
+						setSpeciality(itemValue)
+					);
+				}} options={[]}>
+					{specialities.map(speciality => (
+						<Select.Item key={speciality.value} label={speciality.label} value={speciality.value} />
+					))}
+				</MemoizedSelect>
 			</Stack>
 		</Stack>
 	);
