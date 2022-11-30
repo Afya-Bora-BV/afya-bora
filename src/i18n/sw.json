@@ -43,7 +43,8 @@
 		"verificationCode": "Namba ya Uthibitisho",
 		"confirm": "Thibitisha",
 		"pleaseWait": "Tafahdali Subiri...",
-		"speciality": "Taaluma ya Daktari"
+		"speciality": "Taaluma ya Daktari",
+		"close":"Ondoa"
 	},
 	"errors": {
 		"invalidEmail": "Anuani ya barua pepe sio sahihi."

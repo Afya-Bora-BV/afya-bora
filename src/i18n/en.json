@@ -43,7 +43,8 @@
 		"verificationCode":"Verification Code",
 		"confirm":"Confirm",
 		"pleaseWait":"Please wait...",
-		"speciality":"Speciality"
+		"speciality":"Speciality",
+		"close":"Close"
 	},
 	"errors": {
 		"invalidEmail": "Invalid email address."

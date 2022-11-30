@@ -153,8 +153,8 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 											width: "100%"
 										}}
 										initialRegion={{
-											latitude: 37.78825,
-											longitude: -122.4324,
+											latitude: -6.7686093,
+											longitude: 38.7128144,
 											latitudeDelta: 0.0922,
 											longitudeDelta: 0.0421,
 										}}

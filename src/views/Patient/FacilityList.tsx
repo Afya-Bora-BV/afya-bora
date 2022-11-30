@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
 	HStack,
 	VStack,
-	Text,
 	ScrollView,
 	ArrowBackIcon,
 	useToast,
@@ -33,10 +32,16 @@ import { RootState } from "../../store";
 import { setFacility } from "../../store/slices/appointment";
 import { colors } from "../../constants/colors";
 import { getFacilities } from "../../api";
+import FilterIcon from "../../assets/icons/FilterIcon"
+import BellIcon from "../../assets/icons/Bell"
+import { PrimaryButton } from "../../components/button";
+import { Text } from "../../components/text";
+
 
 const FacilityList = () => {
 	const navigation = useNavigation();
 	const Toast = useToast();
+	const [modalVisible, setModalVisible] = React.useState(false);
 
 	const dispatch = useDispatch();
 
@@ -68,48 +73,100 @@ const FacilityList = () => {
 	console.log("All facilities ");
 	console.log(JSON.stringify(facilities, null, 3));
 
+	const openFilterModal = () => {
+		setModalVisible(true)
+		console.log("Open modal")
+	}
+
 	return (
-		<MainContainer
-			title="facilitiList.selectFacility"
-			leftSection={
-				// Go back if can go back
-				navigation.canGoBack()
-					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
-					: undefined
-			}
-		>
-			<ScrollView
-				padding={5}
-				contentContainerStyle={{ paddingBottom: 16 }}
-				testID={"ConsultantList"}
-				backgroundColor="#F4F6FA"
+		<>
+			<Modal isOpen={modalVisible} onClose={() => setModalVisible(false)} avoidKeyboard justifyContent="center" bottom="4" size="lg">
+				<Modal.Content>
+					<Modal.CloseButton />
+					<Modal.Header>Filters</Modal.Header>
+					<Modal.Body>
+						<AppointmentCustomizer />
+					</Modal.Body>
+					<Modal.Footer>
+
+
+						<PrimaryButton
+							flex="1"
+							onPress={() => {
+								setModalVisible(false);
+							}}>
+							<Text tx="common.close" color="white">
+								Close
+							</Text>
+						</PrimaryButton>
+					</Modal.Footer>
+				</Modal.Content>
+			</Modal>
+			<MainContainer
+				title="facilitiList.selectFacility"
+				leftSection={
+					// Go back if can go back
+					navigation.canGoBack()
+						? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+						)
+						: undefined
+				}
+				rightSection={
+					() => {
+						return (
+							<Stack mt={6}>
+								<IconContainer>
+									<TouchableOpacity onPress={() => {
+										openFilterModal()
+									}}>
+										<FilterIcon size={8} color={"#561BB3"} />
+									</TouchableOpacity>
+								</IconContainer>
+							</Stack>
+
+						)
+					}
+				}
 			>
-				{/* <SelectionDetails /> */}
-				<Spacer size={0} />
-				{isLoading && <Spinner color={colors.primary} size="lg" />}
-				{facilities && (
-					<VStack space={4}>
-						{facilities.map((facility, ix) => {
-							return (
-								<TouchableOpacity
-									key={facility.id}
-									activeOpacity={0.5}
-									onPress={() => selectFacility(facility)}
-								>
-									<FacilityListItem facility={facility} />
-								</TouchableOpacity>
-							);
-						})}
-					</VStack>
-				)}
-			</ScrollView>
-		</MainContainer>
+
+
+
+
+				<ScrollView
+					padding={5}
+					contentContainerStyle={{ paddingBottom: 16 }}
+					testID={"ConsultantList"}
+					backgroundColor="#F4F6FA"
+				>
+
+
+
+					<Spacer size={0} />
+					{isLoading && <Spinner color={colors.primary} size="lg" />}
+					{facilities && (
+						<VStack space={4}>
+							{facilities.map((facility, ix) => {
+								return (
+									<TouchableOpacity
+										key={facility.id}
+										activeOpacity={0.5}
+										onPress={() => selectFacility(facility)}
+									>
+										<FacilityListItem facility={facility} />
+									</TouchableOpacity>
+								);
+							})}
+						</VStack>
+					)}
+				</ScrollView>
+
+			</MainContainer>
+		</>
 	);
 };
 
