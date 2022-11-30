@@ -87,7 +87,7 @@ type PickADateSectionProps = {
 	onChangeDate: (date: Date) => void;
 };
 
-const isDayPast = (date: Date) => (day: Date | string) => {
+export const isDayPast = (date: Date) => (day: Date | string) => {
 	return moment(day).isBefore(date, "days");
 };
 

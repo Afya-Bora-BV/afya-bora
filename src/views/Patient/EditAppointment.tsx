@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
 	View,
 	StatusBar,
@@ -17,6 +17,7 @@ import {
 	Center,
 	Select,
 	CheckIcon,
+	FlatList,
 } from "native-base";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ConsultantListItem } from "../../components/consultant-list-item";
@@ -42,12 +43,13 @@ import firestore from '@react-native-firebase/firestore';
 import { useMutation } from "react-query";
 import { Text } from "../../components/text";
 import { languageAtom } from "../../store/atoms";
+import { isDayPast } from "./AppointmentTime";
 
 
 // TODO: this to be moved to the firebase function
 const updateAppointment = async ({ appointmentId, date, timeRange }: { appointmentId: string, date: Date, timeRange: TimeRange }) => {
 	try {
-		console.log("appointment id ",appointmentId)
+		console.log("appointment id ", appointmentId)
 		await firestore().collection("appointments").doc(appointmentId).update({
 			updatedAt: new Date(),
 			timeRange: timeRange,
@@ -57,7 +59,7 @@ const updateAppointment = async ({ appointmentId, date, timeRange }: { appointme
 	}
 	catch (e) {
 		console.log("Error in updating appointment")
-		console.log("ISSUE",e)
+		console.log("ISSUE", e)
 		throw new Error("Error while updating appointment info")
 
 	}
@@ -113,8 +115,28 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 }) => {
 	// const [chosenDate, onSelectDate] = useAtom(setAppointmentDateAtom);
 	const daysListRef = useRef(null);
-	console.log("Date ", date)
 
+
+	const days = useMemo(() => {
+		const inFuture = (day: Date | string) =>
+			!isDayPast(new Date())(day);
+		return _.times(getDaysInMonth(date), (n) => {
+			const d = new Date(date);
+			d.setDate(n + 1);
+			return d;
+		}).filter(inFuture);
+	}, [date]);
+
+	const renderDay = ({ item }: { item: Date }) => (
+		<CalendarDay
+			onPress={() => onChangeDate(item)}
+			status={isSameDay(item, date) ? "active" : "inactive"}
+			date={item}
+		/>
+	);
+
+
+	console.log("Date ", date)
 	return (
 		<View>
 			<HStack justifyContent="space-between" mb={3}>
@@ -132,7 +154,7 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 					date={date}
 				/>
 			</HStack>
-			<ScrollView
+			{/* <ScrollView
 				snapToInterval={2}
 				horizontal
 				paddingBottom={3}
@@ -143,24 +165,16 @@ const PickADateSection: React.FC<PickADateSectionProps> = ({
 						y: 0,
 					})
 				}
-			>
-				<HStack alignItems="center" space={1}>
-					{_.times(getDaysInMonth(date), (n) => {
-						const d = new Date(date);
-						d.setDate(n + 1);
-						return (
-							<CalendarDay
-								onPress={() => onChangeDate(d)}
-								key={n}
-								status={
-									isSameDay(d, date) ? "active" : "inactive"
-								}
-								date={d}
-							/>
-						);
-					})}
-				</HStack>
-			</ScrollView>
+			> */}
+			<HStack alignItems="center" space={4}>
+				<FlatList
+					horizontal={true}
+					data={days}
+					renderItem={renderDay}
+					keyExtractor={(item) => item.toString()}
+				/>
+			</HStack>
+			{/* </ScrollView> */}
 		</View>
 	);
 };
