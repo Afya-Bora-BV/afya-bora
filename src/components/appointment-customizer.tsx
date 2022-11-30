@@ -1,7 +1,7 @@
 import React from "react";
 import { atom, useAtom } from "jotai";
 import { TouchableOpacity } from "react-native";
-import { CheckIcon, HStack, Select, Spacer, Stack } from "native-base";
+import { CheckIcon, HStack, Select, Spacer, Stack, View } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "./button";
 import { colors } from "../constants/colors";
@@ -120,9 +120,22 @@ const AppointmentCustomizer: React.FC = () => {
 
 
 			<Stack space={2}>
+				<View>
+					{/* <Text
+						fontSize={"xl"}
+						fontWeight="medium"
+						tx="aboutVisit.doctorSpecialization"
+					>
+						Doctor Specialization
+					</Text> */}
+
+					<Text tx="aboutVisit.doctorSpecializationDescription">
+						Please select a specialist.
+					</Text>
+				</View>
 
 				{/* </SimpleGrid> */}
-				<MemoizedSelect selectedValue={speciality} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+				<Select selectedValue={speciality} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
 					// bg: "teal.600",
 					backgroundColor: colors.primary,
 					endIcon: <CheckIcon size="5" color={"#FFFFFF"} />,
@@ -132,11 +145,12 @@ const AppointmentCustomizer: React.FC = () => {
 					dispatch(
 						setSpeciality(itemValue)
 					);
-				}} options={[]}>
+				}}
+				>
 					{specialities.map(speciality => (
 						<Select.Item key={speciality.value} label={speciality.label} value={speciality.value} />
 					))}
-				</MemoizedSelect>
+				</Select>
 			</Stack>
 		</Stack>
 	);

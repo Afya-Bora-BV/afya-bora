@@ -96,7 +96,8 @@
 		"checkAnySymtomsYouHave":"Check any symptoms you have",
 		"primaryReasonToSeeDoctor":"What is your primary reason for seeing the doctor ?",
 		"describeHowYouAreFeeling":"Describe how you are feeling ...",
-		"bookAppointment":"Book appointment"
+		"bookAppointment":"Book appointment",
+		"location":"Location"
 	},
 	"profile": {
 		"visitHistory": "Appointment History",

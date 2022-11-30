@@ -93,7 +93,8 @@
 		"checkAnySymtomsYouHave": "Chagua dalili ulizonazo",
 		"primaryReasonToSeeDoctor": "Nini sababu kuu ya kumuona dactari ?",
 		"describeHowYouAreFeeling": "Elezea unavyojisikia hapa ...",
-		"bookAppointment": "Weka Mihadi"
+		"bookAppointment": "Weka Mihadi",
+		"location":"Mahari"
 	},
 	"profile": {
 		"visitHistory": "Historia ya Mihadi",

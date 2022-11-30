@@ -34,7 +34,6 @@ import {
 import { Text } from "../../components/text";
 import { useAuth } from "../../contexts/AuthContext";
 import { type } from "os";
-import { specialities } from "../../data/specialities";
 import MemoizedSelect from "../../components/MemoizedSelect";
 import { languageAtom } from "../../store/atoms";
 
@@ -204,37 +203,59 @@ export function PatientComplaint() {
 			<VStack alignItems="center" paddingX={4} space={4} mt={4}>
 				{/* Symptomps section */}
 				<Box bg="white" shadow={2} rounded={10} width="100%">
-					<Stack space={2}>
-						<Text tx="home.chooseLocation">Choose Location</Text>
-						<MemoizedSelect
+					<VStack
+						style={{
+							paddingHorizontal: 20,
+							paddingTop: 20,
+							paddingBottom: 40,
+						}}
+						space={3}
+					>
 
-							// variant="rounded"
-							rounded={4}
-							selectedValue={location}
-							minWidth={200}
-							accessibilityLabel="Location"
-							renderToHardwareTextureAndroid={true}
-							placeholder={languagePlaceholder}
-							options={regions.map((region) => ({
-								label: region.name,
-								value: region.name.toLowerCase(),
-								key: region.name,
-							}))}
-							onValueChange={(itemValue) => {
-								dispatch(setLocation(itemValue));
-							}}
-							_selectedItem={{
-								bg: colors.primary,
-								// justifyItems: "space-between",
-								style: { alignContent: "space-between" },
-								_text: { color: "#FFFFFF" },
-								startIcon: <CheckIcon size={4} />,
-							}}
 
-						/>
-					</Stack>
+						<Stack space={2}>
+							<Stack>
+								<Text
+									fontSize={"xl"}
+									fontWeight="medium"
+									tx="aboutVisit.location"
+								>
+									Location
+								</Text>
+								<Text tx="home.chooseLocation">Choose Location</Text>
 
-					<Stack
+							</Stack>
+
+							<MemoizedSelect
+
+								// variant="rounded"
+								rounded={4}
+								selectedValue={location}
+								minWidth={200}
+								accessibilityLabel="Location"
+								renderToHardwareTextureAndroid={true}
+								placeholder={languagePlaceholder}
+								options={regions.map((region) => ({
+									label: region.name,
+									value: region.name.toLowerCase(),
+									key: region.name,
+								}))}
+								onValueChange={(itemValue) => {
+									dispatch(setLocation(itemValue));
+								}}
+								_selectedItem={{
+									bg: colors.primary,
+									// justifyItems: "space-between",
+									style: { alignContent: "space-between" },
+									_text: { color: "#FFFFFF" },
+									startIcon: <CheckIcon size={4} />,
+								}}
+
+							/>
+						</Stack>
+					</VStack>
+
+					{/* <Stack
 						style={{
 							paddingHorizontal: 20,
 							paddingTop: 20,
@@ -242,21 +263,10 @@ export function PatientComplaint() {
 						}}
 						space={4}
 					>
-						<View>
-							<Text
-								fontSize={"3xl"}
-								tx="aboutVisit.doctorSpecialization"
-							>
-								Doctor Specialization
-							</Text>
-
-							<Text tx="aboutVisit.doctorSpecializationDescription">
-								Please select a specialist.
-							</Text>
-						</View>
+						
 
 						
-					</Stack>
+					</Stack> */}
 				</Box>
 
 				<Box bg="white" shadow={2} rounded={10} width="100%">

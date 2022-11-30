@@ -120,8 +120,8 @@ const UpcomingAppointmentsSection = () => {
 	}
 
 	return (
-		<VStack space={4} marginTop={8}>
-			<VStack space={3}>
+		<VStack space={4} marginTop={0}>
+			<VStack space={4}>
 				{appointments.length === 0 && <NoAppointment />}
 
 				{appointments.map((appointment) => {
