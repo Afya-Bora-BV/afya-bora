@@ -19,6 +19,7 @@ import {
 	HStack,
 	Box,
 	Center,
+	Image,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { HomeNavKey } from ".";
@@ -29,12 +30,17 @@ import { useDispatch } from "react-redux";
 import { setFacility } from "../../store/slices/appointment";
 import functions from "@react-native-firebase/functions";
 import { Text } from "../../components/text";
+import firestore from '@react-native-firebase/firestore';
+
+
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
+import { distanceBetween } from "geofire-common";
+const radiusInM = 50 * 1000;
 
 /**
  * Region window to show the contents
@@ -46,6 +52,47 @@ const region = {
 	longitudeDelta: 0.040142817690068,
 };
 
+
+
+function useFacilities({ location }: { location: [number, number] }) {
+	const [facilities, setFacilities] = React.useState<any[]>([])
+
+	React.useEffect(() => {
+		const subscriber = firestore()
+			.collection('facilities')
+			.onSnapshot((snaps) => {
+
+				const data = snaps.docs.map((doc) => {
+					return {
+						id: doc.id,
+						...doc.data()
+					} as any
+				})
+				setFacilities(data)
+			});
+
+		// Stop listening for updates when no longer required
+		return () => subscriber();
+	}, []);
+
+
+
+	const tempoFacilities = facilities.filter((doc) => {
+		return doc?.geopoint
+	})
+
+	const nearByFacilities = tempoFacilities.filter((doc) => {
+		const distanceInKm = distanceBetween(
+			[doc?.geopoint?.latitude, doc?.geopoint?.longitude],
+			location
+		);
+		const distanceInM = distanceInKm * 1000;
+		return distanceInM <= radiusInM;
+	})
+
+	return { nearByFacilities }
+}
+
 const FindFacility: React.FC = () => {
 	const route = useRoute<any>();
 	const navigation = useNavigation();
@@ -53,9 +100,12 @@ const FindFacility: React.FC = () => {
 	let mapAnimation = new Animated.Value(0);
 	const [state, setState] = React.useState<Facility[]>([]);
 
+
 	const { location } = route?.params;
 
 	const requestLocation = [location?.coords?.latitude || null, location?.coords?.longitude || null]
+
+
 
 	const _map = React.useRef(null);
 	const _scrollView = React.useRef(null);
@@ -133,17 +183,20 @@ const FindFacility: React.FC = () => {
 		return res.data.data
 	}
 
-	const {
-		status,
-		data: facilityList,
-		error,
-		isLoading,
-	} = useQuery(["facilities"], getNearByFacilities, {
-		onError: (e) => {
-			console.log("Something went wrong ",)
-			console.log(e)
-		}
-	});
+	// const {
+	// 	status,
+	// 	data: facilityList,
+	// 	error,
+	// 	isLoading,
+	// } = useQuery(["facilities"], getNearByFacilities, {
+	// 	onError: (e) => {
+	// 		console.log("Something went wrong ",)
+	// 		console.log(e)
+	// 	}
+	// });
+
+	const { nearByFacilities: facilityList } = useFacilities({ location: [-7.1140425, 39.1940445] })
+
 	const facilities = facilityList || [];
 
 	React.useEffect(() => {
@@ -151,7 +204,8 @@ const FindFacility: React.FC = () => {
 		setTimeout(() => setState(facilities), 1000);
 	}, [facilities]);
 
-	console.log("Current location : ", requestLocation)
+	console.log("All near by ")
+	console.log(JSON.stringify(facilities, null, 4))
 
 	return (
 		<MainContainer
@@ -177,12 +231,12 @@ const FindFacility: React.FC = () => {
 						<Marker
 							key={index}
 							coordinate={{
-								longitude: marker.geopoint.lng,
-								latitude: marker.geopoint.lat,
+								longitude: marker.geopoint.latitude,
+								latitude: marker.geopoint.longitude,
 							}}
 							onPress={(e) => onMarkerPress(e)}
 							title={`${marker.name}`}
-							description={marker.address}
+							description={marker.city}
 						/>
 					);
 				})}
@@ -220,7 +274,7 @@ const FindFacility: React.FC = () => {
 					{ useNativeDriver: true }
 				)}
 			>
-				{isLoading &&
+				{/* {isLoading &&
 					<Center
 						style={{
 							shadowColor: "#CCC",
@@ -245,8 +299,9 @@ const FindFacility: React.FC = () => {
 							tx="common.pleaseWait"
 						>Loading nearby facilities....</Text>
 					</Center>
-				}
-				{state.length === 0 && !isLoading &&
+				} */}
+				{/* {state.length === 0 && !isLoading && */}
+				{state.length === 0 &&
 					<Center
 						style={{
 							shadowColor: "#CCC",
@@ -297,7 +352,7 @@ const FindFacility: React.FC = () => {
 							borderRadius={20}
 							marginRight={5}
 						>
-							<Avatar
+							{/* <Avatar
 								alignSelf="flex-start"
 								width="100%"
 								height={120}
@@ -305,12 +360,24 @@ const FindFacility: React.FC = () => {
 								source={{
 									uri: marker.photoUrl ? marker.photoUrl : "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc"
 								}}
+							/> */}
+
+							<Image
+								source={{
+									uri: marker.photoUrl ? marker.photoUrl
+										: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
+								}}
+								alt="Alternate Text" size="xl"
+								width="100%"
+								height={120}
+								borderRadius={4}
+
 							/>
 							{/* Text ara */}
 							<VStack>
 								<Heading fontSize="lg">{marker.name}</Heading>
 								<Text fontSize="md" bold color="#747F9E">
-									{marker.address}
+									{marker.city}
 								</Text>
 							</VStack>
 
@@ -328,8 +395,8 @@ const FindFacility: React.FC = () => {
 										size={24}
 									/>
 									<Text fontSize="md" color="#B0B3C7">
-										{marker.rating.stars} (
-										{marker.rating.count})
+										{/* {marker.rating.stars} ( */}
+										{/* {marker.rating.count}) */}
 									</Text>
 								</HStack>
 

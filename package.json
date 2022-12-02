@@ -33,6 +33,7 @@
     "axios": "^0.27.2",
     "date-fns": "^2.29.2",
     "expo-localization": "^13.1.0",
+    "geofire-common": "^6.0.0",
     "i18n-js": "4.1.1",
     "i18next": "^21.9.1",
     "immer": "^9.0.15",

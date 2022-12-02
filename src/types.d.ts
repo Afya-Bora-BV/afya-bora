@@ -61,8 +61,8 @@ interface Facility {
 	id: string;
 	name: string;
 	geopoint: {
-		lat: string;
-		lng: string;
+		latitude: number;
+		longitude: number;
 	};
 	street: string;
 	rating: {
