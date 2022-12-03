@@ -168,8 +168,8 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 											>
 												<Marker
 													coordinate={{ latitude: geopoint.latitude, longitude: geopoint.longitude }}
-													title={"My Location"}
-													description={"My Location"}
+													title={name}
+													description={city}
 												/>
 
 											</MapView>
