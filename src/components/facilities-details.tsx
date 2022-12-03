@@ -19,7 +19,7 @@ import WalletIcon from "../assets/icons/WalletIcon";
 import { Facility } from "../types";
 import { friendlyNumber } from "../utils";
 import MapPinIcon from "../assets/icons/MapPinIcon";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -38,8 +38,18 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 		services,
 		startPrice,
 		endPrice,
+		geopoint
 	},
 }) => {
+
+
+	const region = {
+		latitude: geopoint?.latitude || 0,
+		longitude: geopoint?.longitude || 0,
+		latitudeDelta: 0.04864195044303443,
+		longitudeDelta: 0.040142817690068,
+	};
+
 	return (
 		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
 			<VStack p={4} borderRadius={12} bg={"white"} space={5}>
@@ -135,31 +145,38 @@ export const FacilityDetails: React.FC<FacilityDetailsProps> = ({
 							</VStack>
 
 							<VStack>
-								<HStack alignItems={"center"} space={2}>
-									<VStack>
-										<MapPinIcon size={6} color={"#000000"} />
-									</VStack>
+								{geopoint &&
+									<>
+										<HStack alignItems={"center"} space={2}>
+											<VStack>
+												<MapPinIcon size={6} color={"#000000"} />
+											</VStack>
 
-									<VStack>
-										<Text bold fontSize="md">
-											Location
-										</Text>
-									</VStack>
-								</HStack>
-								<Stack pl={2} mt={2}>
-									<MapView
-										style={{
-											height: 200,
-											width: "100%"
-										}}
-										initialRegion={{
-											latitude: -6.7686093,
-											longitude: 38.7128144,
-											latitudeDelta: 0.0922,
-											longitudeDelta: 0.0421,
-										}}
-									/>
-								</Stack>
+											<VStack>
+												<Text bold fontSize="md">
+													Location
+												</Text>
+											</VStack>
+										</HStack>
+										<Stack pl={2} mt={2}>
+											<MapView
+												style={{
+													height: 200,
+													width: "100%"
+												}}
+												initialRegion={region}
+											>
+												<Marker
+													coordinate={{ latitude: geopoint.latitude, longitude: geopoint.longitude }}
+													title={"My Location"}
+													description={"My Location"}
+												/>
+
+											</MapView>
+
+										</Stack>
+									</>
+								}
 							</VStack>
 
 
