@@ -98,16 +98,19 @@ const FindFacility: React.FC = () => {
 	let mapAnimation = new Animated.Value(0);
 
 	// const [state, setState] = React.useState<Facility[]>([]);
+	const { location } = route?.params;
 
-	const { nearByFacilities: facilityList } = useFacilities({ location: [-7.1140425, 39.1940445] })
+	const requestLocation = [location?.coords?.latitude, location?.coords?.longitude] as [number, number]
+
+	const { nearByFacilities: facilityList } = useFacilities({ location: requestLocation })
 
 	const facilities = facilityList || [];
 
 
 
-	const { location } = route?.params;
 
-	const requestLocation = [location?.coords?.latitude || null, location?.coords?.longitude || null]
+
+
 
 	const region = {
 		latitude: requestLocation[0],
@@ -233,12 +236,12 @@ const FindFacility: React.FC = () => {
 			}
 		>
 			<MapView ref={_map} style={styles.map} initialRegion={region}>
-				{/* <Marker
-					// key={index}
-					coordinate={{latitude:-7.1168563,longitude:39.2038562}}
-					title={"Demo Zipo"}
-					description={"Semo Description"}
-				/> */}
+				<Marker
+					coordinate={{ latitude: requestLocation[0], longitude: requestLocation[1] }}
+					title={"My Location"}
+					description={"My Location"}
+				/>
+
 				{facilities.map((marker, index) => {
 					console.log("Coords")
 					console.log(marker.geopoint)
