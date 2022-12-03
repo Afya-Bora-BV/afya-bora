@@ -45,17 +45,12 @@ const radiusInM = 50 * 1000;
 /**
  * Region window to show the contents
  */
-const region = {
-	latitude: -6.8039469,
-	longitude: 39.2750461,
-	latitudeDelta: 0.04864195044303443,
-	longitudeDelta: 0.040142817690068,
-};
+
 
 
 
 function useFacilities({ location }: { location: [number, number] }) {
-	const [facilities, setFacilities] = React.useState<any[]>([])
+	const [facilities, setFacilities] = React.useState<Facility[]>([])
 
 	React.useEffect(() => {
 		const subscriber = firestore()
@@ -66,7 +61,7 @@ function useFacilities({ location }: { location: [number, number] }) {
 					return {
 						id: doc.id,
 						...doc.data()
-					} as any
+					} as Facility
 				})
 				setFacilities(data)
 			});
@@ -77,11 +72,11 @@ function useFacilities({ location }: { location: [number, number] }) {
 
 
 
-	const tempoFacilities = facilities.filter((doc) => {
+	const facilitiesWithGeopoint = facilities.filter((doc) => {
 		return doc?.geopoint
 	})
 
-	const nearByFacilities = tempoFacilities.filter((doc) => {
+	const nearByFacilities = facilitiesWithGeopoint.filter((doc) => {
 		const distanceInKm = distanceBetween(
 			[doc?.geopoint?.latitude, doc?.geopoint?.longitude],
 			location
@@ -89,6 +84,9 @@ function useFacilities({ location }: { location: [number, number] }) {
 		const distanceInM = distanceInKm * 1000;
 		return distanceInM <= radiusInM;
 	})
+
+	// console.log("Facilities ")
+	// console.log(JSON.stringify(nearByFacilities, null, 3))
 
 	return { nearByFacilities }
 }
@@ -98,13 +96,25 @@ const FindFacility: React.FC = () => {
 	const navigation = useNavigation();
 	let mapIndex = 0;
 	let mapAnimation = new Animated.Value(0);
-	const [state, setState] = React.useState<Facility[]>([]);
+
+	// const [state, setState] = React.useState<Facility[]>([]);
+
+	const { nearByFacilities: facilityList } = useFacilities({ location: [-7.1140425, 39.1940445] })
+
+	const facilities = facilityList || [];
+
 
 
 	const { location } = route?.params;
 
 	const requestLocation = [location?.coords?.latitude || null, location?.coords?.longitude || null]
 
+	const region = {
+		latitude: requestLocation[0],
+		longitude: requestLocation[1],
+		latitudeDelta: 0.04864195044303443,
+		longitudeDelta: 0.040142817690068,
+	};
 
 
 	const _map = React.useRef(null);
@@ -115,8 +125,8 @@ const FindFacility: React.FC = () => {
 	React.useEffect(() => {
 		mapAnimation.addListener(({ value }) => {
 			let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-			if (index >= state.length) {
-				index = state.length - 1;
+			if (index >= facilities.length) {
+				index = facilities.length - 1;
 			}
 			if (index <= 0) {
 				index = 0;
@@ -124,7 +134,7 @@ const FindFacility: React.FC = () => {
 			const regionTimeout = setTimeout(() => {
 				if (mapIndex !== index) {
 					mapIndex = index;
-					const { geopoint } = state[index];
+					const { geopoint } = facilities[index];
 					_map.current?.animateToRegion(
 						{
 							...geopoint,
@@ -140,21 +150,21 @@ const FindFacility: React.FC = () => {
 		});
 	});
 
-	const interpolations = state.map((marker, index) => {
-		const inputRange = [
-			(index - 1) * CARD_WIDTH,
-			index * CARD_WIDTH,
-			(index + 1) * CARD_WIDTH,
-		];
+	// const interpolations = facilities.map((marker, index) => {
+	// 	const inputRange = [
+	// 		(index - 1) * CARD_WIDTH,
+	// 		index * CARD_WIDTH,
+	// 		(index + 1) * CARD_WIDTH,
+	// 	];
 
-		const scale = mapAnimation.interpolate({
-			inputRange,
-			outputRange: [1, 1.5, 1],
-			extrapolate: "clamp",
-		});
+	// 	const scale = mapAnimation.interpolate({
+	// 		inputRange,
+	// 		outputRange: [1, 1.5, 1],
+	// 		extrapolate: "clamp",
+	// 	});
 
-		return { scale };
-	});
+	// 	return { scale };
+	// });
 
 	const onMarkerPress = (mapEventData: any) => {
 		const markerID = mapEventData._targetInst.return.key;
@@ -175,13 +185,13 @@ const FindFacility: React.FC = () => {
 
 
 
-	const getNearByFacilities = async () => {
-		const res = await functions().httpsCallable("getNearByFacilities")({
-			location: requestLocation
-		})
+	// const getNearByFacilities = async () => {
+	// 	const res = await functions().httpsCallable("getNearByFacilities")({
+	// 		location: requestLocation
+	// 	})
 
-		return res.data.data
-	}
+	// 	return res.data.data
+	// }
 
 	// const {
 	// 	status,
@@ -195,17 +205,14 @@ const FindFacility: React.FC = () => {
 	// 	}
 	// });
 
-	const { nearByFacilities: facilityList } = useFacilities({ location: [-7.1140425, 39.1940445] })
 
-	const facilities = facilityList || [];
 
-	React.useEffect(() => {
-		console.log(facilities);
-		setTimeout(() => setState(facilities), 1000);
-	}, [facilities]);
+	// React.useEffect(() => {
+	// 	console.log(facilities);
+	// 	setTimeout(() => setState(facilities), 1000);
+	// }, [facilities]);
 
-	console.log("All near by ")
-	console.log(JSON.stringify(facilities, null, 4))
+
 
 	return (
 		<MainContainer
@@ -226,13 +233,21 @@ const FindFacility: React.FC = () => {
 			}
 		>
 			<MapView ref={_map} style={styles.map} initialRegion={region}>
-				{state.map((marker, index) => {
+				{/* <Marker
+					// key={index}
+					coordinate={{latitude:-7.1168563,longitude:39.2038562}}
+					title={"Demo Zipo"}
+					description={"Semo Description"}
+				/> */}
+				{facilities.map((marker, index) => {
+					console.log("Coords")
+					console.log(marker.geopoint)
 					return (
 						<Marker
 							key={index}
 							coordinate={{
-								longitude: marker.geopoint.latitude,
-								latitude: marker.geopoint.longitude,
+								latitude: marker.geopoint.latitude,
+								longitude: marker.geopoint.longitude
 							}}
 							onPress={(e) => onMarkerPress(e)}
 							title={`${marker.name}`}
@@ -301,7 +316,7 @@ const FindFacility: React.FC = () => {
 					</Center>
 				} */}
 				{/* {state.length === 0 && !isLoading && */}
-				{state.length === 0 &&
+				{facilities.length === 0 &&
 					<Center
 						style={{
 							shadowColor: "#CCC",
@@ -327,7 +342,7 @@ const FindFacility: React.FC = () => {
 						>No nearby facilities</Text>
 					</Center>
 				}
-				{state.map((marker, index) => (
+				{facilities.map((marker, index) => (
 					<Pressable
 						key={index}
 						onPress={() => selectFacility(marker)}
@@ -352,15 +367,6 @@ const FindFacility: React.FC = () => {
 							borderRadius={20}
 							marginRight={5}
 						>
-							{/* <Avatar
-								alignSelf="flex-start"
-								width="100%"
-								height={120}
-								borderRadius={20}
-								source={{
-									uri: marker.photoUrl ? marker.photoUrl : "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc"
-								}}
-							/> */}
 
 							<Image
 								source={{
