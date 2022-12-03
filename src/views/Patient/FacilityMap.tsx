@@ -31,7 +31,8 @@ import { setFacility } from "../../store/slices/appointment";
 import functions from "@react-native-firebase/functions";
 import { Text } from "../../components/text";
 import firestore from '@react-native-firebase/firestore';
-
+import MapPin from "../../assets/icons/MapPinIcon"
+import { Icon, IIconProps } from "native-base";
 
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
@@ -40,6 +41,7 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
 import { distanceBetween } from "geofire-common";
+import { colors } from "../../constants/colors";
 const radiusInM = 50 * 1000;
 
 /**
@@ -240,7 +242,8 @@ const FindFacility: React.FC = () => {
 					coordinate={{ latitude: requestLocation[0], longitude: requestLocation[1] }}
 					title={"My Location"}
 					description={"My Location"}
-				/>
+				>
+				</Marker>
 
 				{facilities.map((marker, index) => {
 					console.log("Coords")
