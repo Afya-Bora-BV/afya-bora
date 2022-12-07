@@ -284,7 +284,7 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 	console.log("Appointments")
-	console.log(JSON.stringify(appointment,null,4))
+	console.log(JSON.stringify(appointment, null, 4))
 	return (
 		<View>
 			{user && appointment && (
@@ -442,7 +442,9 @@ export const ScheduleAppointmentSection = () => {
 
 	const handleOnPress = () => {
 		// just logging the data here which can be accessed in other components as well
-		navigate(HomeNavKey.PatientComplaint);
+		// navigate(HomeNavKey.PatientComplaint);
+		navigate(HomeNavKey.ConsultantList);
+
 	};
 
 	return (
@@ -463,6 +465,7 @@ export const ScheduleAppointmentSection = () => {
 							Schedule Appointment
 						</Text>
 					</PrimaryButton>
+					<LocationHelper />
 				</Stack>
 			</Box>
 		</>
