@@ -283,7 +283,7 @@ export default function Login() {
 			console.log(hasProfile);
 			setLoading(false);
 			if (hasProfile && completingAppointment) {
-				return navigation.navigate(HomeNavKey.ConfirmAppointment);
+				return navigation.navigate(HomeNavKey.PatientComplaint);
 			} else if (hasProfile && !completingAppointment) {
 				return navigation.navigate(HomeNavKey.HomeScreen);
 			} else if (!hasProfile) {

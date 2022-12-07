@@ -465,7 +465,7 @@ export const ScheduleAppointmentSection = () => {
 							Schedule Appointment
 						</Text>
 					</PrimaryButton>
-					<LocationHelper />
+					{/* <LocationHelper /> */}
 				</Stack>
 			</Box>
 		</>
