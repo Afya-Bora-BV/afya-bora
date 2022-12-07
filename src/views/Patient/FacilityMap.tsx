@@ -7,6 +7,7 @@ import {
 	Animated,
 	Platform,
 	Pressable,
+	TouchableOpacity,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MainContainer from "../../components/containers/MainContainer";
@@ -20,6 +21,8 @@ import {
 	Box,
 	Center,
 	Image,
+	Modal,
+	Stack
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { HomeNavKey } from ".";
@@ -42,6 +45,9 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 import { distanceBetween } from "geofire-common";
 import { colors } from "../../constants/colors";
+import AppointmentCustomizer from "../../components/appointment-customizer";
+import { PrimaryButton } from "../../components/button";
+import FilterIcon from "../../assets/icons/FilterIcon";
 const radiusInM = 50 * 1000;
 
 /**
@@ -98,6 +104,8 @@ const FindFacility: React.FC = () => {
 	const navigation = useNavigation();
 	let mapIndex = 0;
 	let mapAnimation = new Animated.Value(0);
+
+	const [modalVisible, setModalVisible] = React.useState(false);
 
 	// const [state, setState] = React.useState<Facility[]>([]);
 	const { location } = route?.params;
@@ -190,6 +198,12 @@ const FindFacility: React.FC = () => {
 
 
 
+	const openFilterModal = () => {
+		setModalVisible(true)
+		console.log("Open modal")
+	}
+
+
 	// const getNearByFacilities = async () => {
 	// 	const res = await functions().httpsCallable("getNearByFacilities")({
 	// 		location: requestLocation
@@ -220,82 +234,122 @@ const FindFacility: React.FC = () => {
 
 
 	return (
-		<MainContainer
-			noScroll
-			title="facilityMap.findFacility"
-			headerMode="float"
-			leftSection={
-				// Go back if can go back
-				navigation.canGoBack()
-					? () => (
-						<Pressable onPress={() => navigation.goBack()}>
-							<IconContainer>
-								<ArrowBackIcon size={6} color="#561BB3" />
-							</IconContainer>
-						</Pressable>
-					)
-					: undefined
-			}
-		>
-			<MapView ref={_map} style={styles.map} initialRegion={region}>
-				<Marker
-					coordinate={{ latitude: requestLocation[0], longitude: requestLocation[1] }}
-					title={"My Location"}
-					description={"My Location"}
-				>
-				</Marker>
+		<>
+			<Modal isOpen={modalVisible} onClose={() => setModalVisible(false)} avoidKeyboard justifyContent="center" bottom="4" size="lg">
+				<Modal.Content>
+					<Modal.CloseButton />
+					<Modal.Header>Filters</Modal.Header>
+					<Modal.Body>
+						<AppointmentCustomizer />
+					</Modal.Body>
+					<Modal.Footer>
 
-				{facilities.map((marker, index) => {
-					console.log("Coords")
-					console.log(marker.geopoint)
-					return (
-						<Marker
-							key={index}
-							coordinate={{
-								latitude: marker.geopoint.latitude,
-								longitude: marker.geopoint.longitude
-							}}
-							onPress={(e) => onMarkerPress(e)}
-							title={`${marker.name}`}
-							description={marker.city}
-						/>
-					);
-				})}
-			</MapView>
 
-			<Animated.ScrollView
-				ref={_scrollView}
-				horizontal
-				pagingEnabled
-				scrollEventThrottle={1}
-				showsHorizontalScrollIndicator={false}
-				snapToInterval={CARD_WIDTH + 20}
-				snapToAlignment="center"
-				style={styles.scrollView}
-				contentInset={{
-					top: 0,
-					left: SPACING_FOR_CARD_INSET,
-					bottom: 0,
-					right: SPACING_FOR_CARD_INSET,
-				}}
-				contentContainerStyle={{
-					paddingHorizontal:
-						Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
-				}}
-				onScroll={Animated.event(
-					[
-						{
-							nativeEvent: {
-								contentOffset: {
-									x: mapAnimation,
+						<PrimaryButton
+							flex="1"
+							onPress={() => {
+								setModalVisible(false);
+							}}>
+							<Text tx="common.close" color="white">
+								Close
+							</Text>
+						</PrimaryButton>
+					</Modal.Footer>
+				</Modal.Content>
+			</Modal>
+			<MainContainer
+				noScroll
+				title="facilityMap.findFacility"
+				headerMode="float"
+				leftSection={
+					// Go back if can go back
+					navigation.canGoBack()
+						? () => (
+							<Pressable onPress={() => navigation.goBack()}>
+								<IconContainer>
+									<ArrowBackIcon size={6} color="#561BB3" />
+								</IconContainer>
+							</Pressable>
+						)
+						: undefined
+				}
+
+				rightSection={
+					() => {
+						return (
+							<Stack mt={6}>
+								<IconContainer>
+									<TouchableOpacity onPress={() => {
+										openFilterModal()
+									}}>
+										<FilterIcon size={8} color={"#561BB3"} />
+									</TouchableOpacity>
+								</IconContainer>
+							</Stack>
+
+						)
+					}
+				}
+			>
+				<MapView ref={_map} style={styles.map} initialRegion={region}>
+					<Marker
+						coordinate={{ latitude: requestLocation[0], longitude: requestLocation[1] }}
+						title={"My Location"}
+						description={"My Location"}
+					>
+					</Marker>
+
+					{facilities.map((marker, index) => {
+						console.log("Coords")
+						console.log(marker.geopoint)
+						return (
+							<Marker
+								key={index}
+								coordinate={{
+									latitude: marker.geopoint.latitude,
+									longitude: marker.geopoint.longitude
+								}}
+								onPress={(e) => onMarkerPress(e)}
+								title={`${marker.name}`}
+								description={marker.city}
+							/>
+						);
+					})}
+				</MapView>
+
+				<Animated.ScrollView
+					ref={_scrollView}
+					horizontal
+					pagingEnabled
+					scrollEventThrottle={1}
+					showsHorizontalScrollIndicator={false}
+					snapToInterval={CARD_WIDTH + 20}
+					snapToAlignment="center"
+					style={styles.scrollView}
+					contentInset={{
+						top: 0,
+						left: SPACING_FOR_CARD_INSET,
+						bottom: 0,
+						right: SPACING_FOR_CARD_INSET,
+					}}
+					contentContainerStyle={{
+						paddingHorizontal:
+							Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
+					}}
+					onScroll={Animated.event(
+						[
+							{
+								nativeEvent: {
+									contentOffset: {
+										x: mapAnimation,
+									},
 								},
 							},
-						},
-					],
-					{ useNativeDriver: true }
-				)}
-			>
-				{/* {isLoading &&
+						],
+						{ useNativeDriver: true }
+					)}
+				>
+					{/* {isLoading &&
 					<Center
 						style={{
 							shadowColor: "#CCC",
@@ -321,39 +375,9 @@ const FindFacility: React.FC = () => {
 						>Loading nearby facilities....</Text>
 					</Center>
 				} */}
-				{/* {state.length === 0 && !isLoading && */}
-				{facilities.length === 0 &&
-					<Center
-						style={{
-							shadowColor: "#CCC",
-							shadowOffset: {
-								width: 0,
-								height: 5,
-							},
-							shadowOpacity: 0.57,
-							shadowRadius: 13.19,
-
-							elevation: 13,
-						}}
-						minWidth={300}
-						minHeight={200}
-						bgColor="#FFF"
-						shadow={40}
-						padding={3}
-						borderRadius={20}
-						marginRight={5}
-					>
-						<Text
-							tx="facilityMap.noNearByFacility"
-						>No nearby facilities</Text>
-					</Center>
-				}
-				{facilities.map((marker, index) => (
-					<Pressable
-						key={index}
-						onPress={() => selectFacility(marker)}
-					>
-						<VStack
+					{/* {state.length === 0 && !isLoading && */}
+					{facilities.length === 0 &&
+						<Center
 							style={{
 								shadowColor: "#CCC",
 								shadowOffset: {
@@ -366,77 +390,108 @@ const FindFacility: React.FC = () => {
 								elevation: 13,
 							}}
 							minWidth={300}
+							minHeight={200}
 							bgColor="#FFF"
 							shadow={40}
 							padding={3}
-							space={1}
 							borderRadius={20}
 							marginRight={5}
 						>
+							<Text
+								tx="facilityMap.noNearByFacility"
+							>No nearby facilities</Text>
+						</Center>
+					}
+					{facilities.map((marker, index) => (
+						<Pressable
+							key={index}
+							onPress={() => selectFacility(marker)}
+						>
+							<VStack
+								style={{
+									shadowColor: "#CCC",
+									shadowOffset: {
+										width: 0,
+										height: 5,
+									},
+									shadowOpacity: 0.57,
+									shadowRadius: 13.19,
 
-							<Image
-								source={{
-									uri: marker.photoUrl ? marker.photoUrl
-										: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
+									elevation: 13,
 								}}
-								alt="Alternate Text" size="xl"
-								width="100%"
-								height={120}
-								borderRadius={4}
-
-							/>
-							{/* Text ara */}
-							<VStack>
-								<Heading fontSize="lg">{marker.name}</Heading>
-								<Text fontSize="md" bold color="#747F9E">
-									{marker.city}
-								</Text>
-							</VStack>
-
-							{/* Ratings + Distance */}
-							<HStack
+								minWidth={300}
+								bgColor="#FFF"
+								shadow={40}
+								padding={3}
 								space={1}
-								justifyContent="space-between"
-								marginTop={2}
+								borderRadius={20}
+								marginRight={5}
 							>
-								{/* Ratings */}
-								<HStack space={1} alignItems="center">
-									<MaterialCommunityIcons
-										name="star"
-										color="#FFC107"
-										size={24}
-									/>
-									<Text fontSize="md" color="#B0B3C7">
-										{/* {marker.rating.stars} ( */}
-										{/* {marker.rating.count}) */}
-									</Text>
-								</HStack>
 
-								{/* Distance */}
+								<Image
+									source={{
+										uri: marker.photoUrl ? marker.photoUrl
+											: "https://firebasestorage.googleapis.com/v0/b/afya-bora-fb.appspot.com/o/c2c820d8-1d2b-4a96-a947-7405156a8f41?alt=media&token=5a364ace-4e71-4b1e-a9f5-38f73b9e24fc",
+									}}
+									alt="Alternate Text" size="xl"
+									width="100%"
+									height={120}
+									borderRadius={4}
+
+								/>
+								{/* Text ara */}
+								<VStack>
+									<Heading fontSize="lg">{marker.name}</Heading>
+									<Text fontSize="md" bold color="#747F9E">
+										{marker.city}
+									</Text>
+								</VStack>
+
+								{/* Ratings + Distance */}
 								<HStack
 									space={1}
-									px={2}
-									py={1}
-									borderRadius={4}
-									justifyContent="center"
-									alignItems="center"
-									style={{
-										backgroundColor: "rgba(37,143,190,0.2)",
-									}}
+									justifyContent="space-between"
+									marginTop={2}
 								>
-									<MaterialCommunityIcons
-										name="google-maps"
-										size={18}
-										color="#258FBE"
-									/>
-									<Text color="#258FBE">{34}</Text>
+									{/* Ratings */}
+									<HStack space={1} alignItems="center">
+										<MaterialCommunityIcons
+											name="star"
+											color="#FFC107"
+											size={24}
+										/>
+										<Text fontSize="md" color="#B0B3C7">
+											{/* {marker.rating.stars} ( */}
+											{/* {marker.rating.count}) */}
+										</Text>
+									</HStack>
+
+									{/* Distance */}
+									<HStack
+										space={1}
+										px={2}
+										py={1}
+										borderRadius={4}
+										justifyContent="center"
+										alignItems="center"
+										style={{
+											backgroundColor: "rgba(37,143,190,0.2)",
+										}}
+									>
+										<MaterialCommunityIcons
+											name="google-maps"
+											size={18}
+											color="#258FBE"
+										/>
+										<Text color="#258FBE">{34}</Text>
+									</HStack>
 								</HStack>
-							</HStack>
-						</VStack>
-					</Pressable>
-				))}
-			</Animated.ScrollView>
-		</MainContainer>
+							</VStack>
+						</Pressable>
+					))}
+				</Animated.ScrollView>
+			</MainContainer>
+		</>
 	);
 };
 
