@@ -64,7 +64,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 					Your Afya Bora Account
 				</Text>
 				<Pressable onPress={handleAccountPress}>
-					<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
+					<Center bgColor="#FFF" py={6} rounded="xl" shadow={4}>
 						<AppointmentIllustration size={70} />
 						<Text
 							fontWeight="800"
@@ -86,7 +86,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
 			</Text>
 			<Pressable onPress={handleAccountPress}>
 				{/* Find mean to set relative width: 160 -> 33%?? */}
-				<Center height={100} bgColor="#FFF" rounded="xl" shadow={4}>
+				<Center bgColor="#FFF" py={6} rounded="xl" shadow={4}>
 					<AppointmentIllustration size={70} />
 					<Text
 						fontWeight="800"
