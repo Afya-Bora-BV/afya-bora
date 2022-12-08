@@ -135,8 +135,10 @@ function Main() {
 	console.info(loading, user, profile);
 
 	useEffect(() => {
+		console.log("Is first time : ", isFirstTime)
+		console.log("App Language : ", language)
 		i18n.changeLanguage(language);
-	}, []);
+	}, [language, isFirstTime]);
 
 	useEffect(() => {
 		// Remove splash screen if ready
@@ -149,7 +151,6 @@ function Main() {
 
 	// Render the first time the app is installed only
 
-	console.log("Is first time : ", isFirstTime)
 
 	if (isFirstTime) {
 		return <OnBoard />
