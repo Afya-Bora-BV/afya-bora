@@ -227,8 +227,8 @@ const LocationHelper = () => {
 		<Stack space={2}>
 			<Text
 				tx={"home.quickMedicalAttention"}
-				fontSize="xl"
-				fontWeight="bold"
+			// fontSize="xl"
+			// fontWeight="bold"
 			>
 				Need quick medical attention?
 			</Text>
@@ -247,9 +247,13 @@ const LocationHelper = () => {
 					<Center
 						// height={100}
 						bgColor="#FFF"
-						rounded="xl"
-						shadow={4}
+						rounded="md"
+						// shadow={4}
 						padding={6}
+						style={{
+							borderColor: "grey",
+							borderWidth: 1,
+						}}
 					>
 						<FacilityIllustration size={70} />
 						<Text
@@ -402,6 +406,7 @@ export default function Home() {
 				<Spacer size={30} />
 				<UpcomingAppointments />
 				<ScheduleAppointmentSection />
+
 				<Spacer size={30} />
 
 				<VStack
@@ -411,7 +416,7 @@ export default function Home() {
 					px={1}
 					py={2}
 				>
-					<LocationHelper />
+					{/* <LocationHelper /> */}
 					<AccountDetails
 						profile={profile}
 						handleAccountPress={handleAccountPress}
@@ -465,7 +470,7 @@ export const ScheduleAppointmentSection = () => {
 							Schedule Appointment
 						</Text>
 					</PrimaryButton>
-					{/* <LocationHelper /> */}
+					<LocationHelper />
 				</Stack>
 			</Box>
 		</>
