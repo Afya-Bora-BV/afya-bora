@@ -151,7 +151,7 @@ export function StatusAppointmentAlert({
           <Heading fontSize="lg" color="#000">
             {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
-          {status === "accepted" && <Text italic>Time : {hours}</Text>}
+          {status === "accepted" && <Text >Time : {hours}</Text>}
           <Text 
             tx={
               type === "online"
@@ -170,8 +170,8 @@ export function StatusAppointmentAlert({
       {/* right */}
       <View alignSelf="flex-end" justifyContent="center">
         {/* TODO FIX: "Status positioning" */}
-        <Box borderRadius={"md"} backgroundColor={status === "accepted" ? "#A9FA0F" : "#ffdede"} px={6} py={2}>
-          <Text fontSize="sm" color={status === "accepted" ? "#24D626" : "#ff5a5b"}>
+        <Box borderRadius={"md"} backgroundColor={status === "accepted" ? "#e9fbe9" : "#ffdede"} px={6} py={2}>
+          <Text fontSize="sm" color={status === "accepted" ? "#3ada3c" : "#ff5a5b"}>
             {_.upperFirst(status)}
           </Text>
         </Box>

@@ -12,6 +12,7 @@ import {
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Consultant } from "../types";
+import FastImage from "react-native-fast-image";
 
 
 type ConsultantListItemProps = {
@@ -36,7 +37,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 				style={{ backgroundColor: "white" }}
 			>
 				<HStack alignItems="center">
-					<Avatar
+					{/* <Avatar
 						alignSelf="flex-start"
 						size={120}
 						borderRadius={6}
@@ -46,8 +47,17 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 					>
 						SS
 
-					</Avatar>
-					<VStack style={{ }} pl={3} flex={1}>
+					</Avatar> */}
+					<FastImage
+						style={{ width: 120, height: 120, borderRadius: 6 }}
+						source={{
+							uri: "https://wallpaperaccess.com/full/317501.jpg",
+							// headers: { Authorization: 'someAuthToken' },
+							priority: FastImage.priority.normal,
+						}}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+					<VStack style={{}} pl={3} flex={1}>
 						<HStack
 							justifyContent="space-between"
 							alignItems="center"
@@ -65,13 +75,13 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 								/>
 								{facilityId}
 							</Text>
-							<Text fontSize="md" color="#747F9E">
+							{/* <Text fontSize="md" color="#747F9E">
 								<MaterialCommunityIcons
 									name="clipboard-pulse-outline"
 									size={16}
 								/>
-								{specialities + ", "}
-							</Text>
+								{specialities.join(" , ") + ", "}
+							</Text> */}
 						</VStack>
 
 						<HStack
