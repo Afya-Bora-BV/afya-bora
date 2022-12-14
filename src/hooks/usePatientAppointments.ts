@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
 import { Appointment } from "../types";
+import moment from "moment";
 
 type PatientAppointments = {
 	appointments: Appointment[];
@@ -8,15 +9,13 @@ type PatientAppointments = {
 	loading: boolean;
 };
 
-// FIXME: Add type annotation
+
 function usePatientAppointments(
 	patientId: string | undefined
 ): PatientAppointments {
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	console.log("Appointments : ", patientId)
-	console.log(allAppointments)
 	useEffect(() => {
 		const today = (() => {
 			const d = new Date();
@@ -28,7 +27,7 @@ function usePatientAppointments(
 				.collection("appointments")
 				.where("pid", "==", patientId)
 				// .where("date", ">=", today)
-				// .orderBy("date", "desc")
+				.orderBy("date", "asc")
 				.onSnapshot(
 					async (snap) => {
 
@@ -65,50 +64,7 @@ function usePatientAppointments(
 							...results,
 						])
 
-						// snap.forEach(async (data) => {
-						// 	const fid = data.data().fid
-						// 	if (fid) {
-						// 		const docSnap = await firestore().collection('facilities').doc(fid).get()
-						// 		if (docSnap.exists) {
 
-						// 			const facility = docSnap.data();
-						// 			// Use a City instance method
-						// 			const final = {
-						// 				id: data.id,
-						// 				...data.data(),
-						// 				facility
-						// 			} as Appointment
-						// 			console.log(final)
-						// 			setAllAppointments([
-						// 				...allAppointments,
-						// 				final
-						// 			])
-
-						// 		}
-						// 	} else {
-
-						// 		// TODO : to be removed since every appointment must have fid
-						// 		const final = {
-						// 			id: data.id,
-						// 			...data.data()
-						// 		} as Appointment
-						// 		setAllAppointments([
-						// 			...allAppointments,
-						// 			final
-						// 		])
-						// 	}
-
-						// })
-
-						// setAllAppointments(
-						// 	snap?.docs.map(
-						// 		(doc) =>
-						// 		({
-						// 			...doc.data(),
-						// 			id: doc.id,
-						// 		} as Appointment)
-						// 	)
-						// );
 						setLoading(false);
 					},
 					(error) => {
@@ -119,19 +75,18 @@ function usePatientAppointments(
 				);
 			return () => subscription();
 		} else {
-			console.log("WHATS GOING ON")
+			// console.log("WHATS GOING ON")
 		}
 	}, [patientId]);
 
-	console.log("all appointments")
-	console.log(JSON.stringify(allAppointments, null, 4))
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
-		.filter((appointment: any) => appointment.status !== "cancelled");
+		.filter((appointment: any) => appointment.status !== "cancelled")
+		.filter((appointment: Appointment) => moment(appointment.utcDate).diff(moment(new Date()), "days") >= 0)
 
 	const generalAppointments = allAppointments;
 	return {
-		appointments: appointments.reverse(),
+		appointments: appointments,
 		generalAppointments,
 		loading,
 	};

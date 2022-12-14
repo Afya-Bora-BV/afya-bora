@@ -248,12 +248,9 @@ const LocationHelper = () => {
 						// height={100}
 						bgColor="#FFF"
 						rounded="md"
-						// shadow={4}
+						shadow={4}
 						padding={6}
-						style={{
-							borderColor: "grey",
-							borderWidth: 1,
-						}}
+						
 					>
 						<FacilityIllustration size={70} />
 						<Text

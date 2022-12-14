@@ -277,12 +277,12 @@ const FindFacility: React.FC = () => {
 				rightSection={
 					() => {
 						return (
-							<Stack mt={6}>
+							<Stack mt={0}>
 								<IconContainer>
 									<TouchableOpacity onPress={() => {
 										openFilterModal()
 									}}>
-										<FilterIcon size={8} color={"#561BB3"} />
+										<FilterIcon size={6} color={"#561BB3"} />
 									</TouchableOpacity>
 								</IconContainer>
 							</Stack>
