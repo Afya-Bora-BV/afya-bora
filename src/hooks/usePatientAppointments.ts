@@ -16,12 +16,14 @@ function usePatientAppointments(
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
+	const today = (() => {
+		const d = new Date();
+		d.setHours(0, 0);
+		return d;
+	})();
+
 	useEffect(() => {
-		const today = (() => {
-			const d = new Date();
-			d.setHours(0, 0);
-			return d;
-		})();
+
 		if (patientId) {
 			const subscription = firestore()
 				.collection("appointments")
@@ -82,7 +84,7 @@ function usePatientAppointments(
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
 		.filter((appointment: any) => appointment.status !== "cancelled")
-		.filter((appointment: Appointment) => moment(appointment.utcDate).diff(moment(new Date()), "days") >= 0)
+		.filter((appointment: Appointment) => moment(appointment.utcDate).diff(moment(today), "days") >= 0)
 
 	const generalAppointments = allAppointments;
 	return {
