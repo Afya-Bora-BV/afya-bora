@@ -16,11 +16,7 @@ function usePatientAppointments(
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	const today = (() => {
-		const d = new Date();
-		d.setHours(0, 0);
-		return d;
-	})();
+	const today = new Date()
 
 	useEffect(() => {
 
@@ -80,6 +76,7 @@ function usePatientAppointments(
 			// console.log("WHATS GOING ON")
 		}
 	}, [patientId]);
+
 
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
