@@ -240,6 +240,10 @@ export default function Login() {
 			.catch((error: FirebaseAuthTypes.PhoneAuthError) => {
 				setLoading(false);
 				console.log(error);
+				
+				// use the below for debugging 
+				const generalErrorMessage = error?.message?.split("]")[1]
+				console.log(generalErrorMessage);
 
 				if (error.code === "auth/invalid-phone-number") {
 					ToastAndroid.show(
@@ -313,10 +317,13 @@ export default function Login() {
 			// navigation.navigate(hasProfile ? HomeNavKey.HomeScreen : HomeNavKey.CreateProfile)
 		} catch (error: FirebaseAuthTypes.PhoneAuthError) {
 			console.log("Error in confirming the code")
+
+			// use the below for debugging 
 			const generalErrorMessage = error?.message?.split("]")[1]
-			console.log();
+			console.log(generalErrorMessage);
+
 			setLoading(false);
-			
+
 			if (error.code === "auth/invalid-verification-code") {
 				ToastAndroid.show(
 					"Invalid Verification Code",
