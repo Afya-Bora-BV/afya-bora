@@ -234,18 +234,36 @@ export default function Login() {
 				setConfirm(res);
 				ToastAndroid.show(
 					"Verification code sent to " + phoneNumber,
-					3000
+					5000
 				);
 			})
-			.catch((error) => {
+			.catch((error: FirebaseAuthTypes.PhoneAuthError) => {
 				setLoading(false);
 				console.log(error);
-				ToastAndroid.show(
-					"There was an error. Please try again.",
-					3000
-				);
+
+				if (error.code === "auth/invalid-phone-number") {
+					ToastAndroid.show(
+						"Invalid Phone number",
+						5000
+					);
+				}
+				else if (error.code === "auth/network-request-failed") {
+					ToastAndroid.show(
+						"A network error (such as timeout, interrupted connection or unreachable host) has occurred",
+						5000
+					);
+				}
+				else {
+					ToastAndroid.show(
+						error?.message ? error.message : "There was an error. Please try again.",
+						5000
+					);
+				}
+
+
 			});
 	};
+
 
 	const completingAppointment = useRoute().params?.completingAppointment;
 
@@ -293,9 +311,24 @@ export default function Login() {
 			}
 			console.warn("State should be unreachable");
 			// navigation.navigate(hasProfile ? HomeNavKey.HomeScreen : HomeNavKey.CreateProfile)
-		} catch (error) {
-			console.log(error);
+		} catch (error: FirebaseAuthTypes.PhoneAuthError) {
+			console.log("Error in confirming the code")
+			const generalErrorMessage = error?.message?.split("]")[1]
+			console.log();
 			setLoading(false);
+			
+			if (error.code === "auth/invalid-verification-code") {
+				ToastAndroid.show(
+					"Invalid Verification Code",
+					5000
+				);
+			}
+			else {
+				ToastAndroid.show(
+					error?.message ? error.message : "There was an error. Please try again.",
+					5000
+				);
+			}
 			throw new Error("Invalid verification code : ");
 		}
 	}
