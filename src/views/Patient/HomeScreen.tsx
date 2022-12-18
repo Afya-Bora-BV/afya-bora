@@ -118,21 +118,19 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 
 	React.useEffect(() => {
 		const checkUser = async () => {
-			if (user) {
-				setLoading(true)
-				const hasProfile = (await userHasProfile(user.uid));
-				if (hasProfile) {
-					setLoading(false)
-				}
-			} else {
+			if (user && !profile) {
 				setLoading(false)
 				return navigation.navigate(HomeNavKey.CreateProfile);
+			} else {
+				setLoading(false)
 			}
 		}
 
 		checkUser()
-	}, [user])
+	}, [user, profile])
 
+	console.log("User ",user)
+	console.log("Profile ",profile)
 	if (loading) {
 		<VStack flex={1} justifyContent="center" alignItems={"center"}>
 			<Spinner size="lg" />
@@ -370,7 +368,7 @@ export default function Home() {
 	};
 
 	useEffect(() => {
-		if (!profile && !loading && auth().currentUser) {
+		if (!profile && !loading && user) {
 			// console.log("Loading state");
 			// console.log(profile, loading, auth().currentUser);
 			navigation.navigate(HomeNavKey.CreateProfile);
