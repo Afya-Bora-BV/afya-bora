@@ -376,7 +376,7 @@ export default function Home() {
 			navigation.navigate(HomeNavKey.CreateProfile);
 		}
 		// dispatch(resetAppointmentState());
-	}, []);
+	}, [profile]);
 
 	// console.warn("Current user : ", profile, auth().currentUser);
 
