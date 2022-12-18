@@ -129,8 +129,7 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 		checkUser()
 	}, [user, profile])
 
-	console.log("User ",user)
-	console.log("Profile ",profile)
+
 	if (loading) {
 		<VStack flex={1} justifyContent="center" alignItems={"center"}>
 			<Spinner size="lg" />
@@ -310,8 +309,8 @@ const UpcomingAppointments = () => {
 	};
 
 	if (!user) return null;
-	// console.log("Appointments")
-	// console.log(JSON.stringify(appointment, null, 4))
+
+	
 	return (
 		<View>
 			{user && appointment && (
