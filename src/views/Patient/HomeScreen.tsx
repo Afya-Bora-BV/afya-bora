@@ -9,6 +9,7 @@ import {
 	Pressable,
 	ScrollView,
 	Stack,
+	Spinner,
 } from "native-base";
 import { Text } from "../../components/text";
 import UserIcon from "../../assets/icons/User";
@@ -43,6 +44,7 @@ import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LoadingFullScreen } from "../../components/LoadingFullScreen";
+import { userHasProfile } from "../../api";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -111,6 +113,32 @@ const ProfileInformation: React.FC<ProfileInformationProps> = ({
 	profile,
 	user,
 }) => {
+	const navigation = useNavigation()
+	const [loading, setLoading] = React.useState<boolean>(false)
+
+	React.useEffect(() => {
+		const checkUser = async () => {
+			if (user) {
+				setLoading(true)
+				const hasProfile = (await userHasProfile(user.uid));
+				if (hasProfile) {
+					setLoading(false)
+				}
+			} else {
+				setLoading(false)
+				return navigation.navigate(HomeNavKey.CreateProfile);
+			}
+		}
+
+		checkUser()
+	}, [user])
+
+	if (loading) {
+		<VStack flex={1} justifyContent="center" alignItems={"center"}>
+			<Spinner size="lg" />
+		</VStack>
+	}
+
 	if (user) {
 		return (
 			<VStack flex={1}>
@@ -250,7 +278,7 @@ const LocationHelper = () => {
 						rounded="md"
 						shadow={4}
 						padding={6}
-						
+
 					>
 						<FacilityIllustration size={70} />
 						<Text
