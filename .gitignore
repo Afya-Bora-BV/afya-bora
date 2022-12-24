@@ -30,6 +30,12 @@ local.properties
 *.iml
 $HOME
 
+local.properties
+*.iml
+*.hprof
+.cxx/
+
+
 # node.js
 #
 node_modules/
