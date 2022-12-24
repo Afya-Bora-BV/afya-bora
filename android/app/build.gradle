@@ -3,6 +3,8 @@ apply plugin: 'com.google.gms.google-services'
 // apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 import com.android.build.OutputFile
+import org.apache.tools.ant.taskdefs.condition.Os
+
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -183,13 +185,13 @@ android {
                 //         arguments "NDK_APP_SHORT_COMMANDS=true"
                 //     }
                 // }
-                    cmake {
-                        arguments "-DPROJECT_BUILD_DIR=$buildDir",
+
+                 cmake {
+                    arguments "-DPROJECT_BUILD_DIR=$buildDir",
                         "-DREACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
                         "-DREACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build",
                         "-DNODE_MODULES_DIR=$rootDir/../node_modules",
                         "-DANDROID_STL=c++_shared"
-                    }
                 }
             }
             if (!enableSeparateBuildPerCPUArchitecture) {
@@ -205,7 +207,7 @@ android {
             // ndkBuild {
             //     path "$projectDir/src/main/jni/Android.mk"
             // }
-              cmake {
+             cmake {
                 path "$projectDir/src/main/jni/CMakeLists.txt"
             }
         }
@@ -229,29 +231,13 @@ android {
             // Due to a bug inside AGP, we have to explicitly set a dependency
             // between configureNdkBuild* tasks and the preBuild tasks.
             // This can be removed once this is solved: https://issuetracker.google.com/issues/207403732
-            
-            // configureNdkBuildRelease.dependsOn(preReleaseBuild)
-            // configureNdkBuildDebug.dependsOn(preDebugBuild)
-            // reactNativeArchitectures().each { architecture ->
-            //     tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
-            //         dependsOn("preDebugBuild")
-            //     }
-            //     tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
-            //         dependsOn("preReleaseBuild")
-            //     }
-            // }
-
-            
-            // Due to a bug inside AGP, we have to explicitly set a dependency
-            // between configureCMakeDebug* tasks and the preBuild tasks.
-            // This can be removed once this is solved: https://issuetracker.google.com/issues/207403732
-            configureCMakeRelWithDebInfo.dependsOn(preReleaseBuild)
-            configureCMakeDebug.dependsOn(preDebugBuild)
+            configureNdkBuildRelease.dependsOn(preReleaseBuild)
+            configureNdkBuildDebug.dependsOn(preDebugBuild)
             reactNativeArchitectures().each { architecture ->
-                tasks.findByName("configureCMakeDebug[${architecture}]")?.configure {
+                tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
                     dependsOn("preDebugBuild")
                 }
-                tasks.findByName("configureCMakeRelWithDebInfo[${architecture}]")?.configure {
+                tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
                     dependsOn("preReleaseBuild")
                 }
             }
