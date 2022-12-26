@@ -43,6 +43,12 @@ const FacilityList = () => {
 	const Toast = useToast();
 	const [modalVisible, setModalVisible] = React.useState(false);
 
+	const [speciality] = useSelector(
+		({ appointment }: RootState) => [
+			appointment.speciality
+		]
+	);
+
 	const dispatch = useDispatch();
 
 	const selectFacility = (facility: Facility) => {
@@ -55,8 +61,8 @@ const FacilityList = () => {
 		error,
 		isLoading,
 	} = useQuery<Facility[]>(
-		["facilities", 2],
-		getFacilities
+		["facilities", speciality],
+		() => getFacilities({ speciality })
 	);
 
 	useEffect(() => {
