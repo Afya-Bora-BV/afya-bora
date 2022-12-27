@@ -135,7 +135,12 @@ const AppointmentCustomizer: React.FC = () => {
 				</View>
 
 				{/* </SimpleGrid> */}
-				<Select selectedValue={speciality} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
+				<Select 
+					selectedValue={speciality} 
+					minWidth="200" 
+					accessibilityLabel="Choose Specialty" 
+					placeholder="Choose Specialty" 
+					_selectedItem={{
 					// bg: "teal.600",
 					backgroundColor: colors.primary,
 					endIcon: <CheckIcon size="5" color={"#FFFFFF"} />,

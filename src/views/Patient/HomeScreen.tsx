@@ -39,12 +39,13 @@ import { usePatientAppointments } from "../../hooks/usePatientAppointments";
 import moment from "moment";
 import { AppointmentAlert } from "../../components/core/appointment";
 import Geolocation from "react-native-geolocation-service";
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Profile } from "../../store/slices/profile";
 import { useAuth } from "../../contexts/AuthContext";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { LoadingFullScreen } from "../../components/LoadingFullScreen";
 import { userHasProfile } from "../../api";
+import { RootState } from "../../store";
 
 type AccountDetailsProps = {
 	profile: Profile | null;
@@ -171,6 +172,13 @@ const LocationHelper = () => {
 	const [location, setLocation] = useState(null);
 	const [isLocationLoading, setIsLocationLoading] = useState(false);
 
+	const [speciality] = useSelector(
+		({ appointment }: RootState) => [
+			appointment.speciality
+		],
+		shallowEqual
+	);
+
 	const hasLocationPermission = async () => {
 		if (Platform.OS === "android" && Platform.Version < 23) {
 			return true;
@@ -248,6 +256,17 @@ const LocationHelper = () => {
 	React.useEffect(() => {
 		getLocation();
 	}, []);
+
+	const handleNearByFacilityPress = () => {
+		if(!Boolean(speciality)){
+			ToastAndroid.show("Please select doctors speciality", 3000);
+			return
+		}
+		navigation.navigate(HomeNavKey.FacilityMap, {
+			location,
+		});
+	}
+
 	return (
 		<Stack space={2}>
 			<Text
@@ -262,11 +281,7 @@ const LocationHelper = () => {
 			)}
 			{location && (
 				<Pressable
-					onPress={() => {
-						navigation.navigate(HomeNavKey.FacilityMap, {
-							location,
-						});
-					}}
+					onPress={handleNearByFacilityPress}
 				>
 					{/* Find mean to set relative width: 160 -> 33%?? */}
 					<Center
@@ -310,7 +325,7 @@ const UpcomingAppointments = () => {
 
 	if (!user) return null;
 
-	
+
 	return (
 		<View>
 			{user && appointment && (
@@ -393,7 +408,9 @@ export default function Home() {
 			)}
 			rightSection={() => (
 				<HStack space={4}>
-					<Pressable
+
+					{/* TODO : TO BE UNCOMMENTED WHEN IMPLEMENTING THE NOTIFICATION FEATURE */}
+					{/* <Pressable
 						onPress={() => {
 							// navigation.navigate(HomeNavKey.Notification);
 
@@ -403,7 +420,7 @@ export default function Home() {
 						<IconContainer>
 							<BellIcon size={6} color="#561BB3" />
 						</IconContainer>
-					</Pressable>
+					</Pressable> */}
 
 					<Pressable
 						onPress={() => {
@@ -466,13 +483,23 @@ export default function Home() {
 // TOO: move this component and all its atom to component folder
 export const ScheduleAppointmentSection = () => {
 	const { navigate } = useNavigation();
+	const [speciality] = useSelector(
+		({ appointment }: RootState) => [
+			appointment.speciality
+		],
+		shallowEqual
+	);
 
 	const handleOnPress = () => {
-		// just logging the data here which can be accessed in other components as well
-		// navigate(HomeNavKey.PatientComplaint);
+
+		if(!Boolean(speciality)){
+			ToastAndroid.show("Please select doctors speciality", 3000);
+			return
+		}
 		navigate(HomeNavKey.ConsultantList);
 
 	};
+
 
 	return (
 		<>
