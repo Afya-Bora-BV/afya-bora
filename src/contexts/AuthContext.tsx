@@ -61,10 +61,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		user: FirebaseAuthTypes.User,
 		onProfileChange: (profile: Consultant | PatientProfile | null) => void
 	): Promise<() => void> => {
-		const idTokenResult = await user?.getIdTokenResult();
+		// const idTokenResult = await user?.getIdTokenResult();
 		const userId = user.uid;
+		const userEmail = user?.email
 
-		const { collectionName, type } = idTokenResult?.claims.admin
+		// const { collectionName, type } = idTokenResult?.claims.admin
+		// 	? { collectionName: "consultants", type: "consultant" }
+		// 	: { collectionName: "patients", type: "patient" };
+
+		const { collectionName, type } = (userEmail)
 			? { collectionName: "consultants", type: "consultant" }
 			: { collectionName: "patients", type: "patient" };
 
