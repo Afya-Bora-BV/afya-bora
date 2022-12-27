@@ -135,8 +135,6 @@ function Main() {
 	console.info(loading, user, profile);
 
 	useEffect(() => {
-		console.log("Is first time : ", isFirstTime)
-		console.log("App Language : ", language)
 		i18n.changeLanguage(language);
 	}, [language, isFirstTime]);
 
@@ -152,6 +150,7 @@ function Main() {
 	// Render the first time the app is installed only
 
 
+	console.log("User : ", user)
 	if (isFirstTime) {
 		return <OnBoard />
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />

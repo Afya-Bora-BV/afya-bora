@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		const userId = user.uid;
 
 		const { collectionName, type } = idTokenResult?.claims.admin
-			? { collectionName: "admins-facilities", type: "admin" }
+			? { collectionName: "consultants", type: "consultant" }
 			: { collectionName: "patients", type: "patient" };
 
 		const userRef = firestore().collection(collectionName).doc(userId);
