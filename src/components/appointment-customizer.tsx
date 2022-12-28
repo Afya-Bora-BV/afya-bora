@@ -92,7 +92,7 @@ const AppointmentCustomizer: React.FC = () => {
 	const languagePlaceholder = language === "en" ? "Location" : "Mahali";
 	const dispatch = useDispatch();
 
-	console.log("AppointmentCustomizer");
+	// console.log("AppointmentCustomizer");
 
 	return (
 		<Stack space={7}>

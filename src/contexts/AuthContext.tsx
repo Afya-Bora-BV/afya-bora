@@ -66,12 +66,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		const userEmail = user?.email
 		const idTokenResult = await user?.getIdTokenResult();
 		const claims = idTokenResult?.claims
+		const isConsultant = (claims?.isConsultant) || (claims?.type === "consultant")
 
-
-		console.log("User claims")
-		console.log(JSON.stringify(claims,null,3))
-
-		const { collectionName, type } = (userEmail)
+	
+		const { collectionName, type } = (isConsultant)
 			? { collectionName: "consultants", type: "consultant" }
 			: { collectionName: "patients", type: "patient" };
 
