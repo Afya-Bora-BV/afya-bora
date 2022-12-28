@@ -25,6 +25,7 @@ import firestore from "@react-native-firebase/firestore";
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomeView, { DoctorRoutes, HomeNavKey } from "./views/Patient";
 import { PersistGate } from "redux-persist/integration/react";
+import DoctorsView from "./views/Doctor"
 
 // import { Constants } from "react-native-unimodules";
 import { languageAtom, showOnboardAtom } from "./store/atoms";
@@ -156,6 +157,12 @@ function Main() {
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
 	}
 
+	// if (profile?.type === "consultant") {
+	// 	console.log("PROFILE TYPE : ", profile?.type)
+
+	// 	return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
+	// }
+
 	if (profile?.type === "consultant") {
 		console.log("PROFILE TYPE : ", profile?.type)
 
@@ -165,9 +172,6 @@ function Main() {
 	if (createProfileFirst) {
 		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
 	}
-
-
-
 
 	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
 }

@@ -68,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		const claims = idTokenResult?.claims
 		const isConsultant = (claims?.isConsultant) || (claims?.type === "consultant")
 
+		console.log("IS CONSULTANTS : ",isConsultant)
 	
 		const { collectionName, type } = (isConsultant)
 			? { collectionName: "consultants", type: "consultant" }

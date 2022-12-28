@@ -186,4 +186,4 @@ function HomeView({ navigation, initialRouteName }: any) {
 	);
 }
 
-export default React.memo(HomeView);
+export default HomeView

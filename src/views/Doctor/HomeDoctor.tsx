@@ -103,7 +103,9 @@ export default function DoctorHome() {
 				</VStack>
 
 				<VStack space={3} marginX={5}>
-					<Appointments />
+
+					{profile && <Appointments />}
+
 				</VStack>
 			</ScrollView>
 		</MainContainer>
@@ -192,6 +194,7 @@ export const Appointments = () => {
 
 	const uid = auth().currentUser?.uid;
 	useEffect(() => {
+		console.log("CONSULTANT ID : ", profile?.id)
 		const subscriber = firestore()
 			.collection("appointments")
 			.where("cid", "==", profile?.id)
@@ -208,9 +211,9 @@ export const Appointments = () => {
 	const nextAppointments = appointments?.filter(
 		(appointment) =>
 			moment.unix(appointment.date.seconds).format("DD MMM YYYY") ===
-				moment(new Date()).format("DD MMM YYYY") &&
+			moment(new Date()).format("DD MMM YYYY") &&
 			moment.unix(appointment.date.seconds).format("hh:mm") >
-				moment(new Date()).format("hh:mm") &&
+			moment(new Date()).format("hh:mm") &&
 			moment.unix(appointment.date.seconds).isSame(moment(), "day") &&
 			appointment.status !== "cancelled"
 	);
@@ -243,9 +246,9 @@ export const Appointments = () => {
 								appointment={appointment}
 								onPress={() => {
 									DoctorRoutes.DoctorAppointmentInfo,
-										{
-											appointment: appointment,
-										};
+									{
+										appointment: appointment,
+									};
 								}}
 							/>
 						</View>
@@ -262,9 +265,9 @@ export const Appointments = () => {
 								appointment={appointment}
 								onPress={() => {
 									DoctorRoutes.DoctorAppointmentInfo,
-										{
-											appointment: appointment,
-										};
+									{
+										appointment: appointment,
+									};
 								}}
 							/>
 						</View>

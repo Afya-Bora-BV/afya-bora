@@ -15,7 +15,7 @@ import {
 import React, { useState, useCallback } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../constants/colors";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Dimensions, ToastAndroid } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -29,7 +29,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext";
 import { Consultant } from "../../types";
-import { HomeNavKey } from "../Patient";
+import { DoctorRoutes, HomeNavKey } from "../Patient";
 import { Text } from "../../components/text";
 import { useAtom } from "jotai";
 import { languageAtom } from "../../store/atoms";
@@ -85,6 +85,12 @@ export default function LoginDoctor() {
 			onSuccess: (data: Consultant | undefined, variables, context) => {
 				console.log("Logged in successfully ", data);
 				ToastAndroid.show(`Successfuly logged in `, ToastAndroid.SHORT);
+				// navigation.dispatch(
+				// 	CommonActions.reset({
+				// 		index: 0,
+				// 		routes: [{ name: DoctorRoutes.DoctorHome }],
+				// 	})
+				// );
 			},
 		}
 	);
@@ -99,7 +105,7 @@ export default function LoginDoctor() {
 					rounded="xl"
 					padding={5}
 					marginX={5}
-					// justifyContent="center"
+				// justifyContent="center"
 				>
 					<VStack space={5} marginBottom={15}>
 						<ControllerFormInput
