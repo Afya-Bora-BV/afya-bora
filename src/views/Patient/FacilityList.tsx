@@ -150,10 +150,27 @@ const FacilityList = () => {
 					backgroundColor="#F4F6FA"
 				>
 
-
-
 					<Spacer size={0} />
+
+					{/* TODO: ADD THE TEXT TO THE I18N FOLDER FOR DIFFERENT LANGUAGES */}
+					{error &&
+						<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
+							<Text
+							//  tx="home.schedule" color="white"
+							>
+								Something went wrong,Please try again
+							</Text>
+						</HStack>
+					}
 					{isLoading && <Spinner color={colors.primary} size="lg" />}
+					{(!isLoading && facilities?.length == 0) &&
+						<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
+							<Text>
+								No Facility with the selected speciality : {speciality}
+							</Text>
+						</HStack>
+
+					}
 					{facilities && (
 						<VStack space={4}>
 							{facilities.map((facility, ix) => {
