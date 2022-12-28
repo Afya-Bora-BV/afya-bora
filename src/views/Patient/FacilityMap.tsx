@@ -22,7 +22,8 @@ import {
 	Center,
 	Image,
 	Modal,
-	Stack
+	Stack,
+	Spinner
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { HomeNavKey } from ".";
@@ -48,6 +49,7 @@ import { colors } from "../../constants/colors";
 import AppointmentCustomizer from "../../components/appointment-customizer";
 import { PrimaryButton } from "../../components/button";
 import FilterIcon from "../../assets/icons/FilterIcon";
+import { Rect } from "react-native-svg";
 const radiusInM = 50 * 1000;
 
 /**
@@ -59,8 +61,10 @@ const radiusInM = 50 * 1000;
 
 function useFacilities({ location }: { location: [number, number] }) {
 	const [facilities, setFacilities] = React.useState<Facility[]>([])
+	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
 	React.useEffect(() => {
+		setIsLoading(true)
 		const subscriber = firestore()
 			.collection('facilities')
 			.onSnapshot((snaps) => {
@@ -72,10 +76,12 @@ function useFacilities({ location }: { location: [number, number] }) {
 					} as Facility
 				})
 				setFacilities(data)
+				setIsLoading(false)
 			});
 
 		// Stop listening for updates when no longer required
 		return () => subscriber();
+
 	}, []);
 
 
@@ -96,7 +102,7 @@ function useFacilities({ location }: { location: [number, number] }) {
 	// console.log("Facilities ")
 	// console.log(JSON.stringify(nearByFacilities, null, 3))
 
-	return { nearByFacilities }
+	return { nearByFacilities, isLoading }
 }
 
 const FindFacility: React.FC = () => {
@@ -112,14 +118,9 @@ const FindFacility: React.FC = () => {
 
 	const requestLocation = [location?.coords?.latitude, location?.coords?.longitude] as [number, number]
 
-	const { nearByFacilities: facilityList } = useFacilities({ location: requestLocation })
+	const { nearByFacilities: facilityList, isLoading } = useFacilities({ location: requestLocation })
 
 	const facilities = facilityList || [];
-
-
-
-
-
 
 
 	const region = {
@@ -376,7 +377,31 @@ const FindFacility: React.FC = () => {
 					</Center>
 				} */}
 					{/* {state.length === 0 && !isLoading && */}
-					{facilities.length === 0 &&
+					{isLoading &&
+						<Center
+							style={{
+								shadowColor: "#CCC",
+								shadowOffset: {
+									width: 0,
+									height: 5,
+								},
+								shadowOpacity: 0.57,
+								shadowRadius: 13.19,
+
+								elevation: 13,
+							}}
+							minWidth={300}
+							minHeight={200}
+							bgColor="#FFF"
+							shadow={40}
+							padding={3}
+							borderRadius={20}
+							marginRight={5}
+						>
+							<Spinner color={colors.primary} size="lg" />
+						</Center>
+					}
+					{!isLoading && facilities.length === 0 &&
 						<Center
 							style={{
 								shadowColor: "#CCC",
