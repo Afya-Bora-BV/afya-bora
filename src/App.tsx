@@ -150,7 +150,8 @@ function Main() {
 	// Render the first time the app is installed only
 
 
-	console.log("User : ", user)
+	// console.log("User : ", user)
+	
 	if (isFirstTime) {
 		return <OnBoard />
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
