@@ -51,12 +51,12 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
                 </HStack>
 
                 <HStack space={4}>
-                    <WhatsAppLogo size={5} />
+                    <WhatsAppLogo size={5} color={colors.primary} />
                     <Text>{phoneNumber}</Text>
                 </HStack>
 
                 <HStack space={4}>
-                    <GenderIcon size={5} />
+                    <GenderIcon size={5} color={colors.primary} />
                     <VStack>
                         <Text>Sex: {gender}</Text>
                         <Text>DOB: {(dob?.toDate()).toString()}</Text>
