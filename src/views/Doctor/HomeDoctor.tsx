@@ -311,10 +311,15 @@ export const Appointments = () => {
 							<AppointmentAlertDoctor
 								appointment={appointment}
 								onPress={() => {
-									DoctorRoutes.DoctorAppointmentInfo,
-									{
-										appointment: appointment,
-									};
+									console.log(
+										"Going to doctor appointment info"
+									);
+									navigation.navigate(
+										DoctorRoutes.DoctorAppointmentInfo,
+										{
+											appointment: appointment,
+										}
+									);
 								}}
 							/>
 						</View>
@@ -330,10 +335,15 @@ export const Appointments = () => {
 							<AppointmentAlertDoctor
 								appointment={appointment}
 								onPress={() => {
-									DoctorRoutes.DoctorAppointmentInfo,
-									{
-										appointment: appointment,
-									};
+									console.log(
+										"Going to doctor appointment info"
+									);
+									navigation.navigate(
+										DoctorRoutes.DoctorAppointmentInfo,
+										{
+											appointment: appointment,
+										}
+									);
 								}}
 							/>
 						</View>
