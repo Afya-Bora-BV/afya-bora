@@ -77,9 +77,7 @@ export const DoctorRoutes = {
 	DoctorRemoteConsultation: "DoctorRemoteConsultation",
 };
 
-function HomeView({ initialRouteName, type }: {
-	initialRouteName: string, type: "patient" | "consultant" | undefined
-}) {
+function HomeView({ navigation, initialRouteName }: any) {
 	return (
 		<NavStack.Navigator
 			// headerMode="none"
@@ -87,117 +85,105 @@ function HomeView({ initialRouteName, type }: {
 				headerShown: false,
 			}}
 			initialRouteName={initialRouteName}
-
 		// initialRouteName={"Login"}
 		>
-			{(type === "patient" || type === undefined)
-				&&
-				<>
+			<NavStack.Screen name={HomeNavKey.OnBoard} component={OnBoard} />
 
-					<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
-					<NavStack.Screen name={HomeNavKey.Login} component={Login} />
-					<NavStack.Screen
-						name={HomeNavKey.HomeScreen}
-						component={HomeScreen}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.PatientComplaint}
-						component={PatientComplaint}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.ConsultantList}
-						component={FacilityList}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.FacilityMap}
-						component={FacilityMap}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.FacilityInfo}
-						component={FacilityInfo}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.AppointmentTime}
-						component={AppointmentTime}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.ConfirmAppointment}
-						component={ConfirmAppointment}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.AppointmentInvoice}
-						component={AppointmentInvoice}
-					/>
+			<NavStack.Screen name={HomeNavKey.Profile} component={Profile} />
+			<NavStack.Screen name={HomeNavKey.Login} component={Login} />
+			<NavStack.Screen
+				name={HomeNavKey.HomeScreen}
+				component={HomeScreen}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.PatientComplaint}
+				component={PatientComplaint}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.ConsultantList}
+				component={FacilityList}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.FacilityMap}
+				component={FacilityMap}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.FacilityInfo}
+				component={FacilityInfo}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentTime}
+				component={AppointmentTime}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.ConfirmAppointment}
+				component={ConfirmAppointment}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentInvoice}
+				component={AppointmentInvoice}
+			/>
 
-					<NavStack.Screen
-						name={HomeNavKey.ChooseProfile}
-						component={ChooseProfile}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.CreateProfile}
-						component={CreateProfile}
-					/>
+			<NavStack.Screen
+				name={HomeNavKey.ChooseProfile}
+				component={ChooseProfile}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.CreateProfile}
+				component={CreateProfile}
+			/>
 
-					<NavStack.Screen
-						name={HomeNavKey.Notification}
-						component={Notification}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.VisitHistory}
-						component={VisitHistory}
-					/>
+			<NavStack.Screen
+				name={HomeNavKey.Notification}
+				component={Notification}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.VisitHistory}
+				component={VisitHistory}
+			/>
 
-					<NavStack.Screen
-						name={HomeNavKey.UpcomingAppointments}
-						component={UpcomingAppointments}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.EditHealthProfile}
-						component={EditHealthProfile}
-					/>
+			<NavStack.Screen
+				name={HomeNavKey.UpcomingAppointments}
+				component={UpcomingAppointments}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.EditHealthProfile}
+				component={EditHealthProfile}
+			/>
 
-					<NavStack.Screen
-						name={HomeNavKey.AppointmentInfo}
-						component={AppointmentInfo}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.EditAppointment}
-						component={EditAppointment}
-					/>
-					<NavStack.Screen
-						name={HomeNavKey.RemoteConsultation}
-						component={RemoteConsultation}
-					/>
-					<NavStack.Screen
-						name={DoctorRoutes.DoctorLogin}
-						component={DoctorLogin}
-					/>
-				</>
-			}
-
+			<NavStack.Screen
+				name={HomeNavKey.AppointmentInfo}
+				component={AppointmentInfo}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.EditAppointment}
+				component={EditAppointment}
+			/>
+			<NavStack.Screen
+				name={HomeNavKey.RemoteConsultation}
+				component={RemoteConsultation}
+			/>
 
 			{/* TODO: to keep doctor routes to a separate stack */}
-			{(type === "consultant")
-				&&
-				<>
-
-					<NavStack.Screen
-						name={DoctorRoutes.DoctorHome}
-						component={DoctorHome}
-					/>
-					<NavStack.Screen
-						name={DoctorRoutes.DoctorAppointmentInfo}
-						component={DoctorAppointmentInfo}
-					/>
-					<NavStack.Screen
-						name={DoctorRoutes.DoctorRemoteConsultation}
-						component={DoctorRemoteConsultation}
-					/>
-				</>
-			}
-
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorLogin}
+				component={DoctorLogin}
+			/>
+			{/* 
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorHome}
+				component={DoctorHome}
+			/>
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorAppointmentInfo}
+				component={DoctorAppointmentInfo}
+			/>
+			<NavStack.Screen
+				name={DoctorRoutes.DoctorRemoteConsultation}
+				component={DoctorRemoteConsultation}
+			/> */}
 		</NavStack.Navigator>
 	);
 }
 
-export default HomeView;
+export default React.memo(HomeView);

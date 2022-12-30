@@ -50,16 +50,24 @@ export const MONTH_NAMES = [
 
 export default function DoctorHome() {
 	const navigation = useNavigation();
-	const { profile } = useAuth();
+	const { profile, user } = useAuth();
 
+	const userExistsDoctor = user && (profile?.type === "consultant")
 	const signOut = () => auth().signOut();
 
 	return (
 		<MainContainer
 			leftSection={() => (
-				<IconContainer>
-					<UserIcon size={6} color="#561BB3" />
-				</IconContainer>
+				<HStack space={4}>
+					{userExistsDoctor ?
+						null
+						:
+						<IconContainer>
+							<UserIcon size={6} color="#561BB3" />
+						</IconContainer>
+					}
+
+				</HStack>
 			)}
 			rightSection={() => (
 				<HStack space={4}>

@@ -35,7 +35,6 @@ import { updateDeviceMessagingToken } from "./utils";
 import { View } from "react-native";
 import { LoadingFullScreen } from "./components/LoadingFullScreen";
 import OnBoard from "./views/Patient/OnBoard";
-import { type } from "os";
 // console.log(Constants.systemFonts);
 
 const queryClient = new QueryClient();
@@ -158,18 +157,23 @@ function Main() {
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
 	}
 
-	if (createProfileFirst) {
-		return <HomeView initialRouteName={HomeNavKey.CreateProfile} type={undefined} />;
-	}
-
 	if (profile?.type === "consultant") {
 		console.log("PROFILE TYPE : ", profile?.type)
 
-		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} type={profile?.type} />;
+		return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
 	}
 
-	return <HomeView initialRouteName={HomeNavKey.HomeScreen} type={profile?.type} />
+	// if (profile?.type === "consultant") {
+	// 	console.log("PROFILE TYPE : ", profile?.type)
 
+	// 	return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;
+	// }
+
+	if (createProfileFirst) {
+		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
+	}
+
+	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
 }
 
 export default function App() {

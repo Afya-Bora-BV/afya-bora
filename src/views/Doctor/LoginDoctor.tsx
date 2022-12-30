@@ -58,6 +58,7 @@ const loginWithEmailAndPassword = async ({
 export default function LoginDoctor() {
 	const Toast = useToast();
 	const navigation = useNavigation();
+	const { user, profile } = useAuth()
 
 	const {
 		control,
@@ -68,11 +69,18 @@ export default function LoginDoctor() {
 	});
 
 	const [visibility, setVisibility] = React.useState("eye-off-outline");
+	const [loading, setLoading] = React.useState<boolean>(false)
 
 	const onLogin = (data: FormEmailInputs) => {
 		console.log("Logging in ... ");
 		login(data);
 	};
+
+	React.useEffect(() => {
+		if (user) {
+			setLoading(true)
+		}
+	}, [user, profile])
 
 	const { isLoading, mutate: login } = useMutation(
 		loginWithEmailAndPassword,
@@ -156,8 +164,8 @@ export default function LoginDoctor() {
 					> */}
 					<Button
 						onPress={handleSubmit(onLogin)}
-						isLoading={isLoading}
-						isDisabled={isLoading}
+						isLoading={isLoading || loading}
+						isDisabled={isLoading || loading}
 						borderRadius={4}
 						style={{ backgroundColor: colors.primary }}
 						_text={{ color: "white" }}
