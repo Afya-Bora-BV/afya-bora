@@ -157,23 +157,24 @@ function Main() {
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
 	}
 
-	if (profile?.type === "consultant") {
-		console.log("PROFILE TYPE : ", profile?.type)
-
-		return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
-	}
-
 	// if (profile?.type === "consultant") {
 	// 	console.log("PROFILE TYPE : ", profile?.type)
 
-	// 	return <HomeView initialRouteName={DoctorRoutes.DoctorHome} />;
+	// 	return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
 	// }
 
-	if (createProfileFirst) {
-		return <HomeView initialRouteName={HomeNavKey.CreateProfile} />;
+	if (profile?.type === "consultant") {
+		console.log("PROFILE TYPE : ", profile?.type)
+
+		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} type={profile?.type} />;
 	}
 
-	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />;
+	if (createProfileFirst) {
+		return <HomeView initialRouteName={HomeNavKey.CreateProfile} type={undefined} />;
+	}
+
+	return <HomeView initialRouteName={HomeNavKey.HomeScreen} type={profile?.type} />
+
 }
 
 export default function App() {

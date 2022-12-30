@@ -18,7 +18,7 @@ export const DoctorRoutes = {
     DoctorRemoteConsultation: "DoctorRemoteConsultation",
 };
 
-function DoctorsStack({ navigation, initialRouteName }: any) {
+function DoctorsStack({  initialRouteName }: any) {
     return (
         <NavStack.Navigator
             // headerMode="none"
@@ -29,8 +29,7 @@ function DoctorsStack({ navigation, initialRouteName }: any) {
         // initialRouteName={"Login"}
         >
             {/* TODO: to keep doctor routes to a separate stack */}
-
-
+            
             <NavStack.Screen
                 name={DoctorRoutes.DoctorHome}
                 component={DoctorHome}
@@ -43,12 +42,9 @@ function DoctorsStack({ navigation, initialRouteName }: any) {
                 name={DoctorRoutes.DoctorRemoteConsultation}
                 component={DoctorRemoteConsultation}
             />
-            <NavStack.Screen
-                name={DoctorRoutes.DoctorLogin}
-                component={DoctorLogin}
-            />
+
         </NavStack.Navigator>
     );
 }
 
-export default React.memo(DoctorsStack);
+export default DoctorsStack
