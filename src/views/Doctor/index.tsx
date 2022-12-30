@@ -29,10 +29,7 @@ function DoctorsStack({ navigation, initialRouteName }: any) {
         // initialRouteName={"Login"}
         >
             {/* TODO: to keep doctor routes to a separate stack */}
-            <NavStack.Screen
-                name={DoctorRoutes.DoctorLogin}
-                component={DoctorLogin}
-            />
+
 
             <NavStack.Screen
                 name={DoctorRoutes.DoctorHome}
@@ -45,6 +42,10 @@ function DoctorsStack({ navigation, initialRouteName }: any) {
             <NavStack.Screen
                 name={DoctorRoutes.DoctorRemoteConsultation}
                 component={DoctorRemoteConsultation}
+            />
+            <NavStack.Screen
+                name={DoctorRoutes.DoctorLogin}
+                component={DoctorLogin}
             />
         </NavStack.Navigator>
     );
