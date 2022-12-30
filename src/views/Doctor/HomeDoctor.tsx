@@ -146,7 +146,7 @@ export function AppointmentAlertDoctor({
 				</Square>
 				<VStack>
 					<Heading fontSize="lg" color="#000">
-						{appointment.patient.name}
+						{appointment?.patient?.name}
 					</Heading>
 					<Text fontSize="sm" color="#333">
 						{moment
@@ -157,7 +157,7 @@ export function AppointmentAlertDoctor({
 						{/* TODO: include facility in appointment */}
 						{appointment.type === "online"
 							? "Online"
-							: appointment.facility?.name}
+							: appointment?.facility?.name}
 					</Text>
 				</VStack>
 			</HStack>
@@ -195,26 +195,84 @@ export function AppointmentAlertDoctor({
 	);
 }
 
+const useConsultantsAppointments = ({ consultantId }: { consultantId: string | undefined }) => {
+
+	const [allAppointments, setAllAppointments] = useState<RealTimeAppointment[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	const today = new Date()
+
+	useEffect(() => {
+
+		if (consultantId) {
+			const subscription = firestore()
+				.collection("appointments")
+				.where("cid", "==", consultantId)
+				// .where("date", ">=", today)
+				.orderBy("date", "asc")
+				.onSnapshot(
+					async (snap) => {
+
+						var results: RealTimeAppointment[] = await Promise.all(snap.docs.map(async (data): Promise<RealTimeAppointment> => {
+							const pid = data.data().pid
+							if (pid) {
+								const docSnap = await firestore().collection('patients').doc(pid).get()
+								if (docSnap.exists) {
+									const patient = docSnap.data();
+									const final = {
+										id: data.id,
+										...data.data(),
+										patient
+									} as RealTimeAppointment
+									return final
+								} else {
+									// TODO : to be removed since every RealTimeAppointment must have fid
+									const final = {
+										id: data.id,
+										...data.data(),
+									} as RealTimeAppointment
+									return final
+								}
+							} else {
+								const final = {
+									id: data.id,
+									...data.data(),
+								} as RealTimeAppointment
+								return final
+							}
+						}));
+						setAllAppointments([
+							...results,
+						])
+
+
+						setLoading(false);
+					},
+					(error) => {
+						console.log("Error: ");
+						console.log(error);
+						setLoading(false);
+					}
+				);
+			return () => subscription();
+		} else {
+			// console.log("WHATS GOING ON")
+		}
+	}, [consultantId]);
+
+
+	return {
+		appointments: allAppointments,
+	};
+
+}
+
 export const Appointments = () => {
-	const [appointments, setAppointments] = useState<RealTimeAppointment[]>([]);
 	const navigation = useNavigation();
 	const { profile } = useAuth();
 
 	const uid = auth().currentUser?.uid;
-	useEffect(() => {
-		console.log("CONSULTANT ID : ", profile?.id)
-		const subscriber = firestore()
-			.collection("appointments")
-			.where("cid", "==", profile?.id)
-			.onSnapshot((documentSnapshot) => {
-				const shots = [
-					...documentSnapshot.docs.map((doc) => ({ ...doc.data() })),
-				];
-				setAppointments(shots as RealTimeAppointment[]);
-			});
-
-		return () => subscriber();
-	}, [profile?.id]);
+	const { appointments } = useConsultantsAppointments({ consultantId: profile?.id })
 
 	const nextAppointments = appointments?.filter(
 		(appointment) =>

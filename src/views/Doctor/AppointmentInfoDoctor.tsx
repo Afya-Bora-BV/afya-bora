@@ -5,7 +5,6 @@ import {
     HStack,
     Pressable,
     VStack,
-    Text,
     Icon,
     Stack,
     Button,
@@ -26,19 +25,21 @@ import { Alert, ToastAndroid } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { colors } from '../../constants/colors';
 import { DoctorRoutes } from '../Patient';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { Text } from '../../components/text';
 
 type PatientInfoProps = {
     name: string;
     phoneNumber: string;
     gender: "male" | "female" | "unknown";
-    dob: string;
+    dob: FirebaseFirestoreTypes.Timestamp;
 };
 
 const PatientInfo: React.FC<PatientInfoProps> = ({
     name,
     phoneNumber,
     gender = "unknown",
-    dob = "",
+    dob,
 }) => {
     return (
         <Stack shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
@@ -58,7 +59,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
                     <GenderIcon size={5} />
                     <VStack>
                         <Text>Sex: {gender}</Text>
-                        <Text>DOB: {dob}</Text>
+                        <Text>DOB: {(dob?.toDate()).toString()}</Text>
                     </VStack>
                 </HStack>
             </VStack>
@@ -147,71 +148,92 @@ export default function AppointmentInfo() {
                 {/* NOTE: This is supposed to render.... regardless */}
                 {/* <DateTimeCardRender /> */}
                 <View width="100%">
-                    <StatusAppointmentAlert time={appointment?.date} />
+                    <StatusAppointmentAlert
+                        hours={appointment?.time || ""}
+                        time={appointment?.utcDate || ""}
+                        type={appointment?.type || "offline"}
+                        status={appointment?.status}
+
+                    />
                 </View>
 
-                <HStack justifyContent="space-between">
+                <HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
                     <Pressable onPress={() => {
                         ToastAndroid.show("Under development", ToastAndroid.SHORT)
                     }}>
-                        <HStack space={2}>
-                            <PenEditIcon size={4} />
-                            <Text fontSize="sm">Edit Appointment</Text>
+                        <HStack space={2}
+                            style={{ backgroundColor: "#FFFFFF", }}
+                            borderWidth={1}
+                            borderColor={colors.primary}
+                            px={12} py={3}
+                            alignItems="center"
+                            color={colors.primary}
+                            borderRadius="md"
+                        >
+                            <PenEditIcon size={4} color={colors.primary} />
+                            <Text tx="appointmentInfo.editAppointment" fontSize="sm" color={colors.primary}>
+                                Edit Appointment
+                            </Text>
                         </HStack>
+
                     </Pressable>
 
                     <Pressable onPress={() => {
                         ToastAndroid.show("Under development", ToastAndroid.SHORT)
                     }}>
-                        <Text style={{ color: "red" }} fontSize="sm">
-                            Cancel Appointment
-                        </Text>
+
+                        <HStack space={2}
+                            style={{ backgroundColor: "#FFFFFF", }}
+                            borderWidth={1}
+                            borderColor={"#FF5A5B"}
+                            px={12} py={3}
+                            alignItems="center"
+                            color={colors.primary}
+                            borderRadius="md"
+
+                        >
+                            <Text tx="appointmentInfo.cancelAppointment" fontSize="sm" color={"#FF5A5B"}>
+                                Cancel Appointment
+                            </Text>
+                        </HStack>
+
+
                     </Pressable>
                 </HStack>
 
-                <Button
-                    bgColor={colors.primary}
-                    borderRadius={20}
-                    onPress={() => {
-                        navigation.navigate(DoctorRoutes.DoctorRemoteConsultation, {
-                            roomId: appointment?.roomId
-                        })
+                {
+                    appointment?.type === "online"
+                    &&
+                    <Button
+                        borderRadius={4}
+                        style={{ backgroundColor: colors.primary }}
+                        _text={{ color: "white" }}
+                        shadow={5}
+                        onPress={() => {
+                            navigation.navigate(DoctorRoutes.DoctorRemoteConsultation, {
+                                roomId: appointment?.roomId
+                            })
 
-                    }}
-                >
-                    Join Consultation
-                </Button>
+                        }}
+                    >
+                        Join Consultation
+                    </Button>
+                }
+
 
                 <PatientInfo
-                    name={appointment?.patient.name || ""}
-                    phoneNumber={appointment?.patient.phoneNumber || ""}
-                    gender={appointment?.patient.gender || "unknown"}
-                    dob={appointment?.patient.dob || ""}
+                    name={appointment?.patient?.name || ""}
+                    phoneNumber={appointment?.patient?.phoneNumber || ""}
+                    gender={appointment?.patient?.gender || "unknown"}
+                    dob={appointment?.patient?.dob || ""}
                 />
 
                 {/* NOTE: Abstracting away makes difficult to deal with */}
                 <VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
-                    <Text bold fontSize="xl">Symptoms</Text>
-                    <HStack space={4}>
 
-                        {appointment?.aboutVisit.symptoms.map((symptom: any) => (
-                            <Box
-                                rounded="xl"
-                                bg={"#B0B3C7"}
-                                flex={1}
-                                alignItems="center"
-                                paddingY={2}
-                            >
-                                <Text color={"white"}>{symptom}</Text>
-                            </Box>
-                        ))}
-
-
-                    </HStack>
-
-                    <Text bold fontSize="lg">Other Notes</Text>
+                    <Text bold fontSize="xl">Other Notes</Text>
                     <Text fontSize={13}>
-                        {appointment?.aboutVisit.complaint}
+                        {appointment?.aboutVisit?.complaint}
                     </Text>
                 </VStack>
             </VStack>
