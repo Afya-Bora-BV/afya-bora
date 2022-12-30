@@ -258,7 +258,7 @@ const LocationHelper = () => {
 	}, []);
 
 	const handleNearByFacilityPress = () => {
-		if(!Boolean(speciality)){
+		if (!Boolean(speciality)) {
 			ToastAndroid.show("Please select doctors speciality", 3000);
 			return
 		}
@@ -392,6 +392,7 @@ export default function Home() {
 
 	// console.warn("Current user : ", profile, auth().currentUser);
 
+	const userExistsPatient = user && (profile?.type === "patient")
 	if (loading) {
 		return (
 			<LoadingFullScreen />
@@ -400,11 +401,13 @@ export default function Home() {
 	return (
 		<MainContainer
 			leftSection={() => (
-				<Pressable onPress={handleAccountPress}>
-					<IconContainer>
-						<UserIcon size={6} color="#561BB3" />
-					</IconContainer>
-				</Pressable>
+				<HStack space={4}>
+					<Pressable onPress={handleAccountPress}>
+						<IconContainer>
+							<UserIcon size={6} color="#561BB3" />
+						</IconContainer>
+					</Pressable>
+				</HStack>
 			)}
 			rightSection={() => (
 				<HStack space={4}>
@@ -422,15 +425,19 @@ export default function Home() {
 						</IconContainer>
 					</Pressable> */}
 
-					<Pressable
-						onPress={() => {
-							navigation.navigate(DoctorRoutes.DoctorLogin);
-						}}
-					>
-						<IconContainer>
-							<Icon name="doctor" size={25} color="#561BB3" />
-						</IconContainer>
-					</Pressable>
+					{(!userExistsPatient) &&
+						<Pressable
+							onPress={() => {
+								navigation.navigate(DoctorRoutes.DoctorLogin);
+							}}
+						>
+							<IconContainer>
+								<Icon name="doctor" size={25} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+
+					}
+
 				</HStack>
 			)}
 		>
@@ -492,7 +499,7 @@ export const ScheduleAppointmentSection = () => {
 
 	const handleOnPress = () => {
 
-		if(!Boolean(speciality)){
+		if (!Boolean(speciality)) {
 			ToastAndroid.show("Please select doctors speciality", 3000);
 			return
 		}
