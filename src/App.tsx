@@ -157,23 +157,23 @@ function Main() {
 		// return <HomeView initialRouteName={HomeNavKey.OnBoard} />
 	}
 
-	// if (profile?.type === "consultant") {
-	// 	console.log("PROFILE TYPE : ", profile?.type)
-
-	// 	return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
-	// }
-
 	if (profile?.type === "consultant") {
 		console.log("PROFILE TYPE : ", profile?.type)
 
-		return <HomeView initialRouteName={DoctorRoutes.DoctorHome} type={profile?.type} />;
+		return <DoctorsView initialRouteName={DoctorRoutes.DoctorHome} />;
 	}
+
+	// if (profile?.type === "consultant") {
+	// 	console.log("PROFILE TYPE : ", profile?.type)
+
+	// 	return <HomeView initialRouteName={DoctorRoutes.DoctorHome} type={profile?.type} />;
+	// }
 
 	if (createProfileFirst) {
-		return <HomeView initialRouteName={HomeNavKey.CreateProfile} type={undefined} />;
+		return <HomeView initialRouteName={HomeNavKey.CreateProfile}/>;
 	}
 
-	return <HomeView initialRouteName={HomeNavKey.HomeScreen} type={profile?.type} />
+	return <HomeView initialRouteName={HomeNavKey.HomeScreen} />
 
 }
 
