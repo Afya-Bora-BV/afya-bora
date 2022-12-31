@@ -76,11 +76,11 @@ export default function LoginDoctor() {
 		login(data);
 	};
 
-	// React.useEffect(() => {
-	// 	if (user) {
-	// 		setLoading(true)
-	// 	}
-	// }, [user, profile])
+	React.useEffect(() => {
+		if (user) {
+			setLoading(true)
+		}
+	}, [user, profile])
 
 	const { isLoading, mutate: login } = useMutation(
 		loginWithEmailAndPassword,

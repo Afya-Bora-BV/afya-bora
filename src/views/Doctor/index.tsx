@@ -18,7 +18,7 @@ export const DoctorRoutes = {
     DoctorRemoteConsultation: "DoctorRemoteConsultation",
 };
 
-function DoctorsStack({  initialRouteName }: any) {
+function DoctorsStack({ initialRouteName }: any) {
     return (
         <NavStack.Navigator
             // headerMode="none"
@@ -29,7 +29,7 @@ function DoctorsStack({  initialRouteName }: any) {
         // initialRouteName={"Login"}
         >
             {/* TODO: to keep doctor routes to a separate stack */}
-            
+
             <NavStack.Screen
                 name={DoctorRoutes.DoctorHome}
                 component={DoctorHome}
