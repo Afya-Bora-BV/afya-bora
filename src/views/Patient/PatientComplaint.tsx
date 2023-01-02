@@ -303,7 +303,7 @@ export function PatientComplaint() {
 				<Button
 					width="100%"
 					bg={colors.primary}
-					onPress={handleOnPress}
+					onPress={submit}
 					rounded={4}
 				>
 					<Text color="white" tx="common.continue">
