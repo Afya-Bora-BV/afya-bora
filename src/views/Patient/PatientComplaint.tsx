@@ -306,8 +306,8 @@ export function PatientComplaint() {
 					onPress={handleOnPress}
 					rounded={4}
 				>
-					<Text color="white" tx="Select Facility">
-						Select Facility
+					<Text color="white" tx="common.continue">
+						Continue
 					</Text>
 				</Button>
 			</VStack>
