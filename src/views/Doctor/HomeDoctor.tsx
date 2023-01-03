@@ -307,7 +307,7 @@ export const Appointments = () => {
 			<VStack space={3}>
 				{nextAppointments.map((appointment) => {
 					return (
-						<View>
+						<View key={appointment?.id}>
 							<AppointmentAlertDoctor
 								appointment={appointment}
 								onPress={() => {
@@ -331,7 +331,7 @@ export const Appointments = () => {
 			<VStack space={3}>
 				{todaysAppointments.map((appointment) => {
 					return (
-						<View>
+						<View key={appointment?.id}>
 							<AppointmentAlertDoctor
 								appointment={appointment}
 								onPress={() => {
@@ -362,7 +362,7 @@ export const Appointments = () => {
 			<VStack space={3}>
 				{upcomingAppointments.map((appointment) => {
 					return (
-						<View>
+						<View key={appointment?.id}>
 							<AppointmentAlertDoctor
 								appointment={appointment}
 								onPress={() => {

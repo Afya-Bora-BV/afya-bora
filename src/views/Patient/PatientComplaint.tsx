@@ -165,11 +165,11 @@ export function PatientComplaint() {
 		}
 	};
 
-	const handleOnPress = () => {
-		// just logging the data here which can be accessed in other components as well
-		// navigation.navigate(HomeNavKey.ConsultantList);
-		navigation.navigate(HomeNavKey.ConfirmAppointment);
-	};
+	// const handleOnPress = () => {
+	// 	// just logging the data here which can be accessed in other components as well
+	// 	// navigation.navigate(HomeNavKey.ConsultantList);
+	// 	navigation.navigate(HomeNavKey.ConfirmAppointment);
+	// };
 
 	const confirmSubmit = () => {
 		Alert.alert(
