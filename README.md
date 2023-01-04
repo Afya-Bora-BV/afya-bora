@@ -8,7 +8,7 @@ In Your Hands</b><br/>
   </p>
 </p>
     
-    # Afyabora Mobile Application
+# Afyabora Mobile Application
 
 ## Welcome to the Repo of Afya Bora Mobile Application, this project is based on -
 React + NextJS + TailwindCSS + Firebase
