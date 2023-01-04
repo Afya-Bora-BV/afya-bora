@@ -11,7 +11,7 @@ In Your Hands</b><br/>
 # Afyabora Mobile Application
 
 ## Welcome to the Repo of Afya Bora Mobile Application, this project is based on -
-React + NextJS + TailwindCSS + Firebase
+React Native + Firebase
 
 Here's a brief guide about what a developer must do in order to start developing the project further:
 ## Installing / Getting started
@@ -32,11 +32,8 @@ npx react-native run-android
 ```
 ## Built With
 <ul>
-  <li>React</li>  
-  <li>NextJS</li>  
-  <li>TailwindCSS</li>  
-  <li>Firebase</li>  
-  <li>Vercel</li>  
+  <li>React Native</li>  
+  <li>Firebase</li>   
 </ul>
 
 ## Prerequisites
