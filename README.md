@@ -13,8 +13,14 @@ In Your Hands</b><br/>
 ## Welcome to the Repo of Afya Bora Mobile Application, this project is based on -
 React Native + Firebase
 
+https://rnfirebase.io/
 Here's a brief guide about what a developer must do in order to start developing the project further:
-## Installing / Getting started
+## Getting started
+<p>Firebase Set up</p>
+To add and set up firebase please follow the instruction from here [Here](https://rnfirebase.io/)  
+
+
+<p>Post Firebase Setup</p>
 ```shell
 git clone ......
 cd afya-bora/
