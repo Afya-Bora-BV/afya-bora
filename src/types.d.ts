@@ -10,6 +10,7 @@ export interface Consultant {
 	email: string;
 	clinicianType: string;
 	specialities: string[];
+	specialties:string[];
 	type: "consultant";
 }
 

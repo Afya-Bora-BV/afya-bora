@@ -16,6 +16,7 @@ import FastImage from "react-native-fast-image";
 
 type FacilityListItemProps = {
 	facility: Facility;
+	fid: string
 };
 
 // TODO: calcultae distance from geopoint and render distance
@@ -58,10 +59,10 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							{/* <Text fontSize="md" bold color="#747F9E">
 								{specialties}
 							</Text> */}
-							<Text fontSize="md" bold color="#747F9E">
+							<Text fontSize="md" color="#747F9E">
 								{facility?.city}
 							</Text>
-							<Text fontSize="md" bold color="#747F9E">
+							<Text fontSize="md" color="#747F9E">
 								{facility?.country}
 							</Text>
 						</VStack>

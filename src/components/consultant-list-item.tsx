@@ -13,6 +13,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Consultant } from "../types";
 import FastImage from "react-native-fast-image";
+import _ from "lodash";
 
 
 type ConsultantListItemProps = {
@@ -24,13 +25,19 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 		name,
 		facilityId,
 		email,
-		specialities
+		specialities,
+		specialties
 
 	},
 }) => {
 	return (
 		<Box bg="white" shadow={2} rounded={10} testID="ConsultantListItem">
-			<Text fontSize={"2xl"} px={5} py={2}>Consultant</Text>
+			<Text
+				px={4}
+				py={2}
+				fontSize={"xl"}
+				fontWeight="medium"
+			>Consultant</Text>
 			<VStack
 				p={4}
 				borderRadius={12}
@@ -62,11 +69,15 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							justifyContent="space-between"
 							alignItems="center"
 						>
-							<Heading fontSize="lg">{name} </Heading>
+							<Heading fontSize="md" bold>{name} </Heading>
 						</HStack>
 						<VStack>
-							<Text fontSize="md" bold color="#747F9E">
-								{email}
+							<Text fontSize="md" color="#747F9E">
+								<MaterialCommunityIcons
+									name="clipboard-pulse-outline"
+									size={16}
+								/>
+								{_.startCase(_.toLower(specialties.join(" , "))) + " , "}
 							</Text>
 							<Text fontSize="md" color="#747F9E">
 								<MaterialCommunityIcons
@@ -83,7 +94,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 								{specialities.join(" , ") + ", "}
 							</Text> */}
 						</VStack>
-
+						{/* 
 						<HStack
 							space={1}
 							justifyContent="space-between"
@@ -117,7 +128,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 								/>
 								<Text color="#258FBE">{" "}</Text>
 							</HStack>
-						</HStack>
+						</HStack> */}
 					</VStack>
 				</HStack>
 			</VStack>
