@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
 import { usePatientAppointments } from "../../hooks/usePatientAppointments";
+import { LoadingFullScreen } from "../../components/LoadingFullScreen";
 
 export default function VisitHistory() {
 	const navigation = useNavigation();
@@ -26,12 +27,12 @@ export default function VisitHistory() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -56,7 +57,7 @@ export default function VisitHistory() {
 const VisitHistorySection = () => {
 	const navigation = useNavigation();
 	const { profile } = useAuth();
-	const { generalAppointments } = usePatientAppointments(profile?.id);
+	const { generalAppointments, loading } = usePatientAppointments(profile?.id);
 
 	const visitHistory = generalAppointments?.filter((appointment) => {
 		return (
@@ -67,12 +68,17 @@ const VisitHistorySection = () => {
 
 	console.log("Appontments : ");
 	console.log(JSON.stringify(generalAppointments, null, 3));
+
+	if (loading) {
+		return <LoadingFullScreen />;
+	}
+
 	return (
 		<VStack space={4} marginTop={8}>
 			<VStack space={3}>
 				{generalAppointments.map((appointment) => {
 					return (
-						<View>
+						<View key={appointment?.id}>
 							<AppointmentAlert appointment={appointment} />
 						</View>
 					);
