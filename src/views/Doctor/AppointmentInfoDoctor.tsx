@@ -27,12 +27,18 @@ import { colors } from '../../constants/colors';
 import { DoctorRoutes } from '../Patient';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Text } from '../../components/text';
+import moment from 'moment';
+
+type DateString = string
 
 type PatientInfoProps = {
     name: string;
     phoneNumber: string;
     gender: "male" | "female" | "unknown";
-    dob: FirebaseFirestoreTypes.Timestamp;
+    dob: FirebaseFirestoreTypes.Timestamp | DateString;
+    weight: string,
+    height: string,
+    bloodGroup: string
 };
 
 const PatientInfo: React.FC<PatientInfoProps> = ({
@@ -40,6 +46,9 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
     phoneNumber,
     gender = "unknown",
     dob,
+    weight,
+    height,
+    bloodGroup
 }) => {
     return (
         <Stack shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
@@ -59,7 +68,10 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
                     <GenderIcon size={5} color={colors.primary} />
                     <VStack>
                         <Text>Sex: {gender}</Text>
-                        <Text>DOB: {(dob?.toDate()).toString()}</Text>
+                        <Text>Date Of Birth: {typeof dob === "string" ? moment(new Date(dob)).format("ddd, DD MMM YYYY") : moment(dob?.toDate()).format("ddd, DD MMM YYYY")}</Text>
+                        <Text>Weight: {weight} kg</Text>
+                        <Text>Height: {height} cm</Text>
+                        <Text>Bloog Group: {bloodGroup}</Text>
                     </VStack>
                 </HStack>
             </VStack>
@@ -226,6 +238,9 @@ export default function AppointmentInfo() {
                     phoneNumber={appointment?.patient?.phoneNumber || ""}
                     gender={appointment?.patient?.gender || "unknown"}
                     dob={appointment?.patient?.dob || ""}
+                    weight={appointment?.patient?.weight || ""}
+                    height={appointment?.patient?.height || ""}
+                    bloodGroup={appointment?.patient?.bloodGroup || ""}
                 />
 
                 {/* NOTE: Abstracting away makes difficult to deal with */}
