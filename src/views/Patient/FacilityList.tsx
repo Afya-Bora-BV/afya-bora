@@ -76,8 +76,8 @@ const FacilityList = () => {
 		}
 	}, [error]);
 
-	console.log("All facilities ");
-	console.log(JSON.stringify(facilities, null, 3));
+	// console.log("All facilities ");
+	// console.log(JSON.stringify(facilities, null, 3));
 
 	const openFilterModal = () => {
 		setModalVisible(true)
