@@ -19,6 +19,10 @@ import androidx.multidex.MultiDexApplication;
 // import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import com.facebook.react.bridge.JSIModulePackage;
+
+// for in app-browser
+import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
+
 // import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 // import org.unimodules.adapters.react.ModuleRegistryAdapter;

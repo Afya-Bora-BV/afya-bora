@@ -193,6 +193,16 @@ export default function AppointmentInfo() {
 
 	console.log("Appointment : ");
 	console.log(JSON.stringify(data?.consultant, null, 3));
+
+	const openVirtualAppointment=()=>{
+		// Open virtual appointment
+
+		navigation.navigate(HomeNavKey.PatientCall, {
+			// appointment: appointment,
+			
+		});
+	}
+
 	return (
 		<MainContainer
 			title="appointmentInfo.appointmentInfo"
