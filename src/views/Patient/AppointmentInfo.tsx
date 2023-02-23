@@ -9,6 +9,7 @@ import {
 	View,
 	VStack,
 	Spinner,
+	Stack,
 } from "native-base";
 import React from "react";
 import MainContainer from "../../components/containers/MainContainer";
@@ -32,6 +33,9 @@ import { ConsultantListItem } from "../../components/consultant-list-item";
 import { colors } from "../../constants/colors";
 import { Text } from "../../components/text";
 import { Appointment } from "../../types";
+import { useAuth } from "../../contexts/AuthContext";
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -182,10 +186,15 @@ const EditAppointmentButton = ({
 		</Pressable>
 	);
 };
+
+const tempoRoomId = "63ecfe3bcd8175701aac03c0"
+
+
 export default function AppointmentInfo() {
 	const navigation = useNavigation();
 
 	const route = useRoute<any>();
+	const { profile } = useAuth()
 
 	const { appointment: data } = route?.params;
 
@@ -194,13 +203,66 @@ export default function AppointmentInfo() {
 	console.log("Appointment : ");
 	console.log(JSON.stringify(data?.consultant, null, 3));
 
-	const openVirtualAppointment=()=>{
-		// Open virtual appointment
+	const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${tempoRoomId}/patient?name=${profile?.name}`
 
-		navigation.navigate(HomeNavKey.PatientCall, {
-			// appointment: appointment,
-			
-		});
+	const openVirtualAppointment = async () => {
+
+		// using webview
+		// navigation.navigate(HomeNavKey.PatientCall, {
+		// 	// appointment: appointment,
+		// });
+
+		// using in-app browser
+		try {
+			const url = PATIENT_CALL_DOMAIN
+			if (await InAppBrowser.isAvailable()) {
+				const result = await InAppBrowser.open(url, {
+					// iOS Properties
+					dismissButtonStyle: 'cancel',
+					preferredBarTintColor: '#453AA4',
+					preferredControlTintColor: 'white',
+					readerMode: false,
+					animated: true,
+					modalPresentationStyle: 'fullScreen',
+					modalTransitionStyle: 'coverVertical',
+					modalEnabled: true,
+					enableBarCollapsing: false,
+					// Android Properties
+					showTitle: true,
+					toolbarColor: colors.primary,
+					secondaryToolbarColor: 'black',
+					navigationBarColor: 'black',
+					navigationBarDividerColor: 'white',
+					enableUrlBarHiding: true,
+					enableDefaultShare: true,
+					forceCloseOnRedirection: false,
+					// Specify full animation resource identifier(package:anim/name)
+					// or only resource name(in case of animation bundled with app).
+					animations: {
+						startEnter: 'slide_in_right',
+						startExit: 'slide_out_left',
+						endEnter: 'slide_in_left',
+						endExit: 'slide_out_right'
+					},
+					headers: {
+						'my-custom-header': 'my custom header value'
+					}
+				})
+
+				ToastAndroid.show(
+					JSON.stringify(result),
+					3000
+				);
+			}
+
+		} catch (error) {
+			ToastAndroid.show(
+				"Something went wrong on joining the call",
+				3000
+			);
+			console.log("Error : ", error)
+		}
+
 	}
 
 	return (
@@ -250,6 +312,24 @@ export default function AppointmentInfo() {
 						</VStack>
 					</View>
 				)}
+				{(data?.type === "online" && data?.status === "accepted")
+					&&
+					(
+						<Stack>
+							<Button
+								mb={3}
+								bg={colors.primary}
+								onPress={openVirtualAppointment}
+								rounded={4}
+							>
+								<Text color="white" tx="">
+									Join Consultation
+								</Text>
+							</Button>
+						</Stack>
+					)
+				}
+
 
 				<VStack mt={2} space={4}>
 					{!(data?.type === "online") && data?.fid && (
@@ -299,7 +379,7 @@ export default function AppointmentInfo() {
 						<Text>{data?.aboutVisit?.complaint}</Text>
 					</VStack>
 				</View>
-				<VStack>
+				{/* <VStack>
 					{data?.type === "online" && data?.status === "accepted" && (
 						<Button
 							bgColor={colors.primary}
@@ -315,7 +395,7 @@ export default function AppointmentInfo() {
 							Join
 						</Button>
 					)}
-				</VStack>
+				</VStack> */}
 				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
 					<EditAppointmentButton
 						appointmentId={data?.id || ""}
