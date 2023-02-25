@@ -28,6 +28,8 @@ import { DoctorRoutes } from '../Patient';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Text } from '../../components/text';
 import moment from 'moment';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import { useAuth } from '../../contexts/AuthContext';
 
 type DateString = string
 
@@ -131,12 +133,81 @@ export default function AppointmentInfo() {
     const route = useRoute<any>();
 
     const { appointment } = route?.params
-    const { cid, pid } = appointment
+    const { cid, pid, callRoomId } = appointment
 
     const [modalVisible, setModalVisible] = React.useState(false)
+    const { profile } = useAuth()
 
     const handleCancelAppointment = () => {
         setModalVisible(!modalVisible)
+    }
+
+    const openVirtualAppointment = async () => {
+        const DOCTOR_ROLE = "doctor"
+        const DOCTOR_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${callRoomId}/${DOCTOR_ROLE}?name=${profile?.name}`
+
+        // using webview
+        // navigation.navigate(HomeNavKey.PatientCall, {
+        // 	url: PATIENT_CALL_DOMAIN
+        // });
+
+        // using in-app browser
+        try {
+            const url = DOCTOR_CALL_DOMAIN
+            console.log("URL")
+            console.log(url)
+            if (await InAppBrowser.isAvailable()) {
+                const result = await InAppBrowser.open(url, {
+                    // iOS Properties
+                    dismissButtonStyle: 'cancel',
+                    preferredBarTintColor: '#453AA4',
+                    preferredControlTintColor: 'white',
+                    readerMode: false,
+                    animated: true,
+                    modalPresentationStyle: 'fullScreen',
+                    modalTransitionStyle: 'coverVertical',
+                    modalEnabled: true,
+                    enableBarCollapsing: false,
+                    // Android Properties
+                    showTitle: true,
+                    toolbarColor: colors.primary,
+                    secondaryToolbarColor: 'black',
+                    navigationBarColor: 'black',
+                    navigationBarDividerColor: 'white',
+                    enableUrlBarHiding: true,
+                    enableDefaultShare: true,
+                    forceCloseOnRedirection: false,
+                    // Specify full animation resource identifier(package:anim/name)
+                    // or only resource name(in case of animation bundled with app).
+                    animations: {
+                        startEnter: 'slide_in_right',
+                        startExit: 'slide_out_left',
+                        endEnter: 'slide_in_left',
+                        endExit: 'slide_out_right'
+                    },
+                    headers: {
+                        'my-custom-header': 'my custom header value'
+                    }
+                })
+
+                ToastAndroid.show(
+					"The call has been ended",
+					3000
+				);
+            } else {
+                navigation.navigate(DoctorRoutes.DoctorCall, {
+                    url: DOCTOR_CALL_DOMAIN
+                });
+            }
+
+        } catch (error) {
+            ToastAndroid.show(
+                "Something went wrong on joining the call",
+                3000
+            );
+            console.log("Error : ", error)
+        }
+
     }
 
     return (
@@ -213,23 +284,22 @@ export default function AppointmentInfo() {
                     </Pressable>
                 </HStack>
 
-                {
-                    appointment?.type === "online"
+                {(appointment?.type === "online" && appointment?.status === "accepted" && appointment?.callRoomId)
                     &&
-                    <Button
-                        borderRadius={4}
-                        style={{ backgroundColor: colors.primary }}
-                        _text={{ color: "white" }}
-                        shadow={5}
-                        onPress={() => {
-                            navigation.navigate(DoctorRoutes.DoctorRemoteConsultation, {
-                                roomId: appointment?.roomId
-                            })
-
-                        }}
-                    >
-                        Join Consultation
-                    </Button>
+                    (
+                        <Stack>
+                            <Button
+                                mb={3}
+                                bg={colors.primary}
+                                onPress={openVirtualAppointment}
+                                rounded={4}
+                            >
+                                <Text color="white" tx="">
+                                    Join Consultation
+                                </Text>
+                            </Button>
+                        </Stack>
+                    )
                 }
 
 

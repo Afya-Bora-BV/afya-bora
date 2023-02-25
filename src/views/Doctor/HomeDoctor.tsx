@@ -31,7 +31,7 @@ import firestore from "@react-native-firebase/firestore";
 import ArrowIcon_Next from "../../assets/icons/ArrowIcon_Next";
 import { useAuth } from "../../contexts/AuthContext";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import { DoctorRoutes } from "../Patient";
+import { DoctorRoutes } from '../Patient';
 
 export const MONTH_NAMES = [
 	"January",
@@ -157,7 +157,10 @@ export function AppointmentAlertDoctor({
 						{/* TODO: include facility in appointment */}
 						{appointment.type === "online"
 							? "Online"
-							: appointment?.facility?.name}
+							: "Offline"
+							// : appointment?.facility?.name}
+						}
+							
 					</Text>
 				</VStack>
 			</HStack>

@@ -193,7 +193,8 @@ export default function AppointmentInfo() {
 
 
 	const openVirtualAppointment = async () => {
-		const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${data?.callRoomId}/patient?name=${profile?.name}`
+		const PATIENT_ROLE = "patient"
+		const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${data?.callRoomId}/${PATIENT_ROLE}?name=${profile?.name}`
 
 		// using webview
 		// navigation.navigate(HomeNavKey.PatientCall, {
@@ -238,9 +239,13 @@ export default function AppointmentInfo() {
 				})
 
 				ToastAndroid.show(
-					JSON.stringify(result),
+					"The call has been ended",
 					3000
 				);
+			} else {
+				navigation.navigate(HomeNavKey.PatientCall, {
+					url: PATIENT_CALL_DOMAIN
+				});
 			}
 
 		} catch (error) {

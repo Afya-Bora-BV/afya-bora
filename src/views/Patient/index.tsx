@@ -57,10 +57,11 @@ export const HomeNavKey = {
 };
 
 export const DoctorRoutes = {
-	DoctorHome: "DoctorHome",
-	DoctorLogin: "DoctorLogin",
-	DoctorAppointmentInfo: "DoctorAppointmentInfo",
-	DoctorRemoteConsultation: "DoctorRemoteConsultation",
+    DoctorHome: "DoctorHome",
+    DoctorLogin: "DoctorLogin",
+    DoctorAppointmentInfo: "DoctorAppointmentInfo",
+    DoctorRemoteConsultation: "DoctorRemoteConsultation",
+    DoctorCall: "DoctorCall"
 };
 
 function HomeView({ initialRouteName }: { initialRouteName: string }) {
