@@ -146,9 +146,12 @@ export default function AppointmentInfo() {
         const DOCTOR_ROLE = "doctor"
         const DOCTOR_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${callRoomId}/${DOCTOR_ROLE}?name=${profile?.name}`
 
+        console.log("Doctors meeting url")
+        console.log(DOCTOR_CALL_DOMAIN)
+
         // using webview
-        // navigation.navigate(HomeNavKey.PatientCall, {
-        // 	url: PATIENT_CALL_DOMAIN
+        // navigation.navigate(DoctorRoutes.DoctorCall, {
+        //     url: DOCTOR_CALL_DOMAIN
         // });
 
         // using in-app browser
@@ -177,6 +180,7 @@ export default function AppointmentInfo() {
                     enableUrlBarHiding: true,
                     enableDefaultShare: true,
                     forceCloseOnRedirection: false,
+                    showInRecents: true,
                     // Specify full animation resource identifier(package:anim/name)
                     // or only resource name(in case of animation bundled with app).
                     animations: {
@@ -191,9 +195,10 @@ export default function AppointmentInfo() {
                 })
 
                 ToastAndroid.show(
-					"The call has been ended",
-					3000
-				);
+                    JSON.stringify(result),
+                    3000
+                );
+                console.log(result)
             } else {
                 navigation.navigate(DoctorRoutes.DoctorCall, {
                     url: DOCTOR_CALL_DOMAIN
