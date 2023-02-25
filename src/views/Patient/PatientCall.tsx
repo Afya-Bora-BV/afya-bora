@@ -3,21 +3,14 @@ import { Stack } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useAuth } from '../../contexts/AuthContext';
-
-
-const tempoRoomId = "63ecfe3bcd8175701aac03c0"
-const tempoName = "George Millanzi"
-
-const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${tempoRoomId}/patient?name=${tempoName}`
-
-const getMeetingLink = () => {
-    return PATIENT_CALL_DOMAIN
-}
+import { useRoute } from '@react-navigation/native';
 
 const PatientCall = () => {
     const { profile } = useAuth()
+    const route = useRoute<any>();
+    const { url } = route?.params;
 
-    const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${tempoRoomId}/patient?name=${profile?.name}`
+    const PATIENT_CALL_DOMAIN = url
 
     return (
         <Stack flex={1}>

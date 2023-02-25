@@ -31,7 +31,6 @@ import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
 import ConfirmAppointment from "./ConfirmAppointment";
 import PatientCall from "./PatientCall";
 
-
 export const NavStack = createStackNavigator();
 
 export const HomeNavKey = {

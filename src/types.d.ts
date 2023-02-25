@@ -10,7 +10,7 @@ export interface Consultant {
 	email: string;
 	clinicianType: string;
 	specialities: string[];
-	specialties:string[];
+	specialties: string[];
 	type: "consultant";
 }
 
@@ -55,6 +55,21 @@ export type Appointment = {
 	type: "offline" | "online";
 	id: string;
 	consultant?: Consultant;
+	callRoomId?: string,
+	callRoom?: {
+		id: string;
+		name: string;
+		enabled: boolean;
+		description: string;
+		customer: string;
+		recording_info: {
+			enabled: boolean;
+		};
+		template_id: string;
+		region: string;
+		created_at: string;
+		updated_at: string;
+	};
 };
 
 interface Facility {

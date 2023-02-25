@@ -106,14 +106,6 @@ export const CancelAppointmentButton = ({
 
 
 				(
-					// <Text
-					// 	tx="appointmentInfo.cancelAppointment"
-					// 	style={{ color: "red" }}
-					// 	fontSize="sm"
-					// >
-					// 	Cancel Appointment
-					// </Text>
-
 					<HStack space={2}
 						style={{ backgroundColor: "#FFFFFF", }}
 						borderWidth={1}
@@ -187,8 +179,6 @@ const EditAppointmentButton = ({
 	);
 };
 
-const tempoRoomId = "63ecfe3bcd8175701aac03c0"
-
 
 export default function AppointmentInfo() {
 	const navigation = useNavigation();
@@ -198,18 +188,16 @@ export default function AppointmentInfo() {
 
 	const { appointment: data } = route?.params;
 
-	const { cid, pid } = data;
-
 	console.log("Appointment : ");
 	console.log(JSON.stringify(data?.consultant, null, 3));
 
-	const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${tempoRoomId}/patient?name=${profile?.name}`
 
 	const openVirtualAppointment = async () => {
+		const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${data?.callRoomId}/patient?name=${profile?.name}`
 
 		// using webview
 		// navigation.navigate(HomeNavKey.PatientCall, {
-		// 	// appointment: appointment,
+		// 	url: PATIENT_CALL_DOMAIN
 		// });
 
 		// using in-app browser
@@ -312,7 +300,7 @@ export default function AppointmentInfo() {
 						</VStack>
 					</View>
 				)}
-				{(data?.type === "online" && data?.status === "accepted")
+				{(data?.type === "online" && data?.status === "accepted" && data?.callRoomId)
 					&&
 					(
 						<Stack>
@@ -379,23 +367,7 @@ export default function AppointmentInfo() {
 						<Text>{data?.aboutVisit?.complaint}</Text>
 					</VStack>
 				</View>
-				{/* <VStack>
-					{data?.type === "online" && data?.status === "accepted" && (
-						<Button
-							bgColor={colors.primary}
-							onPress={() => {
-								navigation.navigate(
-									HomeNavKey.RemoteConsultation,
-									{
-										roomId: data?.roomId,
-									}
-								);
-							}}
-						>
-							Join
-						</Button>
-					)}
-				</VStack> */}
+
 				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
 					<EditAppointmentButton
 						appointmentId={data?.id || ""}
