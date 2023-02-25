@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Arrays;
 
 import androidx.multidex.MultiDexApplication;
+import java.lang.Class;
+import java.util.ArrayList;
+
 // import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import com.facebook.react.bridge.JSIModulePackage;
@@ -30,35 +33,39 @@ import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
-  // private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+  // private final ReactModuleRegistryProvider mModuleRegistryProvider = new
+  // ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+  private ArrayList<Class> runningActivities = new ArrayList<>();
 
-  private final ReactNativeHost mReactNativeHost =
-      new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-          return BuildConfig.DEBUG;
-        }
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
 
-        @Override
-        protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
-          List<ReactPackage> packages = new PackageList(this).getPackages();
-          // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
-          // packages.add(new CodePush(getResources().getString(R.string.CodePushDeploymentKey), MainApplication.this, BuildConfig.DEBUG));
-          return packages;
-        }
+    @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for
+      // example:
+      // packages.add(new MyReactNativePackage());
+      // packages.add(new
+      // CodePush(getResources().getString(R.string.CodePushDeploymentKey),
+      // MainApplication.this, BuildConfig.DEBUG));
+      return packages;
+    }
 
-        @Override
-        protected String getJSMainModuleName() {
-          return "index";
-        }
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
 
-        // @Override
-        // protected JSIModulePackage getJSIModulePackage() {
-        //   return new ReanimatedJSIModulePackage();
-        // }
-      };
+    // @Override
+    // protected JSIModulePackage getJSIModulePackage() {
+    // return new ReanimatedJSIModulePackage();
+    // }
+  };
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -73,7 +80,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
   }
 
   /**
-   * Loads Flipper in React Native templates. Call this in the onCreate method with something like
+   * Loads Flipper in React Native templates. Call this in the onCreate method
+   * with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
    *
    * @param context
@@ -84,9 +92,9 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     if (BuildConfig.DEBUG) {
       try {
         /*
-         We use reflection here to pick up the class that initializes Flipper,
-        since Flipper library is not available in release mode
-        */
+         * We use reflection here to pick up the class that initializes Flipper,
+         * since Flipper library is not available in release mode
+         */
         Class<?> aClass = Class.forName("io.afyabora.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
@@ -102,4 +110,19 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
       }
     }
   }
+
+  public void addActivityToStack(Class cls) {
+    if (!runningActivities.contains(cls))
+      runningActivities.add(cls);
+  }
+
+  public void removeActivityFromStack(Class cls) {
+    if (runningActivities.contains(cls))
+      runningActivities.remove(cls);
+  }
+
+  public boolean isActivityInBackStack(Class cls) {
+    return runningActivities.contains(cls);
+  }
+
 }

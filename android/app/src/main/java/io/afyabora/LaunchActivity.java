@@ -3,6 +3,7 @@ package io.afyabora;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+// import MainApplication;
 
 public class LaunchActivity extends Activity {
 
