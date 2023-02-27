@@ -1,3 +1,5 @@
+import firebase from '@react-native-firebase/app'
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 type DBDate = number | Date;
 export type FacilityStatus = "active" | "inactive" | "removed" | "suspended";
 
@@ -34,10 +36,7 @@ export type Appointment = {
 		seconds: number;
 		nanoseconds: number;
 	};
-	date: {
-		seconds: number;
-		nanoseconds: number;
-	};
+	date: FirebaseFirestoreTypes.Timestamp;
 	pid: string;
 	utcDate: string;
 	timeRange:
@@ -136,10 +135,7 @@ interface RealTimeAppointment {
 		seconds: number;
 		nanoseconds: number;
 	};
-	date: {
-		seconds: number;
-		nanoseconds: number;
-	};
+	date: FirebaseFirestoreTypes.Timestamp;
 }
 
 interface PatientProfile {

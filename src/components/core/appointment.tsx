@@ -10,9 +10,9 @@ import {
   View,
   Heading,
 } from "native-base";
-import { TextPropTypes, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import { RealTimeAppointment } from "../../types";
+import { Appointment, RealTimeAppointment } from "../../types";
 import { useNavigation } from "@react-navigation/core";
 import { HomeNavKey } from "../../views/Patient";
 import { colors } from "../../constants/colors";
@@ -24,7 +24,7 @@ import _ from "lodash";
 export function AppointmentAlert({
   appointment,
 }: {
-  appointment: any
+  appointment: Appointment
 }) {
   const navigation = useNavigation()
   const openAppointment = (appointment: any) => {
@@ -58,7 +58,7 @@ export function AppointmentAlert({
             fontWeight="bold"
             color="gray.400"
           >
-            {moment(appointment.utcDate).format(
+            {moment(appointment.date.toDate()).format(
               "DD MMMM YYYY"
             )}
           </Text>
@@ -152,7 +152,7 @@ export function StatusAppointmentAlert({
             {moment(time).format("ddd, DD MMM YYYY")}
           </Heading>
           {status === "accepted" && <Text >Time : {hours}</Text>}
-          <Text 
+          <Text
             tx={
               type === "online"
                 ? "common.online"

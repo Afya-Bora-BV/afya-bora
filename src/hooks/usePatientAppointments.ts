@@ -9,14 +9,12 @@ type PatientAppointments = {
 	loading: boolean;
 };
 
-
 function usePatientAppointments(
 	patientId: string | undefined
 ): PatientAppointments {
 	const [allAppointments, setAllAppointments] = useState<Appointment[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	const today = new Date()
 
 	useEffect(() => {
 
@@ -81,7 +79,7 @@ function usePatientAppointments(
 	const appointments = allAppointments
 		.filter((appointment: any) => appointment.status !== "rejected")
 		.filter((appointment: any) => appointment.status !== "cancelled")
-		.filter((appointment: Appointment) => moment(appointment.utcDate).diff(moment(today), "days") >= 0)
+		.filter((appointment: Appointment) => moment(appointment.date.toDate()).isSameOrAfter(moment(),"day"))
 
 	const generalAppointments = allAppointments;
 	return {

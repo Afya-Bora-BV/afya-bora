@@ -150,7 +150,7 @@ export function AppointmentAlertDoctor({
 					</Heading>
 					<Text fontSize="sm" color="#333">
 						{moment
-							.unix(appointment.date.seconds)
+							(appointment.date.toDate())
 							.format("DD MMM, H:MM A")}
 					</Text>
 					<Text fontSize="sm" fontStyle="italic" color="#333">
@@ -160,7 +160,7 @@ export function AppointmentAlertDoctor({
 							: "Offline"
 							// : appointment?.facility?.name}
 						}
-							
+
 					</Text>
 				</VStack>
 			</HStack>
@@ -279,24 +279,24 @@ export const Appointments = () => {
 
 	const nextAppointments = appointments?.filter(
 		(appointment) =>
-			moment.unix(appointment.date.seconds).format("DD MMM YYYY") ===
+			moment(appointment.date.toDate()).format("DD MMM YYYY") ===
 			moment(new Date()).format("DD MMM YYYY") &&
-			moment.unix(appointment.date.seconds).format("hh:mm") >
+			moment(appointment.date.toDate()).format("hh:mm") >
 			moment(new Date()).format("hh:mm") &&
-			moment.unix(appointment.date.seconds).isSame(moment(), "day") &&
+			moment(appointment.date.toDate()).isSame(moment(), "day") &&
 			appointment.status !== "cancelled"
 	);
 
 	const todaysAppointments = appointments?.filter((appointment) => {
 		return (
-			moment.unix(appointment.date.seconds).isSame(moment(), "day") &&
+			moment(appointment.date.toDate()).isSame(moment(), "day") &&
 			appointment.status !== "cancelled"
 		);
 	});
 
 	const upcomingAppointments = appointments?.filter((appointment) => {
 		return (
-			moment.unix(appointment.date.seconds).isAfter() &&
+			moment(appointment.date.toDate()).isAfter() &&
 			appointment.status !== "cancelled"
 		);
 	});
