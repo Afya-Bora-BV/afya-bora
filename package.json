@@ -69,7 +69,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
     "react-native-web-maps": "^0.3.0",
-    "react-native-webrtc": "^1.92.1",
+    "react-native-webrtc": "^106.0.6",
     "react-native-webview": "^11.26.1",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.2",
