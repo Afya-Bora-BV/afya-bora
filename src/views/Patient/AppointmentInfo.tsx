@@ -35,7 +35,7 @@ import { Text } from "../../components/text";
 import { Appointment } from "../../types";
 import { useAuth } from "../../contexts/AuthContext";
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
-
+import DoctorIcon from "../../assets/icons/DoctorIcon"
 
 // TODO: to transfer to the firebase functions
 const cancellAppointment = async (id: string) => {
@@ -197,7 +197,7 @@ export default function AppointmentInfo() {
 		const PATIENT_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${data?.callRoomId}/${PATIENT_ROLE}?name=${profile?.name}`
 
 		console.log("Patient meeting url")
-        console.log(PATIENT_CALL_DOMAIN)
+		console.log(PATIENT_CALL_DOMAIN)
 
 		// using webview
 		// navigation.navigate(HomeNavKey.PatientCall, {
