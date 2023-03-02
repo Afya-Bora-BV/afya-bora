@@ -55,7 +55,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
     return (
         <Stack shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
             <VStack space={5}>
-                <Heading fontSize="xl">Patient Information</Heading>
+                <Heading fontSize="md">Patient Information</Heading>
                 <HStack space={4}>
                     <AccountIcon size={5} />
                     <Text>{name}</Text>
@@ -214,6 +214,8 @@ export default function AppointmentInfo() {
         }
 
     }
+    console.log("Appointment")
+    console.log(JSON.stringify(appointment,null,4))
 
     return (
         <MainContainer
@@ -237,13 +239,32 @@ export default function AppointmentInfo() {
                 {/* <DateTimeCardRender /> */}
                 <View width="100%">
                     <StatusAppointmentAlert
-                        hours={appointment?.time || ""}
-                        time={appointment?.utcDate || ""}
+                        time={appointment?.time || ""}
+                        date={appointment?.date || new Date()}
                         type={appointment?.type || "offline"}
                         status={appointment?.status}
 
                     />
                 </View>
+
+                <PatientInfo
+                    name={appointment?.patient?.name || ""}
+                    phoneNumber={appointment?.patient?.phoneNumber || ""}
+                    gender={appointment?.patient?.gender || "unknown"}
+                    dob={appointment?.patient?.dob || ""}
+                    weight={appointment?.patient?.weight || ""}
+                    height={appointment?.patient?.height || ""}
+                    bloodGroup={appointment?.patient?.bloodGroup || ""}
+                />
+
+                {/* NOTE: Abstracting away makes difficult to deal with */}
+                <VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
+
+                    <Text bold fontSize="md">Other Notes</Text>
+                    <Text fontSize={13}>
+                        {appointment?.aboutVisit?.complaint}
+                    </Text>
+                </VStack>
 
                 <HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
                     <Pressable onPress={() => {
@@ -289,42 +310,26 @@ export default function AppointmentInfo() {
                     </Pressable>
                 </HStack>
 
-                {(appointment?.type === "online" && appointment?.status === "accepted" && appointment?.callRoomId)
-                    &&
-                    (
-                        <Stack>
-                            <Button
-                                mb={3}
-                                bg={colors.primary}
-                                onPress={openVirtualAppointment}
-                                rounded={4}
-                            >
-                                <Text color="white" tx="">
-                                    Join Consultation
-                                </Text>
-                            </Button>
-                        </Stack>
-                    )
-                }
 
-
-                <PatientInfo
-                    name={appointment?.patient?.name || ""}
-                    phoneNumber={appointment?.patient?.phoneNumber || ""}
-                    gender={appointment?.patient?.gender || "unknown"}
-                    dob={appointment?.patient?.dob || ""}
-                    weight={appointment?.patient?.weight || ""}
-                    height={appointment?.patient?.height || ""}
-                    bloodGroup={appointment?.patient?.bloodGroup || ""}
-                />
-
-                {/* NOTE: Abstracting away makes difficult to deal with */}
-                <VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
-
-                    <Text bold fontSize="xl">Other Notes</Text>
-                    <Text fontSize={13}>
-                        {appointment?.aboutVisit?.complaint}
-                    </Text>
+                <VStack>
+                    {(appointment?.type === "online" && appointment?.status === "accepted" && appointment?.callRoomId)
+                        &&
+                        (
+                            <Stack>
+                                <Button
+                                    mb={3}
+                                    bg={colors.primary}
+                                    onPress={openVirtualAppointment}
+                                    rounded={4}
+                                    h={50}
+                                >
+                                    <Text color="white" tx="">
+                                        Join Consultation
+                                    </Text>
+                                </Button>
+                            </Stack>
+                        )
+                    }
                 </VStack>
             </VStack>
         </MainContainer>

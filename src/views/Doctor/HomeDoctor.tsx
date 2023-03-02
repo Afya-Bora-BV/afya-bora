@@ -99,8 +99,9 @@ export default function DoctorHome() {
 					</Pressable>
 				</HStack>
 			)}
+			
 		>
-			<ScrollView width="100%">
+			<ScrollView width="100%" style={{paddingVertical:4}}>
 				<VStack space={2} paddingTop={2} marginX={5}>
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
@@ -151,14 +152,17 @@ export function AppointmentAlertDoctor({
 					<Text fontSize="sm" color="#333">
 						{moment
 							(appointment.date.toDate())
-							.format("DD MMM, H:MM A")}
+							.format("DD MMM YYYY")}
 					</Text>
-					<Text fontSize="sm" fontStyle="italic" color="#333">
-						{/* TODO: include facility in appointment */}
+					{appointment.time &&
+						<Text fontSize="sm" color="#333">
+							{moment(appointment.time, "hh:mm").format('LT')}
+						</Text>
+					}
+					<Text fontSize="sm" color="#333">
 						{appointment.type === "online"
 							? "Online"
 							: "Offline"
-							// : appointment?.facility?.name}
 						}
 
 					</Text>

@@ -14,7 +14,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { Consultant } from "../types";
 import FastImage from "react-native-fast-image";
 import _ from "lodash";
-
+import DoctorIcon from "../assets/icons/DoctorIcon"
+import { colors } from "../constants/colors";
 
 type ConsultantListItemProps = {
 	consultant: Consultant;
@@ -35,27 +36,19 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 			<Text
 				px={4}
 				py={2}
-				fontSize={"xl"}
+				fontSize={"md"}
 				fontWeight="medium"
+				color={colors.primary}
 			>Consultant</Text>
 			<VStack
-				p={4}
+				px={4}
+				py={2}
 				borderRadius={12}
 				style={{ backgroundColor: "white" }}
 			>
-				<HStack alignItems="center">
-					{/* <Avatar
-						alignSelf="flex-start"
-						size={120}
-						borderRadius={6}
-						source={{
-							uri: "https://wallpaperaccess.com/full/317501.jpg",
-						}}
-					>
-						SS
+				<HStack>
 
-					</Avatar> */}
-					<FastImage
+					{/* <FastImage
 						style={{ width: 120, height: 120, borderRadius: 6 }}
 						source={{
 							uri: "https://wallpaperaccess.com/full/317501.jpg",
@@ -63,8 +56,10 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 							priority: FastImage.priority.normal,
 						}}
 						resizeMode={FastImage.resizeMode.cover}
-					/>
-					<VStack style={{}} pl={3} flex={1}>
+					/> */}
+
+					<DoctorIcon color={colors.primary} size={64} />
+					<VStack style={{}} pl={4} flex={1}>
 						<HStack
 							justifyContent="space-between"
 							alignItems="center"
@@ -77,7 +72,7 @@ export const ConsultantListItem: React.FC<ConsultantListItemProps> = ({
 									name="clipboard-pulse-outline"
 									size={16}
 								/>
-								{_.startCase(_.toLower(specialties.join(" , "))) + " , "}
+								{_.startCase(_.toLower(specialties.join(" , ")))}
 							</Text>
 							<Text fontSize="md" color="#747F9E">
 								<MaterialCommunityIcons

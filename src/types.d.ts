@@ -136,6 +136,7 @@ interface RealTimeAppointment {
 		nanoseconds: number;
 	};
 	date: FirebaseFirestoreTypes.Timestamp;
+	time?:string
 }
 
 interface PatientProfile {

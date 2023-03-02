@@ -289,8 +289,8 @@ export default function AppointmentInfo() {
 			>
 				<View width="100%">
 					<StatusAppointmentAlert
-						hours={data?.time || ""}
-						time={data?.utcDate || ""}
+						time={data?.time || ""}
+						date={data?.date || new Date()}
 						type={data?.type || "offline"}
 						status={data?.status}
 					/>
@@ -310,28 +310,10 @@ export default function AppointmentInfo() {
 						</VStack>
 					</View>
 				)}
-				{(data?.type === "online" && data?.status === "accepted" && data?.callRoomId)
-					&&
-					(
-						<Stack>
-							<Button
-								mb={3}
-								bg={colors.primary}
-								onPress={openVirtualAppointment}
-								rounded={4}
-							>
-								<Text color="white" tx="">
-									Join Consultation
-								</Text>
-							</Button>
-						</Stack>
-					)
-				}
-
 
 				<VStack mt={2} space={4}>
-					{!(data?.type === "online") && data?.fid && (
-						<FacilityListItem facility={data?.facility} fid={data?.fid} />
+					{data?.fid && (
+						<FacilityListItem facility={data?.facility} fid={data?.fid} label={true} />
 					)}
 
 					{data?.consultant && (
@@ -342,7 +324,7 @@ export default function AppointmentInfo() {
 				<View bg="white" borderRadius={10} mt={2} shadow={2} p={5}>
 					<Text
 						tx="common.speciality"
-						fontSize={"xl"}
+						fontSize={"md"}
 						fontWeight="medium"
 					>
 						Speciality
@@ -351,7 +333,7 @@ export default function AppointmentInfo() {
 					<HStack space={4} flexWrap="wrap">
 						{data?.speciality ? (
 							<Box
-								rounded="xl"
+								rounded={4}
 								bg={"#B0B3C7"}
 								flex={1}
 								// alignItems="center"
@@ -368,7 +350,7 @@ export default function AppointmentInfo() {
 
 					<VStack mt={6}>
 						<Text
-							fontSize={"xl"}
+							fontSize={"md"}
 							tx="common.otherNotes"
 							fontWeight="medium"
 						>
@@ -378,13 +360,35 @@ export default function AppointmentInfo() {
 					</VStack>
 				</View>
 
-				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
+				<HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={4} py={2}>
 					<EditAppointmentButton
 						appointmentId={data?.id || ""}
 						appointment={data || {}}
 					/>
 					<CancelAppointmentButton appointmentId={data?.id || ""} />
 				</HStack>
+
+				<VStack>
+					{(data?.type === "online" && data?.status === "accepted" && data?.callRoomId)
+						&&
+						(
+							<Stack>
+								<Button
+									mb={3}
+									bg={colors.primary}
+									onPress={openVirtualAppointment}
+									rounded={4}
+									h={50}
+								>
+									<Text color="white" tx="">
+										Join Consultation
+									</Text>
+								</Button>
+							</Stack>
+						)
+					}
+
+				</VStack>
 			</VStack>
 		</MainContainer>
 	);

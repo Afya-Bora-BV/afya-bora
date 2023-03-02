@@ -19,6 +19,7 @@ import { colors } from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Text } from "../text";
 import _ from "lodash";
+import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 
 export function AppointmentAlert({
@@ -121,17 +122,18 @@ export function AppointmentAlert({
 }
 
 export function StatusAppointmentAlert({
+  date,
   time = "",
-  hours = "",
   type = "offline",
   status = "pending"
 }: {
-  time: string;
+  date: FirebaseFirestoreTypes.Timestamp;
   type: "offline" | "online";
   status?: "pending" | "cancelled" | "accepted";
-  hours: string
+  time: string
 }) {
-  console.log("Whats time ", time)
+
+  const formattedTime = moment(time, "hh:mm").format('LT')
   return (
     <Box
       flexDirection="row"
@@ -149,9 +151,9 @@ export function StatusAppointmentAlert({
         <MedicalHistoryIcon size={6} />
         <VStack space={2}>
           <Heading fontSize="lg" color="#000">
-            {moment(time).format("ddd, DD MMM YYYY")}
+            {moment(date.toDate()).format("ddd, DD MMM YYYY")}
           </Heading>
-          {status === "accepted" && <Text >Time : {hours}</Text>}
+          {status === "accepted" && <Text >Time : {formattedTime}</Text>}
           <Text
             tx={
               type === "online"
