@@ -7,6 +7,7 @@ import {
 	Button,
 	View,
 	HStack,
+	VStack,
 } from "native-base";
 import format from "date-fns/format";
 import _ from "lodash";
@@ -65,7 +66,7 @@ const ConfirmAppointment: React.FC = () => {
 				timeRange: appointment.timeRange,
 				speciality: appointment.speciality,
 				type: appointment.type,
-				status:"pending",
+				status: "pending",
 				date: new Date(
 					appointment.date) || new Date(),
 				rawDate: appointment.date,
@@ -187,7 +188,7 @@ const ConfirmAppointment: React.FC = () => {
 			}
 		>
 			<View p={2}>
-				<Text fontSize={"xl"} mt={4}>
+				<Text fontSize={"xl"} mt={2}>
 					Appointment Date
 				</Text>
 
@@ -201,7 +202,7 @@ const ConfirmAppointment: React.FC = () => {
 				>
 					<Icon
 						size={26}
-						color={"#6d28d9"}
+						color={colors.primary}
 						name={"calendar-month-outline"}
 					/>
 					<View>
@@ -209,12 +210,38 @@ const ConfirmAppointment: React.FC = () => {
 							{format(appointment.date, "dd MMMM yyyy")}
 						</Text>
 						<Text color={"muted.500"}>
+							{_.upperFirst(appointment.type)}
+						</Text>
+						<Text color={"muted.500"}>
 							{_.upperFirst(appointment.timeRange)}
 						</Text>
 					</View>
 				</HStack>
 
-				<Text fontSize={"xl"} mt={4}>
+				<VStack>
+					<Text fontSize={"xl"} mt={2}>
+						Facility
+					</Text>
+
+					<HStack
+						bg="white"
+						borderRadius={8}
+						my={2}
+						shadow={2}
+						p={5}
+						space={"sm"}
+					>
+						<Icon
+							size={26}
+							color={colors.primary}
+							name={"hospital-box-outline"}
+						/>
+						<Text fontSize={"xl"}>{appointment?.facility?.name}</Text>
+					</HStack>
+				</VStack>
+
+
+				<Text fontSize={"xl"} mt={2}>
 					Doctor Specialisation
 				</Text>
 
@@ -228,12 +255,15 @@ const ConfirmAppointment: React.FC = () => {
 				>
 					<Icon
 						size={26}
-						color={"#6d28d9"}
-						name={"hospital-box-outline"}
+						color={colors.primary}
+						name={"stethoscope"}
 					/>
-					<Text fontSize={"xl"}>{appointment.speciality}</Text>
+					<Text fontSize={"xl"}>
+						{_.startCase(_.toLower(appointment.speciality || " "))}
+					</Text>
 				</HStack>
-				<Text fontSize={"xl"} mt={4}>
+
+				<Text fontSize={"xl"} mt={2}>
 					Primary reason for seeing the doctor
 				</Text>
 
@@ -247,14 +277,14 @@ const ConfirmAppointment: React.FC = () => {
 				>
 					<Icon
 						size={26}
-						color={"#6d28d9"}
+						color={colors.primary}
 						name={"message-plus-outline"}
 					/>
 					<Text fontSize={"xl"}>{appointment.aboutVisit.complaint}</Text>
 				</HStack>
 
 
-				<Box mt={4}>
+				<Box mt={2}>
 					<Button
 						bg={colors.primary}
 						rounded={4}
