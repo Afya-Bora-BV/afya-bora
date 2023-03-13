@@ -9,7 +9,7 @@ In Your Hands</b><br/>
 </p>
     
 ## Summary
-Write project summary here>
+Write project summary here
 <br/>
 
 
