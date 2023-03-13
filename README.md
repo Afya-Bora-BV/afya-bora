@@ -12,15 +12,18 @@ In Your Hands</b><br/>
 Write project summary here
 <br/>
 
+
 ## Getting started
 <p>Firebase Set up</p>
-To add and set up firebase please follow the instruction from here [Here](https://rnfirebase.io/) 
+To add and set up firebase please follow the instruction from here [Here](https://rnfirebase.io/)  
 
-<br/>
-<br/>
 <p>Post Firebase Setup</p>
+
 ```shell
 git clone https://github.com/Afya-Bora-BV/afya-bora.git
+```
+
+```shell
 cd afya-bora/
 git checkout dev-native-2
 ```
