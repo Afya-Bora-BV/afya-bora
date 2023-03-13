@@ -13,10 +13,13 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Facility } from "../types";
 import FastImage from "react-native-fast-image";
+import FacilityIcon from "../assets/icons/FacilityIcon"
+import { colors } from "../constants/colors";
 
 type FacilityListItemProps = {
 	facility: Facility;
 	fid: string
+	label?: boolean
 };
 
 // TODO: calcultae distance from geopoint and render distance
@@ -26,16 +29,26 @@ const getDistance = (geopoint: { lat: number; lng: number }) => {
 
 export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 	facility,
+	label
 }) => {
 	return (
-		<Box bg="white" shadow={1} rounded={10}>
+		<Box bg="white" shadow={2} rounded={10}>
+			{label && <Text
+				px={4}
+				py={2}
+				fontSize={"md"}
+				fontWeight="medium"
+				color={colors.primary}
+			>Facility</Text>
+			}
 			<VStack
-				p={4}
+				px={4}
+				py={2}
 				borderRadius={12}
 				style={{ backgroundColor: "white" }}
 			>
-				<HStack alignItems="center">
-					<FastImage
+				<HStack>
+					{/* <FastImage
 						style={{ width: 120, height: 120, borderRadius: 6 }}
 						source={{
 							uri: facility?.photoUrl
@@ -45,8 +58,9 @@ export const FacilityListItem: React.FC<FacilityListItemProps> = ({
 							priority: FastImage.priority.normal,
 						}}
 						resizeMode={FastImage.resizeMode.cover}
-					/>
-					<VStack style={{}} pl={3} flex={1}>
+					/> */}
+					<FacilityIcon color={colors.primary} size={64} />
+					<VStack style={{}} pl={4} flex={1}>
 						<HStack
 							justifyContent="space-between"
 							alignItems="center"

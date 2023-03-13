@@ -27,12 +27,20 @@ import { colors } from '../../constants/colors';
 import { DoctorRoutes } from '../Patient';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Text } from '../../components/text';
+import moment from 'moment';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import { useAuth } from '../../contexts/AuthContext';
+
+type DateString = string
 
 type PatientInfoProps = {
     name: string;
     phoneNumber: string;
     gender: "male" | "female" | "unknown";
-    dob: FirebaseFirestoreTypes.Timestamp;
+    dob: FirebaseFirestoreTypes.Timestamp | DateString;
+    weight: string,
+    height: string,
+    bloodGroup: string
 };
 
 const PatientInfo: React.FC<PatientInfoProps> = ({
@@ -40,11 +48,14 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
     phoneNumber,
     gender = "unknown",
     dob,
+    weight,
+    height,
+    bloodGroup
 }) => {
     return (
         <Stack shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
             <VStack space={5}>
-                <Heading fontSize="xl">Patient Information</Heading>
+                <Heading fontSize="md">Patient Information</Heading>
                 <HStack space={4}>
                     <AccountIcon size={5} />
                     <Text>{name}</Text>
@@ -59,7 +70,10 @@ const PatientInfo: React.FC<PatientInfoProps> = ({
                     <GenderIcon size={5} color={colors.primary} />
                     <VStack>
                         <Text>Sex: {gender}</Text>
-                        <Text>DOB: {(dob?.toDate()).toString()}</Text>
+                        <Text>Date Of Birth: {typeof dob === "string" ? moment(new Date(dob)).format("ddd, DD MMM YYYY") : moment(dob?.toDate()).format("ddd, DD MMM YYYY")}</Text>
+                        <Text>Weight: {weight} kg</Text>
+                        <Text>Height: {height} cm</Text>
+                        <Text>Bloog Group: {bloodGroup}</Text>
                     </VStack>
                 </HStack>
             </VStack>
@@ -119,13 +133,89 @@ export default function AppointmentInfo() {
     const route = useRoute<any>();
 
     const { appointment } = route?.params
-    const { cid, pid } = appointment
+    const { cid, pid, callRoomId } = appointment
 
     const [modalVisible, setModalVisible] = React.useState(false)
+    const { profile } = useAuth()
 
     const handleCancelAppointment = () => {
         setModalVisible(!modalVisible)
     }
+
+    const openVirtualAppointment = async () => {
+        const DOCTOR_ROLE = "doctor"
+        const DOCTOR_CALL_DOMAIN = `https://afyabora.app.100ms.live/preview/${callRoomId}/${DOCTOR_ROLE}?name=${profile?.name}`
+
+        console.log("Doctors meeting url")
+        console.log(DOCTOR_CALL_DOMAIN)
+
+        // using webview
+        // navigation.navigate(DoctorRoutes.DoctorCall, {
+        //     url: DOCTOR_CALL_DOMAIN
+        // });
+
+        // using in-app browser
+        try {
+            const url = DOCTOR_CALL_DOMAIN
+            console.log("URL")
+            console.log(url)
+            if (await InAppBrowser.isAvailable()) {
+                const result = await InAppBrowser.open(url, {
+                    // iOS Properties
+                    dismissButtonStyle: 'cancel',
+                    preferredBarTintColor: '#453AA4',
+                    preferredControlTintColor: 'white',
+                    readerMode: false,
+                    animated: true,
+                    modalPresentationStyle: 'fullScreen',
+                    modalTransitionStyle: 'coverVertical',
+                    modalEnabled: true,
+                    enableBarCollapsing: false,
+                    // Android Properties
+                    showTitle: true,
+                    toolbarColor: colors.primary,
+                    secondaryToolbarColor: 'black',
+                    navigationBarColor: 'black',
+                    navigationBarDividerColor: 'white',
+                    enableUrlBarHiding: true,
+                    enableDefaultShare: true,
+                    forceCloseOnRedirection: false,
+                    showInRecents: true,
+                    // Specify full animation resource identifier(package:anim/name)
+                    // or only resource name(in case of animation bundled with app).
+                    animations: {
+                        startEnter: 'slide_in_right',
+                        startExit: 'slide_out_left',
+                        endEnter: 'slide_in_left',
+                        endExit: 'slide_out_right'
+                    },
+                    headers: {
+                        'my-custom-header': 'my custom header value'
+                    }
+                })
+
+                ToastAndroid.show(
+                    JSON.stringify(result),
+                    3000
+                );
+                console.log(result)
+            } else {
+                navigation.navigate(DoctorRoutes.DoctorCall, {
+                    url: DOCTOR_CALL_DOMAIN
+                });
+            }
+
+        } catch (error) {
+            ToastAndroid.show(
+                "Something went wrong on joining the call",
+                3000
+            );
+            console.log("Error : ", error)
+        }
+
+    }
+    console.log("Appointment")
+    console.log(JSON.stringify(appointment,null,4))
 
     return (
         <MainContainer
@@ -149,13 +239,32 @@ export default function AppointmentInfo() {
                 {/* <DateTimeCardRender /> */}
                 <View width="100%">
                     <StatusAppointmentAlert
-                        hours={appointment?.time || ""}
-                        time={appointment?.utcDate || ""}
+                        time={appointment?.time || ""}
+                        date={appointment?.date || new Date()}
                         type={appointment?.type || "offline"}
                         status={appointment?.status}
 
                     />
                 </View>
+
+                <PatientInfo
+                    name={appointment?.patient?.name || ""}
+                    phoneNumber={appointment?.patient?.phoneNumber || ""}
+                    gender={appointment?.patient?.gender || "unknown"}
+                    dob={appointment?.patient?.dob || ""}
+                    weight={appointment?.patient?.weight || ""}
+                    height={appointment?.patient?.height || ""}
+                    bloodGroup={appointment?.patient?.bloodGroup || ""}
+                />
+
+                {/* NOTE: Abstracting away makes difficult to deal with */}
+                <VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
+
+                    <Text bold fontSize="md">Other Notes</Text>
+                    <Text fontSize={13}>
+                        {appointment?.aboutVisit?.complaint}
+                    </Text>
+                </VStack>
 
                 <HStack justifyContent="space-between" shadow={2} borderRadius={8} backgroundColor={"#FFFFFF"} px={3} py={4}>
                     <Pressable onPress={() => {
@@ -201,40 +310,26 @@ export default function AppointmentInfo() {
                     </Pressable>
                 </HStack>
 
-                {
-                    appointment?.type === "online"
-                    &&
-                    <Button
-                        borderRadius={4}
-                        style={{ backgroundColor: colors.primary }}
-                        _text={{ color: "white" }}
-                        shadow={5}
-                        onPress={() => {
-                            navigation.navigate(DoctorRoutes.DoctorRemoteConsultation, {
-                                roomId: appointment?.roomId
-                            })
 
-                        }}
-                    >
-                        Join Consultation
-                    </Button>
-                }
-
-
-                <PatientInfo
-                    name={appointment?.patient?.name || ""}
-                    phoneNumber={appointment?.patient?.phoneNumber || ""}
-                    gender={appointment?.patient?.gender || "unknown"}
-                    dob={appointment?.patient?.dob || ""}
-                />
-
-                {/* NOTE: Abstracting away makes difficult to deal with */}
-                <VStack space={5} shadow={2} rounded={10} bg="white" paddingX={5} paddingY={5}>
-
-                    <Text bold fontSize="xl">Other Notes</Text>
-                    <Text fontSize={13}>
-                        {appointment?.aboutVisit?.complaint}
-                    </Text>
+                <VStack>
+                    {(appointment?.type === "online" && appointment?.status === "accepted" && appointment?.callRoomId)
+                        &&
+                        (
+                            <Stack>
+                                <Button
+                                    mb={3}
+                                    bg={colors.primary}
+                                    onPress={openVirtualAppointment}
+                                    rounded={4}
+                                    h={50}
+                                >
+                                    <Text color="white" tx="">
+                                        Join Consultation
+                                    </Text>
+                                </Button>
+                            </Stack>
+                        )
+                    }
                 </VStack>
             </VStack>
         </MainContainer>

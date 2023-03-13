@@ -29,7 +29,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext";
 import { Consultant } from "../../types";
-import { DoctorRoutes, HomeNavKey } from "../Patient";
+import { DoctorRoutes } from '../Patient';
 import { Text } from "../../components/text";
 import { useAtom } from "jotai";
 import { languageAtom } from "../../store/atoms";

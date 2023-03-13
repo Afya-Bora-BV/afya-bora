@@ -29,21 +29,7 @@ import DoctorHome from "../Doctor/HomeDoctor";
 import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor";
 import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
 import ConfirmAppointment from "./ConfirmAppointment";
-import OnBoard from "./OnBoard";
-
-const AuthStack = createStackNavigator();
-
-function AuthRoutes() {
-	return (
-		<AuthStack.Navigator initialRouteName="Login">
-			<AuthStack.Screen name={HomeNavKey.Login} component={Login} />
-			<AuthStack.Screen
-				name={HomeNavKey.CreateProfile}
-				component={CreateProfile}
-			/>
-		</AuthStack.Navigator>
-	);
-}
+import PatientCall from "./PatientCall";
 
 export const NavStack = createStackNavigator();
 
@@ -67,14 +53,15 @@ export const HomeNavKey = {
 	AppointmentInfo: "AppointmentInfo",
 	RemoteConsultation: "RemoteConsultation",
 	ConfirmAppointment: "ConfirmAppointment",
-	OnBoard: "OnBoard"
+	PatientCall: "PatientCall"
 };
 
 export const DoctorRoutes = {
-	DoctorHome: "DoctorHome",
-	DoctorLogin: "DoctorLogin",
-	DoctorAppointmentInfo: "DoctorAppointmentInfo",
-	DoctorRemoteConsultation: "DoctorRemoteConsultation",
+    DoctorHome: "DoctorHome",
+    DoctorLogin: "DoctorLogin",
+    DoctorAppointmentInfo: "DoctorAppointmentInfo",
+    DoctorRemoteConsultation: "DoctorRemoteConsultation",
+    DoctorCall: "DoctorCall"
 };
 
 function HomeView({ initialRouteName }: { initialRouteName: string }) {
@@ -157,6 +144,12 @@ function HomeView({ initialRouteName }: { initialRouteName: string }) {
 				name={HomeNavKey.EditAppointment}
 				component={EditAppointment}
 			/>
+
+			<NavStack.Screen
+				name={HomeNavKey.PatientCall}
+				component={PatientCall}
+			/>
+
 			<NavStack.Screen
 				name={HomeNavKey.RemoteConsultation}
 				component={RemoteConsultation}

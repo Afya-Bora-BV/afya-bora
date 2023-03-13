@@ -111,6 +111,8 @@ const createPatientProfile = async (profile: Profile): Promise<any> => {
 		const inf = await firestore().collection('patients').doc(uid).set({
 			uid: uid,
 			...profile,
+			createdAt: new Date(),
+			updatedAt: new Date()
 		})
 	} catch (e) {
 		throw e
@@ -255,17 +257,21 @@ export default function CreateProfileScreen() {
 					{/* </Stack> */}
 					<Stack alignItems="center">
 						<Box bg="white" shadow={2} rounded={10} width="90%">
-							<Box position="absolute" right={5} top={5}>
+							<Box position="absolute" right={5} top={4}>
 								<TouchableOpacity
 									style={{
 										flexDirection: "row-reverse",
 										alignItems: "center",
+										padding: 4
 									}}
 									activeOpacity={0.5}
 									onPress={confirmSignout}
 								>
-									<Icon name="exit-to-app" size={24} />
-									<Text textAlign="left">Sign Out </Text>
+									<HStack display={"flex"}>
+										<Icon name="exit-to-app" size={24} />
+										<Text textAlign="left">Sign Out </Text>
+									</HStack>
+
 								</TouchableOpacity>
 							</Box>
 							<Stack mt={-10}>
@@ -663,7 +669,7 @@ export default function CreateProfileScreen() {
 									testID="button1"
 									disabled={isLoading}
 									isLoading={isLoading}
-									borderRadius={20}
+									borderRadius={4}
 									_disabled={{
 										backgroundColor: "#B0B3C7",
 										color: "white",

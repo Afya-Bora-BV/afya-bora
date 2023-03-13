@@ -31,7 +31,7 @@ import firestore from "@react-native-firebase/firestore";
 import ArrowIcon_Next from "../../assets/icons/ArrowIcon_Next";
 import { useAuth } from "../../contexts/AuthContext";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import { DoctorRoutes } from "../Patient";
+import { DoctorRoutes } from '../Patient';
 
 export const MONTH_NAMES = [
 	"January",
@@ -99,8 +99,9 @@ export default function DoctorHome() {
 					</Pressable>
 				</HStack>
 			)}
+			
 		>
-			<ScrollView width="100%">
+			<ScrollView width="100%" style={{paddingVertical:4}}>
 				<VStack space={2} paddingTop={2} marginX={5}>
 					<Text color="#B0B3C7" fontSize="md">
 						{moment().format("D MMMM YYYY")}
@@ -150,14 +151,20 @@ export function AppointmentAlertDoctor({
 					</Heading>
 					<Text fontSize="sm" color="#333">
 						{moment
-							.unix(appointment.date.seconds)
-							.format("DD MMM, H:MM A")}
+							(appointment.date.toDate())
+							.format("DD MMM YYYY")}
 					</Text>
-					<Text fontSize="sm" fontStyle="italic" color="#333">
-						{/* TODO: include facility in appointment */}
+					{appointment.time &&
+						<Text fontSize="sm" color="#333">
+							{moment(appointment.time, "hh:mm").format('LT')}
+						</Text>
+					}
+					<Text fontSize="sm" color="#333">
 						{appointment.type === "online"
 							? "Online"
-							: appointment?.facility?.name}
+							: "Offline"
+						}
+
 					</Text>
 				</VStack>
 			</HStack>
@@ -276,24 +283,24 @@ export const Appointments = () => {
 
 	const nextAppointments = appointments?.filter(
 		(appointment) =>
-			moment.unix(appointment.date.seconds).format("DD MMM YYYY") ===
+			moment(appointment.date.toDate()).format("DD MMM YYYY") ===
 			moment(new Date()).format("DD MMM YYYY") &&
-			moment.unix(appointment.date.seconds).format("hh:mm") >
+			moment(appointment.date.toDate()).format("hh:mm") >
 			moment(new Date()).format("hh:mm") &&
-			moment.unix(appointment.date.seconds).isSame(moment(), "day") &&
+			moment(appointment.date.toDate()).isSame(moment(), "day") &&
 			appointment.status !== "cancelled"
 	);
 
 	const todaysAppointments = appointments?.filter((appointment) => {
 		return (
-			moment.unix(appointment.date.seconds).isSame(moment(), "day") &&
+			moment(appointment.date.toDate()).isSame(moment(), "day") &&
 			appointment.status !== "cancelled"
 		);
 	});
 
 	const upcomingAppointments = appointments?.filter((appointment) => {
 		return (
-			moment.unix(appointment.date.seconds).isAfter() &&
+			moment(appointment.date.toDate()).isAfter() &&
 			appointment.status !== "cancelled"
 		);
 	});

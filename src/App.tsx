@@ -132,8 +132,9 @@ function Main() {
 
 	const { user, profile, loading } = useAuth();
 
+
+
 	const createProfileFirst = !loading && user !== null && profile === null;
-	console.info(loading, user, profile);
 
 	useEffect(() => {
 		i18n.changeLanguage(language);
@@ -149,8 +150,6 @@ function Main() {
 	// if (!loading) return <LoadingFullScreen />;
 
 	// Render the first time the app is installed only
-
-
 
 	if (isFirstTime) {
 		return <OnBoard />

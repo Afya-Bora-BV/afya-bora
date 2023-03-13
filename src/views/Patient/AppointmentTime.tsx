@@ -61,12 +61,14 @@ function nextNMonths(n: number): Date {
 }
 
 function listOfNextNMonths(n: number): Array<Date> {
-	const d = new Date();
-	const dates = [];
-	for (let i = 0; i < n; i++) {
-		dates.push(nextNMonths(i));
-	}
-	return dates;
+	// const d = new Date();
+	// const dates = [];
+	// for (let i = 0; i < n; i++) {
+	// 	dates.push(nextNMonths(i));
+	// }
+	// return dates
+	var months = _.times(12).map(i => moment().month(i).toDate())
+	return months;
 }
 
 const appointmentDateAtom = atom<Date>(new Date());
@@ -452,12 +454,12 @@ export default function SetAppointmentTime() {
 				// Go back if can go back
 				navigation.canGoBack()
 					? () => (
-							<Pressable onPress={() => navigation.goBack()}>
-								<IconContainer>
-									<ArrowBackIcon size={6} color="#561BB3" />
-								</IconContainer>
-							</Pressable>
-					  )
+						<Pressable onPress={() => navigation.goBack()}>
+							<IconContainer>
+								<ArrowBackIcon size={6} color="#561BB3" />
+							</IconContainer>
+						</Pressable>
+					)
 					: undefined
 			}
 		>
@@ -467,7 +469,7 @@ export default function SetAppointmentTime() {
 					{facility && (
 						<TouchableOpacity
 							activeOpacity={0.5}
-							onPress={() => {}}
+							onPress={() => { }}
 						>
 							<FacilityListItem facility={facility} />
 						</TouchableOpacity>

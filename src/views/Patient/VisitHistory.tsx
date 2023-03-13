@@ -61,7 +61,7 @@ const VisitHistorySection = () => {
 
 	const visitHistory = generalAppointments?.filter((appointment) => {
 		return (
-			moment.unix(appointment.date.seconds).isBefore() &&
+			moment(appointment.date.toDate()).isBefore() &&
 			appointment.status !== "cancelled"
 		);
 	});

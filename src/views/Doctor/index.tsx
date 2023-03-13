@@ -7,6 +7,7 @@ import DoctorLogin from "../Doctor/LoginDoctor";
 import DoctorHome from "../Doctor/HomeDoctor";
 import DoctorAppointmentInfo from "../Doctor/AppointmentInfoDoctor";
 import DoctorRemoteConsultation from "../Doctor/RemoteConsultationDoctor";
+import DoctorCall from "./DoctorCall"
 
 export const NavStack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export const DoctorRoutes = {
     DoctorLogin: "DoctorLogin",
     DoctorAppointmentInfo: "DoctorAppointmentInfo",
     DoctorRemoteConsultation: "DoctorRemoteConsultation",
+    DoctorCall: "DoctorCall"
 };
 
 function DoctorsStack({ initialRouteName }: any) {
@@ -38,6 +40,12 @@ function DoctorsStack({ initialRouteName }: any) {
                 name={DoctorRoutes.DoctorAppointmentInfo}
                 component={DoctorAppointmentInfo}
             />
+
+            <NavStack.Screen
+                name={DoctorRoutes.DoctorCall}
+                component={DoctorCall}
+            />
+
             <NavStack.Screen
                 name={DoctorRoutes.DoctorRemoteConsultation}
                 component={DoctorRemoteConsultation}

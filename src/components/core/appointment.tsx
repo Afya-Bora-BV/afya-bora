@@ -10,21 +10,22 @@ import {
   View,
   Heading,
 } from "native-base";
-import { TextPropTypes, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import { RealTimeAppointment } from "../../types";
+import { Appointment, RealTimeAppointment } from "../../types";
 import { useNavigation } from "@react-navigation/core";
 import { HomeNavKey } from "../../views/Patient";
 import { colors } from "../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Text } from "../text";
 import _ from "lodash";
+import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 
 export function AppointmentAlert({
   appointment,
 }: {
-  appointment: any
+  appointment: Appointment
 }) {
   const navigation = useNavigation()
   const openAppointment = (appointment: any) => {
@@ -58,7 +59,7 @@ export function AppointmentAlert({
             fontWeight="bold"
             color="gray.400"
           >
-            {moment(appointment.utcDate).format(
+            {moment(appointment.date.toDate()).format(
               "DD MMMM YYYY"
             )}
           </Text>
@@ -121,17 +122,18 @@ export function AppointmentAlert({
 }
 
 export function StatusAppointmentAlert({
+  date,
   time = "",
-  hours = "",
   type = "offline",
   status = "pending"
 }: {
-  time: string;
+  date: FirebaseFirestoreTypes.Timestamp;
   type: "offline" | "online";
   status?: "pending" | "cancelled" | "accepted";
-  hours: string
+  time: string
 }) {
-  console.log("Whats time ", time)
+
+  const formattedTime = moment(time, "hh:mm").format('LT')
   return (
     <Box
       flexDirection="row"
@@ -149,10 +151,10 @@ export function StatusAppointmentAlert({
         <MedicalHistoryIcon size={6} />
         <VStack space={2}>
           <Heading fontSize="lg" color="#000">
-            {moment(time).format("ddd, DD MMM YYYY")}
+            {moment(date.toDate()).format("ddd, DD MMM YYYY")}
           </Heading>
-          {status === "accepted" && <Text >Time : {hours}</Text>}
-          <Text 
+          {status === "accepted" && <Text >Time : {formattedTime}</Text>}
+          <Text
             tx={
               type === "online"
                 ? "common.online"

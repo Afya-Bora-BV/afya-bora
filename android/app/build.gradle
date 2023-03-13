@@ -159,8 +159,8 @@ android {
         applicationId "io.afyabora"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "0.8.4"
+        versionCode 23
+        versionName "0.9.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         multiDexEnabled true 
 
@@ -320,8 +320,10 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    // addUnimodulesDependencies()
+    // for in app browser
+    implementation project(':react-native-inappbrowser-reborn')
 
+    // addUnimodulesDependencies()
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

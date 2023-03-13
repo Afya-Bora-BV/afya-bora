@@ -63,14 +63,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	): Promise<() => void> => {
 
 		const userId = user.uid;
-		const userEmail = user?.email
 		const idTokenResult = await user?.getIdTokenResult();
 		const claims = idTokenResult?.claims
 		const isConsultant = (claims?.isConsultant) || (claims?.type === "consultant")
 
+
 		const { collectionName, type } = (isConsultant)
 			? { collectionName: "consultants", type: "consultant" }
 			: { collectionName: "patients", type: "patient" };
+
+		console.log("IS CONSULTANT ", userId)
 
 		const userRef = firestore().collection(collectionName).doc(userId);
 
