@@ -20,9 +20,11 @@ To add and set up firebase please follow the instruction from here [Here](https:
 <br/>
 <p>Post Firebase Setup</p>
 ```shell
+
 git clone https://github.com/Afya-Bora-BV/afya-bora.git
 cd afya-bora/
 git checkout dev-native-2
+
 ```
 
 ```shell
