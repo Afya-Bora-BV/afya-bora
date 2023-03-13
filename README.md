@@ -18,8 +18,12 @@ Write project summary here>
 To add and set up firebase please follow the instruction from here [Here](https://rnfirebase.io/)  
 
 <p>Post Firebase Setup</p>
+
 ```shell
-git clone ......
+git clone https://github.com/Afya-Bora-BV/afya-bora.git
+```
+
+```shell
 cd afya-bora/
 git checkout dev-native-2
 ```
